@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['save',['save',['../classSGGame.html#aaccf18a3663ec99360e5b6e64f2bf6e2',1,'SGGame::save()'],['../classSGSolution.html#a9b68d89b32ad1f70a69912bbe414f73b',1,'SGSolution::save()']]],
+  ['serialize',['serialize',['../classSGAction.html#a2d1b9515be55e396e8595051ba6d3bdd',1,'SGAction::serialize()'],['../classSGGame.html#a383c8f7ec881befac40d6e45c7e1b775',1,'SGGame::serialize()'],['../classSGPoint.html#a1fbc1552f839d84bbcac667c768e9726',1,'SGPoint::serialize()'],['../classSGSolution.html#a8c2f4af49071c5b3e55e232dfc9cebed',1,'SGSolution::serialize()'],['../classSGTuple.html#a82a8b8ef3ee0f1ae72d49ad98b43bc54',1,'SGTuple::serialize()']]],
+  ['setostream',['setOStream',['../classSGEnv.html#a30c578e700ba7e656646168c646dadf9',1,'SGEnv']]],
+  ['setparam',['setParam',['../classSGEnv.html#a6edf7d4d2cdba8cba621420ff09d98ea',1,'SGEnv::setParam(SGEnv::DBL_PARAM param, double value)'],['../classSGEnv.html#ac4a7fe04e3b253e073160feaf172ae00',1,'SGEnv::setParam(SGEnv::BOOL_PARAM param, bool value)'],['../classSGEnv.html#a613eb2cdb45deb914cfcfc5c33d9f9a6',1,'SGEnv::setParam(SGEnv::INT_PARAM param, int value)']]],
+  ['sgaction',['SGAction',['../classSGAction.html#a763b30d91b4ac060895b3af2731d097c',1,'SGAction']]],
+  ['sgapprox',['SGApprox',['../classSGApprox.html#a765c3c57b31d813ced0f7f93f6d4bb11',1,'SGApprox']]],
+  ['sgenv',['SGEnv',['../classSGEnv.html#ac7fe265f0baba4e498c36bd67a0bbc97',1,'SGEnv']]],
+  ['sgexception',['SGException',['../classSGException.html#a5b8775f80242f3a73b2a3b3d3a298131',1,'SGException']]],
+  ['sggame',['SGGame',['../classSGGame.html#a935fc76700c675f842dc1666ffe2e8f7',1,'SGGame::SGGame()'],['../classSGGame.html#ad881fb3f3db38d4b7c2ea0beb7181fc0',1,'SGGame::SGGame(double _delta, int _numStates, const vector&lt; vector&lt; int &gt; &gt; &amp;_numActions, const vector&lt; vector&lt; vector&lt; double &gt; &gt; &gt; &amp;_payoffs, const vector&lt; vector&lt; vector&lt; double &gt; &gt; &gt; &amp;_probabilities)'],['../classSGGame.html#add5a4dac93d24cb6221240087e98bf5d',1,'SGGame::SGGame(double _delta, int _numStates, const vector&lt; vector&lt; int &gt; &gt; &amp;_numActions, const vector&lt; vector&lt; vector&lt; double &gt; &gt; &gt; &amp;_payoffs, const vector&lt; vector&lt; vector&lt; double &gt; &gt; &gt; &amp;_probabilities, const vector&lt; list&lt; int &gt; &gt; &amp;_eqActions, const vector&lt; bool &gt; &amp;_unconstrained)']]],
+  ['sgiteration',['SGIteration',['../classSGIteration.html#aa47645b3a728b2ca55ad2e7d17c5c488',1,'SGIteration::SGIteration()'],['../classSGIteration.html#a6c8811a084f0bfa216219b2bce504a45',1,'SGIteration::SGIteration(int _iteration, int _revolution, int _numExtremeTuples, const SGTuple &amp;_pivot, const SGAction &amp;_action, const SGPoint &amp;_direction, bool _nonBinding)']]],
+  ['sgpoint',['SGPoint',['../classSGPoint.html#aa8127de54b9fae207ca43a60414a3dd8',1,'SGPoint::SGPoint()'],['../classSGPoint.html#a3b415d48aa231cc30a49ba9aeca35665',1,'SGPoint::SGPoint(double x)'],['../classSGPoint.html#a02473a7c780510203156728286a9eefc',1,'SGPoint::SGPoint(vector&lt; double &gt; _xy)'],['../classSGPoint.html#a283f1dedd05d7f74c570625ff234892e',1,'SGPoint::SGPoint(double x, double y)']]],
+  ['sgsolution',['SGSolution',['../classSGSolution.html#a7f5f0bc77731b7e580f64cb3895caf23',1,'SGSolution::SGSolution()'],['../classSGSolution.html#abea915fbaf1424b6c6fa745e2d844d07',1,'SGSolution::SGSolution(const SGGame &amp;_game)']]],
+  ['sgsolver',['SGSolver',['../classSGSolver.html#afb38b33644c2768446f3a247f02dd643',1,'SGSolver']]],
+  ['sgtuple',['SGTuple',['../classSGTuple.html#a7159656a9fbec24b5b6c94dbfec1ffd1',1,'SGTuple::SGTuple(int numStates)'],['../classSGTuple.html#a37adecb17ef12a7c1a4cb14bb89ce59f',1,'SGTuple::SGTuple(int _numStates, const SGPoint &amp;point)'],['../classSGTuple.html#a1aacff0823f75661729104f8d232fcbf',1,'SGTuple::SGTuple()']]],
+  ['size',['size',['../classSGTuple.html#a84361904d7b69dd1a4097dc7eaa7b133',1,'SGTuple']]],
+  ['solve',['solve',['../classSGSolver.html#a220dd431eabdd9ff8419fafb28b7b990',1,'SGSolver']]],
+  ['strictlylessthan',['strictlyLessThan',['../classSGTuple.html#a13c10cd325cb7b2c6b7a5fc55ea0d353',1,'SGTuple']]]
+];

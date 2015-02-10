@@ -1,0 +1,169 @@
+\hypertarget{classSGPoint}{\section{S\-G\-Point Class Reference}
+\label{classSGPoint}\index{S\-G\-Point@{S\-G\-Point}}
+}
+
+
+A vector in $\mathbb{R}^2$.  
+
+
+
+
+{\ttfamily \#include $<$sgpoint.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSGPoint_aa8127de54b9fae207ca43a60414a3dd8}{\hyperlink{classSGPoint_aa8127de54b9fae207ca43a60414a3dd8}{S\-G\-Point} ()}\label{classSGPoint_aa8127de54b9fae207ca43a60414a3dd8}
+
+\begin{DoxyCompactList}\small\item\em Default constructor that sets vector equal to zero. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a3b415d48aa231cc30a49ba9aeca35665}{\hyperlink{classSGPoint_a3b415d48aa231cc30a49ba9aeca35665}{S\-G\-Point} (double x)}\label{classSGPoint_a3b415d48aa231cc30a49ba9aeca35665}
+
+\begin{DoxyCompactList}\small\item\em Sets both elements of the vector equal to x. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a02473a7c780510203156728286a9eefc}{\hyperlink{classSGPoint_a02473a7c780510203156728286a9eefc}{S\-G\-Point} (vector$<$ double $>$ \-\_\-xy)}\label{classSGPoint_a02473a7c780510203156728286a9eefc}
+
+\begin{DoxyCompactList}\small\item\em Creates an \hyperlink{classSGPoint}{S\-G\-Point} from the two-\/vector \-\_\-xy. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a283f1dedd05d7f74c570625ff234892e}{\hyperlink{classSGPoint_a283f1dedd05d7f74c570625ff234892e}{S\-G\-Point} (double x, double y)}\label{classSGPoint_a283f1dedd05d7f74c570625ff234892e}
+
+\begin{DoxyCompactList}\small\item\em Creates an \hyperlink{classSGPoint}{S\-G\-Point} with elements x and y. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a9afd46314dd53db086df54be5ebc0a56}{\hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGPoint_a9afd46314dd53db086df54be5ebc0a56}{get\-Normal} () const }\label{classSGPoint_a9afd46314dd53db086df54be5ebc0a56}
+
+\begin{DoxyCompactList}\small\item\em Returns the counter-\/clockwise normal vector. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a687f18f1e1eaa27ac14806d76c69b6c0}{double \hyperlink{classSGPoint_a687f18f1e1eaa27ac14806d76c69b6c0}{norm} () const }\label{classSGPoint_a687f18f1e1eaa27ac14806d76c69b6c0}
+
+\begin{DoxyCompactList}\small\item\em Returns the Euclidean norm. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_aa58461a5362b199cc0c6827f6e2c539c}{double \hyperlink{classSGPoint_aa58461a5362b199cc0c6827f6e2c539c}{angle} (const \hyperlink{classSGPoint}{S\-G\-Point} \&base) const }\label{classSGPoint_aa58461a5362b199cc0c6827f6e2c539c}
+
+\begin{DoxyCompactList}\small\item\em Returns the angle in radians relative to base. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a0eaedf1dcee422b6c31037e9fc5a42c0}{void \hyperlink{classSGPoint_a0eaedf1dcee422b6c31037e9fc5a42c0}{round\-Point} (double tol)}\label{classSGPoint_a0eaedf1dcee422b6c31037e9fc5a42c0}
+
+\begin{DoxyCompactList}\small\item\em Rounds off significant digits smaller than tol. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_aa1de2bc64f504756f62f3a27e15a07c7}{void \hyperlink{classSGPoint_aa1de2bc64f504756f62f3a27e15a07c7}{max} (const \hyperlink{classSGPoint}{S\-G\-Point} \&p)}\label{classSGPoint_aa1de2bc64f504756f62f3a27e15a07c7}
+
+\begin{DoxyCompactList}\small\item\em Takes the pointwise minimum with another \hyperlink{classSGPoint}{S\-G\-Point}. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a06309da77645ba91101f4dedd20bd888}{void \hyperlink{classSGPoint_a06309da77645ba91101f4dedd20bd888}{min} (const \hyperlink{classSGPoint}{S\-G\-Point} \&p)}\label{classSGPoint_a06309da77645ba91101f4dedd20bd888}
+
+\begin{DoxyCompactList}\small\item\em Takes the pointwise minimum with another \hyperlink{classSGPoint}{S\-G\-Point}. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a640f67ad5fa6d0b5814b7c9aecd259d3}{double \& \hyperlink{classSGPoint_a640f67ad5fa6d0b5814b7c9aecd259d3}{operator\mbox{[}$\,$\mbox{]}} (int player)}\label{classSGPoint_a640f67ad5fa6d0b5814b7c9aecd259d3}
+
+\begin{DoxyCompactList}\small\item\em Access operator. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a23c4b005c8bc8968a806ee0458f94f9a}{const double \& \hyperlink{classSGPoint_a23c4b005c8bc8968a806ee0458f94f9a}{operator\mbox{[}$\,$\mbox{]}} (int player) const }\label{classSGPoint_a23c4b005c8bc8968a806ee0458f94f9a}
+
+\begin{DoxyCompactList}\small\item\em Constant access operator. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_aedf45913c65b31cf7363f428cbe17087}{\hyperlink{classSGPoint}{S\-G\-Point} \& \hyperlink{classSGPoint_aedf45913c65b31cf7363f428cbe17087}{operator=} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs)}\label{classSGPoint_aedf45913c65b31cf7363f428cbe17087}
+
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a1766a2ef73345b9017c214c7eeed6b7e}{\hyperlink{classSGPoint}{S\-G\-Point} \& \hyperlink{classSGPoint_a1766a2ef73345b9017c214c7eeed6b7e}{operator=} (double d)}\label{classSGPoint_a1766a2ef73345b9017c214c7eeed6b7e}
+
+\begin{DoxyCompactList}\small\item\em Sets both coordinates equal to d. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a65eb9c1b564b55fadcae4e5a0b75c7a4}{\hyperlink{classSGPoint}{S\-G\-Point} \& \hyperlink{classSGPoint_a65eb9c1b564b55fadcae4e5a0b75c7a4}{operator+=} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs)}\label{classSGPoint_a65eb9c1b564b55fadcae4e5a0b75c7a4}
+
+\begin{DoxyCompactList}\small\item\em Augmented addition. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_aef6456278892c01cd4ef0881f10d2082}{\hyperlink{classSGPoint}{S\-G\-Point} \& \hyperlink{classSGPoint_aef6456278892c01cd4ef0881f10d2082}{operator-\/=} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs)}\label{classSGPoint_aef6456278892c01cd4ef0881f10d2082}
+
+\begin{DoxyCompactList}\small\item\em Augmented subtraction. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a2d16a99bae47723ddb8eb0257254bf9e}{\hyperlink{classSGPoint}{S\-G\-Point} \& \hyperlink{classSGPoint_a2d16a99bae47723ddb8eb0257254bf9e}{operator$\ast$=} (double d)}\label{classSGPoint_a2d16a99bae47723ddb8eb0257254bf9e}
+
+\begin{DoxyCompactList}\small\item\em Augmented scalar multiplication. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_acd23eead6f4b4240d532beaf1dfff30d}{\hyperlink{classSGPoint}{S\-G\-Point} \& \hyperlink{classSGPoint_acd23eead6f4b4240d532beaf1dfff30d}{operator/=} (double d)}\label{classSGPoint_acd23eead6f4b4240d532beaf1dfff30d}
+
+\begin{DoxyCompactList}\small\item\em Augmented scalar division. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_ac65eeaae1fde02ace32a892ad4aeb772}{const \hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGPoint_ac65eeaae1fde02ace32a892ad4aeb772}{operator+} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_ac65eeaae1fde02ace32a892ad4aeb772}
+
+\begin{DoxyCompactList}\small\item\em Vector addition. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a92c8c0ff9e9ec2946d9a42dbc4767940}{const \hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGPoint_a92c8c0ff9e9ec2946d9a42dbc4767940}{operator-\/} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_a92c8c0ff9e9ec2946d9a42dbc4767940}
+
+\begin{DoxyCompactList}\small\item\em Vector subtraction. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a4d2ced64673970ebfdf0bc55e1cfac9d}{double \hyperlink{classSGPoint_a4d2ced64673970ebfdf0bc55e1cfac9d}{operator$\ast$} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_a4d2ced64673970ebfdf0bc55e1cfac9d}
+
+\begin{DoxyCompactList}\small\item\em Dot product. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_ab3d2eb16f79a746cce7763a4bf0938d1}{bool \hyperlink{classSGPoint_ab3d2eb16f79a746cce7763a4bf0938d1}{operator==} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_ab3d2eb16f79a746cce7763a4bf0938d1}
+
+\begin{DoxyCompactList}\small\item\em Equality. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_ac548c65149f9d5e96bfed01e2a4acaa6}{bool \hyperlink{classSGPoint_ac548c65149f9d5e96bfed01e2a4acaa6}{operator!=} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_ac548c65149f9d5e96bfed01e2a4acaa6}
+
+\begin{DoxyCompactList}\small\item\em Not equls. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a217bb7b589615b96714b4ace0794368b}{bool \hyperlink{classSGPoint_a217bb7b589615b96714b4ace0794368b}{operator$>$=} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_a217bb7b589615b96714b4ace0794368b}
+
+\begin{DoxyCompactList}\small\item\em Greater than or equal. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_af25174b953cb6aa24ef0484d6b39329d}{bool \hyperlink{classSGPoint_af25174b953cb6aa24ef0484d6b39329d}{operator$>$} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_af25174b953cb6aa24ef0484d6b39329d}
+
+\begin{DoxyCompactList}\small\item\em Strictly greater. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a8ce2d72b4096a843f8f8537d84f06400}{bool \hyperlink{classSGPoint_a8ce2d72b4096a843f8f8537d84f06400}{operator$<$=} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_a8ce2d72b4096a843f8f8537d84f06400}
+
+\begin{DoxyCompactList}\small\item\em Less than or equal. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_af4baa20da0c4a8524967140e2eb44497}{bool \hyperlink{classSGPoint_af4baa20da0c4a8524967140e2eb44497}{operator$<$} (const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs) const }\label{classSGPoint_af4baa20da0c4a8524967140e2eb44497}
+
+\begin{DoxyCompactList}\small\item\em Strictly less. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a72c9a64d7ab038f5ca190cb5e433477f}{bool \hyperlink{classSGPoint_a72c9a64d7ab038f5ca190cb5e433477f}{operator$>$=} (double rhs) const }\label{classSGPoint_a72c9a64d7ab038f5ca190cb5e433477f}
+
+\begin{DoxyCompactList}\small\item\em Greater than or equal to a scalar. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a21fe5672c770edc189bb86fcdde5c66d}{bool \hyperlink{classSGPoint_a21fe5672c770edc189bb86fcdde5c66d}{operator$>$} (double rhs) const }\label{classSGPoint_a21fe5672c770edc189bb86fcdde5c66d}
+
+\begin{DoxyCompactList}\small\item\em Strictly greater than a scalar. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a384afaac3364f0700cbdd4ea57f3a266}{bool \hyperlink{classSGPoint_a384afaac3364f0700cbdd4ea57f3a266}{operator$<$=} (double rhs) const }\label{classSGPoint_a384afaac3364f0700cbdd4ea57f3a266}
+
+\begin{DoxyCompactList}\small\item\em Less than or equal to a scalar. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a47fbe85777b1e972ede0d239d163b07b}{bool \hyperlink{classSGPoint_a47fbe85777b1e972ede0d239d163b07b}{operator$<$} (double rhs) const }\label{classSGPoint_a47fbe85777b1e972ede0d239d163b07b}
+
+\begin{DoxyCompactList}\small\item\em Strictly less than a scalar. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a1fbc1552f839d84bbcac667c768e9726}{{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGPoint_a1fbc1552f839d84bbcac667c768e9726}{serialize} (Archive \&ar, const unsigned int version)}\label{classSGPoint_a1fbc1552f839d84bbcac667c768e9726}
+
+\begin{DoxyCompactList}\small\item\em Serialize an \hyperlink{classSGPoint}{S\-G\-Point}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSGPoint_a48385eb046cb530f7a7af6a147b6218c}{static double \hyperlink{classSGPoint_a48385eb046cb530f7a7af6a147b6218c}{distance} (const \hyperlink{classSGPoint}{S\-G\-Point} \&p0, const \hyperlink{classSGPoint}{S\-G\-Point} \&p1)}\label{classSGPoint_a48385eb046cb530f7a7af6a147b6218c}
+
+\begin{DoxyCompactList}\small\item\em Calculates distance between p0 and p1 in the sup-\/norm. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a0a613c9498f11a7d2d50c4f7f371dab9}{static double {\bfseries invert\-System} (\hyperlink{classSGPoint}{S\-G\-Point} \&x, const \hyperlink{classSGPoint}{S\-G\-Point} \&b, const \hyperlink{classSGPoint}{S\-G\-Point} \&a0, const \hyperlink{classSGPoint}{S\-G\-Point} \&a1)}\label{classSGPoint_a0a613c9498f11a7d2d50c4f7f371dab9}
+
+\item 
+\hypertarget{classSGPoint_a81992734a4de046226d60b3df576bbb6}{static double {\bfseries intersect\-Ray} (\hyperlink{classSGPoint}{S\-G\-Point} \&intersection, \hyperlink{classSGPoint}{S\-G\-Point} \&weights, const \hyperlink{classSGPoint}{S\-G\-Point} \&pivot, const \hyperlink{classSGPoint}{S\-G\-Point} \&direction, const \hyperlink{classSGPoint}{S\-G\-Point} \&t0, const \hyperlink{classSGPoint}{S\-G\-Point} \&t1)}\label{classSGPoint_a81992734a4de046226d60b3df576bbb6}
+
+\item 
+\hypertarget{classSGPoint_a24a3cc80a532ee6b5c85713b69153311}{static double {\bfseries signed\-Area} (const \hyperlink{classSGPoint}{S\-G\-Point} \&p0, const \hyperlink{classSGPoint}{S\-G\-Point} \&p1, const \hyperlink{classSGPoint}{S\-G\-Point} \&p2)}\label{classSGPoint_a24a3cc80a532ee6b5c85713b69153311}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ double $>$ \hyperlink{classSGPoint_a3ad7a78283a2797a567575a2a5c3200e}{xy}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSGPoint_ac98d07dd8f7b70e16ccb9a01abf56b9c}{class {\bfseries boost\-::serialization\-::access}}\label{classSGPoint_ac98d07dd8f7b70e16ccb9a01abf56b9c}
+
+\item 
+\hypertarget{classSGPoint_ad5f2d71f9c5e1cbf3ba9ed5ae3de7798}{class {\bfseries S\-G\-Tuple}}\label{classSGPoint_ad5f2d71f9c5e1cbf3ba9ed5ae3de7798}
+
+\item 
+\hypertarget{classSGPoint_a3c878d936b6e5255b1b1b8aedc61e86b}{\hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGPoint_a3c878d936b6e5255b1b1b8aedc61e86b}{operator$\ast$} (double d, const \hyperlink{classSGPoint}{S\-G\-Point} \&point)}\label{classSGPoint_a3c878d936b6e5255b1b1b8aedc61e86b}
+
+\begin{DoxyCompactList}\small\item\em Left-\/scalar multiplication. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a6744606b8f8713122dd7a1cf322f9af1}{\hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGPoint_a6744606b8f8713122dd7a1cf322f9af1}{operator$\ast$} (const \hyperlink{classSGPoint}{S\-G\-Point} \&point, double d)}\label{classSGPoint_a6744606b8f8713122dd7a1cf322f9af1}
+
+\begin{DoxyCompactList}\small\item\em Right-\/scalar multiplication. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_ad112619c55afac0b026c236a9901e001}{\hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGPoint_ad112619c55afac0b026c236a9901e001}{operator/} (const \hyperlink{classSGPoint}{S\-G\-Point} \&point, double d)}\label{classSGPoint_ad112619c55afac0b026c236a9901e001}
+
+\begin{DoxyCompactList}\small\item\em Right scalar division. \end{DoxyCompactList}\item 
+\hypertarget{classSGPoint_a574625ffb8acdf3d4fbd94e9c8bac123}{ostream \& \hyperlink{classSGPoint_a574625ffb8acdf3d4fbd94e9c8bac123}{operator$<$$<$} (ostream \&out, const \hyperlink{classSGPoint}{S\-G\-Point} \&rhs)}\label{classSGPoint_a574625ffb8acdf3d4fbd94e9c8bac123}
+
+\begin{DoxyCompactList}\small\item\em Output \hyperlink{classSGPoint}{S\-G\-Point} to ostream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A vector in $\mathbb{R}^2$. 
+
+A simple two-\/dimensional vector that supports arithmetic operations. 
+
+\subsection{Member Data Documentation}
+\hypertarget{classSGPoint_a3ad7a78283a2797a567575a2a5c3200e}{\index{S\-G\-Point@{S\-G\-Point}!xy@{xy}}
+\index{xy@{xy}!SGPoint@{S\-G\-Point}}
+\subsubsection[{xy}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$double$>$ S\-G\-Point\-::xy\hspace{0.3cm}{\ttfamily [protected]}}}\label{classSGPoint_a3ad7a78283a2797a567575a2a5c3200e}
+Two dimensional vector of doubles. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgpoint.\-hpp\item 
+src/cpp/sgpoint.\-cpp\end{DoxyCompactItemize}

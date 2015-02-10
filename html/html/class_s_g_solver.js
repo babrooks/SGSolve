@@ -1,0 +1,57 @@
+var class_s_g_solver =
+[
+    [ "BOOL_PARAM", "class_s_g_solver.html#a8de18768065063c3641acbb1b3fcd844", [
+      [ "BACKBENDINGWARNING", "class_s_g_solver.html#a8de18768065063c3641acbb1b3fcd844a3dd1bfe7d9d0268d8d9807c8580745f3", null ],
+      [ "MERGETUPLES", "class_s_g_solver.html#a8de18768065063c3641acbb1b3fcd844aafed85a93502e88e9d0edb743e859c75", null ],
+      [ "STOREITERATIONS", "class_s_g_solver.html#a8de18768065063c3641acbb1b3fcd844a447d2987020b6414a437e635cc056f76", null ]
+    ] ],
+    [ "DBL_PARAM", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791", [
+      [ "ERRORTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791aa95cd65c0e0c61f23336299c31c21e23", null ],
+      [ "DIRECTIONTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791afb966ddafded880b3a150ffbf665c0b9", null ],
+      [ "PASTTHREATTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a0bf9e7be2aa199b09eb7fcfb5a604e84", null ],
+      [ "UPDATEPIVOTTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a26c3df797839d75535ea3525159c9687", null ],
+      [ "ICTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791acfc1ac35dad7908dd182b395c0256a17", null ],
+      [ "NORMTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a7df7080f029ef0b59493dee9b020c8b8", null ],
+      [ "FLATTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a0469d84b8d9a560cfdb25b6c43229815", null ],
+      [ "LEVELTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791ace6ad6763f68822c5809a3a4247b9b42", null ],
+      [ "IMPROVETOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a0c8efa0b4f9ba181f9daab92b678f19f", null ],
+      [ "ROUNDTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791ac2ba4831d6d6282dfab90aa3fdd5a825", null ],
+      [ "BACKBENDINGTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a46e8819cb9376cc65094dffdebbe1b86", null ],
+      [ "MOVEMENTTOL", "class_s_g_solver.html#a8c5a3d3ffb0b8344e24da63ea0b3e791a1be0b2f10efa1591ab0c08b53b23df72", null ]
+    ] ],
+    [ "INT_PARAM", "class_s_g_solver.html#a75381212963ce8fdcedd23bcff09d1fb", [
+      [ "MAXITERATIONS", "class_s_g_solver.html#a75381212963ce8fdcedd23bcff09d1fba36675905026ea36c017401b6cfb154a5", null ],
+      [ "MAXUPDATEPIVOTPASSES", "class_s_g_solver.html#a75381212963ce8fdcedd23bcff09d1fbab504488bb8ba8787ddac497136fb4035", null ],
+      [ "TUPLERESERVESIZE", "class_s_g_solver.html#a75381212963ce8fdcedd23bcff09d1fbab2ddd945c81d3890926ae3d46f5cf8a7", null ]
+    ] ],
+    [ "SGSolver", "class_s_g_solver.html#ac768d9149f5f3859be36ea21a50a888f", null ],
+    [ "SGSolver", "class_s_g_solver.html#a12e82babf870b31f39857deabb8459c5", null ],
+    [ "~SGSolver", "class_s_g_solver.html#ae1d3f7acdcc65956a1539ed09c44e49c", null ],
+    [ "getData", "class_s_g_solver.html#a375acb6cfcad64671b633c5bdb780659", null ],
+    [ "restoreDefaults", "class_s_g_solver.html#a4c4e7b2829453e53591d1bcf6e493431", null ],
+    [ "setParam", "class_s_g_solver.html#a7810a9f3d48d3eb7220154274dd39053", null ],
+    [ "setParam", "class_s_g_solver.html#a5d1032f0224f8f531c26a9fade9f11b3", null ],
+    [ "setParam", "class_s_g_solver.html#adf7a7cbe92bb6f7d06575b802a7aaa43", null ],
+    [ "solve", "class_s_g_solver.html#a220dd431eabdd9ff8419fafb28b7b990", null ],
+    [ "SGApproximation", "class_s_g_solver.html#adaa41c100279e40c34d42b18d0c2ed21", null ],
+    [ "backBendingTol", "class_s_g_solver.html#a58acc9239deaff33ccfa2f3956466f37", null ],
+    [ "backBendingWarning", "class_s_g_solver.html#a55e60a2b64baf525b826a4cff816f653", null ],
+    [ "data", "class_s_g_solver.html#a83e1c54773913a937f44d55772f2e69f", null ],
+    [ "directionTol", "class_s_g_solver.html#a2bd9962c5c18abb454ca1650465abefb", null ],
+    [ "errorTol", "class_s_g_solver.html#a99002245a75f22ec160c47423001ab8a", null ],
+    [ "flatTol", "class_s_g_solver.html#ae0fa0fb7546a55acbf743d2ab078f2fe", null ],
+    [ "game", "class_s_g_solver.html#ad9b23110fabeeb58f19729017d56c792", null ],
+    [ "ICTol", "class_s_g_solver.html#a127cdfd93f11f83ae3a08342a0dc8ca3", null ],
+    [ "improveTol", "class_s_g_solver.html#ae71928b4061d7b054f7051c91fd16a14", null ],
+    [ "levelTol", "class_s_g_solver.html#a7e4e10386d8b8256f9fed6b6d2fa75de", null ],
+    [ "maxIterations", "class_s_g_solver.html#a8946fb030f52af5bf77a2f519efee20e", null ],
+    [ "maxUpdatePivotPasses", "class_s_g_solver.html#abbdae6d120999a7602967e33d7a5b50e", null ],
+    [ "mergeTuples", "class_s_g_solver.html#af25dda99eb759d1fcb58cd0d98f9a4c2", null ],
+    [ "movementTol", "class_s_g_solver.html#afff01bc0ddca3d42a50bd13f99d6553d", null ],
+    [ "normTol", "class_s_g_solver.html#a85a9df04ac9b440de3c8ce500b31e5e4", null ],
+    [ "pastThreatTol", "class_s_g_solver.html#ad28b55baedb592f299009f606a19237a", null ],
+    [ "roundTol", "class_s_g_solver.html#aa87ee9134ca87c67038cadb61d4cc8d0", null ],
+    [ "storeIterations", "class_s_g_solver.html#aedfe0d946d73a4e4af52c5b28624b944", null ],
+    [ "tupleReserveSize", "class_s_g_solver.html#a0e68d667b3865d738cdd969cba67d942", null ],
+    [ "updatePivotTol", "class_s_g_solver.html#a04879f5038b676bd1a947966750532ad", null ]
+];

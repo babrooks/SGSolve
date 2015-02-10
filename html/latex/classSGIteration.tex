@@ -1,0 +1,106 @@
+\hypertarget{classSGIteration}{\section{S\-G\-Iteration Class Reference}
+\label{classSGIteration}\index{S\-G\-Iteration@{S\-G\-Iteration}}
+}
+
+
+Stores data on the behavior of \hyperlink{classSGApprox_ac32645eb1ff336044f7ee5d523c610ce}{S\-G\-Approx\-::generate()}  
+
+
+
+
+{\ttfamily \#include $<$sgiteration.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSGIteration_aa47645b3a728b2ca55ad2e7d17c5c488}{\hyperlink{classSGIteration_aa47645b3a728b2ca55ad2e7d17c5c488}{S\-G\-Iteration} ()}\label{classSGIteration_aa47645b3a728b2ca55ad2e7d17c5c488}
+
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGIteration_a6c8811a084f0bfa216219b2bce504a45}{S\-G\-Iteration} (int \-\_\-iteration, int \-\_\-revolution, int \-\_\-num\-Extreme\-Tuples, const \hyperlink{classSGTuple}{S\-G\-Tuple} \&\-\_\-pivot, const \hyperlink{classSGAction}{S\-G\-Action} \&\-\_\-action, const \hyperlink{classSGPoint}{S\-G\-Point} \&\-\_\-direction, bool \-\_\-non\-Binding)
+\item 
+\hypertarget{classSGIteration_a19860e6d2af702df4ce47e36d4d43ec5}{{\footnotesize template$<$class Archive $>$ }\\void {\bfseries serialize} (Archive \&ar, const unsigned int version)}\label{classSGIteration_a19860e6d2af702df4ce47e36d4d43ec5}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classSGIteration_a44a4f9e3cb074181292ae816b2c28d9e}{iteration}
+\item 
+int \hyperlink{classSGIteration_a21cc5c4fc7c40ff444ac7e3743c13940}{revolution}
+\item 
+int \hyperlink{classSGIteration_a14ecfb94b3111911d9b0ef545f72e88d}{num\-Extreme\-Tuples}
+\item 
+\hyperlink{classSGTuple}{S\-G\-Tuple} \hyperlink{classSGIteration_abdae7d336968af3515e7d9590cbcc46d}{pivot}
+\item 
+int \hyperlink{classSGIteration_a554a41e3b428d0d05a1aec04b612cf3f}{action}
+\item 
+int \hyperlink{classSGIteration_a8f4cd9aa3ead30b86b081558f5a13147}{state}
+\item 
+bool \hyperlink{classSGIteration_a7520e6ea4903e8b32884294a3c65b331}{non\-Binding}
+\item 
+\hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGIteration_ac35e7e3049cd60c695a366cb8f75db37}{direction}
+\item 
+\hyperlink{classSGPoint}{S\-G\-Point} \hyperlink{classSGIteration_aa0deb29f2225a51bafa3dacc730fdb64}{min\-I\-C}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSGIteration_ac98d07dd8f7b70e16ccb9a01abf56b9c}{class \hyperlink{classSGIteration_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\-::serialization\-::access}}\label{classSGIteration_ac98d07dd8f7b70e16ccb9a01abf56b9c}
+
+\begin{DoxyCompactList}\small\item\em Serializes the \hyperlink{classSGIteration}{S\-G\-Iteration} object using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Stores data on the behavior of \hyperlink{classSGApprox_ac32645eb1ff336044f7ee5d523c610ce}{S\-G\-Approx\-::generate()} 
+
+This class records information on each cut made by the twist algorithm. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSGIteration_a6c8811a084f0bfa216219b2bce504a45}{\index{S\-G\-Iteration@{S\-G\-Iteration}!S\-G\-Iteration@{S\-G\-Iteration}}
+\index{S\-G\-Iteration@{S\-G\-Iteration}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{S\-G\-Iteration}]{\setlength{\rightskip}{0pt plus 5cm}S\-G\-Iteration\-::\-S\-G\-Iteration (
+\begin{DoxyParamCaption}
+\item[{int}]{\-\_\-iteration, }
+\item[{int}]{\-\_\-revolution, }
+\item[{int}]{\-\_\-num\-Extreme\-Tuples, }
+\item[{const {\bf S\-G\-Tuple} \&}]{\-\_\-pivot, }
+\item[{const {\bf S\-G\-Action} \&}]{\-\_\-action, }
+\item[{const {\bf S\-G\-Point} \&}]{\-\_\-direction, }
+\item[{bool}]{\-\_\-non\-Binding}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSGIteration_a6c8811a084f0bfa216219b2bce504a45}
+Initializes a new \hyperlink{classSGIteration}{S\-G\-Iteration} object with data on the current iteration 
+
+\subsection{Member Data Documentation}
+\hypertarget{classSGIteration_a554a41e3b428d0d05a1aec04b612cf3f}{\index{S\-G\-Iteration@{S\-G\-Iteration}!action@{action}}
+\index{action@{action}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{action}]{\setlength{\rightskip}{0pt plus 5cm}int S\-G\-Iteration\-::action}}\label{classSGIteration_a554a41e3b428d0d05a1aec04b612cf3f}
+The action profile that generates the shallowest admissible direction at the current iteration. \hypertarget{classSGIteration_ac35e7e3049cd60c695a366cb8f75db37}{\index{S\-G\-Iteration@{S\-G\-Iteration}!direction@{direction}}
+\index{direction@{direction}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{direction}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\-G\-Point} S\-G\-Iteration\-::direction}}\label{classSGIteration_ac35e7e3049cd60c695a366cb8f75db37}
+The shallowest admissible direction at the current revolution. \hypertarget{classSGIteration_a44a4f9e3cb074181292ae816b2c28d9e}{\index{S\-G\-Iteration@{S\-G\-Iteration}!iteration@{iteration}}
+\index{iteration@{iteration}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{iteration}]{\setlength{\rightskip}{0pt plus 5cm}int S\-G\-Iteration\-::iteration}}\label{classSGIteration_a44a4f9e3cb074181292ae816b2c28d9e}
+The value of \hyperlink{classSGApprox_a7ab53424f5933726a15001ff2885a4a9}{S\-G\-Approx\-::num\-Iterations}. \hypertarget{classSGIteration_aa0deb29f2225a51bafa3dacc730fdb64}{\index{S\-G\-Iteration@{S\-G\-Iteration}!min\-I\-C@{min\-I\-C}}
+\index{min\-I\-C@{min\-I\-C}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{min\-I\-C}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\-G\-Point} S\-G\-Iteration\-::min\-I\-C}}\label{classSGIteration_aa0deb29f2225a51bafa3dacc730fdb64}
+Minimum incentive compatible continuation value on this iteration. \hypertarget{classSGIteration_a7520e6ea4903e8b32884294a3c65b331}{\index{S\-G\-Iteration@{S\-G\-Iteration}!non\-Binding@{non\-Binding}}
+\index{non\-Binding@{non\-Binding}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{non\-Binding}]{\setlength{\rightskip}{0pt plus 5cm}bool S\-G\-Iteration\-::non\-Binding}}\label{classSGIteration_a7520e6ea4903e8b32884294a3c65b331}
+True if the shallowest admissible direction is generated without a binding constraint. \hypertarget{classSGIteration_a14ecfb94b3111911d9b0ef545f72e88d}{\index{S\-G\-Iteration@{S\-G\-Iteration}!num\-Extreme\-Tuples@{num\-Extreme\-Tuples}}
+\index{num\-Extreme\-Tuples@{num\-Extreme\-Tuples}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{num\-Extreme\-Tuples}]{\setlength{\rightskip}{0pt plus 5cm}int S\-G\-Iteration\-::num\-Extreme\-Tuples}}\label{classSGIteration_a14ecfb94b3111911d9b0ef545f72e88d}
+The size of \hyperlink{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}{S\-G\-Approx\-::extreme\-Tuples}. \hypertarget{classSGIteration_abdae7d336968af3515e7d9590cbcc46d}{\index{S\-G\-Iteration@{S\-G\-Iteration}!pivot@{pivot}}
+\index{pivot@{pivot}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{pivot}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\-G\-Tuple} S\-G\-Iteration\-::pivot}}\label{classSGIteration_abdae7d336968af3515e7d9590cbcc46d}
+The current value of \hyperlink{classSGApprox_a037c73ff2b6ff8a55fadf57bb0a6a546}{S\-G\-Approx\-::pivot}. \hypertarget{classSGIteration_a21cc5c4fc7c40ff444ac7e3743c13940}{\index{S\-G\-Iteration@{S\-G\-Iteration}!revolution@{revolution}}
+\index{revolution@{revolution}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{revolution}]{\setlength{\rightskip}{0pt plus 5cm}int S\-G\-Iteration\-::revolution}}\label{classSGIteration_a21cc5c4fc7c40ff444ac7e3743c13940}
+The value of \hyperlink{classSGApprox_a2bd0cab80a3f8d799fdc2841b65dd2c2}{S\-G\-Approx\-::num\-Revolutions}. \hypertarget{classSGIteration_a8f4cd9aa3ead30b86b081558f5a13147}{\index{S\-G\-Iteration@{S\-G\-Iteration}!state@{state}}
+\index{state@{state}!SGIteration@{S\-G\-Iteration}}
+\subsubsection[{state}]{\setlength{\rightskip}{0pt plus 5cm}int S\-G\-Iteration\-::state}}\label{classSGIteration_a8f4cd9aa3ead30b86b081558f5a13147}
+The state in which the shallowest admissible direction is generated at the current iteration. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgiteration.\-hpp\end{DoxyCompactItemize}

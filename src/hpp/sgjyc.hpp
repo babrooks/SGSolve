@@ -1,0 +1,2 @@
+#ifndef SGJYCSOLVER_HPP
+#define SGJYCSOLVER_HPP

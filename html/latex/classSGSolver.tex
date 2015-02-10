@@ -1,0 +1,94 @@
+\hypertarget{classSGSolver}{\section{S\-G\-Solver Class Reference}
+\label{classSGSolver}\index{S\-G\-Solver@{S\-G\-Solver}}
+}
+
+
+Class for solving stochastic games.  
+
+
+
+
+{\ttfamily \#include $<$sgsolver.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGSolver_afb38b33644c2768446f3a247f02dd643}{S\-G\-Solver} (const \hyperlink{classSGEnv}{S\-G\-Env} \&\-\_\-env, const \hyperlink{classSGGame}{S\-G\-Game} \&\-\_\-game)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}{solve} ()
+\begin{DoxyCompactList}\small\item\em Solve routine. \end{DoxyCompactList}\item 
+const \hyperlink{classSGSolution}{S\-G\-Solution} \& \hyperlink{classSGSolver_a6e2e81f9a309bfb2523b98677de99868}{get\-Solution} () const 
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classSGSolver_a7a4fded3697541a40dbbab06f733e648}{const \hyperlink{classSGEnv}{S\-G\-Env} \& {\bfseries env}}\label{classSGSolver_a7a4fded3697541a40dbbab06f733e648}
+
+\item 
+\hypertarget{classSGSolver_ad9b23110fabeeb58f19729017d56c792}{const \hyperlink{classSGGame}{S\-G\-Game} \& {\bfseries game}}\label{classSGSolver_ad9b23110fabeeb58f19729017d56c792}
+
+\item 
+\hyperlink{classSGSolution}{S\-G\-Solution} \hyperlink{classSGSolver_ac2b29f9d4f8a5fde16e07c68c349367c}{soln}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for solving stochastic games. 
+
+This class contains parameters for the algorithm, the solve method, as well as the data structure produced by solve. It calculates the equilibrium payoff correspondence corresponding to an \hyperlink{classSGGame}{S\-G\-Game} object. \begin{Desc}
+\item[Examples\-: ]\par
+\hyperlink{abreusannikov_8cpp-example}{abreusannikov.\-cpp}, \hyperlink{as_twostate_8cpp-example}{as\-\_\-twostate.\-cpp}, and \hyperlink{kocherlakota_8cpp-example}{kocherlakota.\-cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSGSolver_afb38b33644c2768446f3a247f02dd643}{\index{S\-G\-Solver@{S\-G\-Solver}!S\-G\-Solver@{S\-G\-Solver}}
+\index{S\-G\-Solver@{S\-G\-Solver}!SGSolver@{S\-G\-Solver}}
+\subsubsection[{S\-G\-Solver}]{\setlength{\rightskip}{0pt plus 5cm}S\-G\-Solver\-::\-S\-G\-Solver (
+\begin{DoxyParamCaption}
+\item[{const {\bf S\-G\-Env} \&}]{\-\_\-env, }
+\item[{const {\bf S\-G\-Game} \&}]{\-\_\-game}
+\end{DoxyParamCaption}
+)}}\label{classSGSolver_afb38b33644c2768446f3a247f02dd643}
+
+
+Constructor. 
+
+Creates a new \hyperlink{classSGSolver}{S\-G\-Solver} object and initializes it with the given game. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classSGSolver_a6e2e81f9a309bfb2523b98677de99868}{\index{S\-G\-Solver@{S\-G\-Solver}!get\-Solution@{get\-Solution}}
+\index{get\-Solution@{get\-Solution}!SGSolver@{S\-G\-Solver}}
+\subsubsection[{get\-Solution}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf S\-G\-Solution}\& S\-G\-Solver\-::get\-Solution (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSGSolver_a6e2e81f9a309bfb2523b98677de99868}
+Returns a constant reference to the \hyperlink{classSGSolution}{S\-G\-Solution} object storing the output of the computation. \begin{Desc}
+\item[Examples\-: ]\par
+\hyperlink{abreusannikov_8cpp-example}{abreusannikov.\-cpp}, and \hyperlink{as_twostate_8cpp-example}{as\-\_\-twostate.\-cpp}.\end{Desc}
+\hypertarget{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}{\index{S\-G\-Solver@{S\-G\-Solver}!solve@{solve}}
+\index{solve@{solve}!SGSolver@{S\-G\-Solver}}
+\subsubsection[{solve}]{\setlength{\rightskip}{0pt plus 5cm}void S\-G\-Solver\-::solve (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}
+
+
+Solve routine. 
+
+Initializes a new S\-G\-Approximation object and iteratively generates it until one of the stopping criteria have been met. Stores progress in the data member. \begin{Desc}
+\item[Examples\-: ]\par
+\hyperlink{abreusannikov_8cpp-example}{abreusannikov.\-cpp}, \hyperlink{as_twostate_8cpp-example}{as\-\_\-twostate.\-cpp}, and \hyperlink{kocherlakota_8cpp-example}{kocherlakota.\-cpp}.\end{Desc}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classSGSolver_ac2b29f9d4f8a5fde16e07c68c349367c}{\index{S\-G\-Solver@{S\-G\-Solver}!soln@{soln}}
+\index{soln@{soln}!SGSolver@{S\-G\-Solver}}
+\subsubsection[{soln}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\-G\-Solution} S\-G\-Solver\-::soln\hspace{0.3cm}{\ttfamily [private]}}}\label{classSGSolver_ac2b29f9d4f8a5fde16e07c68c349367c}
+Constant reference to the game to be solved. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsolver.\-hpp\item 
+src/cpp/sgsolver.\-cpp\end{DoxyCompactItemize}

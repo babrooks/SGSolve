@@ -1,0 +1,93 @@
+\hypertarget{as_twostate_8cpp-example}{\section{as\-\_\-twostate.\-cpp}
+}
+
+\begin{DoxyCodeInclude}
+\textcolor{comment}{// Example from Abreu-Sannikov. Game with only one state.}
+\textcolor{preprocessor}{#include "sg.hpp"}
+
+
+\textcolor{keywordtype}{int} main ()
+\{
+  \textcolor{keywordtype}{double} delta = 0.7;
+  
+  \textcolor{keywordtype}{int} action, state, player;
+  \textcolor{keywordtype}{int} numPlayers = 2;
+  vector<int> actions(2,0), endowments(2,0);
+
+  \textcolor{keywordtype}{int} numStates = 2;
+
+  vector<bool> unconstrained(2,\textcolor{keyword}{false});
+
+  vector< vector< int > > numActions(numStates,vector<int>(numPlayers,3));
+  vector<int> numActions\_total(numStates,9);
+
+  \textcolor{comment}{// Payoffs}
+  vector< vector< vector<double> > > 
+    payoffs(numStates,vector< vector<double> >(9,vector<double>(numPlayers,0.0)));
+  payoffs[0][0][0] = 16;
+  payoffs[0][1][0] = 21;
+  payoffs[0][2][0] = 9;
+  payoffs[0][3][0] = 3;
+  payoffs[0][4][0] = 10;
+  payoffs[0][5][0] = 5;
+  payoffs[0][6][0] = 1;
+  payoffs[0][7][0] = -1;
+  payoffs[0][8][0] = -5;
+  payoffs[0][0][1] = 9;
+  payoffs[0][1][1] = 1;
+  payoffs[0][2][1] = 0;
+  payoffs[0][3][1] = 13;
+  payoffs[0][4][1] = 4;
+  payoffs[0][5][1] = -4;
+  payoffs[0][6][1] = 3;
+  payoffs[0][7][1] = 0;
+  payoffs[0][8][1] = -10;
+
+  \textcolor{keywordflow}{for} (action=0; action<9; action++)
+    \{
+      payoffs[1][action][0] = payoffs[0][action][0]-5;
+      payoffs[0][action][0] += 5;
+      payoffs[1][action][1] = payoffs[0][action][1]+5;
+      payoffs[0][action][1] -= 5;
+    \} \textcolor{comment}{// for action}
+
+  \textcolor{comment}{// Transition probabilities}
+  vector< vector< vector<double> > >
+    probabilities(numStates,vector< vector<double> >(9,vector<double>(numStates,0.0)));
+  \textcolor{keywordtype}{double} persistence = 0.3;
+  \textcolor{keywordflow}{for} (state=0; state<numStates; state++)
+    \{
+      \textcolor{keywordflow}{for} (action=0; action<9; action++)
+    \{
+      probabilities[state][action][state] = persistence;
+      probabilities[state][action][1-state] = 1-persistence;
+    \} \textcolor{comment}{// for action}
+    \} \textcolor{comment}{// for state}
+
+  cout << \textcolor{stringliteral}{"Constructing game object"} << endl;
+  \hyperlink{classSGGame}{SGGame} game(delta,
+          numStates,
+          numActions,
+          payoffs,
+          probabilities,
+          unconstrained);
+
+  \hyperlink{classSGEnv}{SGEnv} env;
+  
+  cout << \textcolor{stringliteral}{"Building solver"} << endl;
+  \hyperlink{classSGSolver}{SGSolver} solver(env,game);
+
+  cout << \textcolor{stringliteral}{"Starting solve routine"} << endl;
+  solver.\hyperlink{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}{solve}();
+  
+  cout << \textcolor{stringliteral}{"Saving data... "};
+  \hyperlink{classSGSolution_a9b68d89b32ad1f70a69912bbe414f73b}{SGSolution::save}(solver.\hyperlink{classSGSolver_a6e2e81f9a309bfb2523b98677de99868}{getSolution}(),\textcolor{stringliteral}{"sgtest.sln"});
+  cout << \textcolor{stringliteral}{"Done!"} << endl;
+
+  \hyperlink{classSGGame_aaccf18a3663ec99360e5b6e64f2bf6e2}{SGGame::save}(game,\textcolor{stringliteral}{"as\_twostate.sgm"});
+
+
+  \textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCodeInclude}
+ 
