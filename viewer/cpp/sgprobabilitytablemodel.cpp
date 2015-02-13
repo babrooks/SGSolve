@@ -8,39 +8,16 @@ QVariant SGProbabilityTableModel::data(const QModelIndex & index,
     return QSize(1,1);
   else if (role == Qt::DisplayRole)
     {
+      int action = (index.column() * game->getNumActions()[state][0]
+		    + index.row() );
+      
       return QVariant(QString::number(game->getProbabilities()
-				      [state][index.row()][index.column()]));
+				      [state][action][nextState]));
     }
   else
     return QVariant();
 } // data
     
-QVariant SGProbabilityTableModel::headerData(int section,
-					Qt::Orientation orientation,
-					int role) const Q_DECL_OVERRIDE
-{
-  if (role == Qt::DisplayRole)
-    {
-      switch (orientation)
-	{
-	case Qt::Horizontal:
-	  return QVariant(QString("S")
-			  +QString::number(section));
-
-	case Qt::Vertical:
-	  return QVariant(QString("(R")
-			  +QString::number(section
-					   %game->getNumActions()[state][0])
-			  +QString(",C")
-			  +QString::number(section
-					   /game->getNumActions()[state][0])
-			  +QString(")"));
-	}
-    }
-  else
-    return QVariant();
-} // headerData
-
 bool SGProbabilityTableModel::setData(const QModelIndex & index,
 				      const QVariant & value, int role)
 {
@@ -49,8 +26,11 @@ bool SGProbabilityTableModel::setData(const QModelIndex & index,
       QRegExp rx("[, ]");
       QStringList list = value.toString().split(rx,QString::SkipEmptyParts);
 
+      int action = (index.column() * game->getNumActions()[state][0]
+		    + index.row() );
+      
       if (list.size())
-	game->setProbability(state,index.row(),index.column(),
+	game->setProbability(state,action,nextState,
 			     list.at(0).toDouble());
       
       emit dataChanged(index,index);

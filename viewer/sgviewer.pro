@@ -5,6 +5,7 @@ QT += widgets printsupport
 CONFIG += release
 CONFIG += -std=gnu++11
 CONFIG += WARN_OFF
+CONFIG += debug
 
 INCLUDEPATH += ./hpp/
 INCLUDEPATH += /usr/local/include
@@ -13,7 +14,12 @@ INCLUDEPATH += /usr/local/lib/
 HEADERS = sgmainwindow.hpp \
 qcustomplot.h \
 sggamehandler.hpp \
+sgtablemodel.hpp \
+sgprobabilitytablemodel.hpp \
+sgpayofftablemodel.hpp \
 sgsolutionhandler.hpp \
+sgsolverworker.hpp \
+sgcustomplot.hpp \
 Q_DebugStream.h
 
 VPATH += ./cpp ./hpp
@@ -21,7 +27,10 @@ SOURCEPATH += ./cpp
 SOURCES = main.cpp\
 sgmainwindow.cpp \
 qcustomplot.cpp \
+sgcustomplot.cpp \
 sggamehandler.cpp \
+sgprobabilitytablemodel.cpp \
+sgpayofftablemodel.cpp \
 sgsolutionhandler.cpp
 
 LIBS += -L../lib/ -L/usr/local/lib/ 

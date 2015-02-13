@@ -1,124 +1,6 @@
 #include <QtWidgets>
 #include "sggamehandler.hpp"
 
-QVariant SGPayoffTableModel::data(const QModelIndex & index,
-				  int role) const Q_DECL_OVERRIDE
-{
-  if (role == Qt::SizeHintRole)
-    return QSize(1,1);
-  else if (role == Qt::DisplayRole)
-    {
-
-      int action = (index.column() * game->getNumActions()[state][0]
-		    + index.row() );
-      
-      return QVariant(QString::number(game->getPayoffs()[state][action][0])
-		      +QString(", ")
-		      +QString::number(game->getPayoffs()[state][action][1]));
-    }
-  else
-    return QVariant();
-} // data
-    
-QVariant SGPayoffTableModel::headerData(int section,
-					Qt::Orientation orientation,
-					int role) const Q_DECL_OVERRIDE
-{
-  if (role == Qt::DisplayRole)
-    {
-      switch (orientation)
-	{
-	case Qt::Horizontal:
-	  return QVariant(QString("C")
-			  +QString::number(section));
-
-	case Qt::Vertical:
-	  return QVariant(QString("R")
-			  +QString::number(section));
-	}
-    }
-  else
-    return QVariant();
-} // headerData
-
-bool SGPayoffTableModel::setData(const QModelIndex & index,
-				 const QVariant & value,
-				 int role)
-{
-  if (role == Qt::EditRole)
-    {
-      int action = index.row()+index.column()*game->getNumActions()[state][0];
-
-      QRegExp rx("[, ]");
-      QStringList list = value.toString().split(rx,QString::SkipEmptyParts);
-
-      for (int player = 0; player < std::min(list.size(),2); player++)
-	game->setPayoff(state,action,player,list.at(player).toDouble());
-
-      emit dataChanged(index,index);
-      return true;
-    }
-  return false;
-} // setData
-
-QVariant SGProbabilityTableModel::data(const QModelIndex & index,
-				  int role) const Q_DECL_OVERRIDE
-{
-  if (role == Qt::SizeHintRole)
-    return QSize(1,1);
-  else if (role == Qt::DisplayRole)
-    {
-      return QVariant(QString::number(game->getProbabilities()
-				      [state][index.row()][index.column()]));
-    }
-  else
-    return QVariant();
-} // data
-    
-QVariant SGProbabilityTableModel::headerData(int section,
-					Qt::Orientation orientation,
-					int role) const Q_DECL_OVERRIDE
-{
-  if (role == Qt::DisplayRole)
-    {
-      switch (orientation)
-	{
-	case Qt::Horizontal:
-	  return QVariant(QString("S")
-			  +QString::number(section));
-
-	case Qt::Vertical:
-	  return QVariant(QString("(R")
-			  +QString::number(section
-					   %game->getNumActions()[state][0])
-			  +QString(",C")
-			  +QString::number(section
-					   /game->getNumActions()[state][0])
-			  +QString(")"));
-	}
-    }
-  else
-    return QVariant();
-} // headerData
-
-bool SGProbabilityTableModel::setData(const QModelIndex & index,
-				      const QVariant & value, int role)
-{
-  if (role == Qt::EditRole)
-    {
-      QRegExp rx("[, ]");
-      QStringList list = value.toString().split(rx,QString::SkipEmptyParts);
-
-      if (list.size())
-	game->setProbability(state,index.row(),index.column(),
-			     list.at(0).toDouble());
-      
-      emit dataChanged(index,index);
-      return true;
-    }
-  return false;
-} // setData
-
 SGGameHandler::SGGameHandler()
 {
   deltaEdit = new QLineEdit("0.9");
@@ -184,9 +66,15 @@ SGGameHandler::SGGameHandler()
 			      QSizePolicy::Preferred);
 
   payoffTableView = new QTableView();
-  probabilityTableView = new QTableView();
   payoffTableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
-  probabilityTableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
+  probabilityTableViews = vector<QTableView*>(1);
+  probabilityTableViews[0] = new QTableView();
+
+  probabilityTableLayout = new QVBoxLayout();
+  qDebug() << "First there are " << probabilityTableLayout->count() << endl;
+  probabilityTableLayout->addWidget(probabilityTableViews[0]);
+
+  qDebug() << "Then there are " << probabilityTableLayout->count() << endl;
 
   currentStateCombo = new QComboBox();
   currentStateCombo->addItem("0");
@@ -222,15 +110,16 @@ SGGameHandler::SGGameHandler()
 
   connect(feasibleCheckBox,SIGNAL(stateChanged(int)),
 	  this,SLOT(setConstrained(int)));
+
+  // qDebug() << "Finished sggamehandler constructor" << endl;
+
 }
 
 SGGameHandler::~SGGameHandler()
 {
+  delete payoffModel;
   for (int state = 0; state < game.getNumStates(); state++)
-    {
-      delete payoffModels[state];
-      delete probabilityModels[state];
-    }
+    delete probabilityModels[state];
 }
 
 void SGGameHandler::setGame(const SGGame & _game)
@@ -249,10 +138,15 @@ void SGGameHandler::setGame(const SGGame & _game)
       ->setText(QString::number(game.getNumActions()[0][player]));
   
   initializeModels();
+
+  // qDebug() << "Finished setting game" << endl;
 }
 
 void SGGameHandler::changeNumberOfStates(int newS)
 {
+  disconnect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
+	     this,SLOT(currentStateChanged(int)));
+
   numStatesEdit->setText(QString::number(game.getNumStates()));
   
   int state = currentStateCombo->count();
@@ -264,49 +158,84 @@ void SGGameHandler::changeNumberOfStates(int newS)
     currentStateCombo->addItem(QString::number(state++));
 
   currentStateCombo->setCurrentIndex(0);
-}
+
+  connect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
+	  this,SLOT(currentStateChanged(int)));
+  
+} // changeNumberOfStates
 
 void SGGameHandler::initializeModels()
 {
-  for (int state = payoffModels.size()-1;
+  delete payoffModel;
+
+  for (int state = probabilityModels.size()-1;
        state >= 0;
        state --)
-    {
-      delete payoffModels[state];
-      delete probabilityModels[state];
-    }
+    delete probabilityModels[state];
 
-  payoffModels = vector < SGPayoffTableModel* > (game.getNumStates());
-  probabilityModels = vector < SGProbabilityTableModel* > (game.getNumStates());
-    
+  payoffModel = new SGPayoffTableModel(&game,0);
+  probabilityModels.clear();
+  probabilityModels = vector<SGProbabilityTableModel*>(game.getNumStates());
   for (int state = 0;
        state < game.getNumStates();
        state++)
-    {
-      payoffModels[state] = new SGPayoffTableModel(&game,state);
-      probabilityModels[state] = new SGProbabilityTableModel(&game,state);
-    }
+    probabilityModels[state] = new SGProbabilityTableModel(&game,0,state);
   
-  payoffTableView->setModel(payoffModels[0]);
+  payoffTableView->setModel(payoffModel);
   payoffTableView->show();
-  probabilityTableView->setModel(probabilityModels[0]);
-  probabilityTableView->show();
+  
+  QLayoutItem * item;
+  while (item = probabilityTableLayout->takeAt(0))
+    delete item;
+
+  qDebug() << "Now there are " << probabilityTableLayout->count() << endl;
+  
+  
+  probabilityTableViews.clear();
+  probabilityTableViews = vector<QTableView* > (game.getNumStates());
+  for (int state = 0; state < game.getNumStates(); state++)
+    {
+      probabilityTableViews[state] = new QTableView();
+      probabilityTableViews[state]
+	->setSelectionMode(QAbstractItemView::ContiguousSelection);
+      probabilityTableViews[state]
+	->setEditTriggers(QAbstractItemView::AllEditTriggers);
+      probabilityTableLayout->addWidget(probabilityTableViews[state]);
+
+      probabilityTableViews[state]
+	->setModel(probabilityModels[state]);
+
+      probabilityTableViews[state]->show();
+    } // for nextState
+
+  cout << "And now there are " << probabilityTableLayout->count() << endl;
 
   payoffTableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
-  probabilityTableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
-}
+
+} // initializeModels
 
 void SGGameHandler::setState(int state)
 {
   for (int player = 0; player < 2; player ++)
     numActionsEdits[player]
-      ->setText(QString::number(game.getNumActions()[state][0]));
+      ->setText(QString::number(game.getNumActions()[state][player]));
   
-  payoffTableView->setModel(payoffModels[state]);
-  probabilityTableView->setModel(probabilityModels[state]);
+  payoffModel->setState(state);
+  payoffModel->emitLayoutChanged();
 
+  for (int nextState = 0; nextState < game.getNumStates(); nextState++)
+    {
+      probabilityModels[nextState]->setState(state);
+      probabilityModels[nextState]->emitLayoutChanged();
+    }
+  
+  disconnect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
+	     this,SLOT(currentStateChanged(int)));
   currentStateCombo->setCurrentIndex(state);
-}
+  connect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
+	  this,SLOT(currentStateChanged(int)));
+  
+} // setState
 
 void SGGameHandler::currentStateChanged(int newS)
 {
@@ -368,34 +297,39 @@ void SGGameHandler::actionAdded(int player)
   numActionsEdits[player]
     ->setText(QString::number(game.getNumActions()[state][player]));
 
-  payoffModels[state]->emitLayoutChanged();
-  probabilityModels[state]->emitLayoutChanged();
+  payoffModel->emitLayoutChanged();
+  for (int nextState = 0; nextState < game.getNumStates(); nextState++)
+    probabilityModels[nextState]->emitLayoutChanged();
 }
 
 void SGGameHandler::stateAdded()
 {
-  int state = currentStateCombo->currentIndex();
-  game.addState(state+1);
+  // qDebug() << "Starting stateAdded routine" << endl;
+
+  int newState = currentStateCombo->currentIndex();
+  game.addState(newState+1);
   changeNumberOfStates(game.getNumStates());
   numStatesEdit->setText(QString::number(game.getNumStates()));
 
-  payoffModels.insert(payoffModels.begin()+state+1,
-		      new SGPayoffTableModel(&game,state+1));
-  probabilityModels.insert(probabilityModels.begin()+state+1,
-			   new SGProbabilityTableModel(&game,
-						       state+1));
-  for (int statep = state+2;
-       statep < game.getNumStates();
-       statep++)
-    {
-      payoffModels[statep]->setState(statep);
-      probabilityModels[statep]->setState(statep);
-    }
+  probabilityModels.push_back(new SGProbabilityTableModel(&game,0,
+							  game.getNumStates()));
 
-  setState(state+1);
+  probabilityTableViews.push_back(new QTableView());
+  probabilityTableViews.back()
+    ->setSelectionMode(QAbstractItemView::ContiguousSelection);
+  probabilityTableViews.back()
+    ->setEditTriggers(QAbstractItemView::AllEditTriggers);
+  probabilityTableViews.back()->setModel(probabilityModels.back());
+  probabilityTableViews.back()->show();
+  probabilityTableLayout->addWidget(probabilityTableViews.back());
+  
+  // qDebug() << "Number of views after add: " 
+  // 	   << probabilityTableViews.size() << endl;
+
+  setState(newState+1);
   // payoffModels[state]->emitLayoutChanged();
   // probabilityModels[state]->emitLayoutChanged();
-}
+} // stateAdded
 
 void SGGameHandler::action1Removed()
 {
@@ -428,8 +362,9 @@ void SGGameHandler::actionRemoved(int player)
   numActionsEdits[player]->setText(QString::number(game.getNumActions()
 						   [state][player]));
 
-  payoffModels[state]->emitLayoutChanged();
-  probabilityModels[state]->emitLayoutChanged();
+  payoffModel->emitLayoutChanged();
+  for (int statep = 0; statep < game.getNumStates(); statep++)
+    probabilityModels[statep]->emitLayoutChanged();
 }
 
 void SGGameHandler::stateRemoved()
@@ -439,30 +374,29 @@ void SGGameHandler::stateRemoved()
 
   int state = currentStateCombo->currentIndex();
 
-  for (int statep = state+1; statep < game.getNumStates(); statep++)
-    {
-      payoffModels[statep]->setState(statep-1);
-      probabilityModels[statep]->setState(statep-1);
-    }
-  
+  delete probabilityModels.back();
+  probabilityModels.pop_back();
+  delete probabilityTableLayout->takeAt(probabilityTableLayout->count()-1);
+  probabilityTableViews.pop_back();
+
   int newState;
   if (state == 0)
     newState = 1;
   else
     newState = state-1;
-  setState(newState);
 
-  delete payoffModels[state];
-  payoffModels.erase(payoffModels.begin()+state);
-  delete probabilityModels[state];
-  probabilityModels.erase(probabilityModels.begin()+state);
-
+  disconnect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
+	     this,SLOT(currentStateChanged(int)));
   currentStateCombo->setCurrentIndex(min(state,newState));
   currentStateCombo->removeItem(currentStateCombo->count()-1);
+  connect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
+	  this,SLOT(currentStateChanged(int)));
+  
+  numStatesEdit->setText(QString::number(game.getNumStates()));
 
   game.removeState(state);
 
-  numStatesEdit->setText(QString::number(game.getNumStates()));
+  setState(newState);
   
 } // stateRemoved
 

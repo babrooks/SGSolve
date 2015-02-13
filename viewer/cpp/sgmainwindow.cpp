@@ -40,7 +40,7 @@ SGMainWindow::SGMainWindow()
   // botPanel->setPalette(botPalette);
   // botPanel->setAutoFillBackground(true);
 
-  topRightScrollArea = new QScrollArea();
+  QScrollArea * topRightScrollArea = new QScrollArea();
   
   QWidget * statePlotsWidget = new QWidget();
   statePlotsWidget->setLayout(solutionHandler->statePlotsLayout);
@@ -106,6 +106,8 @@ SGMainWindow::SGMainWindow()
 			      QSizePolicy::Preferred);
   cancelButton->resize(300,cancelButton->height());
 
+  // qDebug() << "I got to here!!!" << endl;
+  
   QHBoxLayout * deltaLayout = new QHBoxLayout();
   deltaLayout->addWidget(gameHandler->deltaEdit);
   deltaLayout->setSpacing(5);
@@ -169,8 +171,21 @@ SGMainWindow::SGMainWindow()
   payoffLayout->addWidget(new QLabel(tr("Stage payoffs:")));
   payoffLayout->addWidget(gameHandler->payoffTableView);
 
+  QScrollArea * probabilityScrollArea = new QScrollArea();
+  QWidget * probabilityWidget = new QWidget();
+
+  qDebug() << gameHandler->probabilityTableLayout->count() << endl;
+
+  probabilityWidget->setLayout(gameHandler->probabilityTableLayout);
+  probabilityScrollArea->setWidget(probabilityWidget);
+
+  probabilityScrollArea->setWidgetResizable(true);
+  probabilityScrollArea->setSizePolicy(QSizePolicy::Expanding,
+				       QSizePolicy::Expanding);
+  probabilityScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
   probabilityLayout->addWidget(new QLabel(tr("Transition probabilities:")));
-  probabilityLayout->addWidget(gameHandler->probabilityTableView);
+  probabilityLayout->addWidget(probabilityScrollArea);
 
   tableLayout->addLayout(payoffLayout);
   tableLayout->addLayout(probabilityLayout);
@@ -223,7 +238,9 @@ SGMainWindow::SGMainWindow()
   
   setWindowTitle(tr("SGViewer"));
 
-}
+  qDebug() << "Finished sgmainwindow constructor" << endl;
+
+} // constructor
 
 void SGMainWindow::loadSolution()
 {
@@ -281,7 +298,7 @@ void SGMainWindow::saveSolution()
     {
       qDebug() << "Save solution didnt work :(" << endl;
     }
-}
+} // saveSolution
 
 void SGMainWindow::loadGame()
 {
@@ -314,7 +331,7 @@ void SGMainWindow::loadGame()
     {
       qDebug() << "Load game didnt work :(" << endl;
     }
-}
+} // loadGame
 
 void SGMainWindow::saveGame()
 {
@@ -341,7 +358,7 @@ void SGMainWindow::saveGame()
     {
       qDebug() << "Save game didnt work :(" << endl;
     }
-}
+} // saveGame
 
 void SGMainWindow::solveGame()
 {
@@ -377,12 +394,12 @@ void SGMainWindow::solveGame()
 			    tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
 			    QMessageBox::Ok);
     }
-}
+} // solveGame
 
 void SGMainWindow::cancelSolve()
 {
   cancelSolveFlag = true;
-}
+} // cancelSolve
 
 void SGMainWindow::iterationFinished(bool tf)
 {
@@ -470,7 +487,7 @@ void SGMainWindow::solverException()
   logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
 
   delete solverWorker;
-}
+} // solverException
 
 void SGMainWindow::keyPressEvent(QKeyEvent * event)
 {
@@ -487,7 +504,7 @@ void SGMainWindow::keyPressEvent(QKeyEvent * event)
     {
       solutionHandler->moveBackwards();
     }
-}
+} // keyPressEvent
 
 
 void SGMainWindow::screenShot()
@@ -502,4 +519,4 @@ void SGMainWindow::screenShot()
   path = fi.canonicalPath();
 
   grab().save(newPath);
-}
+} // screenShot

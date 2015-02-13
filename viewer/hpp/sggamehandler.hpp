@@ -2,102 +2,12 @@
 #define SGGAMEHANDLER_H
 
 #include <QtWidgets>
-#include <QMainWindow>
+// #include <QMainWindow>
 #include <QAbstractTableModel>
 #include <QTableView>
 #include "sggame.hpp"
-
-// Class that contains features common to SGPayoffTableModel and
-// SGProbabilityTableModel.
-class SGTableModel : public QAbstractTableModel
-{
-  Q_OBJECT
-
-public:
-  SGTableModel(SGGame * _game,
-	       int _state):
-    game(_game), state(_state)
-  { }
-  
-  Qt::ItemFlags flags(const QModelIndex & index) const 
-  { return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable; }
-
-  void emitLayoutChanged()
-  { emit layoutChanged(); }
-  bool setState(int newState)
-  {
-    if (newState < 0 || newState > game->getNumStates())
-      return false;
-    state = newState;
-    return true;
-  }
-  
-protected:
-  int state;
-  bool isConnceted;
-  SGGame * game;
-  
-};
-
-// One SGPayoffTableModel for each state. Control which one is
-// displayed by changing the model that is plugged into the table
-// view.
-class SGPayoffTableModel : public SGTableModel
-{
-  Q_OBJECT
-
-public:
-  SGPayoffTableModel(SGGame * _game,
-		     int _state):
-    SGTableModel(_game,_state)
-  {}
-  
-  int rowCount(const QModelIndex & parent) const Q_DECL_OVERRIDE
-  { return game->getNumActions()[state][0]; }
-  int columnCount(const QModelIndex & parent) const Q_DECL_OVERRIDE
-  { return game->getNumActions()[state][1]; }
-
-  QVariant data(const QModelIndex & index,
-		int role) const Q_DECL_OVERRIDE;
-  QVariant headerData(int section,
-		      Qt::Orientation orientation,
-		      int role) const Q_DECL_OVERRIDE;
-
-  
-  bool setData(const QModelIndex & index, const QVariant & value, int role);
-  
-}; // SGPayoffTableModel
-
-// One SGProbabilityTableModel for each state. Control which one is
-// displayed by changing the model that is plugged into the table
-// view.
-class SGProbabilityTableModel : public SGTableModel
-{
-  Q_OBJECT
-
-public:
-  SGProbabilityTableModel(SGGame * _game,
-		     int _state):
-    SGTableModel(_game,_state)
-  { }
-  
-  int rowCount(const QModelIndex & parent) const Q_DECL_OVERRIDE
-  { return (game->getNumActions()[state][0]
-	    * game->getNumActions()[state][1]); }
-  int columnCount(const QModelIndex & parent) const Q_DECL_OVERRIDE
-  { return game->getNumStates(); }
-
-  QVariant data(const QModelIndex & index,
-		int role) const Q_DECL_OVERRIDE;
-    
-  QVariant headerData(int section,
-		      Qt::Orientation orientation,
-		      int role) const Q_DECL_OVERRIDE;
-
-  bool setData(const QModelIndex & index, const QVariant & value, int role);
-
-
-}; // SGProbabilityTableModel
+#include "sgpayofftablemodel.hpp"
+#include "sgprobabilitytablemodel.hpp"
 
 class SGGameHandler : public QObject
 {
@@ -105,7 +15,7 @@ class SGGameHandler : public QObject
   
 protected:
   SGGame game;
-  vector<SGPayoffTableModel*> payoffModels;
+  SGPayoffTableModel* payoffModel;
   vector<SGProbabilityTableModel*> probabilityModels;
 
   // Edits
@@ -128,7 +38,8 @@ protected:
   
   // Tables
   QTableView * payoffTableView;
-  QTableView * probabilityTableView;
+  vector<QTableView *> probabilityTableViews;
+  QVBoxLayout * probabilityTableLayout;
 
   // Check box  
   QCheckBox * feasibleCheckBox;
