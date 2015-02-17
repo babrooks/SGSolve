@@ -2,7 +2,6 @@
 #define SGTABLEMODEL_H
 
 #include <QtWidgets>
-#include <QMainWindow>
 #include <QAbstractTableModel>
 #include <QTableView>
 #include "sggame.hpp"
@@ -21,6 +20,11 @@ public:
   
   Qt::ItemFlags flags(const QModelIndex & index) const 
   { return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable; }
+
+  int rowCount(const QModelIndex & parent = QModelIndex()) const Q_DECL_OVERRIDE
+  { return game->getNumActions()[state][0]; }
+  int columnCount(const QModelIndex & parent = QModelIndex()) const Q_DECL_OVERRIDE
+  { return game->getNumActions()[state][1]; }
 
   void emitLayoutChanged()
   { emit layoutChanged(); }

@@ -8,6 +8,7 @@
 #include "sggame.hpp"
 #include "sgpayofftablemodel.hpp"
 #include "sgprobabilitytablemodel.hpp"
+#include "sgtableview.hpp"
 
 class SGGameHandler : public QObject
 {
@@ -38,7 +39,7 @@ protected:
   
   // Tables
   QTableView * payoffTableView;
-  vector<QTableView *> probabilityTableViews;
+  vector<SGTableView *> probabilityTableViews;
   QVBoxLayout * probabilityTableLayout;
 
   // Check box  
@@ -60,8 +61,10 @@ private:
   void initializeModels();
   // void addState();
   // void addAction(int player);
+  void pushBackProbabilityTable(int newS);
+  void popBackProbabilityTable();
   void changeNumberOfStates(int newS);
-
+				     
 private slots:
   void currentStateChanged(int newS);
   void stateAdded();
