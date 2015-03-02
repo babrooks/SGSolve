@@ -184,6 +184,10 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
 	  soln = solver.getSolution();
 	  solnLoaded = true;
+
+	  currentIteration = soln.iterations.end();
+	  currentIteration--;
+	  currentIterationIndex = soln.iterations.size()-1;
 	}
       catch (SGException & e)
 	{
