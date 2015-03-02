@@ -6,7 +6,7 @@ QVariant SGPayoffTableModel::data(const QModelIndex & index,
 {
   if (role == Qt::SizeHintRole)
     return QSize(1,1);
-  else if (role == Qt::DisplayRole)
+  else if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
 
       int action = (index.column() * game->getNumActions()[state][0]

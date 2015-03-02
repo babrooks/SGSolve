@@ -1,5 +1,6 @@
 #include <QtWidgets>
 #include "sggamehandler.hpp"
+#include "sgtableview.hpp"
 
 SGGameHandler::SGGameHandler()
 {
@@ -65,10 +66,12 @@ SGGameHandler::SGGameHandler()
   errorTolEdit->setSizePolicy(QSizePolicy::Preferred,
 			      QSizePolicy::Preferred);
 
-  payoffTableView = new QTableView();
+  payoffTableView = new SGTableView();
   payoffTableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
-  probabilityTableViews = vector<QTableView*>(1);
-  probabilityTableViews[0] = new QTableView();
+  probabilityTableViews = vector<SGTableView*>(1);
+  probabilityTableViews[0] = new SGTableView();
+
+  payoffModel = NULL;
 
   probabilityTableLayout = new QVBoxLayout();
   qDebug() << "First there are " << probabilityTableLayout->count() << endl;
@@ -117,7 +120,8 @@ SGGameHandler::SGGameHandler()
 
 SGGameHandler::~SGGameHandler()
 {
-  delete payoffModel;
+  if (payoffModel != NULL)
+    delete payoffModel;
   for (int state = 0; state < game.getNumStates(); state++)
     delete probabilityModels[state];
 }
@@ -166,53 +170,68 @@ void SGGameHandler::changeNumberOfStates(int newS)
 
 void SGGameHandler::initializeModels()
 {
+  // Create new payoffModel
   delete payoffModel;
 
+  payoffModel = new SGPayoffTableModel(&game,0);
+  payoffTableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
+  payoffTableView->setModel(payoffModel);
+  payoffTableView->resizeColumnsToContents();
+
+  // Now create new probabilityModels
   for (int state = probabilityModels.size()-1;
        state >= 0;
        state --)
     delete probabilityModels[state];
 
-  payoffModel = new SGPayoffTableModel(&game,0);
+  // Clear out probabilityTableLayout
+  QLayoutItem * item;
+  while (item = probabilityTableLayout->takeAt(0))
+    delete item->widget();
+  
   probabilityModels.clear();
-  probabilityModels = vector<SGProbabilityTableModel*>(game.getNumStates());
+  probabilityTableViews.clear();
+
+  probabilityModels.reserve(game.getNumStates());
+  probabilityTableViews.reserve(game.getNumStates());
+
+  // Add new models/views
   for (int state = 0;
        state < game.getNumStates();
        state++)
-    probabilityModels[state] = new SGProbabilityTableModel(&game,0,state);
-  
-  payoffTableView->setModel(payoffModel);
-  payoffTableView->show();
-  
-  QLayoutItem * item;
-  while (item = probabilityTableLayout->takeAt(0))
-    delete item;
-
-  qDebug() << "Now there are " << probabilityTableLayout->count() << endl;
-  
-  
-  probabilityTableViews.clear();
-  probabilityTableViews = vector<QTableView* > (game.getNumStates());
-  for (int state = 0; state < game.getNumStates(); state++)
-    {
-      probabilityTableViews[state] = new QTableView();
-      probabilityTableViews[state]
-	->setSelectionMode(QAbstractItemView::ContiguousSelection);
-      probabilityTableViews[state]
-	->setEditTriggers(QAbstractItemView::AllEditTriggers);
-      probabilityTableLayout->addWidget(probabilityTableViews[state]);
-
-      probabilityTableViews[state]
-	->setModel(probabilityModels[state]);
-
-      probabilityTableViews[state]->show();
-    } // for nextState
-
-  cout << "And now there are " << probabilityTableLayout->count() << endl;
-
-  payoffTableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
-
+    pushBackProbabilityTable(state);  
 } // initializeModels
+
+
+void SGGameHandler::pushBackProbabilityTable(int newState)
+{
+  probabilityTableViews.push_back(new SGTableView());
+  probabilityTableViews.back()
+    ->verticalScrollBar()->setDisabled(true);
+  probabilityTableViews.back()
+    ->horizontalScrollBar()->setDisabled(true);
+
+  probabilityTableLayout->addWidget(new QLabel(QString("State ")
+					       +QString::number(newState)
+					       +QString(":")) );
+  probabilityTableLayout->addWidget(probabilityTableViews.back());
+
+  probabilityModels.push_back(new SGProbabilityTableModel(&game,0,newState));
+
+  probabilityTableViews.back()->setModel(probabilityModels.back());
+
+  probabilityTableViews.back()->resizeColumnsToContents();
+} // pushBackProbabilityTable
+
+void SGGameHandler::popBackProbabilityTable()
+{
+  delete probabilityModels.back();
+  probabilityModels.pop_back();
+
+  delete probabilityTableLayout->takeAt(probabilityTableLayout->count()-1)->widget();
+  delete probabilityTableLayout->takeAt(probabilityTableLayout->count()-1)->widget();
+  probabilityTableViews.pop_back();
+} // popBackProbabilityTable
 
 void SGGameHandler::setState(int state)
 {
@@ -222,11 +241,17 @@ void SGGameHandler::setState(int state)
   
   payoffModel->setState(state);
   payoffModel->emitLayoutChanged();
+  payoffTableView->resizeColumnsToContents();
 
   for (int nextState = 0; nextState < game.getNumStates(); nextState++)
     {
       probabilityModels[nextState]->setState(state);
       probabilityModels[nextState]->emitLayoutChanged();
+
+      // sizeHint for the SGTableView objects has changed. Call
+      // updateGeometry.
+      probabilityTableViews[nextState]->resizeColumnsToContents();
+      probabilityTableViews[nextState]->updateGeometry();
     }
   
   disconnect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
@@ -298,37 +323,25 @@ void SGGameHandler::actionAdded(int player)
     ->setText(QString::number(game.getNumActions()[state][player]));
 
   payoffModel->emitLayoutChanged();
+  payoffTableView->resizeColumnToContents(newAction);
+  // payoffTableView->updateGeometry();
   for (int nextState = 0; nextState < game.getNumStates(); nextState++)
-    probabilityModels[nextState]->emitLayoutChanged();
-}
+    {
+      probabilityModels[nextState]->emitLayoutChanged();
+      probabilityTableViews[nextState]->resizeColumnToContents(newAction);
+      probabilityTableViews[nextState]->updateGeometry();
+    }
+}  // actionAdded
 
 void SGGameHandler::stateAdded()
 {
-  // qDebug() << "Starting stateAdded routine" << endl;
-
-  int newState = currentStateCombo->currentIndex();
-  game.addState(newState+1);
+  int newState = currentStateCombo->currentIndex()+1;
+  game.addState(newState);
   changeNumberOfStates(game.getNumStates());
   numStatesEdit->setText(QString::number(game.getNumStates()));
-
-  probabilityModels.push_back(new SGProbabilityTableModel(&game,0,
-							  game.getNumStates()));
-
-  probabilityTableViews.push_back(new QTableView());
-  probabilityTableViews.back()
-    ->setSelectionMode(QAbstractItemView::ContiguousSelection);
-  probabilityTableViews.back()
-    ->setEditTriggers(QAbstractItemView::AllEditTriggers);
-  probabilityTableViews.back()->setModel(probabilityModels.back());
-  probabilityTableViews.back()->show();
-  probabilityTableLayout->addWidget(probabilityTableViews.back());
+  pushBackProbabilityTable(newState);
   
-  // qDebug() << "Number of views after add: " 
-  // 	   << probabilityTableViews.size() << endl;
-
-  setState(newState+1);
-  // payoffModels[state]->emitLayoutChanged();
-  // probabilityModels[state]->emitLayoutChanged();
+  setState(newState);
 } // stateAdded
 
 void SGGameHandler::action1Removed()
@@ -364,7 +377,10 @@ void SGGameHandler::actionRemoved(int player)
 
   payoffModel->emitLayoutChanged();
   for (int statep = 0; statep < game.getNumStates(); statep++)
-    probabilityModels[statep]->emitLayoutChanged();
+    {
+      probabilityModels[statep]->emitLayoutChanged();
+      probabilityTableViews[statep]->updateGeometry();
+    }
 }
 
 void SGGameHandler::stateRemoved()
@@ -374,16 +390,13 @@ void SGGameHandler::stateRemoved()
 
   int state = currentStateCombo->currentIndex();
 
-  delete probabilityModels.back();
-  probabilityModels.pop_back();
-  delete probabilityTableLayout->takeAt(probabilityTableLayout->count()-1);
-  probabilityTableViews.pop_back();
+  popBackProbabilityTable();
 
   int newState;
-  if (state == 0)
-    newState = 1;
-  else
+  if (state > 0)
     newState = state-1;
+  else
+    newState = 0;
 
   disconnect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
 	     this,SLOT(currentStateChanged(int)));
@@ -393,7 +406,7 @@ void SGGameHandler::stateRemoved()
 	  this,SLOT(currentStateChanged(int)));
   
   numStatesEdit->setText(QString::number(game.getNumStates()));
-
+  
   game.removeState(state);
 
   setState(newState);

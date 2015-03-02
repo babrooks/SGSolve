@@ -6,10 +6,15 @@ QVariant SGProbabilityTableModel::data(const QModelIndex & index,
 {
   if (role == Qt::SizeHintRole)
     return QSize(1,1);
-  else if (role == Qt::DisplayRole)
+  else if (role == Qt::DisplayRole || role == Qt::EditRole)
     {
       int action = (index.column() * game->getNumActions()[state][0]
 		    + index.row() );
+
+      assert(action < game->getNumActions()[state][0]
+	     *game->getNumActions()[state][1]);
+      assert(nextState < game->getNumStates());
+      assert(state < game->getNumStates());
       
       return QVariant(QString::number(game->getProbabilities()
 				      [state][action][nextState]));
@@ -28,6 +33,11 @@ bool SGProbabilityTableModel::setData(const QModelIndex & index,
 
       int action = (index.column() * game->getNumActions()[state][0]
 		    + index.row() );
+      
+      assert(action < game->getNumActions()[state][0]
+	     *game->getNumActions()[state][1]);
+      assert(nextState < game->getNumStates());
+      assert(state < game->getNumStates());
       
       if (list.size())
 	game->setProbability(state,action,nextState,
