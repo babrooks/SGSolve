@@ -1,6 +1,5 @@
 #include <QtWidgets>
 #include "sggamehandler.hpp"
-#include "sgtableview.hpp"
 
 SGGameHandler::SGGameHandler()
 {

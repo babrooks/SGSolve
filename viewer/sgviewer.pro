@@ -15,6 +15,7 @@ HEADERS = sgmainwindow.hpp \
 qcustomplot.h \
 sggamehandler.hpp \
 sgtablemodel.hpp \
+sgtableview.hpp \
 sgprobabilitytablemodel.hpp \
 sgpayofftablemodel.hpp \
 sgsolutionhandler.hpp \
