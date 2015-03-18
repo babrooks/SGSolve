@@ -1,7 +1,6 @@
 var searchData=
 [
   ['newwest',['newWest',['../classSGApprox.html#aed002d6e06e7199e10b3ac4f27b6cb6c',1,'SGApprox']]],
-  ['nonbinding',['nonBinding',['../classSGIteration.html#a7520e6ea4903e8b32884294a3c65b331',1,'SGIteration']]],
   ['nonbindingstates',['nonBindingStates',['../classSGApprox.html#ac05d3697e39d0f671858fd9936581820',1,'SGApprox']]],
   ['normtol',['normTol',['../classSGEnv.html#af55398623fd3c53009f27d7563cc552d',1,'SGEnv']]],
   ['numactions',['numActions',['../classSGApprox.html#af3208841348d868b372549dd7508e300',1,'SGApprox::numActions()'],['../classSGGame.html#acebe94d195ffb67f92925bcd4c26d1a9',1,'SGGame::numActions()']]],

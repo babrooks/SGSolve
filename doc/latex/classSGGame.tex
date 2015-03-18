@@ -35,7 +35,7 @@ Describes a stochastic game.
 \hypertarget{classSGGame_a2502088ee42a763cb92e879363e48cf4}{const vector$<$ vector$<$ int $>$ $>$ \& \hyperlink{classSGGame_a2502088ee42a763cb92e879363e48cf4}{get\-Num\-Actions} () const }\label{classSGGame_a2502088ee42a763cb92e879363e48cf4}
 
 \begin{DoxyCompactList}\small\item\em Sets the argument \-\_\-num\-Actions equal to \hyperlink{classSGGame_acebe94d195ffb67f92925bcd4c26d1a9}{S\-G\-Game\-::num\-Actions}. \end{DoxyCompactList}\item 
-const vector$<$ int $>$ \& \hyperlink{classSGGame_a02facc17211bcbac355cf2bfff95391f}{get\-Num\-Actions\-\_\-total} ()
+const vector$<$ int $>$ \& \hyperlink{classSGGame_a8b7cfd700ea2afbbe7f7a34fe6d99bf4}{get\-Num\-Actions\-\_\-total} () const 
 \item 
 \hypertarget{classSGGame_aef7e539a401cf805e58903c7d881f097}{const vector$<$ vector$<$ vector\\*
 $<$ double $>$ $>$ $>$ \& \hyperlink{classSGGame_aef7e539a401cf805e58903c7d881f097}{get\-Probabilities} () const }\label{classSGGame_aef7e539a401cf805e58903c7d881f097}
@@ -48,6 +48,9 @@ $<$ double $>$ $>$ $>$ \& \hyperlink{classSGGame_aef7e539a401cf805e58903c7d881f0
 
 \begin{DoxyCompactList}\small\item\em Returns a const reference to the equilibrium actions. \end{DoxyCompactList}\item 
 void \hyperlink{classSGGame_aa351e7fb094dfc40ef6faba3fb5d5efc}{get\-Payoff\-Bounds} (\hyperlink{classSGPoint}{S\-G\-Point} \&U\-B, \hyperlink{classSGPoint}{S\-G\-Point} \&L\-B) const 
+\item 
+\hypertarget{classSGGame_a1316dc7d9f5a0d459a314aea8438a7ae}{const vector$<$ bool $>$ \& {\bfseries get\-Constrained} () const }\label{classSGGame_a1316dc7d9f5a0d459a314aea8438a7ae}
+
 \item 
 \hypertarget{classSGGame_ad5879878c647da7040940469b56b9595}{bool {\bfseries set\-Discount\-Factor} (double new\-Delta)}\label{classSGGame_ad5879878c647da7040940469b56b9595}
 
@@ -167,13 +170,13 @@ Constructor with custom equilibrium actions.
 $<$ If \-\_\-eq\-Actions is an empty vector, the constructor will initialize it so that all action profiles are allowed. Otherwise, we restrict attention to equilibria in which action profiles in \-\_\-eq\-Actions are used. 
 
 \subsection{Member Function Documentation}
-\hypertarget{classSGGame_a02facc17211bcbac355cf2bfff95391f}{\index{S\-G\-Game@{S\-G\-Game}!get\-Num\-Actions\-\_\-total@{get\-Num\-Actions\-\_\-total}}
+\hypertarget{classSGGame_a8b7cfd700ea2afbbe7f7a34fe6d99bf4}{\index{S\-G\-Game@{S\-G\-Game}!get\-Num\-Actions\-\_\-total@{get\-Num\-Actions\-\_\-total}}
 \index{get\-Num\-Actions\-\_\-total@{get\-Num\-Actions\-\_\-total}!SGGame@{S\-G\-Game}}
 \subsubsection[{get\-Num\-Actions\-\_\-total}]{\setlength{\rightskip}{0pt plus 5cm}const vector$<$int$>$\& S\-G\-Game\-::get\-Num\-Actions\-\_\-total (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSGGame_a02facc17211bcbac355cf2bfff95391f}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classSGGame_a8b7cfd700ea2afbbe7f7a34fe6d99bf4}
 Returns a constant reference to the total number of actions in each state \hypertarget{classSGGame_aa351e7fb094dfc40ef6faba3fb5d5efc}{\index{S\-G\-Game@{S\-G\-Game}!get\-Payoff\-Bounds@{get\-Payoff\-Bounds}}
 \index{get\-Payoff\-Bounds@{get\-Payoff\-Bounds}!SGGame@{S\-G\-Game}}
 \subsubsection[{get\-Payoff\-Bounds}]{\setlength{\rightskip}{0pt plus 5cm}void S\-G\-Game\-::get\-Payoff\-Bounds (

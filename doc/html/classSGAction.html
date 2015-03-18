@@ -105,6 +105,7 @@ $(document).ready(function(){initNavTree('classSGAction.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classSGAction-members.html">List of all members</a>  </div>
@@ -120,10 +121,16 @@ $(document).ready(function(){initNavTree('classSGAction.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a2beea431eab0f867e6bb678c8649c3e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2beea431eab0f867e6bb678c8649c3e0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#a2beea431eab0f867e6bb678c8649c3e0">SGAction</a> (const <a class="el" href="classSGEnv.html">SGEnv</a> &amp;_env)</td></tr>
+<tr class="memdesc:a2beea431eab0f867e6bb678c8649c3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the action with the given state/action. <br/></td></tr>
+<tr class="separator:a2beea431eab0f867e6bb678c8649c3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a763b30d91b4ac060895b3af2731d097c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a763b30d91b4ac060895b3af2731d097c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#a763b30d91b4ac060895b3af2731d097c">SGAction</a> (const <a class="el" href="classSGEnv.html">SGEnv</a> &amp;_env, int _state, int _action)</td></tr>
-<tr class="memdesc:a763b30d91b4ac060895b3af2731d097c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the action with the given state/action. <br/></td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SGAction</b> (const <a class="el" href="classSGEnv.html">SGEnv</a> &amp;_env, int _state, int _action)</td></tr>
 <tr class="separator:a763b30d91b4ac060895b3af2731d097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb3fda5711922153dd8f694a4cd05167"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb3fda5711922153dd8f694a4cd05167"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getIsNull</b> () const </td></tr>
+<tr class="separator:aeb3fda5711922153dd8f694a4cd05167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a669309713ab99e375da193bbfa6fc586"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a669309713ab99e375da193bbfa6fc586"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#a669309713ab99e375da193bbfa6fc586">getAction</a> () const </td></tr>
 <tr class="memdesc:a669309713ab99e375da193bbfa6fc586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the action. <br/></td></tr>
@@ -143,11 +150,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#ae78f31d121e131788ac4c767e01d012c">intersectRaySegment</a> (const <a class="el" href="classSGPoint.html">SGPoint</a> &amp;pivot, const <a class="el" href="classSGPoint.html">SGPoint</a> &amp;direction, int player)</td></tr>
 <tr class="memdesc:ae78f31d121e131788ac4c767e01d012c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static method to carry out trimming operations. <br/></td></tr>
 <tr class="separator:ae78f31d121e131788ac4c767e01d012c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175b7f97c90b86d58a994eb5b42161e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a175b7f97c90b86d58a994eb5b42161e9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#a175b7f97c90b86d58a994eb5b42161e9">calculateMinIC</a> (const <a class="el" href="classSGGame.html">SGGame</a> &amp;game, const vector&lt; bool &gt; &amp;update, const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;threatTuple)</td></tr>
+<tr class="memdesc:a175b7f97c90b86d58a994eb5b42161e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the minimum incentive compatible continuation payoff. <br/></td></tr>
+<tr class="separator:a175b7f97c90b86d58a994eb5b42161e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d1b9515be55e396e8595051ba6d3bdd"><td class="memTemplParams" colspan="2"><a class="anchor" id="a2d1b9515be55e396e8595051ba6d3bdd"></a>
 template&lt;class Archive &gt; </td></tr>
 <tr class="memitem:a2d1b9515be55e396e8595051ba6d3bdd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSGAction.html#a2d1b9515be55e396e8595051ba6d3bdd">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
 <tr class="memdesc:a2d1b9515be55e396e8595051ba6d3bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serializes the action using the boost::serialization library. <br/></td></tr>
 <tr class="separator:a2d1b9515be55e396e8595051ba6d3bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9d6073bab90739b098d8653d2eb51c6b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d6073bab90739b098d8653d2eb51c6b"></a>
+static double&#160;</td><td class="memItemRight" valign="bottom"><b>calculateMinIC</b> (int <a class="el" href="classSGAction.html#a65c62a3804b50febd9a289f3d8902f85">action</a>, int <a class="el" href="classSGAction.html#a1ad4ae3feb4e3ec46e21273dd51a6004">state</a>, int player, const <a class="el" href="classSGGame.html">SGGame</a> &amp;game, const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;threatTuple)</td></tr>
+<tr class="separator:a9d6073bab90739b098d8653d2eb51c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -163,6 +180,10 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a8860ada2cacece1a8feed794d81d9e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60599bc5a745db1557191a61c0db28b3"><td class="memItemLeft" align="right" valign="top">vector&lt; vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#a60599bc5a745db1557191a61c0db28b3">tuples</a></td></tr>
 <tr class="separator:a60599bc5a745db1557191a61c0db28b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b045c64bb537b920ce4065f214c5f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#a57b045c64bb537b920ce4065f214c5f6">isNull</a></td></tr>
+<tr class="separator:a57b045c64bb537b920ce4065f214c5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accae7581737b79cbe61c2b902a25d6cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGAction.html#accae7581737b79cbe61c2b902a25d6cf">corner</a></td></tr>
+<tr class="separator:accae7581737b79cbe61c2b902a25d6cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -229,6 +250,27 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SGApprox</b></td></t
 
 </div>
 </div>
+<a class="anchor" id="accae7581737b79cbe61c2b902a25d6cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SGAction::corner</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Flag that indicates that the feasible set has a corner. </p>
+
+</div>
+</div>
 <a class="anchor" id="a5ae60f6fd5a545d13c8a2525d7378b9d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -247,6 +289,27 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SGApprox</b></td></t
 </table>
 </div><div class="memdoc">
 <p>Constant reference to the parent environment. </p>
+
+</div>
+</div>
+<a class="anchor" id="a57b045c64bb537b920ce4065f214c5f6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SGAction::isNull</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Flag to indicate that this is the place holder "null" action. </p>
 
 </div>
 </div>

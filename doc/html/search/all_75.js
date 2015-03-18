@@ -6,5 +6,5 @@ var searchData=
   ['updateflags',['updateFlags',['../classSGApprox.html#a93455458a21bdeccff21a6163932c38a',1,'SGApprox']]],
   ['updateminpayoffs',['updateMinPayoffs',['../classSGApprox.html#aea5ce8a2f48c7a572477f5f60520d565',1,'SGApprox']]],
   ['updatepivot',['updatePivot',['../classSGApprox.html#aa893563e95936ed12a3e3b4e1ba7ac54',1,'SGApprox']]],
-  ['updatepivottol',['UPDATEPIVOTTOL',['../classSGEnv.html#add4d052ff3e3d09a2113e0ebd032eba3a57988c88be8abe2e0f5a70c24a0c6058',1,'SGEnv::UPDATEPIVOTTOL()'],['../classSGEnv.html#a621566e738d47ab9929ffa704b05aa63',1,'SGEnv::updatePivotTol()']]]
+  ['updatepivottol',['updatePivotTol',['../classSGEnv.html#a621566e738d47ab9929ffa704b05aa63',1,'SGEnv::updatePivotTol()'],['../classSGEnv.html#add4d052ff3e3d09a2113e0ebd032eba3a57988c88be8abe2e0f5a70c24a0c6058',1,'SGEnv::UPDATEPIVOTTOL()']]]
 ];

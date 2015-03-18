@@ -124,8 +124,8 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#aa47645b3a728b2ca55ad2e7d17c5c488">SGIteration</a> ()</td></tr>
 <tr class="memdesc:aa47645b3a728b2ca55ad2e7d17c5c488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br/></td></tr>
 <tr class="separator:aa47645b3a728b2ca55ad2e7d17c5c488"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c8811a084f0bfa216219b2bce504a45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#a6c8811a084f0bfa216219b2bce504a45">SGIteration</a> (int _iteration, int _revolution, int _numExtremeTuples, const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;_pivot, const <a class="el" href="classSGAction.html">SGAction</a> &amp;_action, const <a class="el" href="classSGPoint.html">SGPoint</a> &amp;_direction, bool _nonBinding)</td></tr>
-<tr class="separator:a6c8811a084f0bfa216219b2bce504a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66e36d5150597815900248836eb345b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#a66e36d5150597815900248836eb345b3">SGIteration</a> (int _iteration, int _revolution, int _numExtremeTuples, int _bestState, bool _nonBinding, const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;_pivot, const <a class="el" href="classSGPoint.html">SGPoint</a> &amp;_direction, const vector&lt; const <a class="el" href="classSGAction.html">SGAction</a> * &gt; &amp;_actionTuple, const vector&lt; bool &gt; &amp;_nonBindingStates, const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;_threatTuple)</td></tr>
+<tr class="separator:a66e36d5150597815900248836eb345b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19860e6d2af702df4ce47e36d4d43ec5"><td class="memTemplParams" colspan="2"><a class="anchor" id="a19860e6d2af702df4ce47e36d4d43ec5"></a>
 template&lt;class Archive &gt; </td></tr>
 <tr class="memitem:a19860e6d2af702df4ce47e36d4d43ec5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
@@ -141,16 +141,23 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a14ecfb94b3111911d9b0ef545f72e88d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdae7d336968af3515e7d9590cbcc46d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSGTuple.html">SGTuple</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#abdae7d336968af3515e7d9590cbcc46d">pivot</a></td></tr>
 <tr class="separator:abdae7d336968af3515e7d9590cbcc46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a554a41e3b428d0d05a1aec04b612cf3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#a554a41e3b428d0d05a1aec04b612cf3f">action</a></td></tr>
-<tr class="separator:a554a41e3b428d0d05a1aec04b612cf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f4cd9aa3ead30b86b081558f5a13147"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#a8f4cd9aa3ead30b86b081558f5a13147">state</a></td></tr>
-<tr class="separator:a8f4cd9aa3ead30b86b081558f5a13147"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7520e6ea4903e8b32884294a3c65b331"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#a7520e6ea4903e8b32884294a3c65b331">nonBinding</a></td></tr>
-<tr class="separator:a7520e6ea4903e8b32884294a3c65b331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac35e7e3049cd60c695a366cb8f75db37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSGPoint.html">SGPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#ac35e7e3049cd60c695a366cb8f75db37">direction</a></td></tr>
 <tr class="separator:ac35e7e3049cd60c695a366cb8f75db37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0deb29f2225a51bafa3dacc730fdb64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSGPoint.html">SGPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSGIteration.html#aa0deb29f2225a51bafa3dacc730fdb64">minIC</a></td></tr>
-<tr class="separator:aa0deb29f2225a51bafa3dacc730fdb64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16f16d027bab6baffeee1f4cadb3ce8f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16f16d027bab6baffeee1f4cadb3ce8f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>bestState</b></td></tr>
+<tr class="separator:a16f16d027bab6baffeee1f4cadb3ce8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7520e6ea4903e8b32884294a3c65b331"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7520e6ea4903e8b32884294a3c65b331"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>nonBinding</b></td></tr>
+<tr class="separator:a7520e6ea4903e8b32884294a3c65b331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade2d5d602a23f5a83a76283fa4dcec87"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade2d5d602a23f5a83a76283fa4dcec87"></a>
+vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>actionTuple</b></td></tr>
+<tr class="separator:ade2d5d602a23f5a83a76283fa4dcec87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b0ff346322adc15505863b4db3b999f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b0ff346322adc15505863b4db3b999f"></a>
+vector&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>nonBindingStates</b></td></tr>
+<tr class="separator:a0b0ff346322adc15505863b4db3b999f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaf191aa3e5adddbf1052602c927d03f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acaf191aa3e5adddbf1052602c927d03f"></a>
+<a class="el" href="classSGTuple.html">SGTuple</a>&#160;</td><td class="memItemRight" valign="bottom"><b>threatTuple</b></td></tr>
+<tr class="separator:acaf191aa3e5adddbf1052602c927d03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -163,7 +170,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <div class="textblock"><p>Stores data on the behavior of <a class="el" href="classSGApprox.html#ac32645eb1ff336044f7ee5d523c610ce" title="Refines the approximation. ">SGApprox::generate()</a> </p>
 <p>This class records information on each cut made by the twist algorithm. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6c8811a084f0bfa216219b2bce504a45"></a>
+<a class="anchor" id="a66e36d5150597815900248836eb345b3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -191,14 +198,20 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;&#160;</td>
-          <td class="paramname"><em>_pivot</em>, </td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>_bestState</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classSGAction.html">SGAction</a> &amp;&#160;</td>
-          <td class="paramname"><em>_action</em>, </td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>_nonBinding</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;&#160;</td>
+          <td class="paramname"><em>_pivot</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -209,8 +222,20 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>_nonBinding</em>&#160;</td>
+          <td class="paramtype">const vector&lt; const <a class="el" href="classSGAction.html">SGAction</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_actionTuple</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vector&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_nonBindingStates</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSGTuple.html">SGTuple</a> &amp;&#160;</td>
+          <td class="paramname"><em>_threatTuple</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -229,19 +254,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a554a41e3b428d0d05a1aec04b612cf3f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SGIteration::action</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The action profile that generates the shallowest admissible direction at the current iteration. </p>
-
-</div>
-</div>
 <a class="anchor" id="ac35e7e3049cd60c695a366cb8f75db37"></a>
 <div class="memitem">
 <div class="memproto">
@@ -265,32 +277,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
       </table>
 </div><div class="memdoc">
 <p>The value of <a class="el" href="classSGApprox.html#a7ab53424f5933726a15001ff2885a4a9">SGApprox::numIterations</a>. </p>
-
-</div>
-</div>
-<a class="anchor" id="aa0deb29f2225a51bafa3dacc730fdb64"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classSGPoint.html">SGPoint</a> SGIteration::minIC</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Minimum incentive compatible continuation value on this iteration. </p>
-
-</div>
-</div>
-<a class="anchor" id="a7520e6ea4903e8b32884294a3c65b331"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SGIteration::nonBinding</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>True if the shallowest admissible direction is generated without a binding constraint. </p>
 
 </div>
 </div>
@@ -330,19 +316,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
       </table>
 </div><div class="memdoc">
 <p>The value of <a class="el" href="classSGApprox.html#a2bd0cab80a3f8d799fdc2841b65dd2c2">SGApprox::numRevolutions</a>. </p>
-
-</div>
-</div>
-<a class="anchor" id="a8f4cd9aa3ead30b86b081558f5a13147"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SGIteration::state</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The state in which the shallowest admissible direction is generated at the current iteration. </p>
 
 </div>
 </div>

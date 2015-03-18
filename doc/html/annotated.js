@@ -6,6 +6,7 @@ var annotated =
     [ "SGException", "classSGException.html", "classSGException" ],
     [ "SGGame", "classSGGame.html", "classSGGame" ],
     [ "SGIteration", "classSGIteration.html", "classSGIteration" ],
+    [ "SGJYCSolver", "classSGJYCSolver.html", "classSGJYCSolver" ],
     [ "SGPoint", "classSGPoint.html", "classSGPoint" ],
     [ "SGSolution", "classSGSolution.html", "classSGSolution" ],
     [ "SGSolver", "classSGSolver.html", "classSGSolver" ],

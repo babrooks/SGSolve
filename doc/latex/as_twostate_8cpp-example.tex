@@ -81,7 +81,8 @@
   solver.\hyperlink{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}{solve}();
   
   cout << \textcolor{stringliteral}{"Saving data... "};
-  \hyperlink{classSGSolution_a9b68d89b32ad1f70a69912bbe414f73b}{SGSolution::save}(solver.\hyperlink{classSGSolver_a6e2e81f9a309bfb2523b98677de99868}{getSolution}(),\textcolor{stringliteral}{"sgtest.sln"});
+  \hyperlink{classSGSolution}{SGSolution} soln = solver.\hyperlink{classSGSolver_a6e2e81f9a309bfb2523b98677de99868}{getSolution}();
+  \hyperlink{classSGSolution_a9b68d89b32ad1f70a69912bbe414f73b}{SGSolution::save}(soln,\textcolor{stringliteral}{"sgtest.sln"});
   cout << \textcolor{stringliteral}{"Done!"} << endl;
 
   \hyperlink{classSGGame_aaccf18a3663ec99360e5b6e64f2bf6e2}{SGGame::save}(game,\textcolor{stringliteral}{"as\_twostate.sgm"});

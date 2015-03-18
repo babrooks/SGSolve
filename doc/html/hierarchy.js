@@ -8,6 +8,7 @@ var hierarchy =
     [ "SGEnv", "classSGEnv.html", null ],
     [ "SGGame", "classSGGame.html", null ],
     [ "SGIteration", "classSGIteration.html", null ],
+    [ "SGJYCSolver", "classSGJYCSolver.html", null ],
     [ "SGPoint", "classSGPoint.html", null ],
     [ "SGSolution", "classSGSolution.html", null ],
     [ "SGSolver", "classSGSolver.html", null ],

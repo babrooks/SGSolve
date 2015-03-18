@@ -6,6 +6,7 @@ var searchData=
   ['sgexception',['SGException',['../classSGException.html',1,'']]],
   ['sggame',['SGGame',['../classSGGame.html',1,'']]],
   ['sgiteration',['SGIteration',['../classSGIteration.html',1,'']]],
+  ['sgjycsolver',['SGJYCSolver',['../classSGJYCSolver.html',1,'']]],
   ['sgpoint',['SGPoint',['../classSGPoint.html',1,'']]],
   ['sgsolution',['SGSolution',['../classSGSolution.html',1,'']]],
   ['sgsolver',['SGSolver',['../classSGSolver.html',1,'']]],

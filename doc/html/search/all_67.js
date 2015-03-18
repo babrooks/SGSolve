@@ -8,7 +8,7 @@ var searchData=
   ['getminicpayoffs',['getMinICPayoffs',['../classSGAction.html#aa3758e5365a78ee447ec41914cc7bb99',1,'SGAction']]],
   ['getnormal',['getNormal',['../classSGPoint.html#a9afd46314dd53db086df54be5ebc0a56',1,'SGPoint']]],
   ['getnumactions',['getNumActions',['../classSGGame.html#a2502088ee42a763cb92e879363e48cf4',1,'SGGame']]],
-  ['getnumactions_5ftotal',['getNumActions_total',['../classSGGame.html#a02facc17211bcbac355cf2bfff95391f',1,'SGGame']]],
+  ['getnumactions_5ftotal',['getNumActions_total',['../classSGGame.html#a8b7cfd700ea2afbbe7f7a34fe6d99bf4',1,'SGGame']]],
   ['getnumplayers',['getNumPlayers',['../classSGGame.html#a5ff24b055096ba5d3b7f800f40b07cb9',1,'SGGame']]],
   ['getnumstates',['getNumStates',['../classSGGame.html#a680798dd8f42a1e1cb088745e7b952af',1,'SGGame']]],
   ['getpayoffbounds',['getPayoffBounds',['../classSGGame.html#aa351e7fb094dfc40ef6faba3fb5d5efc',1,'SGGame']]],

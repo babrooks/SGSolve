@@ -28,7 +28,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "abreusannikov_8cpp-example.html",
-"classSGSolver.html"
+"classSGPoint.html#acd23eead6f4b4240d532beaf1dfff30d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

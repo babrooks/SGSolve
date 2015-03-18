@@ -9,6 +9,8 @@ var dir_561701c8e79d5dfd48e3536aae5218c5 =
     [ "sgexception.hpp", "sgexception_8hpp_source.html", null ],
     [ "sggame.hpp", "sggame_8hpp_source.html", null ],
     [ "sgiteration.hpp", "sgiteration_8hpp_source.html", null ],
+    [ "sgjyc.hpp", "sgjyc_8hpp_source.html", null ],
+    [ "sgjycsolver.hpp", "sgjycsolver_8hpp_source.html", null ],
     [ "sgpoint.hpp", "sgpoint_8hpp_source.html", null ],
     [ "sgsolution.hpp", "sgsolution_8hpp_source.html", null ],
     [ "sgsolver.hpp", "sgsolver_8hpp_source.html", null ],

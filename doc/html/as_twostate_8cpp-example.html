@@ -178,10 +178,11 @@ $(document).ready(function(){initNavTree('as_twostate_8cpp-example.html','');});
 <div class="line">  solver.<a name="a3"></a><a class="code" href="classSGSolver.html#a220dd431eabdd9ff8419fafb28b7b990">solve</a>();</div>
 <div class="line">  </div>
 <div class="line">  cout &lt;&lt; <span class="stringliteral">&quot;Saving data... &quot;</span>;</div>
-<div class="line">  <a name="a4"></a><a class="code" href="classSGSolution.html#a9b68d89b32ad1f70a69912bbe414f73b">SGSolution::save</a>(solver.<a name="a5"></a><a class="code" href="classSGSolver.html#a6e2e81f9a309bfb2523b98677de99868">getSolution</a>(),<span class="stringliteral">&quot;sgtest.sln&quot;</span>);</div>
+<div class="line">  <a name="_a4"></a><a class="code" href="classSGSolution.html">SGSolution</a> soln = solver.<a name="a5"></a><a class="code" href="classSGSolver.html#a6e2e81f9a309bfb2523b98677de99868">getSolution</a>();</div>
+<div class="line">  <a name="a6"></a><a class="code" href="classSGSolution.html#a9b68d89b32ad1f70a69912bbe414f73b">SGSolution::save</a>(soln,<span class="stringliteral">&quot;sgtest.sln&quot;</span>);</div>
 <div class="line">  cout &lt;&lt; <span class="stringliteral">&quot;Done!&quot;</span> &lt;&lt; endl;</div>
 <div class="line"></div>
-<div class="line">  <a name="a6"></a><a class="code" href="classSGGame.html#aaccf18a3663ec99360e5b6e64f2bf6e2">SGGame::save</a>(game,<span class="stringliteral">&quot;as_twostate.sgm&quot;</span>);</div>
+<div class="line">  <a name="a7"></a><a class="code" href="classSGGame.html#aaccf18a3663ec99360e5b6e64f2bf6e2">SGGame::save</a>(game,<span class="stringliteral">&quot;as_twostate.sgm&quot;</span>);</div>
 <div class="line"></div>
 <div class="line"></div>
 <div class="line">  <span class="keywordflow">return</span> 0;</div>
