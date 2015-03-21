@@ -27,6 +27,49 @@ SGSolutionHandler::SGSolutionHandler()
   stateSlider = new QScrollBar();
   stateSlider->setOrientation(Qt::Horizontal);
 
+  QWidget * botSolutionPanel = new QWidget();
+
+  // QPalette botPalette = botSolutionPanel->palette();
+  // botPalette.setColor(QPalette::Background,Qt::red);
+  // botSolutionPanel->setPalette(botPalette);
+  // botSolutionPanel->setAutoFillBackground(true);
+
+  QScrollArea * topRightScrollArea = new QScrollArea();
+  
+  QWidget * statePlotsWidget = new QWidget();
+  statePlotsWidget->setLayout(statePlotsLayout);
+  topRightScrollArea->setWidget(statePlotsWidget);
+
+  topRightScrollArea->setWidgetResizable(true);
+  topRightScrollArea->setSizePolicy(QSizePolicy::Expanding,
+  				    QSizePolicy::Preferred);
+  topRightScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+  QHBoxLayout * topLayout = new QHBoxLayout();
+  topLayout->addWidget(detailPlot);
+  topLayout->addWidget(topRightScrollArea);
+
+  QWidget * topSolutionPanel = new QWidget();
+  topSolutionPanel->setLayout(topLayout);
+
+  // Add sliders to bottom panel
+  QFormLayout * botLayout = new QFormLayout(botSolutionPanel);
+  botLayout->addRow(new QLabel(tr("End iteration:")),
+		    iterSlider);
+  botLayout->addRow(new QLabel(tr("Start iteration:")),
+		    startSlider);
+  botLayout->addRow(new QLabel(tr("Action:")),
+		    actionSlider);
+  botLayout->addRow(new QLabel(tr("State:")),
+		    stateSlider);
+  botSolutionPanel->setFixedHeight(100);
+  botLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+  
+  layout = new QVBoxLayout();
+  layout->addWidget(topSolutionPanel);
+  layout->addWidget(botSolutionPanel);
+
+  // Connect signals and slots
   connect(iterSlider,SIGNAL(valueChanged(int)),
 	  this,SLOT(iterSliderUpdate(int)));
   connect(startSlider,SIGNAL(valueChanged(int)),

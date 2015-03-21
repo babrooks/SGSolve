@@ -9,9 +9,12 @@
 
 //! Describes an action in the game
 /*! Stores IC region information for a single action. Stores the
-action, minimum incentive compatible payoffs, points of intersection
-between the IC region and the expected feasible set, and indices of
-the tuples that generate the points of intersection. */
+  action, minimum incentive compatible payoffs, points of intersection
+  between the IC region and the expected feasible set, and indices of
+  the tuples that generate the points of intersection.
+
+  \ingroup src
+*/
 class SGAction
 {
 protected:
@@ -38,11 +41,6 @@ protected:
                                northern or easternmost of the two
                                binding payoffs. */ 
 
-  // vector< vector<SGPoint> > slopes; /*!< These are the slopes of the
-  //                                      boundary expected feasibile set
-  //                                      that extends clockwise from the
-  //                                      binding point. */
-
   vector< vector< int > > tuples; /*!< The vector tuples[i][j] points
                                      to the element of
                                      SGApproximation::extremeTuples
@@ -57,17 +55,22 @@ protected:
 
 
 public:
-  // //! Default constructor
-  // SGAction() {}
-  //! Initializes the action with the given state/action
+  //! Constructor
+  /*! Constructs a null action associated with the given SGEnv. */
   SGAction(const SGEnv & _env):
     env(_env),
     isNull(true)
   {}
 
+  //! Constructor
+  /*! Constructs an action for the given state and action index in the
+      given environment. */
   SGAction(const SGEnv & _env, int _state, int _action);
+
+  //! Destructor
   ~SGAction() {}
 
+  //! Returns true if the action is null.
   bool getIsNull() const {return isNull;}
 
   //! Returns the action
@@ -83,7 +86,8 @@ public:
   void intersectRay(const SGPoint & pivot, 
   		    const SGPoint & direction);
   //! Static method to carry out trimming operations
-  /*! */
+  /*! Intersects the action with the ray emanating from pivot in the
+      given direction. */
   void intersectRaySegment(const SGPoint & pivot,
 			   const SGPoint & direction,
 			   int player);
@@ -93,6 +97,10 @@ public:
 		      const vector<bool> & update,
 		      const SGTuple & threatTuple);
 
+  //! Calculates the IC constraint.
+  /*! Calculates the minimum incentive compatible expected
+      continuation value for the given action, relative to the given
+      threat tuple and for the given SGGame. */
   static double calculateMinIC(int action,int state, int player,
 			       const SGGame & game,
 			       const SGTuple & threatTuple);

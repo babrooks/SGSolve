@@ -13,17 +13,23 @@
   method, as well as the data structure produced by solve. It
   calculates the equilibrium payoff correspondence corresponding to an
   SGGame object.
+
+  \ingroup src
  */
 class SGSolver
 {
 private:
   // Data
+
+  //! SGEnv object to hold parameters
   const SGEnv & env;
-  const SGGame & game; /*! Constant reference to the game to be solved. */
+  //! Constant reference to the game to be solved.
+  const SGGame & game; 
+  //! SGSolution object used by SGApprox to store data.
   SGSolution soln;
 
 public:
-
+  //! Default constructor
   SGSolver(); 
 
   //! Constructor
@@ -32,6 +38,7 @@ public:
   SGSolver(const SGEnv & _env, 
 	   const SGGame & _game);
 
+  //! Destructor
   ~SGSolver() {}
 
   //! Solve routine

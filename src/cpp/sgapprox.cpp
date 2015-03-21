@@ -20,16 +20,16 @@ void SGApprox::initialize()
   // Create the intersection arrays.
   for (state = 0; state < numStates; state++)
     {
-      if (eqActions.size()==numStates 
-	  && eqActions[state].size()>0)
+      if (game.eqActions.size()==numStates 
+	  && game.eqActions[state].size()>0)
 	{
-	  for (list<int>::const_iterator actionIter = eqActions[state].begin(); 
-	       actionIter != eqActions[state].end(); 
+	  for (list<int>::const_iterator actionIter = game.eqActions[state].begin(); 
+	       actionIter != game.eqActions[state].end(); 
 	       ++actionIter)
 	    actions[state].push_back(SGAction(env,state,*actionIter));
 	}
       else
-	for (action = 0; action < numActions_total[state]; action++)
+	for (action = 0; action < game.numActions_total[state]; action++)
 	  actions[state].push_back(SGAction(env,state,action));
     } // state
 
@@ -164,8 +164,8 @@ void SGApprox::findBestDirection()
 	   action != actions[state].end();
 	   ++action)
 	{
-	  SGPoint expPivot = pivot.expectation(probabilities[state][action->action]);
-	  SGPoint stagePayoff = payoffs[state][action->action];
+	  SGPoint expPivot = pivot.expectation(game.probabilities[state][action->action]);
+	  SGPoint stagePayoff = game.payoffs[state][action->action];
 	  SGPoint nonBindingPayoff = (1-delta) * stagePayoff + delta * expPivot;
 	  SGPoint nonBindingDirection = nonBindingPayoff - pivot[state];
 	  double nonBindingNorm = nonBindingDirection.norm();
@@ -248,7 +248,7 @@ void SGApprox::findBestDirection()
 			  while (nextPoint < extremeTuples.size())
 			    {
 			      SGPoint newExpContVal = extremeTuples[nextPoint]
-				.expectation(probabilities[state][action->action]);
+				.expectation(game.probabilities[state][action->action]);
 			      SGPoint nextDirection = (1-delta)*stagePayoff
 				+ delta*newExpContVal
 				- pivot[state];
@@ -400,7 +400,7 @@ void SGApprox::calculateNewPivot()
 
 	      tempMovement = (delta*actionTuple[state]->minIC[player]
 			      -pivot[state][player]
-			      +(1-delta)*payoffs[state][actionTuple[state]->action][player])
+			      +(1-delta)*game.payoffs[state][actionTuple[state]->action][player])
 		/ currentDirection[player];
 	      
 	      if (tempMovement < maxMovement[state]
@@ -466,7 +466,7 @@ double SGApprox::updatePivot(vector<double> & movements,
       for (int statep = 0; statep < numStates; statep++)
 	{
 	  tempChange[state] += delta* 
-	    probabilities[state][actionTuple[state]->action][statep]
+	    game.probabilities[state][actionTuple[state]->action][statep]
 	    * changes[statep];
 	}
     }
@@ -627,7 +627,7 @@ void SGApprox::updateMinPayoffs()
   for (int player = 0; player < numPlayers; player++)
     {
       if (!updatedThreatTuple[player] 
-	  || unconstrained[player])
+	  || game.unconstrained[player])
 	update[player] = false;
     }
 
@@ -664,7 +664,7 @@ void SGApprox::calculateBindingContinuations()
 	  for (int player = 0; player < numPlayers; player++)
 	    {
 	      if (!updatedThreatTuple[player]
-		  || unconstrained[player])
+		  || game.unconstrained[player])
 		continue;
 	      anyUpdate = true;
 
@@ -672,7 +672,7 @@ void SGApprox::calculateBindingContinuations()
 	      action->points[player].clear(); 
 	  
 	      nextPoint = extremeTuples.back()
-		.expectation(probabilities[action->state]
+		.expectation(game.probabilities[action->state]
 			     [action->action]);
 
 	      for (tuple = extremeTuples.rbegin(),
@@ -682,7 +682,7 @@ void SGApprox::calculateBindingContinuations()
 		   ++tuple,++nextTuple, --tupleIndex)
 		{
 		  point = nextPoint;
-		  nextPoint = nextTuple->expectation(probabilities
+		  nextPoint = nextTuple->expectation(game.probabilities
 						     [action->state]
 						     [action->action]);
 
@@ -720,7 +720,7 @@ void SGApprox::calculateBindingContinuations()
 	  for (int player = 0; player < numPlayers; player++)
 	    {	      
 	      if (updatedThreatTuple[player] 
-		  && !unconstrained[player])
+		  && !game.unconstrained[player])
 		{
 		  // Remove points that are not IC
 		  int maxIndex, minIndex;
@@ -750,7 +750,7 @@ void SGApprox::calculateBindingContinuations()
 			}
 
 		      SGPoint expPivot 
-			= pivot.expectation(probabilities[state][action->getAction()]);
+			= pivot.expectation(game.probabilities[state][action->getAction()]);
 		      action->intersectRaySegment(expPivot,currentDirection,
 						  player);
 		      
@@ -786,8 +786,8 @@ void SGApprox::calculateBindingContinuations()
 			   -env.pastThreatTol)));
 
 	  // Drop the point if no longer IC
-	  if ((action->points[0].size() == 0 && !unconstrained[0])
-	      && (action->points[1].size() == 0 && !unconstrained[1]))
+	  if ((action->points[0].size() == 0 && !game.unconstrained[0])
+	      && (action->points[1].size() == 0 && !game.unconstrained[1]))
 	    {
 	      if (actionTuple[state] == &(*action))
 		nonBindingStates[state] = false;
@@ -815,7 +815,7 @@ void SGApprox::trimBindingContinuations()
 	  // Check if the line starting from pivot towards direction
 	  // cuts any of the intersection lines.
 	  expPivot 
-	    = pivot.expectation(probabilities[state][action->getAction()]);
+	    = pivot.expectation(game.probabilities[state][action->getAction()]);
 
 	  action->intersectRay(expPivot,currentDirection);
 

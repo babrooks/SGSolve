@@ -5,11 +5,15 @@
 
 //! SGSolve specific exceptions
 /*! This class is derived from std::exception and handles special
-    messages that are informative about abnormal behavior in SGSolver
-    and associated classes. */
+  messages that are informative about abnormal behavior in SGSolver
+  and associated classes. 
+
+  \ingroup src
+*/
 class SGException : public std::exception
 {
 public:
+  //! Code for the type of error.
   enum EXCEPTION_TYPE 
     { 
       FAILED_OPEN, /*!< SGData was not able to open the given file. */

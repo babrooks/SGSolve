@@ -9,7 +9,10 @@
 
 //! Stores data on the behavior of SGApprox::generate()
 /*! This class records information on each cut made by the twist
-    algorithm. */
+    algorithm. 
+
+    \ingroup src
+*/
 class SGIteration
 {
 public:
@@ -20,10 +23,15 @@ public:
   SGPoint direction; /*!< The shallowest admissible direction at the
                         current revolution. */
 
-  int bestState;
-  bool nonBinding;
-  vector<int> actionTuple;
-  vector<bool> nonBindingStates;
+  //! The state that generated the best direction.
+  int bestState; 
+  //! True if the best direction was non-binding.
+  bool nonBinding; 
+  //! The current action tuple.
+  vector<int> actionTuple; 
+  //! The states in which IC constraints are not binding. 
+  vector<bool> nonBindingStates; 
+  //! The current threat tuple.
   SGTuple threatTuple;
 
   //! Default constructor
@@ -61,6 +69,8 @@ public:
   //! Serializes the SGIteration object using boost.
   friend class boost::serialization::access;
   template<class Archive>
+
+  //! Serialize the iteration using Boost.
   void serialize(Archive &ar, const unsigned int version)
   {
     ar & iteration & revolution & numExtremeTuples

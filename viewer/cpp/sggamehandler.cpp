@@ -1,7 +1,8 @@
 #include <QtWidgets>
 #include "sggamehandler.hpp"
 
-SGGameHandler::SGGameHandler()
+SGGameHandler::SGGameHandler():
+  game(SGGame())
 {
   deltaEdit = new QLineEdit("0.9");
   deltaEdit->setSizePolicy(QSizePolicy::Preferred,
@@ -11,10 +12,10 @@ SGGameHandler::SGGameHandler()
   numStatesEdit->setSizePolicy(QSizePolicy::Preferred,
 			       QSizePolicy::Preferred);
   numStatesEdit->setReadOnly(true);
-  addStateButton = new QPushButton("+");
-  removeStateButton = new QPushButton(" -");
-  nextStateButton = new QPushButton("->");
-  prevStateButton = new QPushButton("<-");
+  QPushButton * addStateButton = new QPushButton("+");
+  QPushButton * removeStateButton = new QPushButton(" -");
+  QPushButton * nextStateButton = new QPushButton("->");
+  QPushButton * prevStateButton = new QPushButton("<-");
 
   QSize buttonSize(50,addStateButton->height());
   addStateButton->resize(buttonSize);
@@ -37,8 +38,8 @@ SGGameHandler::SGGameHandler()
 				 QSizePolicy::Preferred);
 
   numActionsEdits = vector<QLineEdit*>(2);
-  addActionButtons = vector<QPushButton*>(2);
-  removeActionButtons = vector<QPushButton*>(2);
+  vector<QPushButton *> addActionButtons = vector<QPushButton*>(2);
+  vector<QPushButton *> removeActionButtons = vector<QPushButton*>(2);
   for (int player = 0; player < 2; player++)
     {
       numActionsEdits[player] = new QLineEdit("1");
@@ -61,7 +62,7 @@ SGGameHandler::SGGameHandler()
 						 QSizePolicy::Preferred);
     }
   
-  errorTolEdit = new QLineEdit("1e-8");
+  QLineEdit * errorTolEdit = new QLineEdit("1e-8");
   errorTolEdit->setSizePolicy(QSizePolicy::Preferred,
 			      QSizePolicy::Preferred);
 
@@ -73,10 +74,9 @@ SGGameHandler::SGGameHandler()
   payoffModel = NULL;
 
   probabilityTableLayout = new QVBoxLayout();
-  qDebug() << "First there are " << probabilityTableLayout->count() << endl;
   probabilityTableLayout->addWidget(probabilityTableViews[0]);
 
-  qDebug() << "Then there are " << probabilityTableLayout->count() << endl;
+  initializeModels();
 
   currentStateCombo = new QComboBox();
   currentStateCombo->addItem("0");
@@ -84,6 +84,114 @@ SGGameHandler::SGGameHandler()
 				   QSizePolicy::Preferred);
 
   feasibleCheckBox = new QCheckBox(QString("Only calculate feasible set"));
+
+  // Construct layout
+  layout = new QVBoxLayout();
+  QHBoxLayout * controlLayout = new QHBoxLayout();
+  QFormLayout * leftControlLayout = new QFormLayout();
+  QFormLayout * centerControlLayout = new QFormLayout();
+  QFormLayout * rightControlLayout = new QFormLayout();
+  QHBoxLayout * tableLayout = new QHBoxLayout();
+  QVBoxLayout * payoffLayout = new QVBoxLayout();
+  QVBoxLayout * probabilityLayout = new QVBoxLayout();
+  
+  solveButton = new QPushButton(tr("Solve"));
+  solveButton->setSizePolicy(QSizePolicy::Fixed,
+			     QSizePolicy::Preferred);
+  solveButton->resize(300,solveButton->height());
+
+  cancelButton = new QPushButton(tr("Cancel"));
+  cancelButton->setSizePolicy(QSizePolicy::Fixed,
+			      QSizePolicy::Preferred);
+  cancelButton->resize(300,cancelButton->height());
+
+  // qDebug() << "I got to here!!!" << endl;
+  
+  QHBoxLayout * deltaLayout = new QHBoxLayout();
+  deltaLayout->addWidget(deltaEdit);
+  deltaLayout->setSpacing(5);
+
+  QHBoxLayout * currentStateLayout = new QHBoxLayout();
+  currentStateLayout->addWidget(currentStateCombo);
+  currentStateLayout->addWidget(prevStateButton);
+  currentStateLayout->addWidget(nextStateButton);
+  currentStateLayout->setSpacing(5);
+  
+  centerControlLayout->addRow(new QLabel(tr("Discount factor:")),
+			      deltaLayout);
+  centerControlLayout->addRow(new QLabel(tr("Error tolerance:")),
+			      errorTolEdit);
+  centerControlLayout->addRow(new QLabel(tr("Current state:")),
+			      currentStateLayout);
+  // leftControlLayout->addRow(removeStateButton,
+  // 			    addStateButton);
+  // leftControlLayout->setSpacing(0);
+
+  for (int player = 0; player < 2; player ++)
+    {
+      QHBoxLayout * numActionsLayout = new QHBoxLayout();
+      numActionsLayout->addWidget(numActionsEdits[player]);
+      numActionsLayout->addWidget(removeActionButtons[player]);
+      numActionsLayout->addWidget(addActionButtons[player]);
+      numActionsLayout->setSpacing(5);
+
+      QString numActionsLabel = QString(tr("Player "))
+	+QString::number(player+1)
+	+QString(tr("'s number of actions ("));
+      if (player == 0)
+	numActionsLabel += QString(tr("row"));
+      else
+	numActionsLabel += QString(tr("column"));
+      numActionsLabel += QString(tr("):"));
+      
+      leftControlLayout->addRow(numActionsLabel,
+				numActionsLayout);
+      
+    }
+
+  QHBoxLayout * numStatesLayout = new QHBoxLayout();
+  numStatesLayout->addWidget(numStatesEdit);
+  numStatesLayout->addWidget(removeStateButton);
+  numStatesLayout->addWidget(addStateButton);
+  numStatesLayout->setSpacing(5);
+  leftControlLayout->addRow(new QLabel(tr("Number of states:")),
+			    numStatesLayout);
+  leftControlLayout->setSpacing(5);
+
+  
+  rightControlLayout->addRow(feasibleCheckBox);
+  rightControlLayout->addRow(solveButton);
+  rightControlLayout->addRow(cancelButton);
+  
+  controlLayout->addLayout(leftControlLayout);
+  controlLayout->addLayout(centerControlLayout);
+  controlLayout->addLayout(rightControlLayout);
+
+  payoffLayout->addWidget(new QLabel(tr("Stage payoffs:")));
+  payoffLayout->addWidget(payoffTableView);
+
+  QScrollArea * probabilityScrollArea = new QScrollArea();
+  QWidget * probabilityWidget = new QWidget();
+
+  probabilityWidget->setLayout(probabilityTableLayout);
+  probabilityScrollArea->setWidget(probabilityWidget);
+
+  probabilityScrollArea->setWidgetResizable(true);
+  probabilityScrollArea->setSizePolicy(QSizePolicy::Expanding,
+				       QSizePolicy::Expanding);
+  probabilityScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+  probabilityLayout->addWidget(new QLabel(tr("Transition probabilities:")));
+  probabilityLayout->addWidget(probabilityScrollArea);
+
+  tableLayout->addLayout(payoffLayout);
+  tableLayout->addLayout(probabilityLayout);
+
+  // resizePayoffTable(0,2,0,2);
+  // resizeProbabilityTable(0,2,0,2,0,1);
+  
+  layout->addLayout(controlLayout);
+  layout->addLayout(tableLayout);
 
   // Connect slots
   connect(currentStateCombo,SIGNAL(currentIndexChanged(int)),

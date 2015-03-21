@@ -10,7 +10,10 @@
 #include <boost/serialization/utility.hpp>
 
 //! Describes a stochastic game
-/*! This class contains members that describe a stochastic game. */
+/*! This class contains members that describe a stochastic game. 
+  
+  \ingroup src
+ */
 class SGGame
 {
 private:
@@ -97,6 +100,7 @@ public:
 	 const vector< vector< vector<double> > > & _payoffs,
 	 const vector< vector< vector<double> > > & _probabilities);
 
+  //! Constructor customizing unconstrained.
   SGGame(double _delta,
 	 int _numStates,
 	 const vector< vector<int> > & _numActions,
@@ -143,17 +147,37 @@ public:
   //! payoffs, respectively.
   void getPayoffBounds(SGPoint & UB, SGPoint & LB) const;
 
+  //! Returns the unconstrained vector.
   const vector<bool> & getConstrained() const
   { return unconstrained; }
 
+  //! Set discount factor.
+  /*! Method for setting the discount factor. */
   bool setDiscountFactor(double newDelta);
+  //! Set payoffs.
+  /*! Method for setting payoffs for the given player, action, and
+    state. */
   bool setPayoff(int state, int action, int player, double payoff);
+  //! Set probability.
+  /*! Sets the transition probability from state to newState when
+      action is played. */
   bool setProbability(int state, int action,
 		      int newState, double prob);
+  //! Sets whether or not players are incentive constrained
   bool setConstrained(const vector<bool> & _unconstrained);
+  //! Adds a new action
+  /*! Adds a new action for the given state and player just after the
+      action at index position. The new action has payoffs initialized
+      to zero, and state remains the same with probability 1. */
   bool addAction(int state, int player, int position);
+  //! Removes the given action
   bool removeAction(int state, int player, int action);
+  //! Adds a new state.
+  /*! Inserts a new state after the index position. The new state has
+      one action for each player with payoffs of zero, and the state
+      is absorbing. */
   bool addState(int position);
+  //! Removes the given state.
   bool removeState(int state);
   
   //! Static method for saving an SGGame object to the file filename.

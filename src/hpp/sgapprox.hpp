@@ -10,14 +10,17 @@
 
 //! Approximation of the equilibrium payoff correspondence.
 /*! This class contains an approximation of the equilibrium payoff
-    correspondence. At its core, it contains a sequence of extreme
-    tuples that have been generated thus far, a pivot, and a
-    direction. The main method, SGApprox::generate(), finds a
-    new direction that will not intersect the equilibrium payoff
-    correspondence and updates the pivot in that direction. By
-    successively calling SGApprox::generate(), the
-    approximation will be refined and asymptotically it will converge
-    to the equilibrium payoff correspondence. */
+  correspondence. At its core, it contains a sequence of extreme
+  tuples that have been generated thus far, a pivot, and a
+  direction. The main method, SGApprox::generate(), finds a
+  new direction that will not intersect the equilibrium payoff
+  correspondence and updates the pivot in that direction. By
+  successively calling SGApprox::generate(), the
+  approximation will be refined and asymptotically it will converge
+  to the equilibrium payoff correspondence. 
+  
+  \ingroup src
+*/
 class SGApprox
 {
 private:
@@ -33,41 +36,6 @@ private:
   const int numPlayers; /*!< The number of players, always 2. */
   const int numStates; /*!< The number of states, copied from
                           SGApprox::game. */
-  const vector< vector<int> > & numActions; /*!< Player i in state s
-                                               has numActions[s][i]
-                                               actions. Constant
-                                               reference to
-                                               SGGame::numActions in
-                                               SGApprox::game. */
-  const vector<int> & numActions_total; /*!< In state s, there are a
-                                           total of
-                                           numActions_total[s] action
-                                           profiles. Constant
-                                           reference to
-                                           SGGame::numActions_total in
-                                           SGApprox::game. */
-  const vector< vector<SGPoint> > & payoffs; /*!< payoff[s][a] is the
-                                                vector of payoffs
-                                                under state s and
-                                                action profile
-                                                a. Constant reference
-                                                to SGGame::payoffs in
-                                                SGApprox::game. */
-  const vector< vector< vector<double> > >
-  & probabilities; /*!< probabilities[s][a][s'] is the probability of
-		     transitioning from state s to s' under action
-		     profile a. Const reference to
-		     SGGame::probabilities in
-		     SGApprox::game. */
-  const vector< list<int> > & eqActions; /*!< List of action profiles
-					   that are allowed in
-					   equilibrium. Const
-					   reference to
-					   SGGame::eqActions in
-					   SGApprox::game. */
-  const vector<bool> & unconstrained; /*!< Const reference to
-                                        SGGame::unconstrained in
-                                        SGApprox::game. */
 
   std::ofstream logfs; /*!< File stream for log file. */
   
@@ -118,7 +86,7 @@ private:
                     revolution. */
   int newWest; /*!< Index within SGApprox::extremeTuples of the
 		 westernmost tuple on the current revolution. */
-  int oldWest;
+  int oldWest; /*!< Previous value of westPoint. */
 
   //! Calculates the minimum IC continuation values
   /*! This method calculates for each SGAction object in
@@ -208,10 +176,7 @@ public:
 	   SGSolution & _soln):
     env(_env), game(_game), soln(_soln),
     delta(game.delta), numPlayers(game.numPlayers),
-    numStates(game.numStates), numActions(game.numActions),
-    numActions_total(game.numActions_total), payoffs(game.payoffs),
-    probabilities(game.probabilities), eqActions(game.eqActions),
-    unconstrained(game.unconstrained), errorLevel(1)
+    numStates(game.numStates), errorLevel(1)
   { }
   
   //! Prepares the approximation for generation
@@ -231,6 +196,9 @@ public:
    revolution is completed. Otherwise, returns 1. */
   double generate();
 
+  //! Algorithm just passed north.
+  /*! Indicates whether or not the current direction passed north on
+      this iteration. */
   bool passedNorth() const
   {return passNorth; }
 

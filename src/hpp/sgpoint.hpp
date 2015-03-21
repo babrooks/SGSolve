@@ -6,7 +6,10 @@
 #include "sgcommon.hpp"
 
 //! A vector in \f$\mathbb{R}^2\f$
-/*! A simple two-dimensional vector that supports arithmetic operations. */
+/*! A simple two-dimensional vector that supports arithmetic operations. 
+
+  \ingroup src
+ */
 class SGPoint
 {
 protected:
@@ -27,6 +30,7 @@ public:
   SGPoint(double x, double y): xy(2,0.0)
   { xy[0] = x; xy[1] = y;  }
 
+  //! Destructor
   ~SGPoint(){}
 
   //! Returns the counter-clockwise normal vector.
@@ -99,15 +103,25 @@ public:
   //! Output SGPoint to ostream
   friend ostream& operator<<(ostream& out, const SGPoint& rhs);
 
-  
+  //! Inverts a linear system
+  /*! Solves the system of equations
+      \f$\left[\begin{array}{c}{a_0}{a_1}\end{array}\right]x=b\f$. */
   static double invertSystem(SGPoint& x, const SGPoint&b,
 			     const SGPoint& a0, const SGPoint& a1);
+  //! Calculates intersection of a segment with a ray.
+  /*! Calculates the intersection of the ray defined by
+      \f$pivot+t\cdot{}direction\f$ with the line segment
+      \f$\alpha{}t_0+(1-\alpha)t_1\f$ for \f$\alpha\in[0,1]\f$. */
   static double intersectRay(SGPoint& intersection,
 			     SGPoint& weights,
 			     const SGPoint& pivot,
 			     const SGPoint& direction,
 			     const SGPoint& t0,
 			     const SGPoint& t1);
+  //! Calculates determinant.
+  /*! Calculates the signed area of the parallelogram starting at
+      \f$p_0\f$ and going in the directions \f$p_1\f$ and
+      \f$p_2\f$. */
   static double signedArea(const SGPoint& p0,
 			   const SGPoint& p1,
 			   const SGPoint& p2);

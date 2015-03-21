@@ -7,21 +7,34 @@
 #include "sgexception.hpp"
 #include "gurobi_c++.h"
 
+//! Class that implements the JYC algorithm using Gurobi
+/*! This class implements the generalization of the algorithm of Judd,
+    Yeltekin, and Conklin (2002) for solving stochastic games.
 
+  \ingroup src
+ */
 class SGJYCSolver
 {
 private:
+  //! Const reference to the game being solved.
   const SGGame & game;
 
+  //! The Gurobi environment.
   GRBEnv * env;
+  //! The Gurobi model.
   GRBModel * model;
 
+  //! Payoff bounds.
   vector< vector<double> > bounds;
+
+  //! List of gradients in which to bound the correspondence.
   vector<SGPoint> directions;
 
+  //! Number of gradients
   int numDirections;
 
 public:
+  //! Constructor
   SGJYCSolver(const SGGame & _game, int _numDirections):
     game(_game),
     bounds(vector< vector<double> > (game.getNumStates(),
@@ -41,13 +54,14 @@ public:
     env->set(GRB_IntParam_OutputFlag,0);
   }
 
+  //! Solve routine
   void solve();
 
+  //! Initializes the solver
   void initialize();
   
+  //! Runs one iteration
   double iterate();
-  
-  void end();
 };
 
 void SGJYCSolver::solve()
@@ -266,10 +280,6 @@ double SGJYCSolver::iterate()
   bounds = newBounds;
 
   return dist;
-}
-
-void SGJYCSolver::end()
-{
 }
 
 #endif 

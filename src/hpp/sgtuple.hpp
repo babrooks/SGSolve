@@ -7,7 +7,10 @@
 
 //! Tuple of SGPoint objects
 /*! Essentially a vector of SGPoint objects that supports arithmetic
-    operations. */
+  operations. 
+
+  \ingroup src
+*/
 class SGTuple
 {
 private:

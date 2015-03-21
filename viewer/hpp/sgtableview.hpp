@@ -4,11 +4,18 @@
 #include <QtWidgets>
 #include <QAbstractItemView>
 
+//! Specialized table view for SGViewer
+/*! Reimplements various sizing methods and configures the size policy
+  and selection mode. 
+
+  \ingroup viewer
+*/
 class SGTableView : public QTableView
 {
   Q_OBJECT
 
 public:
+  //! Constructor
   SGTableView ()
   {
     setSelectionMode(QAbstractItemView::ContiguousSelection);
@@ -17,11 +24,15 @@ public:
     // horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
   }
 
+  //! Reimplement column size to be slightly smaller
   int sizeHintForColumn(int col) const
   {
     return 65;
   }
 
+  //! Reimplement minimumSizeHint 
+  /*! Recommends a size so that the table is just larger than what is
+      required to show all of the cells. */
   QSize minimumSizeHint() const
   {
     QSize hint(QTableView::sizeHint());
@@ -37,26 +48,18 @@ public:
     
     newHeight += horizontalHeader()->sizeHint().height();
 
-    qDebug() << "new height = " << newHeight << endl;
-
-    qDebug() << "number of rows = " << model()->rowCount() << endl;
     hint.setHeight(newHeight);
     hint.setWidth(newWidth);
     
     return hint;
   }
 
+  //! Hint is equal to minimum size so table wont grow.
   QSize sizeHint() const
   {
     return minimumSizeHint();
   }
 
-  void resizeEvent(QResizeEvent * event)
-  {
-    QAbstractItemView::resizeEvent(event);
-    // resizeColumnsToContents();
-  }
-  
 };
 
 #endif

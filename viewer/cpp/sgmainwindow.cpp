@@ -8,16 +8,15 @@ SGMainWindow::SGMainWindow()
   path = QString("./");
   
   gameHandler = new SGGameHandler();
-  gameHandler->setGame(SGGame());
 
   solutionHandler = new SGSolutionHandler();
 
   // Menu bar
   QMenu * fileMenu = menuBar()->addMenu(tr("&File"));
-  loadSolutionAction = new QAction(tr("&Load solution"),this);
-  loadGameAction = new QAction(tr("Load &game"),this);
-  saveSolutionAction = new QAction(tr("&Save solution"),this);
-  saveGameAction = new QAction(tr("Save game"),this);
+  QAction * loadSolutionAction = new QAction(tr("&Load solution"),this);
+  QAction * loadGameAction = new QAction(tr("Load &game"),this);
+  QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
+  QAction * saveGameAction = new QAction(tr("Save game"),this);
   fileMenu->addAction(loadSolutionAction);
   fileMenu->addAction(loadGameAction);
   fileMenu->addSeparator();
@@ -28,53 +27,11 @@ SGMainWindow::SGMainWindow()
   loadGameAction->setShortcut(tr("Ctrl+G"));
 
   QMenu * viewMenu = menuBar()->addMenu(tr("&View"));
-  screenShotAction = new QAction(tr("&Save a screen shot"),this);
-  viewMenu->addAction(solutionHandler->detailedTitlesAction);
+  QAction * screenShotAction = new QAction(tr("&Save a screen shot"),this);
+  viewMenu->addAction(solutionHandler->getDetailedTitlesAction());
   viewMenu->addSeparator();
   viewMenu->addAction(screenShotAction);
 
-  botPanel = new QWidget();
-
-  // QPalette botPalette = botPanel->palette();
-  // botPalette.setColor(QPalette::Background,Qt::red);
-  // botPanel->setPalette(botPalette);
-  // botPanel->setAutoFillBackground(true);
-
-  QScrollArea * topRightScrollArea = new QScrollArea();
-  
-  QWidget * statePlotsWidget = new QWidget();
-  statePlotsWidget->setLayout(solutionHandler->statePlotsLayout);
-  topRightScrollArea->setWidget(statePlotsWidget);
-
-  topRightScrollArea->setWidgetResizable(true);
-  topRightScrollArea->setSizePolicy(QSizePolicy::Expanding,
-  				    QSizePolicy::Preferred);
-  topRightScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-
-  QHBoxLayout * topLayout = new QHBoxLayout();
-  topLayout->addWidget(solutionHandler->detailPlot);
-  topLayout->addWidget(topRightScrollArea);
-
-  QWidget * topPanel = new QWidget();
-  topPanel->setLayout(topLayout);
-
-  // Add sliders to bottom panel
-
-  QFormLayout * botLayout = new QFormLayout(botPanel);
-  botLayout->addRow(new QLabel(tr("End iteration:")),
-		    solutionHandler->iterSlider);
-  botLayout->addRow(new QLabel(tr("Start iteration:")),
-		    solutionHandler->startSlider);
-  botLayout->addRow(new QLabel(tr("Action:")),
-		    solutionHandler->actionSlider);
-  botLayout->addRow(new QLabel(tr("State:")),
-		    solutionHandler->stateSlider);
-  botPanel->setFixedHeight(100);
-  botLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-  
-  QVBoxLayout * solutionLayout = new QVBoxLayout();
-  solutionLayout->addWidget(topPanel);
-  solutionLayout->addWidget(botPanel);
 
   QWidget * mainPanel = new QWidget();
   QHBoxLayout * mainLayout = new QHBoxLayout();
@@ -83,120 +40,11 @@ SGMainWindow::SGMainWindow()
   QWidget * solutionTab = new QWidget();
   QWidget * logTab = new QWidget();
   
-  solutionTab->setLayout(solutionLayout);
+  solutionTab->setLayout(solutionHandler->getLayout());
 
 
   // Game tab
-  QVBoxLayout * gameLayout = new QVBoxLayout();
-  QHBoxLayout * controlLayout = new QHBoxLayout();
-  QFormLayout * leftControlLayout = new QFormLayout();
-  QFormLayout * centerControlLayout = new QFormLayout();
-  QFormLayout * rightControlLayout = new QFormLayout();
-  QHBoxLayout * tableLayout = new QHBoxLayout();
-  QVBoxLayout * payoffLayout = new QVBoxLayout();
-  QVBoxLayout * probabilityLayout = new QVBoxLayout();
-  
-  solveButton = new QPushButton(tr("Solve"));
-  solveButton->setSizePolicy(QSizePolicy::Fixed,
-			     QSizePolicy::Preferred);
-  solveButton->resize(300,solveButton->height());
-
-  cancelButton = new QPushButton(tr("Cancel"));
-  cancelButton->setSizePolicy(QSizePolicy::Fixed,
-			      QSizePolicy::Preferred);
-  cancelButton->resize(300,cancelButton->height());
-
-  // qDebug() << "I got to here!!!" << endl;
-  
-  QHBoxLayout * deltaLayout = new QHBoxLayout();
-  deltaLayout->addWidget(gameHandler->deltaEdit);
-  deltaLayout->setSpacing(5);
-
-  QHBoxLayout * currentStateLayout = new QHBoxLayout();
-  currentStateLayout->addWidget(gameHandler->currentStateCombo);
-  currentStateLayout->addWidget(gameHandler->prevStateButton);
-  currentStateLayout->addWidget(gameHandler->nextStateButton);
-  currentStateLayout->setSpacing(5);
-  
-  centerControlLayout->addRow(new QLabel(tr("Discount factor:")),
-			      deltaLayout);
-  centerControlLayout->addRow(new QLabel(tr("Error tolerance:")),
-			      gameHandler->errorTolEdit);
-  centerControlLayout->addRow(new QLabel(tr("Current state:")),
-			      currentStateLayout);
-  // leftControlLayout->addRow(gameHandler->removeStateButton,
-  // 			    gameHandler->addStateButton);
-  // leftControlLayout->setSpacing(0);
-
-  for (int player = 0; player < 2; player ++)
-    {
-      QHBoxLayout * numActionsLayout = new QHBoxLayout();
-      numActionsLayout->addWidget(gameHandler->numActionsEdits[player]);
-      numActionsLayout->addWidget(gameHandler->removeActionButtons[player]);
-      numActionsLayout->addWidget(gameHandler->addActionButtons[player]);
-      numActionsLayout->setSpacing(5);
-
-      QString numActionsLabel = QString(tr("Player "))
-	+QString::number(player+1)
-	+QString(tr("'s number of actions ("));
-      if (player == 0)
-	numActionsLabel += QString(tr("row"));
-      else
-	numActionsLabel += QString(tr("column"));
-      numActionsLabel += QString(tr("):"));
-      
-      leftControlLayout->addRow(numActionsLabel,
-				numActionsLayout);
-      
-    }
-
-  QHBoxLayout * numStatesLayout = new QHBoxLayout();
-  numStatesLayout->addWidget(gameHandler->numStatesEdit);
-  numStatesLayout->addWidget(gameHandler->removeStateButton);
-  numStatesLayout->addWidget(gameHandler->addStateButton);
-  numStatesLayout->setSpacing(5);
-  leftControlLayout->addRow(new QLabel(tr("Number of states:")),
-			    numStatesLayout);
-  leftControlLayout->setSpacing(5);
-
-  
-  rightControlLayout->addRow(gameHandler->feasibleCheckBox);
-  rightControlLayout->addRow(solveButton);
-  rightControlLayout->addRow(cancelButton);
-  
-  controlLayout->addLayout(leftControlLayout);
-  controlLayout->addLayout(centerControlLayout);
-  controlLayout->addLayout(rightControlLayout);
-
-  payoffLayout->addWidget(new QLabel(tr("Stage payoffs:")));
-  payoffLayout->addWidget(gameHandler->payoffTableView);
-
-  QScrollArea * probabilityScrollArea = new QScrollArea();
-  QWidget * probabilityWidget = new QWidget();
-
-  qDebug() << gameHandler->probabilityTableLayout->count() << endl;
-
-  probabilityWidget->setLayout(gameHandler->probabilityTableLayout);
-  probabilityScrollArea->setWidget(probabilityWidget);
-
-  probabilityScrollArea->setWidgetResizable(true);
-  probabilityScrollArea->setSizePolicy(QSizePolicy::Expanding,
-				       QSizePolicy::Expanding);
-  probabilityScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-
-  probabilityLayout->addWidget(new QLabel(tr("Transition probabilities:")));
-  probabilityLayout->addWidget(probabilityScrollArea);
-
-  tableLayout->addLayout(payoffLayout);
-  tableLayout->addLayout(probabilityLayout);
-
-  // resizePayoffTable(0,2,0,2);
-  // resizeProbabilityTable(0,2,0,2,0,1);
-  
-  gameLayout->addLayout(controlLayout);
-  gameLayout->addLayout(tableLayout);
-
-  gameTab->setLayout(gameLayout);
+  gameTab->setLayout(gameHandler->getLayout());
 
   // Connections
   connect(loadSolutionAction,SIGNAL(triggered()),
@@ -209,9 +57,9 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(saveGame()));
   connect(screenShotAction,SIGNAL(triggered()),
 	  this,SLOT(screenShot()));
-  connect(solveButton,SIGNAL(clicked()),
+  connect(gameHandler->getSolveButton(),SIGNAL(clicked()),
 	  this,SLOT(solveGame()));
-  connect(cancelButton,SIGNAL(clicked()),
+  connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
 	  this,SLOT(cancelSolve()));
 
   // Log tab
@@ -237,8 +85,6 @@ SGMainWindow::SGMainWindow()
   setWindowState(Qt::WindowMaximized);
   
   setWindowTitle(tr("SGViewer"));
-
-  qDebug() << "Finished sgmainwindow constructor" << endl;
 
 } // constructor
 

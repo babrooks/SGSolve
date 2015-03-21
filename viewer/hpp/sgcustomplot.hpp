@@ -3,22 +3,35 @@
 
 #include "qcustomplot.h"
 
+//! A customized version of QCustomPlot.
+/*! This class inherits from QCustomPlot and adds functionality for
+  controling ranges to maintain the desired aspect ratio. It also
+  adds functionality for saving graphs.
+
+  \ingroup viewer
+*/
 class SGCustomPlot : public QCustomPlot
 {
   Q_OBJECT;
 private:
-  QCPPlotTitle * title;
-  QCPRange nominalXRange;
-  QCPRange nominalYRange;
-  QCPRange realXRange;
-  QCPRange realYRange;
+  QCPPlotTitle * title; /*!< The graph title. */
+  QCPRange nominalXRange; /*!< Nominal X range. */
+  QCPRange nominalYRange; /*!< Nominal Y range. */
+  QCPRange realXRange; /*!< Real X range. */
+  QCPRange realYRange; /*!< Real Y range. */
 
-  QString path;
+  //! Save file path
+  /*!< Stores the last location used to save a picture. */
+  QString path; 
 
+  //! Pointer to the QAction for saving PNG files.
   QAction * savePNGAction;
+  //! Pointer to the QAction for saving PDF files.
   QAction * savePDFAction;
 
 public:
+  //! Constructor
+  /*! Initializes the plot and connect slots to actions. */
   SGCustomPlot() : QCustomPlot()
   {
     path = QString("./");
@@ -57,15 +70,19 @@ public:
   }
 
   
-
+  //! Returns the title.
   QCPPlotTitle * getTitle() {return title;}
 
+  //! Updates ranges when window is resized.
   void adjustRanges();
 
+  //! Sets the nominal ranges.
   void setRanges(const QCPRange & xrange,
 		 const QCPRange & yrange);
 
 protected:
+  //! Reimplement resizeEvent
+  /*! Calls adjust ranges before calling QCustomPlot::resizeEvent. */
   void resizeEvent(QResizeEvent * event)
   {
     adjustRanges();
@@ -73,6 +90,9 @@ protected:
   }
 
 private slots:
+  //! Slot for showing context menu. 
+  /*! Creates a context menu and shows the actions for saving PDF/PNG
+      files. */
   void ShowContextMenu(const QPoint & pos)
   {
     QPoint globalPos = this->mapToGlobal(pos);
@@ -84,6 +104,7 @@ private slots:
     contextMenu.exec(globalPos);
   }
 
+  //! Saves graph as a PDF.
   void savePDF()
   {
     QString newPath = QFileDialog::getSaveFileName(this, tr("Save PDF"),
@@ -98,6 +119,7 @@ private slots:
     savePdf(newPath);
   }
 
+  //! Saves graph as a PNG.
   void savePNG()
   {
     QString newPath = QFileDialog::getSaveFileName(this, tr("Save PNG"),
@@ -114,9 +136,15 @@ private slots:
 
 
 private:
-  // Suggest a square aspect ratio.
+  //! Reimplement heightForWidth 
+  /*! Suggests a square aspect ratio. */
   virtual int heightForWidth(int w) const {return w;}
+
+  //! Reimplement hasHeighForWidth
+  /*! Indicates that heightForWidth has been reimplemented. */
   virtual bool hasHeightForWidth() const {return true;}
+
+  //! Custom minimum size.
   virtual QSize minimumSizeHint() const { return QSize(100,100); } 
 };
 

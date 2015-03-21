@@ -5,6 +5,8 @@
 
 //! Manages parameters for algorithm behavior
 /*!  This class contains parameters for the algorithm.
+
+  \ingroup src
  */
 class SGEnv
 {
@@ -47,8 +49,8 @@ private:
   int tupleReserveSize; /*!< Increment the extremeTuples array by this
 			  amount when capacity reached. */
 
-  // Output stream
-  ofstream os;
+  //! Output stream. Not currently used.
+  ofstream os; 
   
 public:
 
@@ -145,6 +147,7 @@ public:
     os.basic_ios<char>::rdbuf(newOS.rdbuf());
   }
 
+  //! Return reference to the output stream.
   ofstream & getOS() { return os; }
   
   //! Method for restoring default values for all parameters.
