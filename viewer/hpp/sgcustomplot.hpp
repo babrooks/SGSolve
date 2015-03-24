@@ -2,6 +2,7 @@
 #define SGCUSTOMPLOT_HPP
 
 #include "qcustomplot.h"
+#include "sgpoint.hpp"
 
 //! A customized version of QCustomPlot.
 /*! This class inherits from QCustomPlot and adds functionality for
@@ -14,6 +15,11 @@ class SGCustomPlot : public QCustomPlot
 {
   Q_OBJECT;
 private:
+  //! Indicates the state that this plot is associated with.
+  int state;
+  //! Indicates if this is the detail plot.
+  bool isDetailPlot;
+
   QCPPlotTitle * title; /*!< The graph title. */
   QCPRange nominalXRange; /*!< Nominal X range. */
   QCPRange nominalYRange; /*!< Nominal Y range. */
@@ -24,52 +30,25 @@ private:
   /*!< Stores the last location used to save a picture. */
   QString path; 
 
+  //! Inspect a point
+  QAction * inspectPointAction;
   //! Pointer to the QAction for saving PNG files.
   QAction * savePNGAction;
   //! Pointer to the QAction for saving PDF files.
   QAction * savePDFAction;
 
+  //! Stores the last location at which a context menu was requested.
+  QPoint lastContextPos;
+
 public:
   //! Constructor
-  /*! Initializes the plot and connect slots to actions. */
-  SGCustomPlot() : QCustomPlot()
-  {
-    path = QString("./");
+  SGCustomPlot(): SGCustomPlot(0,false) {}
 
-    QSizePolicy qsp(QSizePolicy::Preferred,
-		    QSizePolicy::Minimum);
-    qsp.setHeightForWidth(true);
+  //! Constructor 
+  /*! Sets the state and whether or not is the detailPlot. Also
+      initializes the plot and connect slots to actions. */
+  SGCustomPlot(int _state, bool _isDetailPlot);
 
-    setSizePolicy(qsp);
-
-    QFont font = xAxis->labelFont();
-    font.setPointSize(10);
-    xAxis->setTickLabelFont(font);
-    yAxis->setTickLabelFont(font);
-
-    title = new QCPPlotTitle(this,"");
-    font = title->font();
-    font.setPointSize(12);
-    title->setFont(font);
-  
-    plotLayout()->insertRow(0);
-    plotLayout()->addElement(0,0,title);
-
-    setContextMenuPolicy(Qt::CustomContextMenu);
-
-    savePDFAction = new QAction(tr("Save &PDF"), this);
-    savePNGAction = new QAction(tr("Save P&NG"), this);
-
-    connect(savePDFAction,SIGNAL(triggered()),
-	    this,SLOT(savePDF()));
-    connect(savePNGAction,SIGNAL(triggered()),
-	    this,SLOT(savePNG()));
-
-    connect(this,SIGNAL(customContextMenuRequested(const QPoint &)),
-	    this,SLOT(ShowContextMenu(const QPoint &)));
-  }
-
-  
   //! Returns the title.
   QCPPlotTitle * getTitle() {return title;}
 
@@ -79,6 +58,16 @@ public:
   //! Sets the nominal ranges.
   void setRanges(const QCPRange & xrange,
 		 const QCPRange & yrange);
+  
+  //! Normalize ranges
+  void equalizeAxesScales();
+
+  //! Sets the state associated with the plot
+  void setState(int newState)
+  { assert(state>=0); state = newState; }
+  //! Gets the state associated with the plot
+  int getState() const
+  { return state; }
 
 protected:
   //! Reimplement resizeEvent
@@ -95,13 +84,25 @@ private slots:
       files. */
   void ShowContextMenu(const QPoint & pos)
   {
-    QPoint globalPos = this->mapToGlobal(pos);
+    lastContextPos = pos;
 
+    QPoint globalPos = this->mapToGlobal(pos);
+    
     QMenu contextMenu;
+    contextMenu.addAction(inspectPointAction);
+    contextMenu.addSeparator();
     contextMenu.addAction(savePDFAction);
     contextMenu.addAction(savePNGAction);
     
     contextMenu.exec(globalPos);
+  }
+
+  //! Point inspected
+  void pointInspected()
+  {
+    emit inspectPoint(SGPoint(xAxis->pixelToCoord(lastContextPos.x()),
+			      yAxis->pixelToCoord(lastContextPos.y())),
+		      state,isDetailPlot);
   }
 
   //! Saves graph as a PDF.
@@ -146,6 +147,13 @@ private:
 
   //! Custom minimum size.
   virtual QSize minimumSizeHint() const { return QSize(100,100); } 
+
+signals:
+  //! Signal to inspect the given point
+  void inspectPoint(SGPoint point, 
+		    int state, 
+		    bool isDetailPlot);
+
 };
 
 #endif

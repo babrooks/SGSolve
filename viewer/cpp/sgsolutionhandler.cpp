@@ -2,7 +2,19 @@
 
 SGSolutionHandler::SGSolutionHandler()
 {
-  detailPlot = new SGCustomPlot();
+
+  QHBoxLayout * controlLayout = new QHBoxLayout();
+  QFormLayout * leftControlLayout = new QFormLayout();
+  QComboBox * solutionModeCombo = new QComboBox();
+  solutionModeCombo->addItem("Progress");
+  solutionModeCombo->addItem("Final");
+  solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
+				   QSizePolicy::Preferred);
+  leftControlLayout->addRow(new QLabel(tr("Display mode:")),
+			    solutionModeCombo);
+  controlLayout->addLayout(leftControlLayout);
+
+  detailPlot = new SGCustomPlot(0,true);
   detailPlot->setSizePolicy(QSizePolicy::Expanding,
 			  QSizePolicy::Expanding);
   detailPlot->setInteraction(QCP::iRangeZoom,true);
@@ -17,6 +29,9 @@ SGSolutionHandler::SGSolutionHandler()
 
   detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
   detailedTitlesAction->setCheckable(true);
+
+  equalizeAxesAction = new QAction(tr("&Equalize axes scales"),this);
+  equalizeAxesAction->setCheckable(true);
   
   iterSlider = new QScrollBar();
   iterSlider->setOrientation(Qt::Horizontal);
@@ -66,6 +81,7 @@ SGSolutionHandler::SGSolutionHandler()
   botLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
   
   layout = new QVBoxLayout();
+  layout->addLayout(controlLayout);
   layout->addWidget(topSolutionPanel);
   layout->addWidget(botSolutionPanel);
 
@@ -78,6 +94,8 @@ SGSolutionHandler::SGSolutionHandler()
 	  this,SLOT(actionUpdate(int)));
   connect(stateSlider,SIGNAL(valueChanged(int)),
 	  this,SLOT(actionUpdate(int)));
+  connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
+	  this,SLOT(changeMode(int)));
   
 }
 
@@ -89,31 +107,25 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
   startIter = soln.iterations.begin();
   endIter = soln.iterations.end();
   endIter--;
-      
+  pivotIter = endIter;
+  
+  startOfLastRev = endIter;
+  while ((startOfLastRev--)->revolution
+	 ==endIter->revolution) {}
+  
   // Setup sliders
   int numStates = soln.game.getNumStates();
+  
+  setSliderRanges(soln.iterations.front().iteration,
+		  soln.iterations.back().iteration);
 
-  // Temporaily disconnect so we don't trigger plotSolution.
-  disconnect(iterSlider,SIGNAL(valueChanged(int)),
-	     this,SLOT(iterSliderUpdate(int)));
-  disconnect(startSlider,SIGNAL(valueChanged(int)),
-	     this,SLOT(iterSliderUpdate(int)));
-  iterSlider->setRange(soln.iterations.front().iteration,
-		       soln.iterations.back().iteration);
-  iterSlider->setValue(soln.iterations.size()-1);
-  startSlider->setRange(soln.iterations.front().iteration,
-			soln.iterations.back().iteration);
-  startSlider->setValue(soln.iterations.front().iteration);
-  connect(iterSlider,SIGNAL(valueChanged(int)),
-	  this,SLOT(iterSliderUpdate(int)));
-  connect(startSlider,SIGNAL(valueChanged(int)),
-	  this,SLOT(iterSliderUpdate(int)));
-
+  connect(detailPlot,SIGNAL(inspectPoint(SGPoint,int,bool)),
+	  this,SLOT(inspectPoint(SGPoint,int,bool)) );
   // Set up state plots
   QLayoutItem * item;
   while (item = statePlotsLayout->takeAt(0))
     delete item;
-
+  
   statePlots.clear();
   statePlots = vector<SGCustomPlot *>(numStates);
 
@@ -126,27 +138,57 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
        state < numStates;
        state ++)
     {
-      statePlots[state] =  new SGCustomPlot();
+      statePlots[state] =  new SGCustomPlot(state,false);
       statePlots[state]->setInteraction(QCP::iRangeZoom,true);
       statePlots[state]->setInteraction(QCP::iRangeDrag,true);
 
+      connect(statePlots[state],SIGNAL(inspectPoint(SGPoint,int,bool)),
+	      this,SLOT(inspectPoint(SGPoint,int,bool)) );
       statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
     }
-  
-  plotSolution(0,soln.extremeTuples.size()-1);
+
+  plotSolution(pivotIter->bestState);
 
   solnLoaded = true;
 } // setSolution
 
-void SGSolutionHandler::plotSolution(int start, int end)
+void SGSolutionHandler::setSliderRanges(int start, int end)
 {
+  // Temporaily disconnect so we don't trigger plotSolution.
+  disconnect(iterSlider,SIGNAL(valueChanged(int)),
+	     this,SLOT(iterSliderUpdate(int)));
+  disconnect(startSlider,SIGNAL(valueChanged(int)),
+	     this,SLOT(iterSliderUpdate(int)));
+
+  iterSlider->setRange(start,end);
+  iterSlider->setValue(end);
+  startSlider->setRange(start,end);
+  startSlider->setValue(start);
+
+  startSlider->setEnabled(mode==Progress);
+
+  connect(iterSlider,SIGNAL(valueChanged(int)),
+	  this,SLOT(iterSliderUpdate(int)));
+  connect(startSlider,SIGNAL(valueChanged(int)),
+	  this,SLOT(iterSliderUpdate(int)));
+}
+
+void SGSolutionHandler::plotSolution(int state)
+{
+  int start = startSlider->sliderPosition();
+  if (start == -1)
+    start = 0;
+  else
+    start = startIter->numExtremeTuples-1;
+  int end = endIter->numExtremeTuples-1;
+
   int numStates = soln.game.getNumStates();
 
   detailPlot->clearPlottables();
+  
+  detailPlot->setState(state);
 
-  int bestState = endIter->bestState;
-
-  int bestAction = endIter->actionTuple[bestState];
+  int action = pivotIter->actionTuple[state];
 
   if (endIter->iteration>=0)
     {
@@ -167,7 +209,7 @@ void SGSolutionHandler::plotSolution(int start, int end)
 	    {
 	      SGPoint expPoint
 		= tuple->expectation(soln.game.getProbabilities()
-				     [bestState][bestAction]);
+				     [state][action]);
 	      expSetX[tupleC-start] = expPoint[0];
 	      expSetY[tupleC-start] = expPoint[1];
 	      expSetT[tupleC-start] = tupleC;
@@ -175,7 +217,7 @@ void SGSolutionHandler::plotSolution(int start, int end)
       
 	  tupleC++;
 	}
-  
+      
       QCPCurve * newCurve = new QCPCurve(detailPlot->xAxis,
 					 detailPlot->yAxis);
       newCurve->setData(expSetT,expSetX,expSetY);
@@ -185,50 +227,23 @@ void SGSolutionHandler::plotSolution(int start, int end)
       QCPRange xrange = getBounds(expSetX),
 	yrange = getBounds(expSetY);
 
+      // Line between stage payoffs and expected continuation value
       double delta = soln.game.getDelta();
       QCPCurve * genCurve = new QCPCurve(detailPlot->xAxis,
 					 detailPlot->yAxis);
       QVector<double> genLineX(2), genLineY(2), genLineT(2);
-      genLineX[0] = soln.game.getPayoffs()[bestState][bestAction][0];
-      genLineY[0] = soln.game.getPayoffs()[bestState][bestAction][1];
+      genLineX[0] = soln.game.getPayoffs()[state][action][0];
+      genLineY[0] = soln.game.getPayoffs()[state][action][1];
       genLineT[0] = 0;
-      genLineX[1] = (endIter->pivot[bestState][0]-(1-delta)*genLineX[0])/delta;
-      genLineY[1] = (endIter->pivot[bestState][1]-(1-delta)*genLineY[0])/delta;
+      genLineX[1] = (pivotIter->pivot[state][0]-(1-delta)*genLineX[0])/delta;
+      genLineY[1] = (pivotIter->pivot[state][1]-(1-delta)*genLineY[0])/delta;
       genLineT[1] = 1;
-
-      xrange.expand(getBounds(genLineX));
-      yrange.expand(getBounds(genLineY));
 
       genCurve->setData(genLineT,genLineX,genLineY);
       genCurve->setPen(QPen(Qt::DashLine));
       detailPlot->addPlottable(genCurve);
 
-      // Add IC region
-      QCPCurve * ICCurve = new QCPCurve(detailPlot->xAxis,
-					detailPlot->yAxis);
-      QVector<double> ICCurveX(3), ICCurveY(3), ICCurveT(3);
-
-      SGPoint minIC;
-      for (int player = 0; player < 2; player++)
-	minIC[player] = SGAction::calculateMinIC(bestAction,bestState,player,
-						 soln.game,endIter->threatTuple);
-
-      ICCurveX[0] = xrange.upper;
-      ICCurveY[0] = minIC[1];
-      ICCurveT[0] = 0;
-      ICCurveX[1] = minIC[0];
-      ICCurveY[1] = minIC[1];
-      ICCurveT[1] = 1;
-      ICCurveX[2] = minIC[0];
-      ICCurveY[2] = yrange.upper;
-      ICCurveT[2] = 2;
-  
-      ICCurve->setData(ICCurveT,ICCurveX,ICCurveY);
-      ICCurve->setPen(QPen(Qt::magenta));
-      detailPlot->addPlottable(ICCurve);
-
-      plotSolution(start,end,
-		   detailPlot,bestState,false);
+      plotSolution(detailPlot,state,false);
 
       // Add action
       QVector<double> actionPointX(1), actionPointY(1);
@@ -241,42 +256,67 @@ void SGSolutionHandler::plotSolution(int start, int end)
 							    QPen(Qt::black),
 							    QBrush(Qt::black),
 							    8));
-  
-  
+      xrange.expand(getBounds(genLineX));
+      yrange.expand(getBounds(genLineY));
       xrange.expand(detailPlot->xAxis->range());
       yrange.expand(detailPlot->yAxis->range());
+
+      // Add IC region
+      QCPCurve * ICCurve = new QCPCurve(detailPlot->xAxis,
+					detailPlot->yAxis);
+      QVector<double> ICCurveX(3), ICCurveY(3), ICCurveT(3);
+
+      SGPoint minIC;
+      for (int player = 0; player < 2; player++)
+	minIC[player] = SGAction::calculateMinIC(action,state,player,
+						 soln.game,pivotIter->threatTuple);
+
+      ICCurveX[0] = xrange.upper+1e2*(xrange.upper-xrange.lower);
+      ICCurveY[0] = minIC[1];
+      ICCurveT[0] = 0;
+      ICCurveX[1] = minIC[0];
+      ICCurveY[1] = minIC[1];
+      ICCurveT[1] = 1;
+      ICCurveX[2] = minIC[0];
+      ICCurveY[2] = yrange.upper+1e2*(yrange.upper-yrange.lower);
+      ICCurveT[2] = 2;
+  
+      ICCurve->setData(ICCurveT,ICCurveX,ICCurveY);
+      ICCurve->setPen(QPen(Qt::magenta));
+      detailPlot->addPlottable(ICCurve);
 
       detailPlot->setRanges(xrange,yrange);
     }
   else
-    plotSolution(start,end,
-		 detailPlot,0,false);
+    plotSolution(detailPlot,0,false);
   
   // Update the title
   QString titleString = QString("Iteration: ");
-  titleString += QString::number(endIter->iteration);
-  if (endIter->iteration >=0
+  titleString += QString::number(pivotIter->iteration);
+  if (pivotIter->iteration >=0
       && detailedTitlesAction->isChecked())
     {
       titleString += QString(", S");
-      titleString += QString::number(bestState);
+      titleString += QString::number(state);
 
       vector<int> actions;
-      indexToVector(bestAction,actions,
-		    soln.game.getNumActions()[bestState]);
+      indexToVector(action,actions,
+		    soln.game.getNumActions()[state]);
       titleString += QString(", (R");
       titleString += QString::number(actions[0]);
       titleString += QString(",C");
       titleString += QString::number(actions[1]);
       titleString += QString(")");
 
-      if (endIter->nonBinding)
+      if (pivotIter->nonBinding)
 	titleString += "\n(Non-binding direction)";
       else
 	titleString += "\n(Binding direction)";
     }
   detailPlot->getTitle()->setText(titleString);
 
+  if (equalizeAxesAction->isChecked())
+    detailPlot->equalizeAxesScales();
   detailPlot->replot();
 
   // Other states
@@ -289,19 +329,27 @@ void SGSolutionHandler::plotSolution(int start, int end)
        state++)
     {
       statePlots[state]->clearPlottables();
-      plotSolution(start,end,
-		   statePlots[state],state,true);
+      plotSolution(statePlots[state],state,true);
+
+      if (equalizeAxesAction->isChecked())
+	statePlots[state]->equalizeAxesScales();
+
       statePlots[state]->replot();
     }
   
 } // plotSolution
 
-void SGSolutionHandler::plotSolution(int start, int end,
-				     SGCustomPlot * plot, int state,
+void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
 				     bool addSquares)
 {
   // if (start == 0)
   //   start = 4;
+  int start = startSlider->sliderPosition();
+  if (start == -1)
+    start = 0;
+  else
+    start = startIter->numExtremeTuples-1;
+  int end = endIter->numExtremeTuples-1;
 
   QVector<double> x(end-start+1);
   QVector<double> y(x.size());
@@ -327,8 +375,8 @@ void SGSolutionHandler::plotSolution(int start, int end,
       tupleC++;
     }
   // t.back() = t.size()-1;
-  // x.back() = endIter->pivot[state][0];
-  // y.back() = endIter->pivot[state][1];
+  // x.back() = pivotIter->pivot[state][0];
+  // y.back() = pivotIter->pivot[state][1];
   t[tupleC-start] = tupleC;
   x[tupleC-start] = endIter->pivot[state][0];
   y[tupleC-start] = endIter->pivot[state][1];
@@ -344,15 +392,15 @@ void SGSolutionHandler::plotSolution(int start, int end,
   // Add current pivot and current direction
   QVector <double> directionX(2), directionY(2), directionT(2);
 
-  double norm = endIter->direction.norm();
+  double norm = pivotIter->direction.norm();
 
-  directionX[0] = endIter->pivot[state][0];
-  directionY[0] = endIter->pivot[state][1];
+  directionX[0] = pivotIter->pivot[state][0];
+  directionY[0] = pivotIter->pivot[state][1];
   directionT[0] = 0;
-  directionX[1] = endIter->pivot[state][0]
-    +endIter->direction[0]*2*payoffBound/norm;
-  directionY[1] = endIter->pivot[state][1]
-    +endIter->direction[1]*2*payoffBound/norm;
+  directionX[1] = pivotIter->pivot[state][0]
+    +pivotIter->direction[0]*2*payoffBound/norm;
+  directionY[1] = pivotIter->pivot[state][1]
+    +pivotIter->direction[1]*2*payoffBound/norm;
   directionT[1] = 1;
   QCPCurve * directionCurve = new QCPCurve(plot->xAxis,
 					   plot->yAxis);
@@ -363,8 +411,8 @@ void SGSolutionHandler::plotSolution(int start, int end,
   plot->addPlottable(directionCurve);
 
   QVector<double> pivotPointX(1), pivotPointY(1);
-  pivotPointX[0] = endIter->pivot[state][0];
-  pivotPointY[0] = endIter->pivot[state][1];
+  pivotPointX[0] = pivotIter->pivot[state][0];
+  pivotPointY[0] = pivotIter->pivot[state][1];
 
   plot->addGraph();
   plot->graph(0)->setData(pivotPointX,pivotPointY);
@@ -384,16 +432,16 @@ void SGSolutionHandler::plotSolution(int start, int end,
     }
   
   plot->setRanges(xrange,yrange);
-  
+
   QString titleString("S");
   titleString += QString::number(state,10);
 
   if (detailedTitlesAction->isChecked())
     {
-      if (endIter->nonBindingStates[state])
+      if (pivotIter->nonBindingStates[state])
 	{
 	  vector<int> actions;
-	  indexToVector(endIter->actionTuple[state],actions,
+	  indexToVector(pivotIter->actionTuple[state],actions,
 			soln.game.getNumActions()[state]);
 	  titleString += QString(", (R");
 	  titleString += QString::number(actions[0]);
@@ -434,26 +482,30 @@ void SGSolutionHandler::iterSliderUpdate(int value)
       
   int start = startSlider->sliderPosition();
   int end = iterSlider->sliderPosition();
-  int startTuple, endTuple;
   
   end = std::max(-1,std::max(start,end));
   iterSlider->setRange(std::max(start,-1),
 		       soln.iterations.size()-1);
-
-  while (endIter->iteration < end
-	 && endIter!=soln.iterations.end())
-    ++endIter;
-  while (endIter->iteration > end
-	 && endIter!=soln.iterations.begin())
-    --endIter;
-  if (endIter == soln.iterations.end())
-    --endIter;
+  
+  while (pivotIter->iteration < end
+	 && pivotIter!=soln.iterations.end())
+    ++pivotIter;
+  while (pivotIter->iteration > end
+	 && pivotIter!=soln.iterations.begin())
+    --pivotIter;
+  if (pivotIter == soln.iterations.end())
+    --pivotIter;
+  
+  if (mode==Progress)
+    endIter = pivotIter;
+  else
+    {
+      endIter = soln.iterations.end();
+      endIter--;
+    }
   
   if (start==-1)
-    {
-      startTuple = 0;
-      startIter = soln.iterations.begin();
-    }
+    startIter = soln.iterations.begin();
   else
     {
       while (startIter->iteration < start
@@ -464,13 +516,9 @@ void SGSolutionHandler::iterSliderUpdate(int value)
 	--startIter;
       if (startIter == soln.iterations.end())
 	--startIter;
-
-      startTuple = startIter->numExtremeTuples-1;
     }
-
-  endTuple = endIter->numExtremeTuples-1;
-
-  plotSolution(startTuple,endTuple);
+  
+  plotSolution(pivotIter->bestState);
   
 } // iterSliderUpdate
 
@@ -498,3 +546,66 @@ void SGSolutionHandler::moveBackwards()
 					 iterSlider->value()+1));
   iterSliderUpdate(iterSlider->value());
 }
+
+
+void SGSolutionHandler::changeMode(int newMode)
+{
+  int plotState = detailPlot->getState();
+  endIter = soln.iterations.end();
+  if (newMode == 0)
+    {
+      mode = Progress;
+
+      startIter = soln.iterations.begin();
+    }
+  else if (newMode == 1)
+    {
+      mode = Final;
+      
+      startIter = startOfLastRev;
+
+      if (pivotIter->iteration < startIter->iteration)
+	{
+	  pivotIter = endIter;
+	  plotState = pivotIter->bestState;
+	}
+    }
+
+  setSliderRanges(startIter->iteration,endIter->iteration);
+  iterSliderUpdate(endIter->iteration);
+  // plotSolution(plotState);
+}
+
+void SGSolutionHandler::inspectPoint(SGPoint point,
+				     int state, bool isDetailPlot)
+{
+  // Find the point that is closest for the given state.
+  double minDistance = numeric_limits<double>::max();
+
+  int tupleC = 0;
+  
+  pivotIter = startIter;
+  for (list<SGTuple>::const_iterator tuple = soln.extremeTuples.begin();
+       tuple != soln.extremeTuples.end();
+       ++tuple)
+    {
+      if (tupleC >= endIter->numExtremeTuples-1)
+	break;
+      else if (tupleC >= startIter->numExtremeTuples-1)
+	{
+	  double newDistance = ((*tuple)[state] - point)*((*tuple)[state] - point);
+	  if (newDistance < minDistance-1e-7)
+	    {
+	      minDistance = newDistance;
+	      while (pivotIter->numExtremeTuples <= tupleC)
+	      	pivotIter++;
+	    } // if
+	} // if
+      
+      tupleC++;
+    } // for
+
+  
+  plotSolution(state);
+} // inspectPoint
+					       

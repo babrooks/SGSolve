@@ -78,7 +78,7 @@ signals:
   //! Signal for SGSolverThread to start next iteration.
   void startIteration();
 					       
-public slots:
+private slots:
   //! Triggers a solution load
   void loadSolution();
   //! Triggers a solution save.
@@ -107,6 +107,9 @@ public slots:
   /*! When the algorithm throws an exception, triggers an error
       message report. */
   void solverException();
+
+  //! Displays an about message
+  void displayAbout();
 };
 
 

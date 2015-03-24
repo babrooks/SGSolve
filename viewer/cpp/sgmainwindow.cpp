@@ -29,9 +29,13 @@ SGMainWindow::SGMainWindow()
   QMenu * viewMenu = menuBar()->addMenu(tr("&View"));
   QAction * screenShotAction = new QAction(tr("&Save a screen shot"),this);
   viewMenu->addAction(solutionHandler->getDetailedTitlesAction());
+  viewMenu->addAction(solutionHandler->getEqualizeAxesAction());
   viewMenu->addSeparator();
   viewMenu->addAction(screenShotAction);
 
+  QMenu * helpMenu = menuBar()->addMenu(tr("&Help"));
+  QAction * aboutAction = new QAction(tr("&About"),this);
+  helpMenu->addAction(aboutAction);
 
   QWidget * mainPanel = new QWidget();
   QHBoxLayout * mainLayout = new QHBoxLayout();
@@ -57,6 +61,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(saveGame()));
   connect(screenShotAction,SIGNAL(triggered()),
 	  this,SLOT(screenShot()));
+  connect(aboutAction,SIGNAL(triggered()),
+	  this,SLOT(displayAbout()));
   connect(gameHandler->getSolveButton(),SIGNAL(clicked()),
 	  this,SLOT(solveGame()));
   connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
@@ -366,3 +372,14 @@ void SGMainWindow::screenShot()
 
   grab().save(newPath);
 } // screenShot
+
+void SGMainWindow::displayAbout()
+{
+  QMessageBox aboutBox;
+
+  aboutBox.setWindowTitle("About");
+  aboutBox.setText("About SGViewer");
+  aboutBox.setInformativeText("SGViewer was designed by Dilip Abreu, Ben Brooks, and Yuliy Sannikov. It implements the algorithm for solving stochastic games described in Abreu, Brooks, and Sannikov (2015). Inuiries can be directed to:\n\nBen Brooks\nChicago, IL\nbabrooks@uchicago.edu\n3/23/2013");
+
+  aboutBox.exec();
+}
