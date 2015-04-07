@@ -243,7 +243,7 @@ void SGSolutionHandler::plotSolution(int state)
       genCurve->setPen(QPen(Qt::DashLine));
       detailPlot->addPlottable(genCurve);
 
-      plotSolution(detailPlot,state,false);
+      plotSolution(detailPlot,state,true);
 
       // Add action
       QVector<double> actionPointX(1), actionPointY(1);
