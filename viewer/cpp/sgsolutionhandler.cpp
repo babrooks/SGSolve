@@ -1,6 +1,6 @@
 #include "sgsolutionhandler.hpp"
 
-SGSolutionHandler::SGSolutionHandler()
+SGSolutionHandler::SGSolutionHandler(): mode(Progress)
 {
 
   QHBoxLayout * controlLayout = new QHBoxLayout();
@@ -146,7 +146,7 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 	      this,SLOT(inspectPoint(SGPoint,int,bool)) );
       statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
     }
-
+  
   plotSolution(pivotIter->bestState);
 
   solnLoaded = true;
@@ -258,8 +258,10 @@ void SGSolutionHandler::plotSolution(int state)
 							    8));
       xrange.expand(getBounds(genLineX));
       yrange.expand(getBounds(genLineY));
-      xrange.expand(detailPlot->xAxis->range());
-      yrange.expand(detailPlot->yAxis->range());
+      xrange.expand(detailPlot->getNominalXRange());
+      yrange.expand(detailPlot->getNominalYRange());
+      // xrange.expand(detailPlot->xAxis->range());
+      // yrange.expand(detailPlot->yAxis->range());
 
       // Add IC region
       QCPCurve * ICCurve = new QCPCurve(detailPlot->xAxis,
@@ -354,7 +356,7 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   QVector<double> x(end-start+1);
   QVector<double> y(x.size());
   QVector<double> t(x.size());
-
+  
   assert(end>=start);
 
   int tupleC = 0;
@@ -484,8 +486,7 @@ void SGSolutionHandler::iterSliderUpdate(int value)
   int end = iterSlider->sliderPosition();
   
   end = std::max(-1,std::max(start,end));
-  iterSlider->setRange(std::max(start,-1),
-		       soln.iterations.size()-1);
+  iterSlider->setMinimum(std::max(start,-1));
   
   while (pivotIter->iteration < end
 	 && pivotIter!=soln.iterations.end())
@@ -551,7 +552,6 @@ void SGSolutionHandler::moveBackwards()
 void SGSolutionHandler::changeMode(int newMode)
 {
   int plotState = detailPlot->getState();
-  endIter = soln.iterations.end();
   if (newMode == 0)
     {
       mode = Progress;
@@ -566,12 +566,15 @@ void SGSolutionHandler::changeMode(int newMode)
 
       if (pivotIter->iteration < startIter->iteration)
 	{
-	  pivotIter = endIter;
+	  pivotIter = soln.iterations.end();
+	  pivotIter--;
 	  plotState = pivotIter->bestState;
 	}
     }
 
-  setSliderRanges(startIter->iteration,endIter->iteration);
+  setSliderRanges(startIter->iteration,soln.iterations.back().iteration);
+  
+  iterSlider->setValue(endIter->iteration);
   iterSliderUpdate(endIter->iteration);
   // plotSolution(plotState);
 }

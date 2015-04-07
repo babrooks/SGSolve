@@ -222,9 +222,9 @@ void SGMainWindow::solveGame()
       logTextEdit->append(QString(""));
       logTextEdit->append(QString("Starting a new computation..."));
       logTextEdit->append(QString(""));
-
+      
       cancelSolveFlag = false;
-
+      
       solverWorker = new SGSolverWorker(gameHandler->getGame(),
 					logTextEdit);
       solverWorker->moveToThread(&solverThread);
@@ -235,7 +235,7 @@ void SGMainWindow::solveGame()
       connect(solverWorker,SIGNAL(exceptionCaught()),
 	      this,SLOT(solverException()));
       solverThread.start();
-
+      
       timer.restart();
       
       emit startIteration();
@@ -264,6 +264,8 @@ void SGMainWindow::iterationFinished(bool tf)
       if (cancelSolveFlag)
 	{
 	  logTextEdit->append("Computation canceled by user");
+	  delete solverWorker;
+
 	  tabWidget->setCurrentIndex(2);
 	}
       else

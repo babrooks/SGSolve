@@ -58,6 +58,14 @@ public:
   //! Sets the nominal ranges.
   void setRanges(const QCPRange & xrange,
 		 const QCPRange & yrange);
+
+  //! Returns the nominal X range
+  const QCPRange & getNominalXRange() const
+  { return nominalXRange; }
+
+  //! Returns the nominal Y range
+  const QCPRange & getNominalYRange() const
+  { return nominalYRange; }
   
   //! Normalize ranges
   void equalizeAxesScales();
