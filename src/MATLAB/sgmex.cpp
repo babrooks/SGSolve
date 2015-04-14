@@ -402,9 +402,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 				      "revolution",
 				      "pivot",
 				      "direction",
-				      "action",
-				      "state",
+				      "actions",
 				      "nonBinding",
+				      "bestState",
 				      "numExtremeTuples"};
 	  
 	  plhs[0] = mxCreateStructMatrix(1,1,nFields,fieldNames);
@@ -450,21 +450,23 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // action
-	  fieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
+	  fieldOutput = mxCreateDoubleMatrix(1,soln.game.getNumStates(),mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  outputPtr[0] = currentIteration->actionTuple[currentIteration->bestState];
+	  for (state = 0; state < soln.game.getNumStates(); state++)
+	    outputPtr[state] = currentIteration->actionTuple[state];
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
+	  // nonBinding
+	  fieldOutput = mxCreateDoubleMatrix(1,soln.game.getNumStates(),mxREAL);
+	  outputPtr = mxGetPr(fieldOutput);
+	  for (state = 0; state < soln.game.getNumStates(); state++)
+	    outputPtr[state] = static_cast<double>(currentIteration->nonBindingStates[state]);
+	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
+	  
 	  // state
 	  fieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
 	  outputPtr[0] = currentIteration->bestState;
-	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
-			
-	  // nonBinding
-	  fieldOutput
-	    = mxCreateLogicalScalar(currentIteration->
-				    nonBindingStates[currentIteration->bestState]);
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // numExtremeTuples
