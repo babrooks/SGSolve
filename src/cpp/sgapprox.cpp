@@ -9,6 +9,8 @@ void SGApprox::initialize()
 {
   int state, iter, action;
 
+  oldWest = 0; oldOldWest = 0; westPoint = 0; newWest = 0;
+
   logfs.open("sg.log",std::ofstream::out);
 
   numIterations = 0; numRevolutions = 0;
@@ -95,14 +97,14 @@ double SGApprox::generate()
 
   // Find the new direction
   findBestDirection();
-
+  
   // Update the pivot.
   calculateNewPivot();
   
   // Final steps before next iteration. Set flags for updating binding
   // continuation values.
   updateFlags();
-
+  
   if (env.storeIterations)
     soln.push_back(SGIteration(numIterations,numRevolutions,
 			       extremeTuples.size(),
@@ -113,7 +115,15 @@ double SGApprox::generate()
 
   if (passNorth)
     {
-      errorLevel = distance(newWest, westPoint, oldWest);
+      // for (int state = 0; state < numStates; state++)
+      // 	{
+      // 	  for (list<SGAction>::iterator action = actions[state].begin();
+      // 	       action != actions[state].end();
+      // 	       ++action)
+      // 	    action->updateTrim();
+      // 	}
+
+      errorLevel = distance(westPoint, newWest, oldWest, westPoint);
 
       if (env.printToCout)
 	cout << progressString() << endl; 
@@ -510,6 +520,7 @@ void SGApprox::updateFlags()
 	    {
 	      passNorth = true;
 	      
+	      oldOldWest = oldWest;
 	      oldWest = westPoint;
 	      westPoint = newWest;
 	      newWest = extremeTuples.size() - 1;
@@ -537,35 +548,21 @@ void SGApprox::updateFlags()
 
 } // updateBindingFlags
 
-double SGApprox::distance(int newStart, int start,int oldStart) const
+double SGApprox::distance(int newStart, int newEnd,
+			  int oldStart, int oldEnd) const
 {
 
   double newError = 1.0;
 
-  // // Old method
-  // int numExtreme = start - oldStart;
-  // if (oldStart >= numExtreme)
-  //   {
-  //     newError = 0.0; 
-  //     double tempError;
-  //     for (int point = 0; point < numExtreme; point++)
-  // 	{
-  // 	  newError = std::max(newError,
-  // 			      SGTuple::distance(extremeTuples[start-1-point],
-  // 						extremeTuples[oldStart-1-point]) );
-  // 	} // point
-  //   }
+  // Calculate maximum distance from extreme tuples on most recent
+  // revolution to the trajectory of two revolutions ago.
 
-  // New method: Calculate maximum distance from extreme tuples on
-  // most recent revolution to the trajectory of the previous
-  // revolution.
-
-  if (numRevolutions >= 2)
+  if (numRevolutions > 0)
     {
       newError = 0.0;
 
-      int oldPoint = start;
-      for (int point = newStart; point >= start; point--)
+      int oldPoint = oldEnd;
+      for (int point = newEnd; point >= newStart; point--)
 	{
 	  SGPoint p = extremeTuples[point].average();
 
@@ -577,8 +574,6 @@ double SGApprox::distance(int newStart, int start,int oldStart) const
 	    {
 	      tempDist = SGTuple::distance(extremeTuples[point],
 					   extremeTuples[oldPoint]);
-	      if (tempDist > distToPrevRev)
-	      	break;
 	      
 	      SGPoint p0 = extremeTuples[oldPoint].average();
 	      SGPoint p1 = extremeTuples[oldPoint-1].average();
@@ -605,15 +600,16 @@ double SGApprox::distance(int newStart, int start,int oldStart) const
 	      
 	      if ( SGTuple::distance(extremeTuples[point],
 				     extremeTuples[oldPoint-1])
-		   > distToPrevRev
+		   > distToPrevRev + 1e-12
 		   || oldPoint < oldStart )
 		break;
 	      else
 		oldPoint--;
 	    } // for oldPoint
-	  
+
 	  newError = std::max(newError,distToPrevRev);
 	} // for point
+
     } // if
 
   return newError;
@@ -678,7 +674,8 @@ void SGApprox::calculateBindingContinuations()
 	      for (tuple = extremeTuples.rbegin(),
 		     nextTuple = tuple+1,
 		     tupleIndex = extremeTuples.size()-1; 
-		   nextTuple != extremeTuples.rend(); 
+		   tupleIndex > oldWest;
+		   // nextTuple != extremeTuples.rend(); 
 		   ++tuple,++nextTuple, --tupleIndex)
 		{
 		  point = nextPoint;
@@ -709,10 +706,13 @@ void SGApprox::calculateBindingContinuations()
 						  + alpha*point);
 		    }
 
+		  // Break when the payoff for this player is below
+		  // but within env.pastThreatTol/2.0 of the threat
+		  // tuple
 		  if ( tuple->strictlyLessThan(threatTuple,player) 
-		       && !threatTuple.strictlyLessThan(*tuple
-							+SGPoint(env.pastThreatTol/2.0),
-							player) )
+		       && !threatTuple
+		       .strictlyLessThan(*tuple+SGPoint(env.pastThreatTol/2.0),
+					 player) )
 		    break;
 		} // for point
 	    } // player
@@ -817,19 +817,19 @@ void SGApprox::trimBindingContinuations()
 	  expPivot 
 	    = pivot.expectation(game.probabilities[state][action->getAction()]);
 
-	  action->intersectRay(expPivot,currentDirection);
+	  action->trim(expPivot,currentDirection);
 
 	  // Make sure that the points are correct in size and in the
 	  // correct order.
 	  bool drop = true;
 	  for (int player = 0; player < numPlayers; player++)
 	    {
-	      assert(action->points[player].size()==0
-		     || (action->points[player].size()==2
-			 && (action->points[player][0][1-player]
-			     >= action->points[player][1][1-player]
+	      assert(action->trimmedPoints[player].size()==0
+		     || (action->trimmedPoints[player].size()==2
+			 && (action->trimmedPoints[player][0][1-player]
+			     >= action->trimmedPoints[player][1][1-player]
 			     -env.pastThreatTol)));
-	      if (action->points[player].size()>0)
+	      if (action->trimmedPoints[player].size()>0)
 		drop = false;
 	    }
 	  // Drop the point if no longer IC

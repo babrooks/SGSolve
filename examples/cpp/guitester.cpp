@@ -7,7 +7,8 @@ int main ()
 {
   SGGame game;
 
-  SGGame::load(game,"../viewer/yuliysexample.sgm");
+  // SGGame::load(game,"../viewer/yuliysexample.sgm");
+  SGGame::load(game,"./test2.sgm");
 
   SGEnv env;
   env.setParam(SGEnv::PRINTTOCOUT,true);

@@ -88,6 +88,8 @@ private:
 		 westernmost tuple on the current revolution. */
   int oldWest; /*!< Previous value of westPoint. */
 
+  int oldOldWest; 
+
   //! Calculates the minimum IC continuation values
   /*! This method calculates for each SGAction object in
       SGApprox::actions the minimum incentive compatible
@@ -149,7 +151,7 @@ private:
       the same, and then takes the maximum over all distances between
       tuples that are in corresponding positions in the
       revolutions. */
-  double distance(int newStart, int start, int oldStart) const;
+  double distance(int newStart, int newEnd, int oldStart, int oldEnd) const;
 
   //! Checks whether or not newDirection is shallower than best, relative to current
   /*! Returns true if the cosine between newDirection and best is

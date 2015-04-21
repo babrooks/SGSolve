@@ -42,6 +42,7 @@ macx {
 LIBS += -lc++ -lsg /usr/local/lib/libboost_serialization.a 
 }
 
+PRE_TARGETDEPS=../lib/libsg.a
 DESTDIR = ./build
 
 MOC_DIR = ./tmp

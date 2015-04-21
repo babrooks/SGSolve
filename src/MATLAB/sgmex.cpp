@@ -192,10 +192,12 @@ void mexFunction(int nlhs, mxArray *plhs[],
       catch (SGException & e)
 	{
 	  cout << e.what() << endl;
+	  mexErrMsgTxt("SGException caught. Exiting.");
 	}
       catch (exception & e)
 	{
 	  cout << e.what() << endl;
+	  mexErrMsgTxt("std::exception caught. Exiting.");
 	}
       catch(...)
 	{

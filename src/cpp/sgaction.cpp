@@ -10,6 +10,7 @@ SGAction::SGAction(const SGEnv & _env, int _state, int _action):
   isNull(false)
 {
   points.resize(2);
+  trimmedPoints.resize(2);
   tuples.resize(2); 
 }
 
@@ -17,33 +18,48 @@ void SGAction::intersectRay(const SGPoint& pivot,
 			    const SGPoint& direction)
 {
   for (int player=0; player < points.size(); player++)
-    intersectRaySegment(pivot,direction,player);
+    intersectRaySegment(pivot,direction,points[player]);
+}
+
+void SGAction::trim(const SGPoint& pivot, 
+		    const SGPoint& direction)
+{
+  for (int player=0; player < points.size(); player++)
+    intersectRaySegment(pivot,direction,trimmedPoints[player]);
 }
 
 void SGAction::intersectRaySegment(const SGPoint& pivot, 
 				   const SGPoint& direction,
 				   int player)
 {
+  intersectRaySegment(pivot,direction,points[player]);
+  if (points[player].size() == 0)
+    tuples[player] = vector<int>(0);
+}
+
+void SGAction::intersectRaySegment(const SGPoint& pivot, 
+				   const SGPoint& direction,
+				   SGTuple & segment)
+{
 
   SGPoint normal = direction.getNormal();
   double level = pivot * normal;
 
   // First north south.
-  if (points[player].size() == 2)
+  if (segment.size() == 2)
     {
       // Two points of intersection for the ns IC constraint.
 	      
       // Determine which of the two points is on the far side
       // of the clockwise ray.
-      double l0 = normal * points[player][0];
-      double l1 = normal * points[player][1];
+      double l0 = normal * segment[0];
+      double l1 = normal * segment[1];
 
       if (l0 > level + env.ICTol
 	  && l1 > level + env.ICTol)
 	{
 	  // Both lie above the ray.
-	  points[player].clear();
-	  tuples[player].clear();
+	  segment.clear();
 	}
       else if (l0 < level
 	       && l1 < level)
@@ -56,25 +72,24 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
 	  double weightOn1 = (level - l0)/(l1 - l0);
 
 	  if (weightOn1 > 1)
-	    points[player][0] = points[player][1];
+	    segment[0] = segment[1];
 	  else if (weightOn1 < 0)
-	    points[player][1] = points[player][0];
+	    segment[1] = segment[0];
 	  else
 	    {
 	      SGPoint intersection 
-		= weightOn1 * points[player][1] +
-		(1.0 - weightOn1) * points[player][0];
+		= weightOn1 * segment[1] +
+		(1.0 - weightOn1) * segment[0];
 	      int replace1 = (l0 < l1);
 	  
-	      points[player][replace1] = intersection;
+	      segment[replace1] = intersection;
 	    }
 	}
     }
   else
     {
       // No points of intersection. Do nothing.
-      points[player] = SGTuple();
-      tuples[player] = vector<int>(0);
+      segment = SGTuple();
     }
 }
 

@@ -34,7 +34,7 @@ all: libsg.a
 
 # Next correspondsp to targets for each of the object files. We compile
 # them into object code and then package them into a static library.
-$(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
+$(OBJFILES): %.o : $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
 libsg.a: $(OBJFILES) 

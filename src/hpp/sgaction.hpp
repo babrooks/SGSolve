@@ -41,6 +41,9 @@ protected:
                                northern or easternmost of the two
                                binding payoffs. */ 
 
+  vector< SGTuple > trimmedPoints; /*!< Stores the "trimmed" points
+                                      before updating. */ 
+
   vector< vector< int > > tuples; /*!< The vector tuples[i][j] points
                                      to the element of
                                      SGApproximation::extremeTuples
@@ -52,8 +55,8 @@ protected:
 
   bool corner; /*!< Flag that indicates that the feasible set has a
                   corner. */
-
-
+  
+  
 public:
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
@@ -92,11 +95,31 @@ public:
 			   const SGPoint & direction,
 			   int player);
 
+  //! Intersects the segment with the ray emanating from the pivot
+  void intersectRaySegment(const SGPoint & pivot,
+			   const SGPoint & direction,
+			   SGTuple & segment);
+
+  //! Trims the trimmedPoints using intersectRaySegment.
+  void trim(const SGPoint & pivot,
+	    const SGPoint & direction);
+
   //! Calculates the minimum incentive compatible continuation payoff
   void calculateMinIC(const SGGame & game,
 		      const vector<bool> & update,
 		      const SGTuple & threatTuple);
 
+  //! Sets points equal to the trimmed points
+  void updateTrim() 
+  { 
+    points = trimmedPoints; 
+    for (int player = 0; player < 2; player++)
+      {
+	if (points[player].size() == 0)
+	  tuples[player] = vector<int>(0);
+      }
+  }
+  
   //! Calculates the IC constraint.
   /*! Calculates the minimum incentive compatible expected
       continuation value for the given action, relative to the given
