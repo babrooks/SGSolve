@@ -7,6 +7,8 @@ CONFIG += -std=gnu++11
 CONFIG += WARN_OFF
 CONFIG += debug
 
+QMAKE_CXXFLAGS += -std=c++11
+
 INCLUDEPATH += ./hpp/
 INCLUDEPATH += /usr/local/include
 INCLUDEPATH += ../src/hpp

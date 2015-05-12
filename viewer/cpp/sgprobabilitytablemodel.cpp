@@ -2,7 +2,7 @@
 #include "sgprobabilitytablemodel.hpp"
 
 QVariant SGProbabilityTableModel::data(const QModelIndex & index,
-				  int role) const Q_DECL_OVERRIDE
+				  int role) const
 {
   if (role == Qt::SizeHintRole)
     return QSize(1,1);

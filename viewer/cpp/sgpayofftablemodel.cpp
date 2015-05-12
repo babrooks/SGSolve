@@ -2,7 +2,7 @@
 #include "sgpayofftablemodel.hpp"
 
 QVariant SGPayoffTableModel::data(const QModelIndex & index,
-				  int role) const Q_DECL_OVERRIDE
+				  int role) const 
 {
   if (role == Qt::SizeHintRole)
     return QSize(1,1);
@@ -22,7 +22,7 @@ QVariant SGPayoffTableModel::data(const QModelIndex & index,
     
 QVariant SGPayoffTableModel::headerData(int section,
 					Qt::Orientation orientation,
-					int role) const Q_DECL_OVERRIDE
+					int role) const
 {
   if (role == Qt::DisplayRole)
     {
