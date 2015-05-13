@@ -446,7 +446,7 @@ void SGGameHandler::stateAdded()
   game.addState(newState);
   changeNumberOfStates(game.getNumStates());
   numStatesEdit->setText(QString::number(game.getNumStates()));
-  pushBackProbabilityTable(newState);
+  pushBackProbabilityTable(game.getNumStates()-1);
   
   setState(newState);
 } // stateAdded
@@ -512,9 +512,9 @@ void SGGameHandler::stateRemoved()
   connect(currentStateCombo,SIGNAL(currentIndexChanged(int)),
 	  this,SLOT(currentStateChanged(int)));
   
-  numStatesEdit->setText(QString::number(game.getNumStates()));
-  
   game.removeState(state);
+
+  numStatesEdit->setText(QString::number(game.getNumStates()));
 
   setState(newState);
   

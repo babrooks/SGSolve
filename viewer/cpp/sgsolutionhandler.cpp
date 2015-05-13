@@ -5,7 +5,7 @@ SGSolutionHandler::SGSolutionHandler(): mode(Progress)
 
   QHBoxLayout * controlLayout = new QHBoxLayout();
   QFormLayout * leftControlLayout = new QFormLayout();
-  QComboBox * solutionModeCombo = new QComboBox();
+  solutionModeCombo = new QComboBox();
   solutionModeCombo->addItem("Progress");
   solutionModeCombo->addItem("Final");
   solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
@@ -146,6 +146,15 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 	      this,SLOT(inspectPoint(SGPoint,int,bool)) );
       statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
     }
+
+  mode = Progress;
+  startSlider->setEnabled(mode==Progress);
+  disconnect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
+	     this,SLOT(changeMode(int)));
+  solutionModeCombo->setCurrentIndex(mode);
+  connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
+	  this,SLOT(changeMode(int)));
+  
   
   plotSolution(pivotIter->bestState);
 
@@ -518,6 +527,9 @@ void SGSolutionHandler::iterSliderUpdate(int value)
       if (startIter == soln.iterations.end())
 	--startIter;
     }
+
+  if (pivotIter == soln.iterations.begin())
+    pivotIter++;
   
   plotSolution(pivotIter->bestState);
   

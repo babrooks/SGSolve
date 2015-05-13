@@ -52,6 +52,9 @@ private:
   //! Layout holding the state plots.
   QGridLayout * statePlotsLayout;
 
+  //! Combo controlling the solution mode
+  QComboBox * solutionModeCombo;
+  
   // Sliders
   //! Slider for the last iteration
   QScrollBar * iterSlider;

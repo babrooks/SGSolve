@@ -279,7 +279,7 @@ bool SGGame::addState(int position)
 		 vector<SGPoint>(1,SGPoint(0,0)));
   probabilities.insert(probabilities.begin()+position,
 		       vector< vector<double> > (1, vector<double>(numStates,0)));
-  probabilities[position].back().back() = 1.0;
+  probabilities[position].back()[position] = 1.0;
 
   for (int state = 0; state < numStates; state++)
     {
@@ -312,7 +312,7 @@ bool SGGame::removeState(int state)
     {
       for (int action = 0; action < numActions_total[state]; action++)
 	probabilities[state][action].erase(probabilities[state][action].begin()
-					    +state);
+					   +state);
     }
   return true;
 } // removeState
