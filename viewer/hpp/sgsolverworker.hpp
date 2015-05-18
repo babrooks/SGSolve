@@ -51,12 +51,13 @@ public:
   //! Constructor
   /*! Initializes the SGApprox object. Waits for instruction to begin
       iteration via the SGSolverWorker::iterate slot. */
-  SGSolverWorker(const SGGame & game,
+  SGSolverWorker(const SGGame & game,double errorTol,
 		 QTextEdit * _logTextEdit):
     soln(game), approx(env,game,soln),
     logTextEdit(_logTextEdit)
   {
     env.setParam(SGEnv::PRINTTOCOUT,false);
+    env.setParam(SGEnv::ERRORTOL,errorTol);
 
     approx.initialize();
   } // constructor

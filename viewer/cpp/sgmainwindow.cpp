@@ -226,6 +226,7 @@ void SGMainWindow::solveGame()
       cancelSolveFlag = false;
       
       solverWorker = new SGSolverWorker(gameHandler->getGame(),
+					gameHandler->getErrorTol(),
 					logTextEdit);
       solverWorker->moveToThread(&solverThread);
       connect(this,SIGNAL(startIteration()),

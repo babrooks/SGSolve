@@ -30,6 +30,10 @@ private:
       this can be a different game than the one that is associated
       with the solution in the solution tab. */
   SGGame game;
+
+  //! Error tolerance for measuring convergence
+  double errorTol;
+
   //! The model for interfacing with payoffs
   SGPayoffTableModel* payoffModel;
   //! Vector of models for interfacing with transition probabilities
@@ -50,6 +54,8 @@ private:
   vector<QLineEdit *> numActionsEdits;
   //! Edit for number of states.
   QLineEdit * numStatesEdit;
+  //! Edit for controlling error tolerance
+  QLineEdit * errorTolEdit;
 
   // Combo box
   //! Drop down menu for selecting a state.
@@ -84,6 +90,10 @@ public:
   //! Returns constant reference to the current game.
   const SGGame & getGame() const
   { return game; }
+
+  //! Returns the error tolerance
+  double getErrorTol() const
+  { return errorTol; }
 
   //! Returns the layout
   QVBoxLayout * getLayout() const
@@ -137,6 +147,9 @@ private slots:
   void actionRemoved(int player);
   //! Changes the discount factor.
   void discountFactorChanged(const QString & text);
+
+  //! Changes the error tolerance.
+  void errorTolChanged(const QString & text);
 
   //! Advances currentState to the next state.
   void nextState();

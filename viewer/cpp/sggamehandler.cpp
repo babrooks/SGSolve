@@ -2,7 +2,7 @@
 #include "sggamehandler.hpp"
 
 SGGameHandler::SGGameHandler():
-  game(SGGame())
+  game(SGGame()), errorTol(1e-8)
 {
   deltaEdit = new QLineEdit("0.9");
   deltaEdit->setSizePolicy(QSizePolicy::Preferred,
@@ -62,7 +62,7 @@ SGGameHandler::SGGameHandler():
 						 QSizePolicy::Preferred);
     }
   
-  QLineEdit * errorTolEdit = new QLineEdit("1e-8");
+  errorTolEdit = new QLineEdit(QString("%1").arg(errorTol,0,'E',3));
   errorTolEdit->setSizePolicy(QSizePolicy::Preferred,
 			      QSizePolicy::Preferred);
 
@@ -198,6 +198,8 @@ SGGameHandler::SGGameHandler():
 	  this,SLOT(currentStateChanged(int)));
   connect(deltaEdit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(discountFactorChanged(const QString &)));
+  connect(errorTolEdit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(errorTolChanged(const QString &)));
 
   connect(addActionButtons[0],SIGNAL(clicked()),
 	  this,SLOT(action1Added()));
@@ -395,6 +397,13 @@ void SGGameHandler::discountFactorChanged(const QString & text)
   double newDelta = text.toDouble();
   if (newDelta > 0 && newDelta < 1)
     game.setDiscountFactor(newDelta);
+}
+
+void SGGameHandler::errorTolChanged(const QString & text)
+{
+  double newErrorTol = text.toDouble();
+  if (newErrorTol > 0 && newErrorTol < 1)
+    errorTol = newErrorTol;
 }
 
 void SGGameHandler::action1Added()
