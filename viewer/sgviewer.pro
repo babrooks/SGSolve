@@ -3,6 +3,7 @@ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.9
 QT += widgets printsupport
 
 CONFIG += release
+# CONFIG += static
 CONFIG += -std=gnu++11
 CONFIG += WARN_OFF
 CONFIG += debug
@@ -36,9 +37,9 @@ sgprobabilitytablemodel.cpp \
 sgpayofftablemodel.cpp \
 sgsolutionhandler.cpp
 
-LIBS += -L../lib/ -L/usr/local/lib/ 
+LIBS += -L../lib/ -L/usr/local/lib/ # -L/opt/Qt/lib/ -L/opt/Qt/plugins/platforms/
 linux-g++ {
-LIBS += -Bstatic -lsg -Wl,-Bstatic -lboost_serialization -Wl,-Bdynamic
+LIBS += -Bstatic -lsg -Wl,-Bstatic -lboost_serialization -Wl,-Bdynamic #-lqxcb
 }
 macx {
 LIBS += -lc++ -lsg /usr/local/lib/libboost_serialization.a 
