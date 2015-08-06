@@ -69,17 +69,19 @@ private:
                                             pointer to the SGAction
                                             object that generates
                                             pivot[state]. */
-  vector<bool> nonBindingStates; /*!< nonBindingStates[state]=true if
-                                    pivot[state] was generated in the
-                                    non-binding regime. */
+  vector<SG::Regime> regimeTuple; /*!< regimeTuple[state]
+					    gives the manner in which
+					    pivot[state] was
+					    generated. */
   
   const SGAction * bestAction; /*!< Pointer to the action profile that
                                   generates the shallowest
                                   direction. */
   SGPoint bestDirection; /*!< The shallowest direction at the current
                             iteration. */
-  bool bestNotBinding; /*!< True if the shallowest direction was
-                          generated with the non-binding regime. */
+  SG::Regime bestRegime; /*!< Indicates which incentive
+                                      constraints were binding for the
+                                      best direction. */
 
   int westPoint; /*!< Index within SGApprox::extremeTuples of
                     the westernmost tuple on the previous
@@ -133,8 +135,9 @@ private:
       regime. Returns the distance the pivot moves. */
   double updatePivot(vector<double> & movements, 
 		     vector<double> & changes,
-		     vector<bool> & nonBindingStates,
-		     const vector<double> & maxMovement);
+		     vector<SG::Regime> & regimeTuple,
+		     const vector<double> & maxMovement,
+		     const vector<SG::Regime> & maxMovementConstraints);
 
   //! Updates flags before the next iteration
   /*! This method checks whether or not the threat tuple has increased

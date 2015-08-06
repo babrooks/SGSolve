@@ -15,6 +15,12 @@
 
   \ingroup src
 */
+
+namespace SG
+{
+  enum Regime {NonBinding, Binding, Binding0, Binding1, Binding01};
+}
+
 class SGAction
 {
 protected:
@@ -50,6 +56,7 @@ protected:
                                      whose expectation is just
                                      clockwise relative to
                                      points[i][j]. */
+
   bool isNull; /*!< Flag to indicate that this is the place holder
                   "null" action. */
 

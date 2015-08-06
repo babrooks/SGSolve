@@ -38,7 +38,7 @@ void SGApprox::initialize()
   pivot = SGTuple(numStates);
   SGAction nullAction(env);
   actionTuple = vector< const SGAction* >(numStates,&nullAction);
-  nonBindingStates = vector<bool>(numStates,false);
+  regimeTuple = vector<SG::Regime>(numStates,SG::Binding);
   threatTuple = SGTuple(numStates,payoffLB);
 
   // Initialize extremeTuples
@@ -69,9 +69,9 @@ void SGApprox::initialize()
   if (env.storeIterations)
     soln.push_back(SGIteration(-1,0,
 			       extremeTuples.size(),
-			       -1,false,
+			       -1,SG::Binding,
 			       pivot,currentDirection,
-			       actionTuple,nonBindingStates,
+			       actionTuple,regimeTuple,
 			       threatTuple));
   
 } // initialize
@@ -108,9 +108,9 @@ double SGApprox::generate()
   if (env.storeIterations)
     soln.push_back(SGIteration(numIterations,numRevolutions,
 			       extremeTuples.size(),
-			       bestAction->getState(),bestNotBinding,
+			       bestAction->getState(),bestRegime,
 			       pivot,bestDirection,
-			       actionTuple,nonBindingStates,
+			       actionTuple,regimeTuple,
 			       threatTuple));
 
   if (passNorth)
@@ -161,7 +161,7 @@ void SGApprox::findBestDirection()
   int state;
 
   bestAction = NULL;
-  bestNotBinding = false;
+  bestRegime = SG::Binding;
 
   bestDirection = -1.0*currentDirection;
   
@@ -174,6 +174,8 @@ void SGApprox::findBestDirection()
 	   action != actions[state].end();
 	   ++action)
 	{
+	  SG::Regime bestBindingRegime = SG::Binding;
+
 	  SGPoint expPivot = pivot.expectation(game.probabilities[state][action->action]);
 	  SGPoint stagePayoff = game.payoffs[state][action->action];
 	  SGPoint nonBindingPayoff = (1-delta) * stagePayoff + delta * expPivot;
@@ -197,7 +199,7 @@ void SGApprox::findBestDirection()
 		{
 		  bestDirection = nonBindingDirection;
 		  bestAction = &(*action);
-		  bestNotBinding = true;
+		  bestRegime = SG::NonBinding;
 
 		  continue;
 		}
@@ -239,6 +241,12 @@ void SGApprox::findBestDirection()
 					  bindingDirections[point]) ) )
 			{
 			  belowDirection = bindingDirections[point];
+			  if (point==1 && action->corner)
+			    bestBindingRegime = SG::Binding01;
+			  else if (player==0)
+			    bestBindingRegime = SG::Binding0;
+			  else if (player==1)
+			    bestBindingRegime = SG::Binding1;
 			  foundBelow = true;
 			}
 		      if (bindingLevel > -env.levelTol
@@ -328,7 +336,7 @@ void SGApprox::findBestDirection()
 
 			  bestDirection = nonBindingDirection;
 			  bestAction = &(*action);
-			  bestNotBinding = true;
+			  bestRegime = SG::NonBinding;
 			}
 		    } // Non binding direction is feasible
 		
@@ -346,7 +354,7 @@ void SGApprox::findBestDirection()
 	    {
 	      bestDirection = belowDirection;
 	      bestAction = &(*action);
-	      bestNotBinding = false;
+	      bestRegime = bestBindingRegime;
 	    }
 
 	} // action
@@ -381,7 +389,7 @@ void SGApprox::calculateNewPivot()
 
   int state, player;
 
-  nonBindingStates[bestAction->state] = bestNotBinding;
+  regimeTuple[bestAction->state] = bestRegime;
   actionTuple[bestAction->state] = bestAction;
   bool flatDetected = false;
   if (env.mergeTuples)
@@ -391,11 +399,13 @@ void SGApprox::calculateNewPivot()
 
   // First construct maxMovement array.
   vector<double> maxMovement(numStates,0);
+  vector<SG::Regime> maxMovementConstraints(numStates,SG::Binding0);
   vector<double> movements(numStates,0.0);
   
   double tempMovement;
 
   maxMovement = vector<double>(numStates,numeric_limits<double>::max());
+  
       
   for (player = 0; player < numPlayers; player++)
     {
@@ -405,7 +415,7 @@ void SGApprox::calculateNewPivot()
 	    {
 	      // Calculate how far we can move before we hit this
 	      // player's IC constraint.
-	      if (!nonBindingStates[state])
+	      if (regimeTuple[state] != SG::NonBinding)
 		continue;
 
 	      tempMovement = (delta*actionTuple[state]->minIC[player]
@@ -415,7 +425,12 @@ void SGApprox::calculateNewPivot()
 	      
 	      if (tempMovement < maxMovement[state]
 		  && tempMovement > 0)
-		maxMovement[state] = tempMovement;
+		{
+		  maxMovement[state] = tempMovement;
+		  if (player==1)
+		    maxMovementConstraints[state] = SG::Binding1;
+		}
+		
 	    } // state
 	}
     } // player
@@ -423,8 +438,8 @@ void SGApprox::calculateNewPivot()
   movements[bestAction->state] = 1.0;
   vector<double> changes(movements);
 
-  while (updatePivot(movements,changes,nonBindingStates,
-		     maxMovement) > env.updatePivotTol
+  while (updatePivot(movements,changes,regimeTuple,
+		     maxMovement,maxMovementConstraints) > env.updatePivotTol
 	 && (++updatePivotPasses < env.maxUpdatePivotPasses))
     {}
   if (updatePivotPasses >= env.maxUpdatePivotPasses)
@@ -457,10 +472,11 @@ void SGApprox::calculateNewPivot()
 
 double SGApprox::updatePivot(vector<double> & movements, 
 			     vector<double> & changes,
-			     vector<bool> & nonBindingStates,
-			     const vector<double> & maxMovement)
+			     vector<SG::Regime> & regimeTuple,
+			     const vector<double> & maxMovement,
+			     const vector<SG::Regime> & maxMovementConstraints)
 {
-  // Solve forward the system of equations implied by nonBindingStates
+  // Solve forward the system of equations implied by regimeTuple
   // and actionTuple. If an IC constraint is violated by the forward
   // solution, set that element of the pivot equal to the binding
   // constraint.
@@ -470,7 +486,7 @@ double SGApprox::updatePivot(vector<double> & movements,
 
   for (int state = 0; state < numStates; state++)
     {
-      if (!nonBindingStates[state])
+      if (regimeTuple[state]!=SG::NonBinding)
 	continue;
 
       for (int statep = 0; statep < numStates; statep++)
@@ -493,7 +509,7 @@ double SGApprox::updatePivot(vector<double> & movements,
 	{
 	  changes[state] = maxMovement[state]-movements[state];
 	  movements[state] = maxMovement[state];
-	  nonBindingStates[state] = false;
+	  regimeTuple[state] = maxMovementConstraints[state];
 	}
 
       newError = max(newError,changes[state]);
@@ -666,7 +682,7 @@ void SGApprox::calculateBindingContinuations()
 
 	      action->tuples[player].clear(); 
 	      action->points[player].clear(); 
-	  
+	      
 	      nextPoint = extremeTuples.back()
 		.expectation(game.probabilities[action->state]
 			     [action->action]);
@@ -790,7 +806,7 @@ void SGApprox::calculateBindingContinuations()
 	      && (action->points[1].size() == 0 && !game.unconstrained[1]))
 	    {
 	      if (actionTuple[state] == &(*action))
-		nonBindingStates[state] = false;
+		regimeTuple[state] = SG::Binding;
 	      actions[state].erase(action++);
 	    }
 	  else

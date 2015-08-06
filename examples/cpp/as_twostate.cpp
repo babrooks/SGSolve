@@ -1,5 +1,6 @@
 // Example from Abreu-Sannikov. Game with only one state.
 #include "sg.hpp"
+#include "sgsimulator.hpp"
 
 //! @example
 
@@ -84,6 +85,28 @@ int main ()
 
   SGGame::save(game,"as_twostate.sgm");
 
+  SGSimulator sim(soln);
+
+  sim.initialize();
+
+  sim.simulate(10000,0,soln.iterations.back().iteration-4);
+
+  vector<int> stateDistr = sim.getStateDistr();
+  vector< vector<int> > actionDistr = sim.getActionDistr();
+
+  for (int state = 0; state < stateDistr.size(); state++)
+    cout << "state: " << state 
+  	 << ", count: " << stateDistr[state] << endl;
+
+  for (int state = 0; state < stateDistr.size(); state++)
+    {
+      cout << "state: " << state << endl; 
+      for (int action = 0; action < actionDistr[state].size(); action++)
+  	cout << "action: " << action
+  	     << ", count: " << actionDistr[state][action] << endl;
+    }
+
+  
 
   return 0;
 }

@@ -26,11 +26,11 @@ public:
   //! The state that generated the best direction.
   int bestState; 
   //! True if the best direction was non-binding.
-  bool nonBinding; 
+  SG::Regime regime; 
   //! The current action tuple.
   vector<int> actionTuple; 
   //! The states in which IC constraints are not binding. 
-  vector<bool> nonBindingStates; 
+  vector<SG::Regime> regimeTuple; 
   //! The current threat tuple.
   SGTuple threatTuple;
 
@@ -42,20 +42,20 @@ public:
 	      int _revolution,
 	      int _numExtremeTuples,
 	      int _bestState,
-	      bool _nonBinding,
+	      SG::Regime _regime,
 	      const SGTuple &_pivot,
 	      const SGPoint & _direction,
 	      const vector<const SGAction*> &_actionTuple,
-	      const vector<bool> & _nonBindingStates,
+	      const vector<SG::Regime> & _regimeTuple,
 	      const SGTuple & _threatTuple):
     iteration(_iteration),
     revolution(_revolution),
     numExtremeTuples(_numExtremeTuples),
-    nonBinding(_nonBinding),
+    regime(_regime),
     pivot(_pivot),
     bestState(_bestState),
     direction(_direction),
-    nonBindingStates(_nonBindingStates),
+    regimeTuple(_regimeTuple),
     threatTuple(_threatTuple)
   {
     actionTuple = vector<int>(_actionTuple.size(),-1);
@@ -75,8 +75,8 @@ public:
   {
     ar & iteration & revolution & numExtremeTuples
       & pivot & direction
-      & bestState & nonBinding & actionTuple
-      & nonBindingStates & threatTuple;
+      & bestState & regime & actionTuple
+      & regimeTuple & threatTuple;
   }
 }; // SGIteration
 

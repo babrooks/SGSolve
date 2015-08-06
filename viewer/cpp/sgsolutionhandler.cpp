@@ -319,10 +319,29 @@ void SGSolutionHandler::plotSolution(int state)
       titleString += QString::number(actions[1]);
       titleString += QString(")");
 
-      if (pivotIter->nonBinding)
-	titleString += "\n(Non-binding direction)";
-      else
-	titleString += "\n(Binding direction)";
+      switch (pivotIter->regime)
+	{
+	case SG::NonBinding:
+	  titleString += "\n(Non-binding direction)";
+	  break;
+
+	case SG::Binding:
+	  titleString += "\n(Binding direction)";
+	  break;
+
+	case SG::Binding0:
+	  titleString += "\n(Binding 0 direction)";
+	  break;
+
+	case SG::Binding1:
+	  titleString += "\n(Binding 1 direction)";
+	  break;
+
+	case SG::Binding01:
+	  titleString += "\n(Binding 0 and 1 direction)";
+	  break;
+	}
+
     }
   detailPlot->getTitle()->setText(titleString);
 
@@ -449,9 +468,10 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
 
   if (detailedTitlesAction->isChecked())
     {
-      if (pivotIter->nonBindingStates[state])
+      vector<int> actions;
+      switch (pivotIter->regimeTuple[state])
 	{
-	  vector<int> actions;
+	case SG::NonBinding:
 	  indexToVector(pivotIter->actionTuple[state],actions,
 			soln.game.getNumActions()[state]);
 	  titleString += QString(", (R");
@@ -461,9 +481,25 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
 	  titleString += QString(")");
 
 	  titleString += "\n(Non-binding)";
-	}
-      else
-	titleString += "\n(Binding)";
+	  break;
+
+	case SG::Binding:
+	  titleString += "\n(Binding direction)";
+	  break;
+
+	case SG::Binding0:
+	  titleString += "\n(Binding 0 direction)";
+	  break;
+
+	case SG::Binding1:
+	  titleString += "\n(Binding 1 direction)";
+	  break;
+
+	case SG::Binding01:
+	  titleString += "\n(Binding 0 and 1 direction)";
+	  break;
+	} // switch
+
     }
   plot->getTitle()->setText(titleString);
 } // plotSolution
