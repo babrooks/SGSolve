@@ -6,6 +6,7 @@
 #include <cmath>
 #include "sgsolution.hpp"
 #include "sgsolver.hpp"
+#include "sgsimulator.hpp"
 
 SGSolution soln;
 list<SGIteration>::iterator currentIteration;
@@ -83,7 +84,67 @@ void mexFunction(int nlhs, mxArray *plhs[],
       plhs[0] = mxCreateLogicalScalar(solnLoaded);
 		
     } // SolutionIsLoaded
-	
+
+  else if ( !strcmp(optionStr,"Simulate") )
+    {
+      if (!solnLoaded)
+	mexErrMsgTxt("Load a solution first.");
+      if (nlhs != 2)
+	mexErrMsgTxt("Must have one output argument.");
+      if (nrhs != 4)
+	mexErrMsgTxt("Must have four arguments.");
+
+      int numIter = mxGetScalar(prhs[1]);
+      int initialState = mxGetScalar(prhs[2]);
+      int initialTuple = mxGetScalar(prhs[3]);
+
+      if (numIter<=0)
+	mexErrMsgTxt("Number of iterations must be at least 1.");
+      if (initialState < 0 | initialState >= soln.game.getNumStates())
+	mexErrMsgTxt("Initial state is out of bounds.");
+
+      try
+	{
+	  SGSimulator sim(soln);
+
+	  sim.initialize();
+
+	  if (initialTuple < sim.getStartOfLastRev()
+	      | initialTuple > soln.iterations.back().iteration )
+	    mexErrMsgTxt("Initial tuple must be in the last iteration.");
+
+	  sim.simulate(numIter,initialState,initialTuple);
+	  
+	  vector< vector<int> > actionDistr = sim.getActionDistr();
+	  plhs[0] = mxCreateCellMatrix(soln.game.getNumStates(),1);
+	  for (state = 0; state < actionDistr.size(); state++)
+	    {
+	      mxArray * distrPtr = mxCreateDoubleMatrix(actionDistr[state].size(),1,mxREAL);
+	      outputPtr = mxGetPr(distrPtr);
+	      for (action = 0; action < actionDistr[state].size(); action++)
+		outputPtr[action] = actionDistr[state][action];
+	      mxSetCell(plhs[0],state,distrPtr);
+	    } // state
+	  plhs[1] = mxCreateDoubleMatrix(sim.getTupleDistr().size(),1,mxREAL);
+	  outputPtr = mxGetPr(plhs[1]);
+	  for (int tuple = 0; tuple < sim.getTupleDistr().size(); tuple++)
+	    outputPtr[tuple] = sim.getTupleDistr()[tuple];
+	}
+      catch (exception e)
+	{
+	  cout << e.what();
+	}
+      catch (SGException e)
+	{
+	  cout << e.what();
+	}
+      catch (...)
+	{
+	  mexErrMsgTxt("Simulation failed: Unknown exception caught.");
+	}
+
+    } // Simulate
+
   // SaveGame
   else if (!strcmp(optionStr,"SaveGame"))
     {
@@ -462,7 +523,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  fieldOutput = mxCreateDoubleMatrix(1,soln.game.getNumStates(),mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
 	  for (state = 0; state < soln.game.getNumStates(); state++)
-	    outputPtr[state] = static_cast<double>(currentIteration->nonBindingStates[state]);
+	    outputPtr[state] = static_cast<double>(currentIteration->regimeTuple[state]==SG::NonBinding);
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 	  
 	  // state

@@ -1,6 +1,7 @@
 #include "sgsolutionhandler.hpp"
 
-SGSolutionHandler::SGSolutionHandler(): mode(Progress)
+SGSolutionHandler::SGSolutionHandler(QWidget * _parent): 
+  mode(Progress), parent(_parent)
 {
 
   QHBoxLayout * controlLayout = new QHBoxLayout();
@@ -29,10 +30,12 @@ SGSolutionHandler::SGSolutionHandler(): mode(Progress)
 
   detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
   detailedTitlesAction->setCheckable(true);
+  detailedTitlesAction->setChecked(true);
 
   equalizeAxesAction = new QAction(tr("&Equalize axes scales"),this);
   equalizeAxesAction->setCheckable(true);
-  
+  equalizeAxesAction->setChecked(true);
+
   iterSlider = new QScrollBar();
   iterSlider->setOrientation(Qt::Horizontal);
   startSlider = new QScrollBar();
@@ -121,6 +124,8 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 
   connect(detailPlot,SIGNAL(inspectPoint(SGPoint,int,bool)),
 	  this,SLOT(inspectPoint(SGPoint,int,bool)) );
+  connect(detailPlot,SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
+	  this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
   // Set up state plots
   QLayoutItem * item;
   while (item = statePlotsLayout->takeAt(0))
@@ -144,6 +149,8 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 
       connect(statePlots[state],SIGNAL(inspectPoint(SGPoint,int,bool)),
 	      this,SLOT(inspectPoint(SGPoint,int,bool)) );
+      connect(statePlots[state],SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
+	      this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
       statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
     }
 
@@ -469,17 +476,18 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   if (detailedTitlesAction->isChecked())
     {
       vector<int> actions;
+
+      indexToVector(pivotIter->actionTuple[state],actions,
+		    soln.game.getNumActions()[state]);
+      titleString += QString(", (R");
+      titleString += QString::number(actions[0]);
+      titleString += QString(",C");
+      titleString += QString::number(actions[1]);
+      titleString += QString(")");
+
       switch (pivotIter->regimeTuple[state])
 	{
 	case SG::NonBinding:
-	  indexToVector(pivotIter->actionTuple[state],actions,
-			soln.game.getNumActions()[state]);
-	  titleString += QString(", (R");
-	  titleString += QString::number(actions[0]);
-	  titleString += QString(",C");
-	  titleString += QString::number(actions[1]);
-	  titleString += QString(")");
-
 	  titleString += "\n(Non-binding)";
 	  break;
 
@@ -659,4 +667,24 @@ void SGSolutionHandler::inspectPoint(SGPoint point,
   
   plotSolution(state);
 } // inspectPoint
+
+
 					       
+void SGSolutionHandler::simulateEquilibrium(SGPoint point,
+					    int state, bool isDetailPlot)
+{
+  simHandler = new SGSimulationHandler(parent,soln,
+				       point,state,
+				       startOfLastRev);
+
+  simHandler->adjustSize();
+
+  simHandler->move(parent->pos()
+		   +parent->rect().center()
+		   -simHandler->pos()
+		   -simHandler->rect().center());
+  // simHandler->move(QApplication::desktop()->screen()->rect().center()
+  // 		   -simHandler->rect().center());
+  
+  simHandler->show();
+} // simulateEquilibrium

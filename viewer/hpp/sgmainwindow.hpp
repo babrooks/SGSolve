@@ -88,6 +88,9 @@ private slots:
   //! Triggers a game save.
   void saveGame();
 
+  //! Quits the program.
+  void quitProgram();
+
   //! Triggers a new screen shot.
   void screenShot();
   

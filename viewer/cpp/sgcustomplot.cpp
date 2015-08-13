@@ -29,6 +29,7 @@ SGCustomPlot::SGCustomPlot(int _state, bool _isDetailPlot) :
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   inspectPointAction = new QAction(tr("&Inspect point"),this);
+  simulateAction = new QAction(tr("&Simulate equilibrium"),this);
   savePDFAction = new QAction(tr("Save &PDF"), this);
   savePNGAction = new QAction(tr("Save P&NG"), this);
 
@@ -38,6 +39,8 @@ SGCustomPlot::SGCustomPlot(int _state, bool _isDetailPlot) :
 	  this,SLOT(savePNG()));
   connect(inspectPointAction,SIGNAL(triggered()),
 	  this,SLOT(pointInspected()));
+  connect(simulateAction,SIGNAL(triggered()),
+	  this,SLOT(simulationRequested()));
 
   connect(this,SIGNAL(customContextMenuRequested(const QPoint &)),
 	  this,SLOT(ShowContextMenu(const QPoint &)));

@@ -9,7 +9,7 @@ SGMainWindow::SGMainWindow()
   
   gameHandler = new SGGameHandler();
 
-  solutionHandler = new SGSolutionHandler();
+  solutionHandler = new SGSolutionHandler(this);
 
   // Menu bar
   QMenu * fileMenu = menuBar()->addMenu(tr("&File"));
@@ -17,14 +17,18 @@ SGMainWindow::SGMainWindow()
   QAction * loadGameAction = new QAction(tr("Load &game"),this);
   QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
   QAction * saveGameAction = new QAction(tr("Save game"),this);
+  QAction * quitAction = new QAction(tr("&Quit"),this);
   fileMenu->addAction(loadSolutionAction);
   fileMenu->addAction(loadGameAction);
   fileMenu->addSeparator();
   fileMenu->addAction(saveSolutionAction);
   fileMenu->addAction(saveGameAction);
+  fileMenu->addSeparator();
+  fileMenu->addAction(quitAction);
   loadSolutionAction->setShortcut(tr("Ctrl+L"));
   saveSolutionAction->setShortcut(tr("Ctrl+S"));
   loadGameAction->setShortcut(tr("Ctrl+G"));
+  quitAction->setShortcut(tr("Alt+W"));
 
   QMenu * viewMenu = menuBar()->addMenu(tr("&View"));
   QAction * screenShotAction = new QAction(tr("&Save a screen shot"),this);
@@ -59,6 +63,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(loadGame()));
   connect(saveGameAction,SIGNAL(triggered()),
 	  this,SLOT(saveGame()));
+  connect(quitAction,SIGNAL(triggered()),
+	  this,SLOT(quitProgram()));
   connect(screenShotAction,SIGNAL(triggered()),
 	  this,SLOT(screenShot()));
   connect(aboutAction,SIGNAL(triggered()),
@@ -211,6 +217,11 @@ void SGMainWindow::saveGame()
       qDebug() << "Save game didnt work :(" << endl;
     }
 } // saveGame
+
+void SGMainWindow::quitProgram()
+{
+  QApplication::quit();
+}
 
 void SGMainWindow::solveGame()
 {

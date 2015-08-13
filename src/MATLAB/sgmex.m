@@ -43,6 +43,10 @@ function sgmex
 %            Consult the SGSolve documentation for further details
 %            on these parameters.
 %
+%       [actionDistr,tupleDistr] = sgmex('Simulate',numPeriods,initialState,initialTuple)
+%            Simulates the equilibrium starting from the given tuple and
+%            initial state for the given number of periods.
+%
 %       sgmex('LoadSolution',path)
 %            Loads the SG solution at path.
 %

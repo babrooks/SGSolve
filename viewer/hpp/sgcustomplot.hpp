@@ -32,6 +32,10 @@ private:
 
   //! Inspect a point
   QAction * inspectPointAction;
+
+  //! Action for forward simulating
+  QAction* simulateAction;
+
   //! Pointer to the QAction for saving PNG files.
   QAction * savePNGAction;
   //! Pointer to the QAction for saving PDF files.
@@ -98,6 +102,7 @@ private slots:
     
     QMenu contextMenu;
     contextMenu.addAction(inspectPointAction);
+    contextMenu.addAction(simulateAction);
     contextMenu.addSeparator();
     contextMenu.addAction(savePDFAction);
     contextMenu.addAction(savePNGAction);
@@ -111,6 +116,14 @@ private slots:
     emit inspectPoint(SGPoint(xAxis->pixelToCoord(lastContextPos.x()),
 			      yAxis->pixelToCoord(lastContextPos.y())),
 		      state,isDetailPlot);
+  }
+
+  void simulationRequested()
+  {
+    emit simulateEquilibrium(SGPoint(xAxis->pixelToCoord(lastContextPos.x()),
+			      yAxis->pixelToCoord(lastContextPos.y())),
+			     state,isDetailPlot); 
+
   }
 
   //! Saves graph as a PDF.
@@ -161,6 +174,11 @@ signals:
   void inspectPoint(SGPoint point, 
 		    int state, 
 		    bool isDetailPlot);
+
+  //! Signal to simulate the given equilibrium forwards
+  void simulateEquilibrium(SGPoint point,
+			   int state,
+			   bool isDetailPlot); 
 
 };
 

@@ -3,6 +3,7 @@
 
 #include "sgsolution.hpp"
 #include "sgcustomplot.hpp"
+#include "sgsimulationhandler.hpp"
 
 //! Handles the widgets for displaying the solution
 /*! This class contains all of the widgets on the solution tab. It
@@ -19,6 +20,8 @@ private:
   /*! Stores all of the information related to the result of the
       computation. */
   SGSolution soln;
+
+  QWidget * parent;
 
   //! A bound on the size of payoffs
   double payoffBound;
@@ -71,6 +74,9 @@ private:
   //! Action for equalizing axes
   QAction* equalizeAxesAction;
 
+  //! Pointer to simulation handler
+  SGSimulationHandler * simHandler;
+
   // Methods
   //! Plots the solution from start to end
   void plotSolution(int state);
@@ -87,7 +93,7 @@ public:
   //! Constructor
   /*! Constructs the widgets and the layout, connects signals and
       slots. */
-  SGSolutionHandler();
+  SGSolutionHandler(QWidget * parent = 0);
 
   //! Sets the solution to newSoln.
   void setSolution(const SGSolution & newSoln);
@@ -120,9 +126,13 @@ public slots:
   //! Toggles the solution mode
   void changeMode(int newMode);
 
-  //! Inspect point method
+  //! Inspect point slot
   void inspectPoint(SGPoint point,
 		    int state, bool isDetailPlot);
+  
+  //! Simulate equilibrium slot
+  void simulateEquilibrium(SGPoint point,
+			   int state, bool isDetailPlot);
   
   
 };
