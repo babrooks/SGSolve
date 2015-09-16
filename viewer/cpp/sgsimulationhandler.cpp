@@ -38,13 +38,16 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   simulateButton = new QPushButton(tr("Simulate"));
 
-  iterationEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
-  simulateButton->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
+  iterationEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
+  simulateButton->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
 
   controlLayout->addRow(simulateButton);
 
   textEdit = new QTextEdit();
-  textEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
+  textEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
+  QSizePolicy policy = textEdit->sizePolicy();
+  policy.setVerticalStretch(1);
+  textEdit->setSizePolicy(policy);
   controlLayout->addRow(textEdit);
   
   // simulateButton->setFixedWidth(150);
@@ -55,14 +58,14 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   longRunPayoffEdit = new QLineEdit();
   longRunPayoffEdit->setReadOnly(true);
-  longRunPayoffEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
+  longRunPayoffEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
   longRunPayoffEdit->setFixedWidth(200);
   controlLayout->addRow(new QLabel(tr("Long run payoffs:")),
 			longRunPayoffEdit);
 
   timeEdit = new QLineEdit();
   timeEdit->setReadOnly(true);
-  timeEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
+  timeEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
   timeEdit->setFixedWidth(200);
   controlLayout->addRow(new QLabel(tr("Elapsed time (s):")),
 			timeEdit);
@@ -73,7 +76,11 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   // plotLayout->addWidget(distrPlot);
 
   QScrollArea * scrollArea = new QScrollArea();
-  scrollArea->setWidget(distrPlot);
+  QWidget * scrollWidget = new QWidget();
+  QHBoxLayout * scrollLayout = new QHBoxLayout();
+  scrollLayout->addWidget(distrPlot);
+  scrollWidget->setLayout(scrollLayout);
+  scrollArea->setWidget(scrollWidget);
 
   scrollArea->setWidgetResizable(true);
   scrollArea->setSizePolicy(QSizePolicy::Expanding,

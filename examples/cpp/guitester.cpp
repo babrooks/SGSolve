@@ -29,7 +29,8 @@ int main ()
       // cout << "Done!" << endl;
 
       SGSolution soln;
-      SGSolution::load(soln,"./sgtest.sln");
+      // SGSolution::load(soln,"./sgtest.sln");
+      SGSolution::load(soln,"../src/MATLAB/solutions/koch_ne=11_c2e=5_d=0.90_p=0.00.sln");
 
       SGSimulator sim(soln);
       

@@ -37,6 +37,14 @@ LDFLAGS = -L$(BOOSTDIR) \
 	$(LDMTFLAGS) \
 	-L.
 
+ifeq ($(OS),Linux)
+	STATIC=-Wl,-Bstatic
+	DYNAMIC=-Wl,-Bdynamic
+else
+	STATIC=
+	DYNAMIC=
+endif
+
 all: libsg.a $(MAINS)
 
 # Next correspondsp to targets for each of the object files. We compile
@@ -54,8 +62,8 @@ libsg.a:
 
 $(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/sg.hpp $(HPPDIR)/sgsolution.hpp
 	$(CXX) $(CFLAGS) $< -L$(LIBDIR) -lsg \
-	 -Wl,-Bstatic -lboost_serialization \
-	-Wl,-Bdynamic $(LDFLAGS) -o $@
+	$(STATIC) -lboost_serialization \
+	$(DYNAMIC) $(LDFLAGS) -o $@
 
 clean:
 	rm -rf *.o *.a $(MAINS) $(LIBDIR)/libsg.a $(MAINSGRB)

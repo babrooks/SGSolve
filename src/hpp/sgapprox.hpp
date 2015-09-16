@@ -171,9 +171,6 @@ private:
 		 int iter, int rev, const SGTuple & tuple,
 		 int state, int action);
 
-  //! Returns a string indicating the algorithms progress
-  std::string progressString() const;
-
 public:
   //! Constructor for SGApprox class
   SGApprox(const SGEnv & _env,
@@ -192,6 +189,12 @@ public:
       SGApprox::generate() will calculate new binding
       continuation values on the first pass. */
   void initialize();
+
+  int getNumIterations() const {return numIterations; }
+  const vector<SGTuple> & getExtremeTuples() const {return extremeTuples; }
+
+  //! Returns a string indicating the algorithms progress
+  std::string progressString() const;
 
   //! Refines the approximation
   /*! Main public routine for the SGApprox class. Updates

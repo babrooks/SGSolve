@@ -27,11 +27,13 @@ private:
 
   bool logFlag;
 
+  double weightTol;
+  
   std::stringstream ss;
 
 public:
   SGSimulator(const SGSolution & _soln): 
-    soln(_soln), logFlag(false)
+    soln(_soln), logFlag(false), weightTol(1e-4)
   {}
 
   const vector< vector<int> > getActionDistr() const { return actionDistr; }

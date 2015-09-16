@@ -5,7 +5,7 @@
 #include <string>
 #include <cmath>
 #include "sgsolution.hpp"
-#include "sgsolver.hpp"
+#include "sgapprox.hpp"
 #include "sgsimulator.hpp"
 
 SGSolution soln;
@@ -89,8 +89,8 @@ void mexFunction(int nlhs, mxArray *plhs[],
     {
       if (!solnLoaded)
 	mexErrMsgTxt("Load a solution first.");
-      if (nlhs != 2)
-	mexErrMsgTxt("Must have one output argument.");
+      if (nlhs != 3)
+	mexErrMsgTxt("Must have three output arguments.");
       if (nrhs != 4)
 	mexErrMsgTxt("Must have four arguments.");
 
@@ -114,6 +114,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    mexErrMsgTxt("Initial tuple must be in the last iteration.");
 
 	  sim.simulate(numIter,initialState,initialTuple);
+
+	  mexPrintf("Simulation completed.\n");
+	  mexEvalString("drawnow;");
 	  
 	  vector< vector<int> > actionDistr = sim.getActionDistr();
 	  plhs[0] = mxCreateCellMatrix(soln.game.getNumStates(),1);
@@ -129,6 +132,13 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  outputPtr = mxGetPr(plhs[1]);
 	  for (int tuple = 0; tuple < sim.getTupleDistr().size(); tuple++)
 	    outputPtr[tuple] = sim.getTupleDistr()[tuple];
+
+	  SGPoint lrPayoffs = sim.getLongRunPayoffs();
+	  plhs[2] = mxCreateDoubleMatrix(1,2,mxREAL);
+	  outputPtr = mxGetPr(plhs[2]);
+	  outputPtr[0] = lrPayoffs[0];
+	  outputPtr[1] = lrPayoffs[1];
+	  
 	}
       catch (exception e)
 	{
@@ -236,14 +246,44 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		  game.setConstrained(unconstrained);
 		}
 	    }
+
+	  env.setParam(SGEnv::PRINTTOCOUT,true)
+;	  env.setParam(SGEnv::STOREITERATIONS,true);
+
+	  soln = SGSolution(game);
+	  SGApprox approx(env,game,soln);
+
+	  approx.initialize();
+
+	  while (approx.generate() > env.getParam(SGEnv::ERRORTOL)
+		 && approx.getNumIterations() < env.getParam(SGEnv::MAXITERATIONS))
+	    {
+	      if (approx.passedNorth())
+		{
+		  string str = approx.progressString();
+		  mexPrintf(str.c_str());
+		  mexPrintf("\n");
+		  mexEvalString("drawnow;");
+		}
+	    };
 	  
-	  SGSolver solver(env,game);
-			
-	  solver.solve();
+	  // Add the extreme tuples array to soln.
+	  for (vector<SGTuple>::const_iterator tuple
+		 = approx.getExtremeTuples().begin();
+	       tuple != approx.getExtremeTuples().end();
+	       ++tuple)
+	    soln.push_back(*tuple);
+
+	  approx.end();
+
+	  // SGSolver solver(env,game);
+
+	  // solver.solve();
 	  
 	  mexPrintf("Game solved.\n");
+	  mexEvalString("drawnow;");
 
-	  soln = solver.getSolution();
+	  // soln = solver.getSolution();
 	  solnLoaded = true;
 
 	  currentIteration = soln.iterations.end();

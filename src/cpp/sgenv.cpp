@@ -146,3 +146,91 @@ void SGEnv::setParam(SGEnv::INT_PARAM param, int value)
       throw(SGException(SGException::UNKNOWN_PARAM));
     }
 } // setParam
+
+double SGEnv::getParam(SGEnv::DBL_PARAM param) const
+{
+  switch (param)
+    {
+    case ERRORTOL:
+      return errorTol;
+
+    case DIRECTIONTOL:
+      return directionTol;
+
+    case PASTTHREATTOL:
+      return pastThreatTol;
+      
+    case UPDATEPIVOTTOL:
+      return updatePivotTol;
+
+    case ICTOL:
+      return ICTol;
+
+    case NORMTOL:
+      return normTol;
+
+    case FLATTOL:
+      return flatTol;
+
+    case LEVELTOL:
+      return levelTol;
+
+    case IMPROVETOL:
+      return improveTol;
+
+    case ROUNDTOL:
+      return roundTol;
+      
+    case BACKBENDINGTOL:
+      return backBendingTol;
+
+    case MOVEMENTTOL:
+      return movementTol;
+
+    default:
+      throw(SGException(SGException::UNKNOWN_PARAM));
+    }
+
+} // getParam
+
+bool SGEnv::getParam(SGEnv::BOOL_PARAM param) const
+{
+  switch (param)
+    {
+    case BACKBENDINGWARNING:
+      return backBendingWarning;
+
+    case MERGETUPLES:
+      return mergeTuples;
+
+    case STOREITERATIONS:
+      return storeIterations;
+
+    case PRINTTOLOG:
+      return printToLog;
+      
+    case PRINTTOCOUT:
+      return printToCout;
+      
+    default:
+      throw(SGException(SGException::UNKNOWN_PARAM));
+    }
+} // getParam
+
+int SGEnv::getParam(SGEnv::INT_PARAM param) const
+{
+  switch (param)
+    {
+    case MAXITERATIONS:
+      return maxIterations;
+      
+    case MAXUPDATEPIVOTPASSES:
+      return maxUpdatePivotPasses;
+
+    case TUPLERESERVESIZE:
+      return tupleReserveSize;
+
+    default:
+      throw(SGException(SGException::UNKNOWN_PARAM));
+    }
+} // getParam

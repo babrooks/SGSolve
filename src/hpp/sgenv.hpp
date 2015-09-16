@@ -141,6 +141,15 @@ public:
   //! Method for setting integer parameters.
   void setParam(SGEnv::INT_PARAM param, int value);
 
+  //! Method for getting double parameters.
+  double getParam(SGEnv::DBL_PARAM param) const;
+
+  //! Method for getting boolean parameters.
+  bool getParam(SGEnv::BOOL_PARAM param) const;
+
+  //! Method for getting integer parameters.
+  int getParam(SGEnv::INT_PARAM param) const;
+
   //! Method for redirecting output
   void setOStream(ostream & newOS)
   {

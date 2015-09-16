@@ -33,9 +33,10 @@ public:
       OUT_OF_BOUNDS, /*!< Passed an argument that was out of bounds,
                        e.g., player < 0 or state >= numStates. */
       DIVIDE_BY_ZERO, /*!< Encountered an attempt to divide by zero. */
-      INCONSISTENT_INPUTS /*!< Inputs are incompatible or inconsistent
+      INCONSISTENT_INPUTS, /*!< Inputs are incompatible or inconsistent
 			    with one another, e.g., arrays that should
 			    be the same size are not. */
+      SIMERROR /*!< Simulator error. */
     };
 
   //! Constructor for new SGException.
@@ -63,6 +64,8 @@ public:
       case INCONSISTENT_INPUTS:
 	return "Inputs are incompatible or inconsistent with one another, e.g., arrays that should be the same size are not.";
 
+      case SIMERROR:
+	return "An error occurred within SGSimuator.";
       default:
 	return "No message specified.";
       }

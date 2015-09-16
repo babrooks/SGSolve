@@ -82,7 +82,7 @@ void SGSimulator::initialize()
 		      
 			  SGPoint closestPoint = expPivot+weights[0]*dir;
 			
-			  if (weights[0] >= -1e-6 && weights[0]<=1+1e-6)
+			  if (weights[0] >= -weightTol && weights[0]<=1+weightTol)
 			    {
 			      newDist = (continuationValue-closestPoint)
 				*(continuationValue-closestPoint);
@@ -97,7 +97,7 @@ void SGSimulator::initialize()
 				} // if new distance is smaller
 			    
 			    } // if weights[0] is between 0 and 1
-			  else if (weights[0] < -1e-6)
+			  else if (weights[0] < -weightTol)
 			    {
 			      newDist = (continuationValue-expPivot)
 				*(continuationValue-expPivot);
@@ -160,9 +160,10 @@ void SGSimulator::initialize()
 			  level = continuationValue * direction;
 			  double weightOnAvg
 			    = (level-oldLevel)/(newLevel-oldLevel);
-			    
-			  assert(weightOnNew >= 1e-6 && weightOnNew < 1+1e-6);
-			  assert(weightOnAvg >= 1e-6 && weightOnAvg < 1+1e-6);
+
+			  if (weightOnNew < -weightTol | weightOnNew > 1+weightTol
+			      | weightOnAvg < -weightTol && weightOnAvg > 1+weightTol)
+			    throw(SGException(SGException::SIMERROR));
 
 			  transitionTable[tupleCounter][state]
 			    .push_back(transitionPair(startOfLastRev,
