@@ -10,10 +10,10 @@ int main ()
   int numPlayers = 2;
   vector<int> actions(2,0), endowments(2,0);
 
-  int numEndowments = 5,
+  int numEndowments = 3,
     numStates = numEndowments * numEndowments;
   
-  int actionsPerStatePlayer = 50;
+  int actionsPerStatePlayer = 20;
   vector< vector< int > > numActions(numStates,
 				     vector<int>(numPlayers,
 						 actionsPerStatePlayer));

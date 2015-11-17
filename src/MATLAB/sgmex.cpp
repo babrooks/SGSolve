@@ -247,26 +247,38 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		}
 	    }
 
-	  env.setParam(SGEnv::PRINTTOCOUT,true)
-;	  env.setParam(SGEnv::STOREITERATIONS,true);
+	  env.setParam(SGEnv::PRINTTOCOUT,true);
+	  env.setParam(SGEnv::STOREITERATIONS,true);
 
 	  soln = SGSolution(game);
 	  SGApprox approx(env,game,soln);
 
 	  approx.initialize();
 
-	  while (approx.generate() > env.getParam(SGEnv::ERRORTOL)
-		 && approx.getNumIterations() < env.getParam(SGEnv::MAXITERATIONS))
+	  try
 	    {
-	      if (approx.passedNorth())
+	      while (approx.generate() > env.getParam(SGEnv::ERRORTOL)
+		     && approx.getNumIterations() < env.getParam(SGEnv::MAXITERATIONS))
 		{
-		  string str = approx.progressString();
-		  mexPrintf(str.c_str());
-		  mexPrintf("\n");
-		  mexEvalString("drawnow;");
+		  if (approx.passedNorth())
+		    {
+		      string str = approx.progressString();
+		      mexPrintf(str.c_str());
+		      mexPrintf("\n");
+		      mexEvalString("drawnow;");
+		    }
+		};
+	    }
+	  catch (SGException & e)
+	    {
+	      if (e.getType() == SGException::NO_ADMISSIBLE_DIRECTION)
+		{
+		  mexWarnMsgTxt("No admissible direction found. Algorithm terminating before convergence");
 		}
-	    };
-	  
+	      else
+		throw;
+	    }
+
 	  // Add the extreme tuples array to soln.
 	  for (vector<SGTuple>::const_iterator tuple
 		 = approx.getExtremeTuples().begin();

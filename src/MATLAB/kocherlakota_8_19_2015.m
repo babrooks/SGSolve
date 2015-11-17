@@ -1,26 +1,30 @@
-function kocherlakota_8_19_2015
+function [LR,ATK] = kocherlakota_8_19_2015
 %% Ben's file for kocherlakota style simulations
 % 8-19-2015
 
-numEndowments = 11;
-consumptionToEndowments = 5;
-P = 0:10;
+numEndowments = 11; % Should be odd?
+consumptionToEndowments = 50;
+% P = linspace(0,10,numEndowments);
+P=0:20;
 LR = zeros(numel(P),2);
+ATK=LR;
 delta=0.9;
+numSimulations = 1e7;
 
+tic;
 for k=1:numel(P)
     persistence=P(k);
 
     fn = fileName(numEndowments,consumptionToEndowments,delta,persistence);
-
-    try
-        if exist(['./solutions/' fn '.sln'],'file')
-            sgmex('LoadSolution',['./solutions/' fn '.sln']);
+	
+	try
+		[p1payoffs,p2payoffs,transitions]=generateGame(numEndowments,...
+			consumptionToEndowments,persistence);
+		
+		if exist(['./solutions/' fn '.sln'],'file')
+			sgmex('LoadSolution',['./solutions/' fn '.sln']);
         else
-            [p1payoffs,p2payoffs,transitions]=generateGame(numEndowments,...
-                consumptionToEndowments,persistence);
-            
-            
+
             sgmex('SaveGame',delta,p1payoffs,p2payoffs,transitions,['./games/' fn '.sgm']);
             
             tic;
@@ -28,34 +32,66 @@ for k=1:numel(P)
             toc
             
             sgmex('SaveSolution',['./solutions/' fn '.sln']);
-        end
-        
-        sgmex('IterToEnd');
-        lastIter=sgmex('GetCurrentIteration');
+		end
+		
+		% First compute the autarkic equilibrium.
+		Pi = zeros(numEndowments);
+		G = zeros(numEndowments,2);
+		for s=1:ceil(numel(transitions)/2)
+			Pi(s,:) = transitions{s}(1,:);
+			G(s,:) = [p1payoffs{s}(1) p2payoffs{s}(1)];
+		end
+		
+		for s=ceil(size(transitions)/2)+1:numel(transitions)
+			Pi(s,:) = transitions{s}(end,:);
+			G(s,:) = [p1payoffs{s}(end) p2payoffs{s}(end)];
+		end
+		
+		V = mldivide(eye(numEndowments)-delta*Pi,(1-delta)*G);
+		Y = (Pi^1000);
+		mu = Y(1,:);
+		ATK(k,:)=mu*V;
+		
+		sgmex('IterToEnd');
+		lastIter=sgmex('GetCurrentIteration');
         startOfLastRev = lastIter;
         utilitarianIter = lastIter;
         maxSoFar = sum(sum(startOfLastRev.pivot));
+		utilitarianPayoffs=[];
         while startOfLastRev.revolution == lastIter.revolution
             sgmex('Iter--');
             startOfLastRev = sgmex('GetCurrentIteration');
             if sum(sum(startOfLastRev.pivot))>maxSoFar
                 utilitarianIter = startOfLastRev;
+				utilitarianPayoffs = sum(startOfLastRev.pivot);
                 maxSoFar=sum(sum(startOfLastRev.pivot));
             end
         end
         sgmex('Iter++');
         startOfLastRev = sgmex('GetCurrentIteration');
         
+		utilitarianIter
+		utilitarianPayoffs
+		abs(utilitarianPayoffs(1)-utilitarianPayoffs(2))
+		
         tic;
-        [actionDistr,tupleDistr,lr]=sgmex('Simulate',1e6,0,utilitarianIter.iteration);
+		numTrials = 1;
+		for t=1:numTrials
+			t
+			[actionDistr,tupleDistr,lr]=sgmex('Simulate',numSimulations,...
+				ceil(numEndowments/2),utilitarianIter.iteration);
+			LR(k,:)=LR(k,:)+lr/numTrials;
+		end
         toc
-        LR(k,:)=lr;
-    catch
+	catch me
         display('I caught an exception!');
-    end % catch
+		display(me);
+		
+		LR(k,:)=ATK(k,:);
+	end % catch
+	
 end % for
-
-keyboard
+toc
 
 end % kocherlakota_8-10-2015
 
@@ -111,7 +147,7 @@ for state=1:numel(E)
             +F(-E+c+increment)-F(-E+c-increment);
         transitions{state}(action,:) = probs/sum(probs);
     end % for action
-    
+     
 
 end % for state
     

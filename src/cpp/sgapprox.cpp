@@ -129,12 +129,10 @@ double SGApprox::generate()
 	cout << progressString() << endl; 
       
       numRevolutions++;
-      numIterations++;
     }
-  else
-    {
-      numIterations++;
-    }
+
+  numIterations++;
+
   return errorLevel;
 
 } // generate

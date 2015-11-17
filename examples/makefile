@@ -37,6 +37,7 @@ LDFLAGS = -L$(BOOSTDIR) \
 	$(LDMTFLAGS) \
 	-L.
 
+OS := $(shell uname)
 ifeq ($(OS),Linux)
 	STATIC=-Wl,-Bstatic
 	DYNAMIC=-Wl,-Bdynamic
@@ -44,6 +45,7 @@ else
 	STATIC=
 	DYNAMIC=
 endif
+
 
 all: libsg.a $(MAINS)
 
