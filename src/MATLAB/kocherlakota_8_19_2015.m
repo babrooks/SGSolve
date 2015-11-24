@@ -2,10 +2,11 @@ function [LR,ATK] = kocherlakota_8_19_2015
 %% Ben's file for kocherlakota style simulations
 % 8-19-2015
 
-numEndowments = 11; % Should be odd?
-consumptionToEndowments = 50;
+numEndowments = 5; % Should be odd?
+consumptionToEndowments = 75;
 % P = linspace(0,10,numEndowments);
-P=0:20;
+% P=0:20;
+P=0:15;
 LR = zeros(numel(P),2);
 ATK=LR;
 delta=0.9;
@@ -21,6 +22,10 @@ for k=1:numel(P)
 		[p1payoffs,p2payoffs,transitions]=generateGame(numEndowments,...
 			consumptionToEndowments,persistence);
 		
+		fprintf('Iteration %d of %d. Persistence parameter is %1.2f. Loading solution...\n',...
+			k,numel(P),P(k));
+
+		tic;
 		if exist(['./solutions/' fn '.sln'],'file')
 			sgmex('LoadSolution',['./solutions/' fn '.sln']);
         else
@@ -28,12 +33,14 @@ for k=1:numel(P)
             sgmex('SaveGame',delta,p1payoffs,p2payoffs,transitions,['./games/' fn '.sgm']);
             
             tic;
-            sgmex('Solve',delta,p1payoffs,p2payoffs,transitions,'errorTol',1e-5);
+            sgmex('Solve',delta,p1payoffs,p2payoffs,transitions,'errorTol',1e-7);
             toc
             
             sgmex('SaveSolution',['./solutions/' fn '.sln']);
 		end
+		toc
 		
+		fprintf('Solution loaded. Calculating autarkic equilibrium...\n');
 		% First compute the autarkic equilibrium.
 		Pi = zeros(numEndowments);
 		G = zeros(numEndowments,2);
@@ -52,6 +59,8 @@ for k=1:numel(P)
 		mu = Y(1,:);
 		ATK(k,:)=mu*V;
 		
+		fprintf('Autarky computation done. Autarky payoffs are: (%1.3f,%1.3f). Finding the iteration that maximizes utilitarian welfare...\n',...
+			ATK(k,1),ATK(k,2));
 		sgmex('IterToEnd');
 		lastIter=sgmex('GetCurrentIteration');
         startOfLastRev = lastIter;
@@ -70,19 +79,21 @@ for k=1:numel(P)
         sgmex('Iter++');
         startOfLastRev = sgmex('GetCurrentIteration');
         
-		utilitarianIter
-		utilitarianPayoffs
-		abs(utilitarianPayoffs(1)-utilitarianPayoffs(2))
 		
+		fprintf('Utilitarian welfare is maximized at iteration %d. Simulating for %d periods...\n',...
+			utilitarianIter.iteration,numSimulations);
         tic;
 		numTrials = 1;
 		for t=1:numTrials
-			t
 			[actionDistr,tupleDistr,lr]=sgmex('Simulate',numSimulations,...
 				ceil(numEndowments/2),utilitarianIter.iteration);
 			LR(k,:)=LR(k,:)+lr/numTrials;
 		end
+		
+		fprintf('Simulation completed. Long run payoffs: (%1.3f,%1.3f)\n',...
+			LR(k,1),LR(k,2));
         toc
+		fprintf('\n');
 	catch me
         display('I caught an exception!');
 		display(me);

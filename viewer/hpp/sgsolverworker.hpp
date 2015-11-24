@@ -74,6 +74,8 @@ public slots:
   {
     try
       {
+	soln.push_back(approx.extremeTuples.back());
+	
 	if (approx.generate() > env.errorTol
 	    && approx.numIterations < env.maxIterations)
 	  {
@@ -83,12 +85,12 @@ public slots:
 	else
 	  {
     
-	    // Add the extreme tuples array to soln.
-	    for (vector<SGTuple>::const_iterator tuple
-		   = approx.extremeTuples.begin();
-		 tuple != approx.extremeTuples.end();
-		 ++tuple)
-	      soln.push_back(*tuple);
+	    // // Add the extreme tuples array to soln.
+	    // for (vector<SGTuple>::const_iterator tuple
+	    // 	   = approx.extremeTuples.begin();
+	    // 	 tuple != approx.extremeTuples.end();
+	    // 	 ++tuple)
+	    //   soln.push_back(*tuple);
 
 	    approx.end();
 	    
@@ -101,11 +103,11 @@ public slots:
 	// Add the extreme tuples array to soln.
 	qDebug() << "solve failed" << endl;
 
-	for (vector<SGTuple>::const_iterator tuple
-	       = approx.extremeTuples.begin();
-	     tuple != approx.extremeTuples.end();
-	     ++tuple)
-	  soln.push_back(*tuple);
+	// for (vector<SGTuple>::const_iterator tuple
+	//        = approx.extremeTuples.begin();
+	//      tuple != approx.extremeTuples.end();
+	//      ++tuple)
+	//   soln.push_back(*tuple);
 
 	approx.end();
 	

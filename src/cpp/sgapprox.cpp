@@ -487,6 +487,8 @@ double SGApprox::updatePivot(vector<double> & movements,
       if (regimeTuple[state]!=SG::NonBinding)
 	continue;
 
+      assert(regimeTuple[state]==SG::NonBinding);
+
       for (int statep = 0; statep < numStates; statep++)
 	{
 	  tempChange[state] += delta* 
@@ -497,6 +499,11 @@ double SGApprox::updatePivot(vector<double> & movements,
 
   for (int state=0; state < numStates; state++)
     {
+      if (regimeTuple[state]!=SG::NonBinding)
+	continue;
+
+      assert(regimeTuple[state]==SG::NonBinding);
+
       tempMovement[state] = movements[state]+tempChange[state];
       if (tempMovement[state] <= maxMovement[state])
 	{
@@ -566,67 +573,134 @@ double SGApprox::distance(int newStart, int newEnd,
 			  int oldStart, int oldEnd) const
 {
 
-  double newError = 1.0;
+  // double newError = 1.0;
 
-  // Calculate maximum distance from extreme tuples on most recent
-  // revolution to the trajectory of two revolutions ago.
+  // // Calculate maximum distance from extreme tuples on most recent
+  // // revolution to the trajectory of two revolutions ago.
 
-  if (numRevolutions > 0)
+  // if (numRevolutions > 0)
+  //   {
+  //     newError = 0.0;
+
+  //     int oldPoint = oldEnd;
+  //     for (int point = newEnd; point >= newStart; point--)
+  // 	{
+  // 	  SGPoint p = extremeTuples[point].average();
+
+  // 	  double distToPrevRev = numeric_limits<double>::max();
+  // 	  double tempDist;
+  // 	  // Find minimum distance between point and convex
+  // 	  // combinations of oldPoint and oldPoint-1.
+  // 	  while(true)
+  // 	    {
+  // 	      tempDist = SGTuple::distance(extremeTuples[point],
+  // 					   extremeTuples[oldPoint]);
+	      
+  // 	      SGPoint p0 = extremeTuples[oldPoint].average();
+  // 	      SGPoint p1 = extremeTuples[oldPoint-1].average();
+	      
+  // 	      SGPoint edge = p1 - p0, edgeNormal = edge.getNormal();
+	      
+  // 	      double l = edgeNormal * p,
+  // 		l0 = p0 * edgeNormal,
+  // 		l1 = p1 * edgeNormal;
+
+  // 	      if ( abs(l1-l0) > env.flatTol )
+  // 		{
+  // 		  double weightOn1 = (l-l0)/(l1-l0);
+  // 		  if (weightOn1 <= 1 && weightOn1 >= 0)
+  // 		    tempDist
+  // 		      = std::min(tempDist,
+  // 				 SGTuple::distance(extremeTuples[point],
+  // 						   extremeTuples[oldPoint]
+  // 						   *(1.0-weightOn1)
+  // 						   +extremeTuples[oldPoint-1]
+  // 						   *weightOn1));
+  // 		}
+  // 	      distToPrevRev = std::min(distToPrevRev,tempDist);
+	      
+  // 	      if ( SGTuple::distance(extremeTuples[point],
+  // 				     extremeTuples[oldPoint-1])
+  // 		   > distToPrevRev + 1e-12
+  // 		   || oldPoint < oldStart )
+  // 		break;
+  // 	      else
+  // 		oldPoint--;
+  // 	    } // for oldPoint
+
+  // 	  newError = std::max(newError,distToPrevRev);
+  // 	} // for point
+
+  //   } // if
+
+
+  if (numRevolutions<2)
+    return 1.0;
+
+  double newError = 0.0;
+
+  for (int oldPoint = oldEnd; oldPoint >= oldStart; oldPoint--)
     {
-      newError = 0.0;
+      SGPoint p = extremeTuples[oldPoint].average();
 
-      int oldPoint = oldEnd;
-      for (int point = newEnd; point >= newStart; point--)
+      double distToCurrentRev = numeric_limits<double>::max();
+      double tempDist;
+      for (int point = newEnd; point > newStart; point--)
 	{
-	  SGPoint p = extremeTuples[point].average();
+	  // Find perpendicular to the line between point and point-1
+	  // that goes through oldPoint.
 
-	  double distToPrevRev = numeric_limits<double>::max();
-	  double tempDist;
-	  // Find minimum distance between point and convex
-	  // combinations of oldPoint and oldPoint-1.
-	  while(true)
-	    {
-	      tempDist = SGTuple::distance(extremeTuples[point],
-					   extremeTuples[oldPoint]);
-	      
-	      SGPoint p0 = extremeTuples[oldPoint].average();
-	      SGPoint p1 = extremeTuples[oldPoint-1].average();
-	      
-	      SGPoint edge = p1 - p0, edgeNormal = edge.getNormal();
-	      
-	      double l = edgeNormal * p,
-		l0 = p0 * edgeNormal,
-		l1 = p1 * edgeNormal;
+	  tempDist = distHelper(p,
+				extremeTuples[point].average(),
+				extremeTuples[point-1].average());
 
-	      if ( abs(l1-l0) > env.flatTol )
-		{
-		  double weightOn1 = (l-l0)/(l1-l0);
-		  if (weightOn1 <= 1 && weightOn1 >= 0)
-		    tempDist
-		      = std::min(tempDist,
-				 SGTuple::distance(extremeTuples[point],
-						   extremeTuples[oldPoint]
-						   *(1.0-weightOn1)
-						   +extremeTuples[oldPoint-1]
-						   *weightOn1));
-		}
-	      distToPrevRev = std::min(distToPrevRev,tempDist);
-	      
-	      if ( SGTuple::distance(extremeTuples[point],
-				     extremeTuples[oldPoint-1])
-		   > distToPrevRev + 1e-12
-		   || oldPoint < oldStart )
-		break;
-	      else
-		oldPoint--;
-	    } // for oldPoint
-
-	  newError = std::max(newError,distToPrevRev);
+	  if (tempDist <= distToCurrentRev)
+	    distToCurrentRev = tempDist;
 	} // for point
 
-    } // if
+      tempDist = distHelper(p,
+			    extremeTuples[newStart].average(),
+			    extremeTuples[newEnd].average());
+
+      if (tempDist <= distToCurrentRev)
+	distToCurrentRev = tempDist;
+
+      if (distToCurrentRev >= newError)
+	newError = distToCurrentRev;
+    } // for oldPoint
 
   return newError;
+}
+
+double SGApprox::distHelper(const SGPoint & p, 
+			    const SGPoint & qA, 
+			    const SGPoint & qB) const
+{
+  SGPoint qA_qB = qA-qB;
+
+  double lA = qA*qA_qB;
+  double lB = qB*qA_qB;
+  double l = p*qA_qB;
+
+  double tempDist;
+
+  SGPoint p_qA = p-qA;
+
+  if (lA>=l && l>=lB)
+    {
+      // Perpendicular goes through the segment between qA and
+      // qB.
+
+      double alpha = (l-lB)/(lA-lB);
+      SGPoint closestPoint = alpha*qA+(1-alpha)*qB;
+
+      return SGPoint::distance(closestPoint,p);
+    }
+  else if (p_qA*qA >= p_qA*qB)
+    {
+      return SGPoint::distance(qA,p);
+    }
+  return numeric_limits<double>::max();
 }
 
 void SGApprox::updateMinPayoffs()

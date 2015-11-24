@@ -124,6 +124,13 @@ void SGMainWindow::loadSolution()
       solutionHandler->setSolution(soln);
       
       tabWidget->setCurrentIndex(1);
+
+      QFileInfo info(path);
+      
+      QString newWindowTitle(tr("SGViewer - "));
+      newWindowTitle += info.fileName();
+      setWindowTitle(newWindowTitle);
+      
     }
   catch (std::exception & e)
     {
@@ -184,6 +191,10 @@ void SGMainWindow::loadGame()
       gameHandler->setGame(game);
 
       tabWidget->setCurrentIndex(0);
+
+      QString newWindowTitle(tr("SGViewer - "));
+      newWindowTitle += fi.fileName();
+      setWindowTitle(newWindowTitle);
     }
   catch (std::exception & e)
     {
@@ -275,10 +286,14 @@ void SGMainWindow::iterationFinished(bool tf)
       
       if (cancelSolveFlag)
 	{
-	  logTextEdit->append("Computation canceled by user");
-	  delete solverWorker;
+	  str = solverWorker->getApprox().progressString();
+	  logTextEdit->append(QString(str.c_str()));
+	  logTextEdit->append(QString(""));
+	  logTextEdit->append(QString("Computation canceled."));
 
 	  tabWidget->setCurrentIndex(2);
+	  
+	  break;
 	}
       else
 	{
@@ -289,8 +304,9 @@ void SGMainWindow::iterationFinished(bool tf)
 	    }
 
 	  emit startIteration();
+
+	  return;
 	}
-      return;
 
     case SGSolverWorker::CONVERGED:
       str = solverWorker->getApprox().progressString();

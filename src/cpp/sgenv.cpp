@@ -8,7 +8,7 @@ SGEnv::SGEnv()
 void SGEnv::restoreDefaults()
 {
   maxIterations = 1e6;
-  maxUpdatePivotPasses = 1e6;
+  maxUpdatePivotPasses = 1e12;
   tupleReserveSize = 1e4;
 
   errorTol = 1e-8;

@@ -156,6 +156,10 @@ private:
       revolutions. */
   double distance(int newStart, int newEnd, int oldStart, int oldEnd) const;
 
+  double distHelper(const SGPoint & p, 
+		    const SGPoint & qA, 
+		    const SGPoint & qB) const;
+
   //! Checks whether or not newDirection is shallower than best, relative to current
   /*! Returns true if the cosine between newDirection and best is
       greater than SGEnv::improveTol, or if best and newDirection

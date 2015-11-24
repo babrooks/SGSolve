@@ -43,8 +43,8 @@ private:
   bool printToCout; /*!< If true, prints progress to cout. */
   
   // Int parameters
-  int maxIterations; /*!< Maximum number of iterations. */
-  int maxUpdatePivotPasses; /*!< Maximum number of passes to update
+  long int maxIterations; /*!< Maximum number of iterations. */
+  long int maxUpdatePivotPasses; /*!< Maximum number of passes to update
 			      pivot. */
   int tupleReserveSize; /*!< Increment the extremeTuples array by this
 			  amount when capacity reached. */

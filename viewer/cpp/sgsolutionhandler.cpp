@@ -311,6 +311,8 @@ void SGSolutionHandler::plotSolution(int state)
   // Update the title
   QString titleString = QString("Iteration: ");
   titleString += QString::number(pivotIter->iteration);
+  titleString += QString(", Revolution: ");
+  titleString += QString::number(pivotIter->revolution);
   if (pivotIter->iteration >=0
       && detailedTitlesAction->isChecked())
     {
