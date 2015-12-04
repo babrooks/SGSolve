@@ -80,53 +80,85 @@ void SGSimulator::initialize()
 		      SGPoint nextExpPivot
 			= nextIter->pivot.expectation(game.getProbabilities()
 						      [state][action]);
-
-
-		      // Check interior closest point
 		      SGPoint dir = nextExpPivot - expPivot;
-		      if (dir.norm() > 1e-7)
+
+		      double contLevel = dir*continuationValue;
+		      double expLevel = dir*expPivot;
+		      double nextLevel = dir*nextExpPivot;
+
+		      if (contLevel >= expLevel)
 			{
+			  double weightOnNext = 0;
 
-			  double det = SGPoint::invertSystem(weights,
-							     continuationValue-expPivot,
-							     dir,dir.getNormal());
-			  // assert(det > 1e-12);
-		      
-			  SGPoint closestPoint = expPivot+weights[0]*dir;
-			
-			  if (weights[0] >= -weightTol && weights[0]<=1+weightTol)
+			  if (nextLevel >= contLevel
+			      && contLevel >= expLevel)
+			    weightOnNext = (contLevel-expLevel)/(nextLevel-expLevel);
+			  else if (contLevel >= nextLevel)
+			    weightOnNext = 1;
+
+			  SGPoint closestPoint = weightOnNext * nextExpPivot
+			    +(1-weightOnNext)*expPivot;
+
+			  double tempDistance = SGPoint::distance(closestPoint,
+								  continuationValue);
+
+			  if (tempDistance < minDistance)
 			    {
-			      newDist = (continuationValue-closestPoint)
-				*(continuationValue-closestPoint);
-
-			      if (newDist < minDistance)
-				{
-				  minDistance = newDist;
-
-				  transitionTable[tupleCounter][state].clear();
-
-				  transitionTable[tupleCounter][state]
-				    .push_back(transitionPair(iter,weights[0]));
-				  transitionTable[tupleCounter][state]
-				    .push_back(transitionPair(nextIter,1-weights[0]));
-				} // if new distance is smaller
-			    
-			    } // if weights[0] is between 0 and 1
-			  else if (weights[0] < -weightTol)
-			    {
-			      newDist = (continuationValue-expPivot)
-				*(continuationValue-expPivot);
-
-			      if (newDist < minDistance)
-				{
-				  transitionTable[tupleCounter][state].clear();
-
-				  transitionTable[tupleCounter][state]
-				    .push_back(transitionPair(iter,1.0));
-				  minDistance = newDist;
-				}
-			    } // weights[0] < 0
+			      minDistance = tempDistance;
+			      transitionTable[tupleCounter][state].clear();
+			      transitionTable[tupleCounter][state]
+				.push_back(transitionPair(iter,1-weightOnNext));
+			      transitionTable[tupleCounter][state]
+				.push_back(transitionPair(nextIter,weightOnNext));
+			    }
 			}
+		      
+		      
+		      // // Check interior closest point
+		      // SGPoint dir = nextExpPivot - expPivot;
+		      // if (dir.norm() > 1e-7)
+		      // 	{
+
+		      // 	  double det = SGPoint::invertSystem(weights,
+		      // 					     continuationValue-expPivot,
+		      // 					     dir,dir.getNormal());
+		      // 	  // assert(det > 1e-12);
+		      
+		      // 	  SGPoint closestPoint = expPivot+weights[0]*dir;
+			
+		      // 	  if (weights[0] >= -weightTol && weights[0]<=1+weightTol)
+		      // 	    {
+		      // 	      newDist = (continuationValue-closestPoint)
+		      // 		*(continuationValue-closestPoint);
+
+		      // 	      if (newDist < minDistance)
+		      // 		{
+		      // 		  minDistance = newDist;
+
+		      // 		  transitionTable[tupleCounter][state].clear();
+
+		      // 		  transitionTable[tupleCounter][state]
+		      // 		    .push_back(transitionPair(iter,weights[0]));
+		      // 		  transitionTable[tupleCounter][state]
+		      // 		    .push_back(transitionPair(nextIter,1-weights[0]));
+		      // 		} // if new distance is smaller
+			    
+		      // 	    } // if weights[0] is between 0 and 1
+		      // 	  else if (weights[0] < -weightTol)
+		      // 	    {
+		      // 	      newDist = (continuationValue-expPivot)
+		      // 		*(continuationValue-expPivot);
+
+		      // 	      if (newDist < minDistance)
+		      // 		{
+		      // 		  transitionTable[tupleCounter][state].clear();
+
+		      // 		  transitionTable[tupleCounter][state]
+		      // 		    .push_back(transitionPair(iter,1.0));
+		      // 		  minDistance = newDist;
+		      // 		}
+		      // 	    } // weights[0] < 0
+		      // 	}
 
 		      expPivot = nextExpPivot;
 

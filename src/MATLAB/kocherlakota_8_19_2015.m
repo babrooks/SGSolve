@@ -6,11 +6,11 @@ numEndowments = 5; % Should be odd?
 consumptionToEndowments = 50;
 % P = linspace(0,10,numEndowments);
 % P=0:20;
-P=0:20;
+P=0:30;
 LR = zeros(numel(P),2);
 ATK=LR;
 delta=0.9;
-numSimulations = 1e7;
+numSimulations = 1e8;
 
 tic;
 for k=1:numel(P)

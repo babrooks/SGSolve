@@ -181,11 +181,8 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   for (int tuple = 0; tuple < numTuplesInLastRev; 
        tuple+= numTuplesInLastRev/numTupleTicks)
     {
-      if (!(tuple%(numTuplesInLastRev/10)))
-	{
-	  tupleTicks << sim.getStartOfLastRev()+tuple;
-	  tupleLabels << QString("T")+QString::number(sim.getStartOfLastRev()+tuple);
-	}      
+      tupleTicks << sim.getStartOfLastRev()+tuple;
+      tupleLabels << QString("T")+QString::number(sim.getStartOfLastRev()+tuple);
     } // for tuple
   tupleBars = new QCPBars(tupleDistrRect->axis(QCPAxis::atBottom),
 			  tupleDistrRect->axis(QCPAxis::atLeft));
@@ -217,9 +214,10 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
       QVector<double> actionTicks; 
       QVector<QString> actionLabels;
-
-      for (int action = 0; action < soln.game.getNumActions_total()[state];
-	   action++)
+      int numActionTicks = min(20,soln.game.getNumActions_total()[state]);
+      for (int action = 0; 
+	   action < soln.game.getNumActions_total()[state];
+	   action += soln.game.getNumActions_total()[state]/numActionTicks)
 	{
 	  actionTicks << action+1;
 	  actionLabels << QString("A")+QString::number(action);
