@@ -134,7 +134,10 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   // Prep x axis with state labels
   QVector<double> ticks;
   QVector<QString> labels;
-  for (int state = 0; state < soln.game.getNumStates(); state++)
+  
+  int numStateTicks = min(soln.game.getNumStates(),20);
+
+  for (int state = 0; state < soln.game.getNumStates(); state+=soln.game.getNumStates()/numStateTicks)
     {
       ticks << state+1;
       labels << QString("S")+QString::number(state);
@@ -160,7 +163,9 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   QVector<double> tupleTicks;
   QVector<QString> tupleLabels;
   int numTuplesInLastRev = soln.iterations.size()-sim.getStartOfLastRev();
-  for (int tuple = 0; tuple < numTuplesInLastRev; tuple++)
+  int numTupleTicks = min(numTuplesInLastRev,20);
+  for (int tuple = 0; tuple < numTuplesInLastRev; 
+       tuple+= numTuplesInLastRev/numTupleTicks)
     {
       if (!(tuple%(numTuplesInLastRev/10)))
 	{

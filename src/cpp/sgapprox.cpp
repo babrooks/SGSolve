@@ -433,7 +433,7 @@ void SGApprox::calculateNewPivot()
 	}
     } // player
 
-  movements[bestAction->state] = 1.0;
+  movements[bestAction->state] = min(1.0,maxMovement[bestAction->state]);
   vector<double> changes(movements);
 
   while (updatePivot(movements,changes,regimeTuple,
@@ -448,6 +448,23 @@ void SGApprox::calculateNewPivot()
     {
       maxDistance = std::max(maxDistance,movements[state]);
       pivot[state] += movements[state]*currentDirection;
+    }
+
+  // Add check here that pivot is self-generated (in the
+  // non-binding case)
+  for (state=0; state < numStates; state++)
+    {
+      if (regimeTuple[state]==SG::NonBinding)
+	{
+	  SGPoint tempPayoff( (1-delta)
+			      *game.payoffs[state][actionTuple[state]->action] 
+			      +delta*pivot.expectation(game.probabilities[state][actionTuple[state]->action]) );
+	  
+	  assert( SGPoint::distance(tempPayoff, pivot[state]) < 1e-8 );
+	  if ( SGPoint::distance(tempPayoff, pivot[state]) > 1e-5 )
+	    cout << "Error. Non-binding pivot does not self generate. Distance: "
+		 << SGPoint::distance(tempPayoff, pivot[state]) << endl;
+	}
     }
   
   pivot.roundTuple(env.roundTol);
@@ -499,11 +516,6 @@ double SGApprox::updatePivot(vector<double> & movements,
 
   for (int state=0; state < numStates; state++)
     {
-      if (regimeTuple[state]!=SG::NonBinding)
-	continue;
-
-      assert(regimeTuple[state]==SG::NonBinding);
-
       tempMovement[state] = movements[state]+tempChange[state];
       if (tempMovement[state] <= maxMovement[state])
 	{

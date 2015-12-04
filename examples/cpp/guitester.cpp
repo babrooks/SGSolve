@@ -12,7 +12,8 @@ int main ()
   // SGGame::load(game,"./test2.sgm");
   try
     {
-      SGGame::load(game,"../src/MATLAB/games/koch_ne=11_c2e=5_d=0.90_p=1.00.sgm");
+      // SGGame::load(game,"../src/MATLAB/games/koch_ne=11_c2e=5_d=0.90_p=1.00.sgm");
+      SGGame::load(game,"../src/MATLAB/games/koch_ne=5_c2e=75_d=0.90_p=12.00.sgm");
 
       SGEnv env;
       env.setParam(SGEnv::PRINTTOCOUT,true);

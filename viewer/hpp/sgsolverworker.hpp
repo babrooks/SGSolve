@@ -74,7 +74,17 @@ public slots:
   {
     try
       {
-	soln.push_back(approx.extremeTuples.back());
+	// Add the extreme tuples array to soln.
+	if (approx.numIterations==0)
+	  {
+	    for (vector<SGTuple>::const_iterator tuple
+	    	   = approx.extremeTuples.begin();
+	    	 tuple != approx.extremeTuples.end();
+	    	 ++tuple)
+	      soln.push_back(*tuple);
+	  }
+	else
+	  soln.push_back(approx.extremeTuples.back());
 	
 	if (approx.generate() > env.errorTol
 	    && approx.numIterations < env.maxIterations)

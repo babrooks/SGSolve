@@ -3,10 +3,10 @@ function [LR,ATK] = kocherlakota_8_19_2015
 % 8-19-2015
 
 numEndowments = 5; % Should be odd?
-consumptionToEndowments = 75;
+consumptionToEndowments = 50;
 % P = linspace(0,10,numEndowments);
 % P=0:20;
-P=0:15;
+P=0:20;
 LR = zeros(numel(P),2);
 ATK=LR;
 delta=0.9;
