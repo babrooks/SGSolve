@@ -45,6 +45,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   textEdit = new QTextEdit();
   textEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
+  textEdit->setLineWrapMode(QTextEdit::NoWrap);
   QSizePolicy policy = textEdit->sizePolicy();
   policy.setVerticalStretch(1);
   textEdit->setSizePolicy(policy);
@@ -72,8 +73,6 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   
   distrPlot = new SGSimulationPlot(soln.game.getNumStates());
   distrPlot->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-  QVBoxLayout * plotLayout = new QVBoxLayout();
-  // plotLayout->addWidget(distrPlot);
 
   QScrollArea * scrollArea = new QScrollArea();
   QWidget * scrollWidget = new QWidget();
@@ -87,12 +86,13 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   				    QSizePolicy::Preferred);
   scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-  plotLayout->addWidget(scrollArea);
-
-  ewLayout->addLayout(controlLayout);
-  ewLayout->addLayout(plotLayout);
-
-  mainLayout->addLayout(ewLayout);
+  QSplitter * ewSplitter = new QSplitter();
+  QWidget * controlWidget = new QWidget();
+  controlWidget->setLayout(controlLayout);
+  ewSplitter->addWidget(controlWidget);
+  ewSplitter->addWidget(scrollArea);
+  
+  mainLayout->addWidget(ewSplitter);
 
   connect(closeAction,SIGNAL(triggered()),
 	  this,SLOT(close()));

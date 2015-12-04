@@ -7,6 +7,8 @@ void SGSimulator::initialize()
   const int numStates = game.getNumStates();
   const double delta = game.getDelta();
 
+  transitionTableSS.str(""); // Reset the string
+  
   // First find the iteration that starts the last revolution.
   startOfLastRev = soln.iterations.end();
   startOfLastRev--;
@@ -35,8 +37,14 @@ void SGSimulator::initialize()
       for (int state = 0; state < numStates; state++)
 	{
 	  if (currentIter->regimeTuple[state]==SG::NonBinding)
-	    transitionTable[tupleCounter][state]
-	      .push_back(transitionPair(currentIter,1.0));
+	    {
+	      transitionTable[tupleCounter][state]
+		.push_back(transitionPair(currentIter,1.0));
+
+	      transitionTableSS << "Tuple " << currentIter->iteration
+				<< ", action " << currentIter->actionTuple[state]
+				<< ", non-binding" << endl;
+	    }
 	  else
 	    {
 	      int action = currentIter->actionTuple[state];
@@ -48,9 +56,14 @@ void SGSimulator::initialize()
 	      SGPoint expPivot
 		= iter->pivot.expectation(game.getProbabilities()[state][action]);
 
+	      transitionTableSS << "Tuple " << currentIter->iteration
+				<< ", action " << currentIter->actionTuple[state];
+
 	      if (currentIter->regimeTuple[state] != SG::Binding01)
 		{
 		
+		  transitionTableSS << ", binding 0 or 1";
+		  
 		  // Find the iteration that is the closest to
 		  // continuationValue
 		  list<SGIteration>::const_iterator nextIter = startOfLastRev;
@@ -90,6 +103,9 @@ void SGSimulator::initialize()
 			      if (newDist < minDistance)
 				{
 				  minDistance = newDist;
+
+				  transitionTable[tupleCounter][state].clear();
+
 				  transitionTable[tupleCounter][state]
 				    .push_back(transitionPair(iter,weights[0]));
 				  transitionTable[tupleCounter][state]
@@ -104,6 +120,8 @@ void SGSimulator::initialize()
 
 			      if (newDist < minDistance)
 				{
+				  transitionTable[tupleCounter][state].clear();
+
 				  transitionTable[tupleCounter][state]
 				    .push_back(transitionPair(iter,1.0));
 				  minDistance = newDist;
