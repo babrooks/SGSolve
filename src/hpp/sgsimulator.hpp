@@ -47,6 +47,8 @@ public:
   void setLogFlag(bool newFlag) { logFlag = newFlag; };
   
   const std::stringstream & getStringStream() const {return ss;}
+  const std::stringstream & getTransitionTableStringStream() const
+  {return transitionTableSS;}
 
   void initialize ();
 

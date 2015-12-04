@@ -29,6 +29,7 @@ private:
   QPushButton * simulateButton;
   SGSimulationPlot * distrPlot;
   QTextEdit * textEdit;
+  QTextEdit * transitionTableEdit;
 
   QCPBars * stateBars;
   QCPBars * tupleBars;

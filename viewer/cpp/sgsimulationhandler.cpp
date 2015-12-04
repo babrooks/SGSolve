@@ -43,14 +43,28 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   controlLayout->addRow(simulateButton);
 
+  QSplitter * editSplitter = new QSplitter();
+  editSplitter->setOrientation(Qt::Vertical);
+  
   textEdit = new QTextEdit();
   textEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Expanding);
   textEdit->setLineWrapMode(QTextEdit::NoWrap);
   QSizePolicy policy = textEdit->sizePolicy();
   policy.setVerticalStretch(1);
   textEdit->setSizePolicy(policy);
-  controlLayout->addRow(textEdit);
-  
+  // controlLayout->addRow(textEdit);
+  editSplitter->addWidget(textEdit);
+
+  transitionTableEdit = new QTextEdit();
+  transitionTableEdit->setLineWrapMode(QTextEdit::NoWrap);
+  transitionTableEdit->setSizePolicy(policy);
+  // controlLayout->addRow(transitionTableEdit);
+  editSplitter->addWidget(transitionTableEdit);
+
+  editSplitter->setSizePolicy(policy);
+
+  controlLayout->addRow(editSplitter);
+
   // simulateButton->setFixedWidth(150);
 
   // controlLayout->addRow(new QSpacerItem(5,5));
@@ -296,6 +310,7 @@ void SGSimulationHandler::simulate()
     } // for action
 
   textEdit->setText(QString::fromStdString(sim.getStringStream().str()));
+  transitionTableEdit->setText(QString::fromStdString(sim.getTransitionTableStringStream().str()));
   timeEdit->setText(QString::number(time.elapsed()/1000.0));
 
   distrPlot->replot();

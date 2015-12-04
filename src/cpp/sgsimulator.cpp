@@ -36,14 +36,16 @@ void SGSimulator::initialize()
     {
       for (int state = 0; state < numStates; state++)
 	{
+	  transitionTableSS << "Tuple " << currentIter->iteration
+			    << ", state " << state
+			    << ", action " << currentIter->actionTuple[state];
+
 	  if (currentIter->regimeTuple[state]==SG::NonBinding)
 	    {
 	      transitionTable[tupleCounter][state]
 		.push_back(transitionPair(currentIter,1.0));
 
-	      transitionTableSS << "Tuple " << currentIter->iteration
-				<< ", action " << currentIter->actionTuple[state]
-				<< ", non-binding" << endl;
+	      transitionTableSS << ", non-binding";
 	    }
 	  else
 	    {
@@ -55,9 +57,6 @@ void SGSimulator::initialize()
 		   - (1-delta)*soln.game.getPayoffs()[state][action])/delta;
 	      SGPoint expPivot
 		= iter->pivot.expectation(game.getProbabilities()[state][action]);
-
-	      transitionTableSS << "Tuple " << currentIter->iteration
-				<< ", action " << currentIter->actionTuple[state];
 
 	      if (currentIter->regimeTuple[state] != SG::Binding01)
 		{
@@ -146,7 +145,9 @@ void SGSimulator::initialize()
 		  // Just project the continuation value away from
 		  // currentIter->pivot and find the segment on
 		  // the other side.
-		    
+
+		  transitionTableSS << ", binding 0 and 1";
+		  
 		  SGPoint expStartOfLastRev = iter->pivot
 		    .expectation(game.getProbabilities()[state][action]);
 		  SGPoint direction = continuationValue - expStartOfLastRev,
@@ -183,6 +184,8 @@ void SGSimulator::initialize()
 			      | weightOnAvg < -weightTol && weightOnAvg > 1+weightTol)
 			    throw(SGException(SGException::SIMERROR));
 
+			  transitionTable[tupleCounter][state].clear();
+			  
 			  transitionTable[tupleCounter][state]
 			    .push_back(transitionPair(startOfLastRev,
 						      1-weightOnAvg));
@@ -195,19 +198,38 @@ void SGSimulator::initialize()
 			  
 			  break;
 			}
-
 		      ++iter;
+		      
 		    } while (iter != soln.iterations.end() );// for iter
 		    
 		    
-		}
-	    }
+		} // currentIter
+	    } // binding01
+
+	  transitionTableSS << ", (iter,weight): ";
+	  
+	  int continuationTupleCounter = 0;
+	  for (list<transitionPair>::const_iterator continuationIter
+		 = transitionTable[tupleCounter][state].begin();
+	       continuationIter != transitionTable[tupleCounter][state].end();
+	       ++continuationIter)
+	    {
+	      transitionTableSS << continuationTupleCounter
+				<< ": ("
+				<< continuationIter->first->iteration
+				<< ", "
+				<< setprecision(2)
+				<< continuationIter->second
+				<< " ), ";
+	      continuationTupleCounter++;
+	    } // for continuationIter
+	  transitionTableSS << endl;
 
 	} // state
 
       currentIter++;
       tupleCounter++;
-    } // iter
+    } // currentIter
 
 } // initialize
 
