@@ -5,6 +5,7 @@
 #include "sgutilities.hpp"
 #include "sgenv.hpp"
 #include "sggame.hpp"
+#include "sgapprox.hpp"
 #include "sgexception.hpp"
 #include "sgsolution.hpp"
 

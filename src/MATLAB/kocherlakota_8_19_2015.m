@@ -1,12 +1,13 @@
-function [LR,ATK] = kocherlakota_8_19_2015
+function [P,LR,ATK] = kocherlakota_8_19_2015
 %% Ben's file for kocherlakota style simulations
 % 8-19-2015
 
-numEndowments = 5; % Should be odd?
+numEndowments = 11; % Should be odd?
 consumptionToEndowments = 50;
 % P = linspace(0,10,numEndowments);
 % P=0:20;
-P=0:30;
+ P=0:0.25:12.75;
+% P=[13 13.25 13.5 13.75 14];
 LR = zeros(numel(P),2);
 ATK=LR;
 delta=0.9;

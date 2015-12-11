@@ -19,7 +19,7 @@ LDMTFLAGS = -lpthread
 # Code optimization/debugging options
 
 # GRB
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc
+MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc
 GRBDIR=/opt/gurobi563/linux64
 GRBINCLDIR=$(GRBDIR)/include
 GRBLIBDIR=$(GRBDIR)/lib

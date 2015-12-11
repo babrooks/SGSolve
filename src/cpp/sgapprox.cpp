@@ -584,68 +584,6 @@ void SGApprox::updateFlags()
 double SGApprox::distance(int newStart, int newEnd,
 			  int oldStart, int oldEnd) const
 {
-
-  // double newError = 1.0;
-
-  // // Calculate maximum distance from extreme tuples on most recent
-  // // revolution to the trajectory of two revolutions ago.
-
-  // if (numRevolutions > 0)
-  //   {
-  //     newError = 0.0;
-
-  //     int oldPoint = oldEnd;
-  //     for (int point = newEnd; point >= newStart; point--)
-  // 	{
-  // 	  SGPoint p = extremeTuples[point].average();
-
-  // 	  double distToPrevRev = numeric_limits<double>::max();
-  // 	  double tempDist;
-  // 	  // Find minimum distance between point and convex
-  // 	  // combinations of oldPoint and oldPoint-1.
-  // 	  while(true)
-  // 	    {
-  // 	      tempDist = SGTuple::distance(extremeTuples[point],
-  // 					   extremeTuples[oldPoint]);
-	      
-  // 	      SGPoint p0 = extremeTuples[oldPoint].average();
-  // 	      SGPoint p1 = extremeTuples[oldPoint-1].average();
-	      
-  // 	      SGPoint edge = p1 - p0, edgeNormal = edge.getNormal();
-	      
-  // 	      double l = edgeNormal * p,
-  // 		l0 = p0 * edgeNormal,
-  // 		l1 = p1 * edgeNormal;
-
-  // 	      if ( abs(l1-l0) > env.flatTol )
-  // 		{
-  // 		  double weightOn1 = (l-l0)/(l1-l0);
-  // 		  if (weightOn1 <= 1 && weightOn1 >= 0)
-  // 		    tempDist
-  // 		      = std::min(tempDist,
-  // 				 SGTuple::distance(extremeTuples[point],
-  // 						   extremeTuples[oldPoint]
-  // 						   *(1.0-weightOn1)
-  // 						   +extremeTuples[oldPoint-1]
-  // 						   *weightOn1));
-  // 		}
-  // 	      distToPrevRev = std::min(distToPrevRev,tempDist);
-	      
-  // 	      if ( SGTuple::distance(extremeTuples[point],
-  // 				     extremeTuples[oldPoint-1])
-  // 		   > distToPrevRev + 1e-12
-  // 		   || oldPoint < oldStart )
-  // 		break;
-  // 	      else
-  // 		oldPoint--;
-  // 	    } // for oldPoint
-
-  // 	  newError = std::max(newError,distToPrevRev);
-  // 	} // for point
-
-  //   } // if
-
-
   if (numRevolutions<2)
     return 1.0;
 

@@ -195,6 +195,7 @@ public:
   void initialize();
 
   int getNumIterations() const {return numIterations; }
+  int getNumRevolutions() const {return numRevolutions; }
   const vector<SGTuple> & getExtremeTuples() const {return extremeTuples; }
 
   //! Returns a string indicating the algorithms progress

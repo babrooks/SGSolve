@@ -15,7 +15,7 @@
  */
 class SGJYCSolver
 {
-private:
+public:
   //! Const reference to the game being solved.
   const SGGame & game;
 
@@ -66,7 +66,7 @@ public:
 
 void SGJYCSolver::solve()
 {
-  double errorTol = 1e-8;
+  double errorTol = 1e-6;
   double error = 1.0;
   int numIterations = 0;
 
@@ -182,7 +182,7 @@ double SGJYCSolver::iterate()
   	} // direction
     } // state
 
-  delete[] constr;
+  // delete[] constr;
 
   vector< vector<double> > 
     newBounds(numStates,
@@ -217,11 +217,11 @@ double SGJYCSolver::iterate()
 	  	  rhs += (1-delta)*payoffs[state][deviation][player];
 	  	  for (int sp = 0; sp < numStates; sp++)
 	  	    {
-	  	      rhs += delta*prob[state][action][sp]*var[2*numStates
+	  	      rhs += delta*prob[state][deviation][sp]*var[2*numStates
 	  						       +2*sp+player];
 	  	    }
 		  
-	  	  // model->addConstr(lhs >= rhs);
+	  	  model->addConstr(lhs >= rhs);
 	  	} // dev
 
 	      deviations[player] = actions[player];
@@ -265,7 +265,7 @@ double SGJYCSolver::iterate()
 	    model->remove(constr[constrCtr]);
 
 	  model->update();
-	  delete[] constr;
+	  // delete[] constr;
 	} // action
     } // state
 

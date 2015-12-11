@@ -1,5 +1,4 @@
 #include "sgsolver.hpp"
-#include "sgapprox.hpp"
 
 SGSolver::SGSolver(const SGEnv & _env,
 		   const SGGame & _game):
