@@ -1,19 +1,19 @@
-#ifndef SGSOLUTIONACTIONCOMBOMODEL_HPP
-#define SGSOLUTIONACTIONCOMBOMODEL_HPP
+#ifndef SGACTIONCOMBOMODEL_HPP
+#define SGACTIONCOMBOMODEL_HPP
 
-#include "sgsolutionplotcontroller.hpp"
+#include "sgplotcontroller.hpp"
 #include <QAbstractListModel>
 #include <QComboBox>
 
-class SGSolutionActionComboModel : public QAbstractListModel
+class SGActionComboModel : public QAbstractListModel
 {
   Q_OBJECT;
 private:
-  SGSolutionPlotController * controller;
+  SGPlotController * controller;
 
 public:
   //! Constructor
-  SGSolutionActionComboModel(SGSolutionPlotController * _controller):
+  SGActionComboModel(SGPlotController * _controller):
     controller(_controller)
   {
     connect(controller,SIGNAL(solutionChanged()),
@@ -44,7 +44,7 @@ public:
 public slots:
   void actionChanged(int index)
   {
-    controller->setAction(index-1);
+    controller->setActionIndex(index-1);
   }
   void solutionChanged()
   {
@@ -53,6 +53,6 @@ public slots:
   void changeLayout()
   { emit layoutChanged(); }
 
-}; // SGSolutionActionComboModel
+}; // SGActionComboModel
 
 #endif

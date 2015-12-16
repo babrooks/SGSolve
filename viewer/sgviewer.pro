@@ -28,9 +28,9 @@ sgcustomplot.hpp \
 sgsimulationhandler.hpp \
 sgsimulationplot.hpp \
 sgsettingshandler.hpp \
-sgsolutionplotcontroller.hpp \
-sgsolutionstatecombomodel.hpp \
-sgsolutionactioncombomodel.hpp \
+sgplotcontroller.hpp \
+sgstatecombomodel.hpp \
+sgactioncombomodel.hpp \
 Q_DebugStream.h
 
 VPATH += ./cpp ./hpp

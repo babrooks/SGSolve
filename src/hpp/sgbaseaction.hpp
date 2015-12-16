@@ -82,12 +82,9 @@ public:
   //! Returns the state
   int getState() const { return state; }
   //! Returns the minimum IC continuation values
-  SGPoint getMinICPayoffs() const {return minIC;}
-  //! Trims binding continuation segments
-  /*! Intersects the binding continuation segments in SGAction::points
-      with the half space that is below pivot in
-      direction.getNormal(). */
-
+  const SGPoint & getMinICPayoffs() const {return minIC;}
+  //! Returns the array of binding continuation values.
+  const vector<SGTuple> & getBindingContinuations() const { return points; }
   //! Serializes the action using the boost::serialization library
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)

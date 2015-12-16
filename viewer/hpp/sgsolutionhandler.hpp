@@ -89,10 +89,14 @@ private:
   //! Plots the solution for a particular state.
   void plotSolution(SGCustomPlot * plot, int state,
 		    bool addSquares);
-  
+  //! Generates title for the detail plot
+  QString generatePlotTitle(int state, int action,bool addIterRev);
   //! Gets bounds for the plots.
   QCPRange getBounds(const QVector<double> & x) const;
-
+  //! Converts point,dir into a QCPCurve associated with the given plot
+  QCPCurve * vectorToQCPCurve(SGCustomPlot * plot,
+			      const SGPoint & point,
+			      const SGPoint & dir);
   //! Sets slider ranges
   void setSliderRanges(int start, int end);
 public:

@@ -127,9 +127,7 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   layout->addLayout(controlLayout);
   layout->addWidget(topSolutionPanel);
   layout->addWidget(botSolutionPanel);
-
-  
-}
+} // constructor
 
 void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 {
@@ -141,6 +139,7 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
   endIter = soln.iterations.end();
   endIter--;
   pivotIter = endIter;
+  controller->setIteration(pivotIter->iteration);
   
   startOfLastRev = endIter;
   while ((startOfLastRev--)->revolution
@@ -232,18 +231,16 @@ void SGSolutionHandler::plotSolution()
 
   detailPlot->clearPlottables();
   
-  int state = pivotIter->bestState;
-  int action = pivotIter->actionTuple[pivotIter->bestState];
-  if (controller->getAction()>-1)
-    {
-      state = controller->getState();
-      action = controller->getAction();
-    }
+  int state = controller->getState();
+  int action = controller->getAction();
+  int actionIndex = controller->getActionIndex();
 
   detailPlot->setState(state);
   
-  if (endIter->iteration>=0)
+  if (state >= 0 && action > 0 && endIter->iteration>=0)
     {
+      const SGBaseAction & actionObject = pivotIter->actions[state][actionIndex];
+
       // Add expected set
       QVector<double> expSetX(end-start),
 	expSetY(expSetX.size()),
@@ -270,37 +267,64 @@ void SGSolutionHandler::plotSolution()
 	  tupleC++;
 	}
       
-      QCPCurve * newCurve = new QCPCurve(detailPlot->xAxis,
+      QCPCurve * expCurve = new QCPCurve(detailPlot->xAxis,
 					 detailPlot->yAxis);
-      newCurve->setData(expSetT,expSetX,expSetY);
-      newCurve->setPen(QPen(Qt::red));
-      detailPlot->addPlottable(newCurve);
+      expCurve->setData(expSetT,expSetX,expSetY);
+      expCurve->setPen(QPen(Qt::red));
+      detailPlot->addPlottable(expCurve);
 
       QCPRange xrange = getBounds(expSetX),
 	yrange = getBounds(expSetY);
 
-      // Line between stage payoffs and expected continuation value
+      // Non-binding direction
       double delta = soln.game.getDelta();
-      QCPCurve * genCurve = new QCPCurve(detailPlot->xAxis,
-					 detailPlot->yAxis);
-      QVector<double> genLineX(2), genLineY(2), genLineT(2);
-      genLineX[0] = soln.game.getPayoffs()[state][action][0];
-      genLineY[0] = soln.game.getPayoffs()[state][action][1];
-      genLineT[0] = 0;
-      genLineX[1] = (pivotIter->pivot[state][0]-(1-delta)*genLineX[0])/delta;
-      genLineY[1] = (pivotIter->pivot[state][1]-(1-delta)*genLineY[0])/delta;
-      genLineT[1] = 1;
+      SGPoint expPivot = pivotIter->pivot.expectation(soln.game.getProbabilities()
+						      [state][action]);
+      SGPoint stagePayoffs = soln.game.getPayoffs()[state][action];
+      SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
 
-      genCurve->setData(genLineT,genLineX,genLineY);
-      genCurve->setPen(QPen(Qt::DashLine));
-      detailPlot->addPlottable(genCurve);
+      QCPCurve * nonBindingGenCurve
+	= vectorToQCPCurve(detailPlot,stagePayoffs,
+			   expPivot-stagePayoffs);
+      nonBindingGenCurve->setPen(QPen(Qt::DashLine));
+      detailPlot->addPlottable(nonBindingGenCurve);
+
+      QCPCurve * nonBindingDirection
+	= vectorToQCPCurve(detailPlot,pivotIter->pivot[state],
+			   nonBindingPayoff-pivotIter->pivot[state]);
+      nonBindingGenCurve->setPen(QPen(Qt::DashLine));
+      detailPlot->addPlottable(nonBindingGenCurve);
+      
+      // Binding directions
+      for (vector<SGTuple>::const_iterator tuple
+	     = actionObject.getBindingContinuations().begin();
+	   tuple != actionObject.getBindingContinuations().end();
+	   ++tuple)
+	{
+	  for (int pointIndex = 0; pointIndex < tuple->size(); pointIndex++)
+	    {
+	      SGPoint continuationValue = (*tuple)[pointIndex];
+	      SGPoint bindingPayoff = (1-delta)*stagePayoffs
+		+ delta*continuationValue;
+	      QCPCurve * bindingGenCurve
+		= vectorToQCPCurve(detailPlot,stagePayoffs,
+				   continuationValue - stagePayoffs);
+	      bindingGenCurve->setPen(QPen(Qt::DashLine));
+	      detailPlot->addPlottable(bindingGenCurve);
+
+	      QCPCurve * bindingDirection
+		= vectorToQCPCurve(detailPlot,pivotIter->pivot[state],
+				   bindingPayoff - pivotIter->pivot[state]);
+				   
+	    } // for 
+	} // for tuple
 
       plotSolution(detailPlot,state,true);
 
       // Add action
       QVector<double> actionPointX(1), actionPointY(1);
-      actionPointX[0] = genLineX[0];
-      actionPointY[0] = genLineY[0];
+      actionPointX[0] = stagePayoffs[0];
+      actionPointY[0] = stagePayoffs[1];
 
       detailPlot->addGraph();
       detailPlot->graph(1)->setData(actionPointX,actionPointY);
@@ -308,87 +332,32 @@ void SGSolutionHandler::plotSolution()
 							    QPen(Qt::black),
 							    QBrush(Qt::black),
 							    8));
-      xrange.expand(getBounds(genLineX));
-      yrange.expand(getBounds(genLineY));
       xrange.expand(detailPlot->getNominalXRange());
       yrange.expand(detailPlot->getNominalYRange());
-      // xrange.expand(detailPlot->xAxis->range());
-      // yrange.expand(detailPlot->yAxis->range());
 
       // Add IC region
-      QCPCurve * ICCurve = new QCPCurve(detailPlot->xAxis,
-					detailPlot->yAxis);
-      QVector<double> ICCurveX(3), ICCurveY(3), ICCurveT(3);
+      const SGPoint & minIC = pivotIter->actions[state][actionIndex].getMinICPayoffs();
 
-      SGPoint minIC;
-      for (int player = 0; player < 2; player++)
-	minIC[player] = SGAction::calculateMinIC(action,state,player,
-						 soln.game,pivotIter->threatTuple);
-
-      ICCurveX[0] = xrange.upper+1e2*(xrange.upper-xrange.lower);
-      ICCurveY[0] = minIC[1];
-      ICCurveT[0] = 0;
-      ICCurveX[1] = minIC[0];
-      ICCurveY[1] = minIC[1];
-      ICCurveT[1] = 1;
-      ICCurveX[2] = minIC[0];
-      ICCurveY[2] = yrange.upper+1e2*(yrange.upper-yrange.lower);
-      ICCurveT[2] = 2;
-  
-      ICCurve->setData(ICCurveT,ICCurveX,ICCurveY);
-      ICCurve->setPen(QPen(Qt::magenta));
-      detailPlot->addPlottable(ICCurve);
+      QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
+					     SGPoint(0,yrange.upper-minIC[1]));
+      QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
+					     SGPoint(xrange.upper-minIC[0],0));
+      ICCurveH->setPen(QPen(Qt::magenta));
+      ICCurveV->setPen(QPen(Qt::magenta));
+      detailPlot->addPlottable(ICCurveH);
+      detailPlot->addPlottable(ICCurveV);
 
       detailPlot->setRanges(xrange,yrange);
+
+      detailPlot->getTitle()->setText(generatePlotTitle(state,action,true));
+    }
+  else if (state < 0)
+    {
+      plotSolution(detailPlot,pivotIter->bestState,false);
     }
   else
     plotSolution(detailPlot,0,false);
   
-  // Update the title
-  QString titleString = QString("Iteration: ");
-  titleString += QString::number(pivotIter->iteration);
-  titleString += QString(", Revolution: ");
-  titleString += QString::number(pivotIter->revolution);
-  if (pivotIter->iteration >=0
-      && detailedTitlesAction->isChecked())
-    {
-      titleString += QString(", S");
-      titleString += QString::number(state);
-
-      vector<int> actions;
-      indexToVector(action,actions,
-		    soln.game.getNumActions()[state]);
-      titleString += QString(", (R");
-      titleString += QString::number(actions[0]);
-      titleString += QString(",C");
-      titleString += QString::number(actions[1]);
-      titleString += QString(")");
-
-      switch (pivotIter->regime)
-	{
-	case SG::NonBinding:
-	  titleString += "\n(Non-binding direction)";
-	  break;
-
-	case SG::Binding:
-	  titleString += "\n(Binding direction)";
-	  break;
-
-	case SG::Binding0:
-	  titleString += "\n(Binding 0 direction)";
-	  break;
-
-	case SG::Binding1:
-	  titleString += "\n(Binding 1 direction)";
-	  break;
-
-	case SG::Binding01:
-	  titleString += "\n(Binding 0 and 1 direction)";
-	  break;
-	}
-
-    }
-  detailPlot->getTitle()->setText(titleString);
 
   if (equalizeAxesAction->isChecked())
     detailPlot->equalizeAxesScales();
@@ -417,8 +386,6 @@ void SGSolutionHandler::plotSolution()
 void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
 				     bool addSquares)
 {
-  // if (start == 0)
-  //   start = 4;
   int start = startSlider->sliderPosition();
   if (start == -1)
     start = 0;
@@ -462,21 +429,9 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   plot->addPlottable(newCurve);
 
   // Add current pivot and current direction
-  QVector <double> directionX(2), directionY(2), directionT(2);
-
-  double norm = pivotIter->direction.norm();
-
-  directionX[0] = pivotIter->pivot[state][0];
-  directionY[0] = pivotIter->pivot[state][1];
-  directionT[0] = 0;
-  directionX[1] = pivotIter->pivot[state][0]
-    +pivotIter->direction[0]*2*payoffBound/norm;
-  directionY[1] = pivotIter->pivot[state][1]
-    +pivotIter->direction[1]*2*payoffBound/norm;
-  directionT[1] = 1;
-  QCPCurve * directionCurve = new QCPCurve(plot->xAxis,
-					   plot->yAxis);
-  directionCurve->setData(directionT,directionX,directionY);
+  QCPCurve * directionCurve = vectorToQCPCurve(plot,
+					       pivotIter->pivot[state],
+					       pivotIter->direction*1.5*payoffBound/pivotIter->direction.norm());
   QPen pen (Qt::darkGreen);
   pen.setStyle(Qt::DashLine);
   directionCurve->setPen(pen);
@@ -505,14 +460,32 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   
   plot->setRanges(xrange,yrange);
 
-  QString titleString("S");
-  titleString += QString::number(state,10);
+  plot->getTitle()->setText(generatePlotTitle(state,
+					      pivotIter->actionTuple[state],
+					      false));
+} // plotSolution
 
-  if (detailedTitlesAction->isChecked())
+QString SGSolutionHandler::generatePlotTitle(int state, int action,
+					     bool addIterRev)
+{
+  // Update the title
+  QString titleString = QString("");
+  if (addIterRev)
     {
-      vector<int> actions;
+      titleString += QString("Iteration: ");
+      titleString += QString::number(pivotIter->iteration);
+      titleString += QString(", Revolution: ");
+      titleString += QString::number(pivotIter->revolution);
+      titleString += QString(", ");
+    }
+  if (pivotIter->iteration >=0
+      && detailedTitlesAction->isChecked())
+    {
+      titleString += QString("S");
+      titleString += QString::number(state);
 
-      indexToVector(pivotIter->actionTuple[state],actions,
+      vector<int> actions;
+      indexToVector(action,actions,
 		    soln.game.getNumActions()[state]);
       titleString += QString(", (R");
       titleString += QString::number(actions[0]);
@@ -520,10 +493,10 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
       titleString += QString::number(actions[1]);
       titleString += QString(")");
 
-      switch (pivotIter->regimeTuple[state])
+      switch (pivotIter->regime)
 	{
 	case SG::NonBinding:
-	  titleString += "\n(Non-binding)";
+	  titleString += "\n(Non-binding direction)";
 	  break;
 
 	case SG::Binding:
@@ -541,11 +514,31 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
 	case SG::Binding01:
 	  titleString += "\n(Binding 0 and 1 direction)";
 	  break;
-	} // switch
-
+	}
     }
-  plot->getTitle()->setText(titleString);
-} // plotSolution
+  
+  return titleString;
+} // generatePlotTitle
+
+QCPCurve * SGSolutionHandler::vectorToQCPCurve(SGCustomPlot * plot,
+					       const SGPoint & point,
+					       const SGPoint & dir)
+{
+  double norm = dir.norm();
+
+  QVector<double> X(2), Y(2), T(2);
+  X[0] = point[0];
+  Y[0] = point[1];
+  T[0] = 0;
+  X[1] = point[0]+dir[0];
+  Y[1] = point[1]+dir[1];
+  T[1] = 1;
+  QCPCurve * curve = new QCPCurve(plot->xAxis,
+				  plot->yAxis);
+  curve->setData(T,X,Y);
+  
+  return curve;
+} // vectorToQCPCurve
 
 QCPRange SGSolutionHandler::getBounds(const QVector<double> & x) const
 {
