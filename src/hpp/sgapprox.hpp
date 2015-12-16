@@ -7,6 +7,7 @@
 #include "sggame.hpp"
 #include "sgexception.hpp"
 #include "sgsolution.hpp"
+#include "sgnamespace.hpp"
 
 //! Approximation of the equilibrium payoff correspondence.
 /*! This class contains an approximation of the equilibrium payoff

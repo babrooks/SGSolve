@@ -159,6 +159,7 @@ private slots:
 public slots:
   //! Changes whether or not feasible set will be calculated.
   void setConstrained(int newState);
+
 };
 
 

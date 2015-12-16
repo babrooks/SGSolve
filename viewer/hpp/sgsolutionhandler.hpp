@@ -4,6 +4,9 @@
 #include "sgsolution.hpp"
 #include "sgcustomplot.hpp"
 #include "sgsimulationhandler.hpp"
+#include "sgsolutionplotcontroller.hpp"
+#include "sgsolutionstatecombomodel.hpp"
+#include "sgsolutionactioncombomodel.hpp"
 
 //! Handles the widgets for displaying the solution
 /*! This class contains all of the widgets on the solution tab. It
@@ -20,6 +23,7 @@ private:
   /*! Stores all of the information related to the result of the
       computation. */
   SGSolution soln;
+  SGSolutionPlotController * controller;
 
   QWidget * parent;
 
@@ -51,7 +55,7 @@ private:
 
   //! Master layout for the solution handler. 
   QVBoxLayout * layout;
-
+  
   //! Layout holding the state plots.
   QGridLayout * statePlotsLayout;
 
@@ -63,11 +67,13 @@ private:
   QScrollBar * iterSlider;
   //! Slider for the first iteration
   QScrollBar * startSlider;
-  //! Action slider. Not currently used.
-  QScrollBar * actionSlider;
-  //! State slider. Not currently used.
-  QScrollBar * stateSlider;
 
+  // Controls for detail plot
+  //! Combo controlling the state
+  QComboBox * stateCombo;
+  //! Combo controlling the action
+  QComboBox * actionCombo;
+  
   //! Action to toggle detailed titles
   QAction * detailedTitlesAction;
 
@@ -79,7 +85,7 @@ private:
 
   // Methods
   //! Plots the solution from start to end
-  void plotSolution(int state);
+  void plotSolution();
   //! Plots the solution for a particular state.
   void plotSolution(SGCustomPlot * plot, int state,
 		    bool addSquares);
@@ -133,8 +139,12 @@ public slots:
   //! Simulate equilibrium slot
   void simulateEquilibrium(SGPoint point,
 			   int state, bool isDetailPlot);
-  
-  
+  //! Previous action
+  void prevAction();
+  void nextAction();
+
+  //! Replot slot
+  void replotSlot() { plotSolution(); }
 };
 
 #endif

@@ -71,6 +71,7 @@ int main ()
 	      unconstrained);
 
   SGEnv env;
+  env.setParam(SGEnv::LEVELTOL,1e-12);
   
   cout << "Building solver" << endl;
   SGSolver solver(env,game);

@@ -4,6 +4,10 @@
 SGMainWindow::SGMainWindow()
 {
   timer.start();
+  
+  env = new SGEnv();
+
+  env->setParam(SGEnv::PRINTTOCOUT,false);
 
   path = QString("./");
   
@@ -36,6 +40,10 @@ SGMainWindow::SGMainWindow()
   viewMenu->addAction(solutionHandler->getEqualizeAxesAction());
   viewMenu->addSeparator();
   viewMenu->addAction(screenShotAction);
+
+  QMenu * toolsMenu = menuBar()->addMenu(tr("&Tools"));
+  QAction * settingsAction = new QAction(tr("&Settings"),this);
+  toolsMenu->addAction(settingsAction);
 
   QMenu * helpMenu = menuBar()->addMenu(tr("&Help"));
   QAction * aboutAction = new QAction(tr("&About"),this);
@@ -73,7 +81,9 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(solveGame()));
   connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
 	  this,SLOT(cancelSolve()));
-
+  connect(settingsAction,SIGNAL(triggered()),
+	  this,SLOT(changeSettings()));
+  
   // Log tab
   QHBoxLayout * logEditLayout = new QHBoxLayout();
   logTextEdit = new QTextEdit();
@@ -247,8 +257,8 @@ void SGMainWindow::solveGame()
       
       cancelSolveFlag = false;
       
-      solverWorker = new SGSolverWorker(gameHandler->getGame(),
-					gameHandler->getErrorTol(),
+      solverWorker = new SGSolverWorker(*env,
+					gameHandler->getGame(),
 					logTextEdit);
       solverWorker->moveToThread(&solverThread);
       connect(this,SIGNAL(startIteration()),
@@ -413,3 +423,23 @@ void SGMainWindow::displayAbout()
 
   aboutBox.exec();
 }
+
+void SGMainWindow::changeSettings()
+{
+  settingsHandler = new SGSettingsHandler(this,env);
+
+  settingsHandler->adjustSize();
+  settingsHandler->move(this->pos()
+			+this->rect().center()
+			-settingsHandler->pos()
+			-settingsHandler->rect().center());
+  connect(settingsHandler,SIGNAL(closeSettingsHandler()),
+	  this,SLOT(settingsHandlerClosed()));
+  settingsHandler->show();
+}
+
+void SGMainWindow::settingsHandlerClosed()
+{
+  delete settingsHandler;
+}
+

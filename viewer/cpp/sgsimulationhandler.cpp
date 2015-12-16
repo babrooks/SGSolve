@@ -25,7 +25,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   QVBoxLayout * mainLayout = new QVBoxLayout();
   mainLayout->addWidget(menuBar);
-
+  
   setLayout(mainLayout);
 
   QHBoxLayout * ewLayout = new QHBoxLayout();

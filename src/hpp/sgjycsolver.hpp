@@ -202,7 +202,7 @@ double SGJYCSolver::iterate()
 	      GRBLinExpr lhs = 0;
 	      lhs += (1-delta)*payoffs[state][action][player];
 	      for (int sp = 0; sp < numStates; sp++)
-	  	lhs += delta*prob[state][action][sp]*var[2*state+player];
+	  	lhs += delta*prob[state][action][sp]*var[2*sp+player];
 
 	      for (int dev = 0; dev < numActions[state][player]; dev++)
 	  	{

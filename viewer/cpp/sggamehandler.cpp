@@ -536,3 +536,4 @@ void SGGameHandler::setConstrained(int newState)
   else
     game.setConstrained(vector<bool>(2,false));
 }
+

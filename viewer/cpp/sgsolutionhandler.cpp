@@ -3,7 +3,16 @@
 SGSolutionHandler::SGSolutionHandler(QWidget * _parent): 
   mode(Progress), parent(_parent)
 {
+  // Set up the menu items. Added by SGMainWindow to the menubar.
+  detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
+  detailedTitlesAction->setCheckable(true);
+  detailedTitlesAction->setChecked(true);
 
+  equalizeAxesAction = new QAction(tr("&Equalize axes scales"),this);
+  equalizeAxesAction->setCheckable(true);
+  equalizeAxesAction->setChecked(true);
+
+  // Top control for solution mode.
   QHBoxLayout * controlLayout = new QHBoxLayout();
   QFormLayout * leftControlLayout = new QFormLayout();
   solutionModeCombo = new QComboBox();
@@ -11,10 +20,13 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   solutionModeCombo->addItem("Final");
   solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
 				   QSizePolicy::Preferred);
+  connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
+	  this,SLOT(changeMode(int)));
   leftControlLayout->addRow(new QLabel(tr("Display mode:")),
 			    solutionModeCombo);
   controlLayout->addLayout(leftControlLayout);
 
+  // Set up the detail plot
   detailPlot = new SGCustomPlot(0,true);
   detailPlot->setSizePolicy(QSizePolicy::Expanding,
 			  QSizePolicy::Expanding);
@@ -25,32 +37,52 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   detailPlot->addGraph();
   statePlots[0]->addGraph();
 
+  // Layout the controls for the detail plot
+  stateCombo = new QComboBox();
+  actionCombo = new QComboBox();
+
+  controller = new SGSolutionPlotController(stateCombo,actionCombo);
+  connect(controller,SIGNAL(actionChanged()),
+	  this,SLOT(replotSlot()));
+
+  SGSolutionStateComboModel * stateComboModel
+    = new SGSolutionStateComboModel(controller);
+  SGSolutionActionComboModel * actionComboModel
+    = new SGSolutionActionComboModel(controller);
+
+  stateCombo->setModel(stateComboModel);
+  actionCombo->setModel(actionComboModel);
+  QPushButton * nextActionButton = new QPushButton("->");
+  QPushButton * prevActionButton = new QPushButton("<-");
+  
+  QHBoxLayout * detailPlotControlLayout = new QHBoxLayout();
+  QLabel * stateComboLabel = new QLabel(tr("State:"));
+  stateComboLabel->setAlignment(Qt::AlignRight);
+  detailPlotControlLayout->addWidget(stateComboLabel);
+  detailPlotControlLayout->addWidget(stateCombo);
+  QLabel * actionComboLabel = new QLabel(tr("Action:"));
+  actionComboLabel->setAlignment(Qt::AlignRight);
+  detailPlotControlLayout->addWidget(actionComboLabel);
+  detailPlotControlLayout->addWidget(actionCombo);
+  detailPlotControlLayout->addWidget(prevActionButton);
+  detailPlotControlLayout->addWidget(nextActionButton);
+  connect(stateCombo,SIGNAL(currentIndexChanged(int)),
+	  stateComboModel,SLOT(stateChanged(int)));
+  connect(nextActionButton,SIGNAL(clicked()),
+	  this,SLOT(nextAction()));
+  connect(prevActionButton,SIGNAL(clicked()),
+	  this,SLOT(prevAction()));
+
+  // Combine the detail plot and controls into a detail plot widget
+  QWidget * detailPlotWidget = new QWidget();
+  QVBoxLayout * detailPlotWidgetLayout = new QVBoxLayout();
+  detailPlotWidgetLayout->addWidget(detailPlot);
+  detailPlotWidgetLayout->addLayout(detailPlotControlLayout);
+  detailPlotWidget->setLayout(detailPlotWidgetLayout);
+
+  // Now layout the state plots
   statePlotsLayout = new QGridLayout();
   statePlotsLayout->addWidget(statePlots[0]);
-
-  detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
-  detailedTitlesAction->setCheckable(true);
-  detailedTitlesAction->setChecked(true);
-
-  equalizeAxesAction = new QAction(tr("&Equalize axes scales"),this);
-  equalizeAxesAction->setCheckable(true);
-  equalizeAxesAction->setChecked(true);
-
-  iterSlider = new QScrollBar();
-  iterSlider->setOrientation(Qt::Horizontal);
-  startSlider = new QScrollBar();
-  startSlider->setOrientation(Qt::Horizontal);
-  actionSlider = new QScrollBar();
-  actionSlider->setOrientation(Qt::Horizontal);
-  stateSlider = new QScrollBar();
-  stateSlider->setOrientation(Qt::Horizontal);
-
-  QWidget * botSolutionPanel = new QWidget();
-
-  // QPalette botPalette = botSolutionPanel->palette();
-  // botPalette.setColor(QPalette::Background,Qt::red);
-  // botSolutionPanel->setPalette(botPalette);
-  // botSolutionPanel->setAutoFillBackground(true);
 
   QScrollArea * topRightScrollArea = new QScrollArea();
   
@@ -64,11 +96,23 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   topRightScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
   QHBoxLayout * topLayout = new QHBoxLayout();
-  topLayout->addWidget(detailPlot);
+  topLayout->addWidget(detailPlotWidget);
   topLayout->addWidget(topRightScrollArea);
 
   QWidget * topSolutionPanel = new QWidget();
   topSolutionPanel->setLayout(topLayout);
+
+  // Sliders at the bottom
+  iterSlider = new QScrollBar();
+  iterSlider->setOrientation(Qt::Horizontal);
+  startSlider = new QScrollBar();
+  startSlider->setOrientation(Qt::Horizontal);
+  connect(iterSlider,SIGNAL(valueChanged(int)),
+	  this,SLOT(iterSliderUpdate(int)));
+  connect(startSlider,SIGNAL(valueChanged(int)),
+	  this,SLOT(iterSliderUpdate(int)));
+
+  QWidget * botSolutionPanel = new QWidget();
 
   // Add sliders to bottom panel
   QFormLayout * botLayout = new QFormLayout(botSolutionPanel);
@@ -76,11 +120,7 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
 		    iterSlider);
   botLayout->addRow(new QLabel(tr("Start iteration:")),
 		    startSlider);
-  botLayout->addRow(new QLabel(tr("Action:")),
-		    actionSlider);
-  botLayout->addRow(new QLabel(tr("State:")),
-		    stateSlider);
-  botSolutionPanel->setFixedHeight(100);
+  botSolutionPanel->setFixedHeight(60);
   botLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
   
   layout = new QVBoxLayout();
@@ -88,24 +128,14 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   layout->addWidget(topSolutionPanel);
   layout->addWidget(botSolutionPanel);
 
-  // Connect signals and slots
-  connect(iterSlider,SIGNAL(valueChanged(int)),
-	  this,SLOT(iterSliderUpdate(int)));
-  connect(startSlider,SIGNAL(valueChanged(int)),
-	  this,SLOT(iterSliderUpdate(int)));
-  connect(actionSlider,SIGNAL(valueChanged(int)),
-	  this,SLOT(actionUpdate(int)));
-  connect(stateSlider,SIGNAL(valueChanged(int)),
-	  this,SLOT(actionUpdate(int)));
-  connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
-	  this,SLOT(changeMode(int)));
   
 }
 
 void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 {
   soln = newSoln;
-
+  controller->setSolution(&soln);
+  
   // Initialize iter pointer
   startIter = soln.iterations.begin();
   endIter = soln.iterations.end();
@@ -128,12 +158,12 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 	  this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
   // Set up state plots
   QLayoutItem * item;
-  while (item = statePlotsLayout->takeAt(0))
-    delete item;
+  while ((item = statePlotsLayout->takeAt(0))!=0)
+    delete item->widget();
   
   statePlots.clear();
   statePlots = vector<SGCustomPlot *>(numStates);
-
+  
   SGPoint UB, LB;
   soln.game.getPayoffBounds(UB,LB);
   payoffBound = std::max(UB[0]-LB[0],
@@ -163,7 +193,7 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 	  this,SLOT(changeMode(int)));
   
   
-  plotSolution(pivotIter->bestState);
+  plotSolution();
 
   solnLoaded = true;
 } // setSolution
@@ -189,7 +219,7 @@ void SGSolutionHandler::setSliderRanges(int start, int end)
 	  this,SLOT(iterSliderUpdate(int)));
 }
 
-void SGSolutionHandler::plotSolution(int state)
+void SGSolutionHandler::plotSolution()
 {
   int start = startSlider->sliderPosition();
   if (start == -1)
@@ -202,10 +232,16 @@ void SGSolutionHandler::plotSolution(int state)
 
   detailPlot->clearPlottables();
   
+  int state = pivotIter->bestState;
+  int action = pivotIter->actionTuple[pivotIter->bestState];
+  if (controller->getAction()>-1)
+    {
+      state = controller->getState();
+      action = controller->getAction();
+    }
+
   detailPlot->setState(state);
-
-  int action = pivotIter->actionTuple[state];
-
+  
   if (endIter->iteration>=0)
     {
       // Add expected set
@@ -413,9 +449,6 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
       
       tupleC++;
     }
-  // t.back() = t.size()-1;
-  // x.back() = pivotIter->pivot[state][0];
-  // y.back() = pivotIter->pivot[state][1];
   t[tupleC-start] = tupleC;
   x[tupleC-start] = endIter->pivot[state][0];
   y[tupleC-start] = endIter->pivot[state][1];
@@ -576,8 +609,10 @@ void SGSolutionHandler::iterSliderUpdate(int value)
 
   if (pivotIter == soln.iterations.begin())
     pivotIter++;
+
+  controller->setIteration(pivotIter->iteration);
   
-  plotSolution(pivotIter->bestState);
+  plotSolution();
   
 } // iterSliderUpdate
 
@@ -585,6 +620,16 @@ void SGSolutionHandler::actionUpdate(int value)
 {
 
 } // actionUpdate
+
+void SGSolutionHandler::prevAction()
+{
+
+} // prevAction
+
+void SGSolutionHandler::nextAction()
+{
+
+} // nextAction
 
 void SGSolutionHandler::moveForwards()
 {
@@ -634,8 +679,7 @@ void SGSolutionHandler::changeMode(int newMode)
   
   iterSlider->setValue(endIter->iteration);
   iterSliderUpdate(endIter->iteration);
-  // plotSolution(plotState);
-}
+} // changeMode
 
 void SGSolutionHandler::inspectPoint(SGPoint point,
 				     int state, bool isDetailPlot)
@@ -666,8 +710,8 @@ void SGSolutionHandler::inspectPoint(SGPoint point,
       tupleC++;
     } // for
 
-  
-  plotSolution(state);
+  controller->setState(state);
+  controller->setAction(pivotIter->actionTuple[state]);
 } // inspectPoint
 
 
@@ -685,8 +729,6 @@ void SGSolutionHandler::simulateEquilibrium(SGPoint point,
 		   +parent->rect().center()
 		   -simHandler->pos()
 		   -simHandler->rect().center());
-  // simHandler->move(QApplication::desktop()->screen()->rect().center()
-  // 		   -simHandler->rect().center());
   
   simHandler->show();
 } // simulateEquilibrium

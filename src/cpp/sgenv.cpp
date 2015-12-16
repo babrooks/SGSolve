@@ -8,17 +8,17 @@ SGEnv::SGEnv()
 void SGEnv::restoreDefaults()
 {
   maxIterations = 1e6;
-  maxUpdatePivotPasses = 1e12;
+  maxUpdatePivotPasses = 1e8;
   tupleReserveSize = 1e4;
 
   errorTol = 1e-8;
-  directionTol = 1e-13;
+  directionTol = 1e-11;
   pastThreatTol = 1e-10;
   updatePivotTol = 1e-13;
   ICTol = 1e-12;
   normTol = 1e-12;
   flatTol = 1e-10;
-  levelTol = 1e-12;
+  levelTol = 1e-13;
   improveTol = 1e-13;
   backBendingTol = 1e-6;
   movementTol = 1e-14; 

@@ -27,6 +27,10 @@ sgsolverworker.hpp \
 sgcustomplot.hpp \
 sgsimulationhandler.hpp \
 sgsimulationplot.hpp \
+sgsettingshandler.hpp \
+sgsolutionplotcontroller.hpp \
+sgsolutionstatecombomodel.hpp \
+sgsolutionactioncombomodel.hpp \
 Q_DebugStream.h
 
 VPATH += ./cpp ./hpp
@@ -39,7 +43,8 @@ sggamehandler.cpp \
 sgprobabilitytablemodel.cpp \
 sgpayofftablemodel.cpp \
 sgsimulationhandler.cpp \
-sgsolutionhandler.cpp
+sgsolutionhandler.cpp \
+sgsettingshandler.cpp
 
 LIBS += -L../lib/ -L/usr/local/lib/ # -L/opt/Qt/lib/ -L/opt/Qt/plugins/platforms/
 linux-g++ {

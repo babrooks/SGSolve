@@ -5,6 +5,7 @@
 #include "sggamehandler.hpp"
 #include "sgsolutionhandler.hpp"
 #include "sgsolverworker.hpp"
+#include "sgsettingshandler.hpp"
 #include "sg.hpp"
 
 using namespace std;
@@ -34,6 +35,9 @@ private:
   //! Widget containing game, solution, and log tabs.
   QTabWidget * tabWidget;
 
+  //! Environment for computations
+  SGEnv * env;
+
   //! Worker that handles solution.
   SGSolverWorker * solverWorker;
   //! Separate thread for running solve routines, so gui doesn't hang.
@@ -43,6 +47,9 @@ private:
   SGSolutionHandler * solutionHandler;
   //! The object for interfacing with the game.
   SGGameHandler * gameHandler;
+
+  //! The object for controling environment settings.
+  SGSettingsHandler * settingsHandler;
 
   //! Text edit containing the log output.
   QTextEdit * logTextEdit;
@@ -90,6 +97,12 @@ private slots:
 
   //! Quits the program.
   void quitProgram();
+
+  //! Changes settings for the SGEnv object
+  void changeSettings();
+
+  //! Changes settings for the SGEnv object
+  void settingsHandlerClosed();
 
   //! Triggers a new screen shot.
   void screenShot();

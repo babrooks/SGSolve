@@ -69,7 +69,7 @@ void SGApprox::initialize()
   if (env.storeIterations)
     soln.push_back(SGIteration(-1,0,
 			       extremeTuples.size(),
-			       -1,SG::Binding,
+			       -1,SG::Binding,actions,
 			       pivot,currentDirection,
 			       actionTuple,regimeTuple,
 			       threatTuple));
@@ -109,6 +109,7 @@ double SGApprox::generate()
     soln.push_back(SGIteration(numIterations,numRevolutions,
 			       extremeTuples.size(),
 			       bestAction->getState(),bestRegime,
+			       actions,
 			       pivot,bestDirection,
 			       actionTuple,regimeTuple,
 			       threatTuple));

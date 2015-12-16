@@ -2,8 +2,8 @@ function [P,LR,ATK] = kocherlakota_8_19_2015
 %% Ben's file for kocherlakota style simulations
 % 8-19-2015
 
-numEndowments = 11; % Should be odd?
-consumptionToEndowments = 50;
+numEndowments = 5; % Should be odd?
+consumptionToEndowments = 25;
 % P = linspace(0,10,numEndowments);
 % P=0:20;
  P=0:0.25:12.75;

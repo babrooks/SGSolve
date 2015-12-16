@@ -2,17 +2,6 @@
 #include "sgaction.hpp"
 
 /* SGAction */
-SGAction::SGAction(const SGEnv & _env, int _state, int _action):
-  env(_env),
-  state(_state),
-  action(_action),
-  minIC(-numeric_limits<double>::max()),
-  isNull(false)
-{
-  points.resize(2);
-  trimmedPoints.resize(2);
-  tuples.resize(2); 
-}
 
 void SGAction::intersectRay(const SGPoint& pivot, 
 			    const SGPoint& direction)
