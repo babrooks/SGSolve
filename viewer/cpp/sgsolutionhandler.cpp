@@ -41,14 +41,14 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   stateCombo = new QComboBox();
   actionCombo = new QComboBox();
 
-  controller = new SGSolutionPlotController(stateCombo,actionCombo);
+  controller = new SGPlotController(stateCombo,actionCombo);
   connect(controller,SIGNAL(actionChanged()),
 	  this,SLOT(replotSlot()));
 
-  SGSolutionStateComboModel * stateComboModel
-    = new SGSolutionStateComboModel(controller);
-  SGSolutionActionComboModel * actionComboModel
-    = new SGSolutionActionComboModel(controller);
+  SGStateComboModel * stateComboModel
+    = new SGStateComboModel(controller);
+  SGActionComboModel * actionComboModel
+    = new SGActionComboModel(controller);
 
   stateCombo->setModel(stateComboModel);
   actionCombo->setModel(actionComboModel);

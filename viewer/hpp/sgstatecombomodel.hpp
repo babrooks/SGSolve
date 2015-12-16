@@ -1,19 +1,19 @@
-#ifndef SGSOLUTIONSTATECOMBOMODEL_HPP
-#define SGSOLUTIONSTATECOMBOMODEL_HPP
+#ifndef SGSTATECOMBOMODEL_HPP
+#define SGSTATECOMBOMODEL_HPP
 
-#include "sgsolutionplotcontroller.hpp"
+#include "sgplotcontroller.hpp"
 #include <QAbstractListModel>
 #include <QComboBox>
 
-class SGSolutionStateComboModel : public QAbstractListModel
+class SGStateComboModel : public QAbstractListModel
 {
   Q_OBJECT;
 private:
-  SGSolutionPlotController * controller;
+  SGPlotController * controller;
 
 public:
   //! Constructor
-  SGSolutionStateComboModel(SGSolutionPlotController * _controller):
+  SGStateComboModel(SGPlotController * _controller):
     controller(_controller)
   {
     connect(controller,SIGNAL(solutionChanged()),
@@ -50,6 +50,6 @@ public slots:
     emit layoutChanged(); 
   }
 
-}; // SGSolutionStateComboModel
+}; // SGStateComboModel
 
 #endif

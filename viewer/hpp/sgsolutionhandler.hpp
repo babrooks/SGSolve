@@ -4,9 +4,9 @@
 #include "sgsolution.hpp"
 #include "sgcustomplot.hpp"
 #include "sgsimulationhandler.hpp"
-#include "sgsolutionplotcontroller.hpp"
-#include "sgsolutionstatecombomodel.hpp"
-#include "sgsolutionactioncombomodel.hpp"
+#include "sgplotcontroller.hpp"
+#include "sgstatecombomodel.hpp"
+#include "sgactioncombomodel.hpp"
 
 //! Handles the widgets for displaying the solution
 /*! This class contains all of the widgets on the solution tab. It
@@ -23,7 +23,7 @@ private:
   /*! Stores all of the information related to the result of the
       computation. */
   SGSolution soln;
-  SGSolutionPlotController * controller;
+  SGPlotController * controller;
 
   QWidget * parent;
 

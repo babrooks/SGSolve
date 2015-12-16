@@ -1,11 +1,11 @@
-#ifndef SGSOLUTIONPLOTCONTROLLER_HPP
-#define SGSOLUTIONPLOTCONTROLLER_HPP
+#ifndef SGPLOTCONTROLLER_HPP
+#define SGPLOTCONTROLLER_HPP
 
 #include <QObject>
 #include <QComboBox>
 #include "sgsolution.hpp"
 
-class SGSolutionPlotController : public QObject
+class SGPlotController : public QObject
 {
   Q_OBJECT;
 
@@ -22,7 +22,7 @@ private:
   QComboBox * stateCombo;
   QComboBox * actionCombo;
 public:
-  SGSolutionPlotController(QComboBox * _stateCombo,
+  SGPlotController(QComboBox * _stateCombo,
 			   QComboBox *_actionCombo):
     solutionSet(false), action(-1),state(-1),iteration(0),
     stateCombo(_stateCombo), actionCombo(_actionCombo)
@@ -121,6 +121,6 @@ public slots:
   }
 
 
-}; // SGSolutionPlotController
+}; // SGPlotController
 
 #endif
