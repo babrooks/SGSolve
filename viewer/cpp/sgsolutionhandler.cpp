@@ -230,15 +230,19 @@ void SGSolutionHandler::plotSolution()
   int numStates = soln.game.getNumStates();
 
   detailPlot->clearPlottables();
+  detailPlot->clearItems();
+  // QCPAbstractItem * item;
+  // while ((item = detailPlot->item())!=0)
+  //   delete item;
   
   int state = controller->getState();
   int action = controller->getAction();
   int actionIndex = controller->getActionIndex();
 
-  detailPlot->setState(state);
-  
-  if (state >= 0 && action > 0 && endIter->iteration>=0)
+  if (state >= 0 && action >= 0 && endIter->iteration>=0)
     {
+      detailPlot->setState(state);
+  
       const SGBaseAction & actionObject = pivotIter->actions[state][actionIndex];
 
       // Add expected set
@@ -283,17 +287,17 @@ void SGSolutionHandler::plotSolution()
       SGPoint stagePayoffs = soln.game.getPayoffs()[state][action];
       SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
 
-      QCPCurve * nonBindingGenCurve
-	= vectorToQCPCurve(detailPlot,stagePayoffs,
-			   expPivot-stagePayoffs);
-      nonBindingGenCurve->setPen(QPen(Qt::DashLine));
-      detailPlot->addPlottable(nonBindingGenCurve);
+      QCPItemLine * nonBindingGenLine
+	= sgToQCPItemLine(detailPlot,stagePayoffs,
+			  expPivot-stagePayoffs);
+      nonBindingGenLine->setPen(QPen(Qt::DashLine));
+      detailPlot->addItem(nonBindingGenLine);
 
-      QCPCurve * nonBindingDirection
-	= vectorToQCPCurve(detailPlot,pivotIter->pivot[state],
-			   nonBindingPayoff-pivotIter->pivot[state]);
-      nonBindingGenCurve->setPen(QPen(Qt::DashLine));
-      detailPlot->addPlottable(nonBindingGenCurve);
+      QCPItemLine * nonBindingDirection
+	= sgToQCPItemLine(detailPlot,pivotIter->pivot[state],
+			  nonBindingPayoff-pivotIter->pivot[state]);
+      nonBindingDirection->setHead(QCPLineEnding::esSpikeArrow);
+      detailPlot->addItem(nonBindingDirection);
       
       // Binding directions
       for (vector<SGTuple>::const_iterator tuple
@@ -306,15 +310,17 @@ void SGSolutionHandler::plotSolution()
 	      SGPoint continuationValue = (*tuple)[pointIndex];
 	      SGPoint bindingPayoff = (1-delta)*stagePayoffs
 		+ delta*continuationValue;
-	      QCPCurve * bindingGenCurve
-		= vectorToQCPCurve(detailPlot,stagePayoffs,
-				   continuationValue - stagePayoffs);
+	      QCPItemLine * bindingGenCurve
+		= sgToQCPItemLine(detailPlot,stagePayoffs,
+				  continuationValue - stagePayoffs);
 	      bindingGenCurve->setPen(QPen(Qt::DashLine));
-	      detailPlot->addPlottable(bindingGenCurve);
+	      detailPlot->addItem(bindingGenCurve);
 
-	      QCPCurve * bindingDirection
-		= vectorToQCPCurve(detailPlot,pivotIter->pivot[state],
-				   bindingPayoff - pivotIter->pivot[state]);
+	      QCPItemLine * bindingDirection
+		= sgToQCPItemLine(detailPlot,pivotIter->pivot[state],
+				  bindingPayoff - pivotIter->pivot[state]);
+	      bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
+	      detailPlot->addItem(bindingDirection);
 				   
 	    } // for 
 	} // for tuple
@@ -325,7 +331,7 @@ void SGSolutionHandler::plotSolution()
       QVector<double> actionPointX(1), actionPointY(1);
       actionPointX[0] = stagePayoffs[0];
       actionPointY[0] = stagePayoffs[1];
-
+      
       detailPlot->addGraph();
       detailPlot->graph(1)->setData(actionPointX,actionPointY);
       detailPlot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssStar,
@@ -539,6 +545,17 @@ QCPCurve * SGSolutionHandler::vectorToQCPCurve(SGCustomPlot * plot,
   
   return curve;
 } // vectorToQCPCurve
+
+QCPItemLine * SGSolutionHandler::sgToQCPItemLine(SGCustomPlot * plot,
+						 const SGPoint & point,
+						 const SGPoint & dir)
+{
+  QCPItemLine * line = new QCPItemLine(plot);
+  line->start->setCoords(point[0],point[1]);
+  line->end->setCoords(point[0]+dir[0],point[1]+dir[1]);
+    
+  return line;
+} // sgToQCPItemLine
 
 QCPRange SGSolutionHandler::getBounds(const QVector<double> & x) const
 {

@@ -224,7 +224,6 @@ void SGMainWindow::saveGame()
   QFileInfo fi(newPath);
   path = fi.canonicalPath();
 
-
   try
     {
       QByteArray ba = newPath.toLocal8Bit();
@@ -419,7 +418,7 @@ void SGMainWindow::displayAbout()
 
   aboutBox.setWindowTitle("About");
   aboutBox.setText("About SGViewer");
-  aboutBox.setInformativeText("SGViewer was designed by Dilip Abreu, Ben Brooks, and Yuliy Sannikov. It implements the algorithm for solving stochastic games described in Abreu, Brooks, and Sannikov (2015). Inuiries can be directed to:\n\nBen Brooks\nChicago, IL\nbabrooks@uchicago.edu\n3/23/2013");
+  aboutBox.setInformativeText("SGViewer was designed by Dilip Abreu, Ben Brooks, and Yuliy Sannikov. It implements the algorithm for solving stochastic games described in Abreu, Brooks, and Sannikov (2015). Inquiries can be directed to:\n\nBen Brooks\nChicago, IL\nbabrooks@uchicago.edu\n3/23/2014");
 
   aboutBox.exec();
 }

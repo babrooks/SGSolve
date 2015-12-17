@@ -97,6 +97,10 @@ private:
   QCPCurve * vectorToQCPCurve(SGCustomPlot * plot,
 			      const SGPoint & point,
 			      const SGPoint & dir);
+  //! Converts point,dir into a QCPItemLine associated with the given plot
+  QCPItemLine * sgToQCPItemLine(SGCustomPlot * plot,
+				const SGPoint & point,
+				const SGPoint & dir);
   //! Sets slider ranges
   void setSliderRanges(int start, int end);
 public:
