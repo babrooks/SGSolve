@@ -102,14 +102,18 @@ double SGApprox::generate()
   assert(bestAction->getAction() < game.getNumActions_total()[bestAction->getState()]);
   
   if (env.storeIterations)
-    soln.push_back(SGIteration(numIterations,numRevolutions,
-			       extremeTuples.size(),
-			       bestAction->getState(),bestAction->getAction(),
-			       bestRegime,
-			       actions,
-			       pivot,bestDirection,
-			       actionTuple,regimeTuple,
-			       threatTuple));
+    {
+      soln.push_back(SGIteration(numIterations,numRevolutions,
+				 extremeTuples.size(),
+				 bestAction->getState(),bestAction->getAction(),
+				 bestRegime,
+				 actions,
+				 pivot,bestDirection,
+				 actionTuple,regimeTuple,
+				 threatTuple));
+      assert(soln.iterations.back().bestAction
+	     < game.getNumActions_total()[soln.iterations.back().bestState]);
+    }
 
   // Update the pivot.
   calculateNewPivot();

@@ -62,6 +62,7 @@ public:
     actions(_actions.size()),
     pivot(_pivot),
     bestState(_bestState),
+    bestAction(_bestAction),
     direction(_direction),
     regimeTuple(_regimeTuple),
     threatTuple(_threatTuple)
