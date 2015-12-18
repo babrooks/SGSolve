@@ -18,7 +18,7 @@ void SGEnv::restoreDefaults()
   ICTol = 1e-12;
   normTol = 1e-12;
   flatTol = 1e-10;
-  levelTol = 1e-13;
+  levelTol = 1e-12;
   improveTol = 1e-13;
   backBendingTol = 1e-6;
   movementTol = 1e-14; 

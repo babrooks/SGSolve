@@ -69,7 +69,7 @@ void SGApprox::initialize()
   if (env.storeIterations)
     soln.push_back(SGIteration(-1,0,
 			       extremeTuples.size(),
-			       -1,SG::Binding,actions,
+			       -1,-1,SG::Binding,actions,
 			       pivot,currentDirection,
 			       actionTuple,regimeTuple,
 			       threatTuple));
@@ -98,6 +98,19 @@ double SGApprox::generate()
   // Find the new direction
   findBestDirection();
   
+  assert(bestAction->getState() < game.getNumStates());
+  assert(bestAction->getAction() < game.getNumActions_total()[bestAction->getState()]);
+  
+  if (env.storeIterations)
+    soln.push_back(SGIteration(numIterations,numRevolutions,
+			       extremeTuples.size(),
+			       bestAction->getState(),bestAction->getAction(),
+			       bestRegime,
+			       actions,
+			       pivot,bestDirection,
+			       actionTuple,regimeTuple,
+			       threatTuple));
+
   // Update the pivot.
   calculateNewPivot();
   
@@ -105,15 +118,6 @@ double SGApprox::generate()
   // continuation values.
   updateFlags();
   
-  if (env.storeIterations)
-    soln.push_back(SGIteration(numIterations,numRevolutions,
-			       extremeTuples.size(),
-			       bestAction->getState(),bestRegime,
-			       actions,
-			       pivot,bestDirection,
-			       actionTuple,regimeTuple,
-			       threatTuple));
-
   if (passNorth)
     {
       // for (int state = 0; state < numStates; state++)
@@ -159,7 +163,7 @@ void SGApprox::findBestDirection()
   // Search for the next best direction.
   int state;
 
-  bestAction = NULL;
+  bestAction = actions[0].end(); // use end as the default value for bestAction
   bestRegime = SG::Binding;
 
   bestDirection = -1.0*currentDirection;
@@ -197,7 +201,7 @@ void SGApprox::findBestDirection()
 	      if (improves(currentDirection,bestDirection,nonBindingDirection))
 		{
 		  bestDirection = nonBindingDirection;
-		  bestAction = &(*action);
+		  bestAction = action;
 		  bestRegime = SG::NonBinding;
 
 		  continue;
@@ -334,7 +338,7 @@ void SGApprox::findBestDirection()
 			    cout << "Warning: Detected back-bending direction" << endl;
 
 			  bestDirection = nonBindingDirection;
-			  bestAction = &(*action);
+			  bestAction = action;
 			  bestRegime = SG::NonBinding;
 			}
 		    } // Non binding direction is feasible
@@ -352,14 +356,14 @@ void SGApprox::findBestDirection()
 	       && improves(currentDirection,bestDirection,belowDirection) )
 	    {
 	      bestDirection = belowDirection;
-	      bestAction = &(*action);
+	      bestAction = action;
 	      bestRegime = bestBindingRegime;
 	    }
 
 	} // action
     } // state
 
-  if (bestAction == NULL)
+  if (bestAction == actions[0].end())
     throw(SGException(SGException::NO_ADMISSIBLE_DIRECTION));
 
 } // findBestDirection
@@ -389,7 +393,7 @@ void SGApprox::calculateNewPivot()
   int state, player;
 
   regimeTuple[bestAction->state] = bestRegime;
-  actionTuple[bestAction->state] = bestAction;
+  actionTuple[bestAction->state] = &(*bestAction);
   bool flatDetected = false;
   if (env.mergeTuples)
     flatDetected = bestDirection.getNormal()*currentDirection

@@ -27,7 +27,7 @@ public:
   {
     if (controller->hasSolution()
 	&& controller->getState()>-1)
-      return controller->getCurrentIter()->actions[controller->getState()].size()+1;
+      return controller->getCurrentIter().actions[controller->getState()].size()+1;
     else
       return 1;
   } // rowCount
@@ -36,7 +36,20 @@ public:
   QVariant data(const QModelIndex & index, int role) const
   {
     if (index.row()>0)
-      return QString::number(controller->getCurrentIter()->actions[controller->getState()][index.row()-1].getAction());
+      {
+	int state = controller->getState();
+	int action = controller->getCurrentIter().actions[state][index.row()-1].getAction();
+	const vector< int >& numActions = controller->getSolution()->game.getNumActions()[state];
+	QString dataString = QString("(R")
+	  + QString::number(action%numActions[0])
+	  + QString(",C")
+	  + QString::number(action/numActions[0])
+	  + QString(")");
+	if (state == controller->getCurrentIter().bestState
+	    && action == controller->getCurrentIter().bestAction)
+	  dataString += QString("*");
+	return dataString;
+      }
     else if (index.row()==0)
       return QString("-");
   }

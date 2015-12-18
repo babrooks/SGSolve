@@ -3,11 +3,9 @@
 SGSimulationHandler::SGSimulationHandler(QWidget * parent, 
 					 const SGSolution & _soln,
 					 const SGPoint & _point,
-					 int _state,
-					 list<SGIteration>::const_iterator _startOfLastRev)
+					 int _state)
   : QWidget(parent), soln(_soln), 
     point(_point), state(_state),
-    startOfLastRev(_startOfLastRev),
     sim(soln)
 {
   setWindowFlags(Qt::Window);
@@ -117,12 +115,13 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   // Find the point that is closest for the given state.
   double minDistance = numeric_limits<double>::max();
 
-  initialTuple = startOfLastRev->numExtremeTuples;
-
-  for (list<SGIteration>::const_iterator iter = startOfLastRev;
-       iter != soln.iterations.end();
+  for (list<SGIteration>::const_reverse_iterator iter = soln.iterations.rbegin();
+       iter != soln.iterations.rend();
        ++iter)
     {
+      if (iter->revolution != soln.iterations.back().revolution)
+	break;
+
       double newDistance = ( (iter->pivot[state] - point)
 			     *(iter->pivot[state] - point) );
       if (newDistance < minDistance-1e-7)

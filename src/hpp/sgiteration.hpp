@@ -28,6 +28,8 @@ public:
 
   //! The state that generated the best direction.
   int bestState; 
+  //! The action that generated the best direction.
+  int bestAction; 
   //! True if the best direction was non-binding.
   SG::Regime regime; 
   //! The current action tuple.
@@ -45,6 +47,7 @@ public:
 	      int _revolution,
 	      int _numExtremeTuples,
 	      int _bestState,
+	      int _bestAction,
 	      SG::Regime _regime,
 	      const vector< list<SGAction> > & _actions,
 	      const SGTuple &_pivot,
@@ -90,7 +93,7 @@ public:
   {
     ar & iteration & revolution & numExtremeTuples
       & pivot & direction & actions
-      & bestState & regime & actionTuple
+      & bestState & bestAction & regime & actionTuple
       & regimeTuple & threatTuple;
   }
 }; // SGIteration

@@ -30,20 +30,8 @@ private:
   //! A bound on the size of payoffs
   double payoffBound;
 
-  //! Points to the first iteration from which to plot.
-  list<SGIteration>::const_iterator startIter;
-  //! Points to the last iteration to which to plot.
-  list<SGIteration>::const_iterator endIter;
-  //! Points to the pivot iteration.
-  list<SGIteration>::const_iterator pivotIter;
-  //! Points to the pivot iteration.
-  list<SGIteration>::const_iterator startOfLastRev;
-
   //! True if a solution has been loaded.
   bool solnLoaded;
-  
-  //! Solution mode
-  enum SolutionMode {Progress, Final} mode;
   
   // Plots
   //! Left hand plot that shows construction of a point
@@ -59,21 +47,6 @@ private:
   //! Layout holding the state plots.
   QGridLayout * statePlotsLayout;
 
-  //! Combo controlling the solution mode
-  QComboBox * solutionModeCombo;
-  
-  // Sliders
-  //! Slider for the last iteration
-  QScrollBar * iterSlider;
-  //! Slider for the first iteration
-  QScrollBar * startSlider;
-
-  // Controls for detail plot
-  //! Combo controlling the state
-  QComboBox * stateCombo;
-  //! Combo controlling the action
-  QComboBox * actionCombo;
-  
   //! Action to toggle detailed titles
   QAction * detailedTitlesAction;
 
@@ -101,8 +74,6 @@ private:
   QCPItemLine * sgToQCPItemLine(SGCustomPlot * plot,
 				const SGPoint & point,
 				const SGPoint & dir);
-  //! Sets slider ranges
-  void setSliderRanges(int start, int end);
 public:
   //! Constructor
   /*! Constructs the widgets and the layout, connects signals and
@@ -127,19 +98,10 @@ public:
   QAction * getEqualizeAxesAction() const
   { return equalizeAxesAction; }
 
-  //! Increments iter by one.
-  void moveForwards();
-  //! Decrements iter by one.
-  void moveBackwards();
+  void moveBackwards() { controller->moveBackwards(); }
+  void moveForwards() { controller->moveForwards(); }
 
 public slots:
-  //! iterSlider was updated.
-  void iterSliderUpdate(int value);
-  //! actionSlider was updated.
-  void actionUpdate(int value);
-  //! Toggles the solution mode
-  void changeMode(int newMode);
-
   //! Inspect point slot
   void inspectPoint(SGPoint point,
 		    int state, bool isDetailPlot);
@@ -147,10 +109,6 @@ public slots:
   //! Simulate equilibrium slot
   void simulateEquilibrium(SGPoint point,
 			   int state, bool isDetailPlot);
-  //! Previous action
-  void prevAction();
-  void nextAction();
-
   //! Replot slot
   void replotSlot() { plotSolution(); }
 };

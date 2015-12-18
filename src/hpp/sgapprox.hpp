@@ -70,14 +70,15 @@ private:
                                             pointer to the SGAction
                                             object that generates
                                             pivot[state]. */
-  vector<SG::Regime> regimeTuple; /*!< regimeTuple[state]
-					    gives the manner in which
-					    pivot[state] was
-					    generated. */
+  vector<SG::Regime> regimeTuple; /*!< regimeTuple[state] gives the
+				    manner in which pivot[state] was
+				    generated. */
   
-  const SGAction * bestAction; /*!< Pointer to the action profile that
-                                  generates the shallowest
-                                  direction. */
+  list<SGAction>::const_iterator bestAction; /*!< Pointer to the
+					       action profile that
+					       generates the
+					       shallowest
+					       direction. */
   SGPoint bestDirection; /*!< The shallowest direction at the current
                             iteration. */
   SG::Regime bestRegime; /*!< Indicates which incentive

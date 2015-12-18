@@ -18,7 +18,6 @@ private:
   const SGSolution & soln;
   const SGPoint & point;
   const int state;
-  const list<SGIteration>::const_iterator startOfLastRev;
 
   SGSimulator sim;
   int initialTuple;
@@ -44,8 +43,7 @@ public:
   SGSimulationHandler(QWidget * parent, 
 		      const SGSolution & _soln, 
 		      const SGPoint & _point,
-		      int _state,
-		      list<SGIteration>::const_iterator _startOfLastRev);
+		      int _state);
 
   virtual ~SGSimulationHandler() {}
 

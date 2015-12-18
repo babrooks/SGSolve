@@ -44,6 +44,7 @@ sgprobabilitytablemodel.cpp \
 sgpayofftablemodel.cpp \
 sgsimulationhandler.cpp \
 sgsolutionhandler.cpp \
+sgplotcontroller.cpp \
 sgsettingshandler.cpp
 
 LIBS += -L../lib/ -L/usr/local/lib/ # -L/opt/Qt/lib/ -L/opt/Qt/plugins/platforms/

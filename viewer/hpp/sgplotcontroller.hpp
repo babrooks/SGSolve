@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QComboBox>
+#include <QScrollBar>
 #include "sgsolution.hpp"
 
 class SGPlotController : public QObject
@@ -14,84 +15,73 @@ private:
   int action;
   int actionIndex;
   int iteration;
-  list<SGIteration>::const_iterator currentIter;
   
   SGSolution * soln;
   
-  bool solutionSet;
+  //! Solution mode
+  enum SolutionMode {Progress, Final} mode;
+  
+  //! Points to the first iteration from which to plot.
+  list<SGIteration>::const_iterator startIter;
+  //! Points to the last iteration to which to plot.
+  list<SGIteration>::const_iterator endIter;
+  //! Points to the pivot iteration.
+  list<SGIteration>::const_iterator currentIter;
+  //! Points to the pivot iteration.
+  list<SGIteration>::const_iterator startOfLastRev;
+
+  bool solnLoaded;
   bool plotAllDirections;
 
   QComboBox * stateCombo;
   QComboBox * actionCombo;
+
+  QComboBox * solutionModeCombo;
+
+  QScrollBar * iterSlider;
+  QScrollBar * startSlider;
 public:
   SGPlotController(QComboBox * _stateCombo,
-			   QComboBox *_actionCombo):
-    solutionSet(false), action(-1),state(-1),iteration(0),
+		   QComboBox *_actionCombo,
+		   QScrollBar * _iterSlider,
+		   QScrollBar * _startSlider,
+		   QComboBox * _solutionModeCombo):
+    solnLoaded(false), action(-1),state(-1),iteration(0),
     stateCombo(_stateCombo), actionCombo(_actionCombo),
-    plotAllDirections(false)
+    solutionModeCombo(_solutionModeCombo),
+    iterSlider(_iterSlider), startSlider(_startSlider),
+    plotAllDirections(false),
+    mode(Progress)
   {
     connect(actionCombo,SIGNAL(currentIndexChanged(int)),
 	    this,SLOT(changeAction(int)));
+    connect(iterSlider,SIGNAL(valueChanged(int)),
+	    this,SLOT(iterSliderUpdate(int)));
+    connect(startSlider,SIGNAL(valueChanged(int)),
+	    this,SLOT(iterSliderUpdate(int)));
+    connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
+	    this,SLOT(changeMode(int)));
   }
 
   int getState() const { return state; }
   int getAction() const { return action; }
   int getActionIndex() const { return actionIndex; }
   int getIteration() const { return iteration; }
+  SolutionMode getMode () const { return mode; }
+  const SGIteration & getCurrentIter() const { return *currentIter; }
+  const SGIteration & getStartIter() const { return *startIter; }
+  const SGIteration & getEndIter() const { return *endIter; }
+  const SGIteration & getStartOfLastRev() const { return *startOfLastRev; }
+  int getStartSliderPosition() const { return startSlider->sliderPosition(); }
   bool getPlotAllDirections() const { return plotAllDirections; }
-  bool hasSolution() const { return solutionSet; }
+  bool hasSolution() const { return solnLoaded; }
   const SGSolution * getSolution() const { return soln; }
-  const list<SGIteration>::const_iterator getCurrentIter() const
-  { return currentIter; }
   
   void setPlotAllDirections(bool tf) { plotAllDirections = tf; }
-  void setSolution(SGSolution * newSoln)
-  { 
-    action=-1;
-    state=-1;
-    soln = newSoln; 
-    currentIter = soln->iterations.end();
-    --currentIter;
-    iteration=currentIter->iteration;
-    solutionSet = true;
-    emit solutionChanged();
-    stateCombo->setCurrentIndex(0);
-    actionCombo->setCurrentIndex(0);
-  }
-  bool setState(int newState) 
-  {
-    if (solutionSet
-	&& newState>=-1
-	&& state < soln->game.getNumStates())
-      {
-	state = newState;
-	action = -1;
-	actionCombo->setCurrentIndex(0);
-	emit stateChanged();
-	return true;
-      }
-    return false;
-  } // setState
+  void setSolution(SGSolution * newSoln);
+  bool setState(int newState);
 
-  bool setActionIndex(int newActionIndex) 
-  {
-    if (solutionSet
-	&& state>=0
-	&& newActionIndex>=-1
-	&& newActionIndex <= currentIter->actions[state].size())
-      {
-	actionIndex = newActionIndex;
-	if (actionIndex>-1)
-	  {
-	    action = currentIter->actions[state][actionIndex].getAction();
-	    emit actionChanged();
-	  }
-	else
-	  action = -1;
-	return true;
-      }
-    return false;
-  } // setActionIndex
+  bool setActionIndex(int newActionIndex);
 
   bool setAction(int newAction)
   {
@@ -99,30 +89,29 @@ public:
     return false;
   }
 
-  bool setIteration(int newIter)
+  bool setIteration(int newIter);
+
+  void moveForwards()
   {
-    if (solutionSet
-	&& newIter>=0
-	&& newIter <= soln->iterations.size())
-      {
-	iteration = newIter;
-	while (currentIter->iteration < iteration
-	       && currentIter != --(soln->iterations.end()))
-	  ++currentIter;
-	while (currentIter->iteration > iteration
-	       && currentIter != soln->iterations.begin())
-	  --currentIter;
+    if (!solnLoaded)
+      return;
+      
+    iterSlider->setSliderPosition(std::max(iterSlider->minimum(),
+					   iterSlider->value()-1));
+    iterSliderUpdate(iterSlider->value());
+  }
 
-	state = -1;
-	action = -1;
-	stateCombo->setCurrentIndex(0);
-	actionCombo->setCurrentIndex(0);
-	emit stateChanged();
+  void moveBackwards()
+  {
+    if (!solnLoaded)
+      return;
+      
+    iterSlider->setSliderPosition(std::min(iterSlider->maximum(),
+					   iterSlider->value()+1));
+    iterSliderUpdate(iterSlider->value());
+  }
 
-	return true;
-      }
-    return false;
-  } // setIteration
+  void setCurrentIteration(SGPoint point, int state);
 
 signals:
   void solutionChanged();
@@ -130,16 +119,66 @@ signals:
   void stateChanged();
   void actionChanged();
 
-  void nextAction();
-  void prevAction();
+  void iterationChanged();
 
 public slots:
+  //! Toggles the solution mode
+  void changeMode(int newMode)
+  {
+    if (newMode == 0)
+      {
+	mode = Progress;
+
+	startIter = soln->iterations.begin();
+      }
+    else if (newMode == 1)
+      {
+	mode = Final;
+      
+	startIter = startOfLastRev;
+
+	if (currentIter->iteration < startIter->iteration)
+	  {
+	    currentIter = soln->iterations.end();
+	    currentIter--;
+	  }
+      }
+
+    setSliderRanges(startIter->iteration,soln->iterations.back().iteration);
+  
+    iterSlider->setValue(endIter->iteration);
+    iterSliderUpdate(endIter->iteration);
+  } // changeMode
+
+  void iterSliderUpdate(int value);
+
+  void actionUpdate(int value)
+  {
+
+  } // actionUpdate
+
   void changeAction(int index)
   {
     setActionIndex(index-1);
   }
   
+  void setSliderRanges(int start, int end);
+
+  void prevAction()
+  {
+
+  } // prevAction
+
+  void nextAction()
+  {
+
+  } // nextAction
+
+  
+
 
 }; // SGPlotController
+
+
 
 #endif

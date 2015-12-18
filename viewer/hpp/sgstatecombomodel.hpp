@@ -17,14 +17,14 @@ public:
     controller(_controller)
   {
     connect(controller,SIGNAL(solutionChanged()),
-	    this,SLOT(changeLayout()));
+    	    this,SLOT(changeLayout()));
   }
 
   //! Reimplement rowcount
   int rowCount(const QModelIndex & parent) const
   {
     if (controller->hasSolution())
-      return controller->getCurrentIter()->actions.size()+1;
+      return controller->getCurrentIter().actions.size()+1;
     else
       return 1;
   } // rowCount
@@ -33,13 +33,20 @@ public:
   QVariant data(const QModelIndex & index, int role) const
   {
     if (index.row()>0)
-      return QString("S")+QString::number(index.row()-1);
+      {
+	QString dataString = QString("S")+QString::number(index.row()-1);
+	if ( (index.row()-1) == controller->getCurrentIter().bestState)
+	  dataString += QString("*");
+	return dataString;
+      }
     else if (index.row()==0)
       return QString("-");
   }
+signals:
+  void stateChanged();
 
 public slots:
-  void stateChanged(int index)
+  void changeState(int index)
   { controller->setState(index-1); }
 
   void changeLayout()
