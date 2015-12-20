@@ -26,28 +26,28 @@ void SGPlotController::setSolution(SGSolution * newSoln)
   action=-1;
   state=-1;
   soln = newSoln; 
-  currentIter = soln->iterations.end();
+  currentIter = soln->getIterations().end();
   --currentIter;
-  iteration=currentIter->iteration;
+  iteration=currentIter->getIteration();
   solnLoaded = true;
   stateCombo->setCurrentIndex(0);
   actionCombo->setCurrentIndex(0);
 
   // Initialize iter pointer
-  startIter = soln->iterations.begin();
-  endIter = soln->iterations.end();
+  startIter = soln->getIterations().begin();
+  endIter = soln->getIterations().end();
   --endIter;
-  setIteration(currentIter->iteration);
+  setIteration(currentIter->getIteration());
   
   // Setup sliders
-  int numStates = soln->game.getNumStates();
+  int numStates = soln->getGame().getNumStates();
   
-  setSliderRanges(soln->iterations.front().iteration,
-		  soln->iterations.back().iteration);
+  setSliderRanges(soln->getIterations().front().getIteration(),
+		  soln->getIterations().back().getIteration());
 
   startOfLastRev = endIter;
-  while ((startOfLastRev--)->revolution
-	 ==endIter->revolution) {}
+  while ((startOfLastRev--)->getRevolution()
+	 ==endIter->getRevolution()) {}
   
   mode = Progress;
   startSlider->setEnabled(mode==Progress);
@@ -64,7 +64,7 @@ bool SGPlotController::setState(int newState)
 {
   if (solnLoaded
       && newState>=-1
-      && state < soln->game.getNumStates())
+      && state < soln->getGame().getNumStates())
     {
       state = newState;
       stateCombo->setCurrentIndex(state+1);
@@ -77,12 +77,12 @@ bool SGPlotController::setState(int newState)
 
 bool SGPlotController::setAction(int newAction)
 {
-  if (newAction >= 0 && newAction < currentIter->actions[state].size())
+  if (newAction >= 0 && newAction < currentIter->getActions()[state].size())
     {
       action = newAction;
       int newActionIndex = 0;
-      while (currentIter->actions[state][newActionIndex].getAction()!=action
-	     && newActionIndex < currentIter->actions[state].size())
+      while (currentIter->getActions()[state][newActionIndex].getAction()!=action
+	     && newActionIndex < currentIter->getActions()[state].size())
 	newActionIndex++;
       actionIndex = newActionIndex;
       actionCombo->setCurrentIndex(newActionIndex+1);
@@ -97,12 +97,12 @@ bool SGPlotController::setActionIndex(int newActionIndex)
   if (solnLoaded
       && state>=0
       && newActionIndex>=-1
-      && newActionIndex <= currentIter->actions[state].size())
+      && newActionIndex <= currentIter->getActions()[state].size())
     {
       actionIndex = newActionIndex;
       if (actionIndex>-1)
 	{
-	  action = currentIter->actions[state][actionIndex].getAction();
+	  action = currentIter->getActions()[state][actionIndex].getAction();
 	  emit actionChanged();
 	}
       else
@@ -116,18 +116,18 @@ bool SGPlotController::setIteration(int newIter)
 {
   if (solnLoaded
       && newIter>=0
-      && newIter <= soln->iterations.size())
+      && newIter <= soln->getIterations().size())
     {
       iteration = newIter;
-      while (currentIter->iteration < iteration
-	     && currentIter != --(soln->iterations.end()))
+      while (currentIter->getIteration() < iteration
+	     && currentIter != --(soln->getIterations().end()))
 	++currentIter;
-      while (currentIter->iteration > iteration
-	     && currentIter != soln->iterations.begin())
+      while (currentIter->getIteration() > iteration
+	     && currentIter != soln->getIterations().begin())
 	--currentIter;
 
-      setState(currentIter->bestState);
-      setAction(currentIter->bestAction);
+      setState(currentIter->getBestState());
+      setAction(currentIter->getBestAction());
 
       return true;
     }
@@ -141,19 +141,19 @@ void SGPlotController::setCurrentIteration(SGPoint point, int state)
   int tupleC = 0;
   
   currentIter = startIter;
-  for (list<SGTuple>::const_iterator tuple = soln->extremeTuples.begin();
-       tuple != soln->extremeTuples.end();
+  for (list<SGTuple>::const_iterator tuple = soln->getExtremeTuples().begin();
+       tuple != soln->getExtremeTuples().end();
        ++tuple)
     {
-      if (tupleC >= endIter->numExtremeTuples-1)
+      if (tupleC >= endIter->getNumExtremeTuples()-1)
 	break;
-      else if (tupleC >= startIter->numExtremeTuples-1)
+      else if (tupleC >= startIter->getNumExtremeTuples()-1)
 	{
 	  double newDistance = ((*tuple)[state] - point)*((*tuple)[state] - point);
 	  if (newDistance < minDistance-1e-7)
 	    {
 	      minDistance = newDistance;
-	      while (currentIter->numExtremeTuples <= tupleC)
+	      while (currentIter->getNumExtremeTuples() <= tupleC)
 		currentIter++;
 	    } // if
 	} // if
@@ -162,7 +162,7 @@ void SGPlotController::setCurrentIteration(SGPoint point, int state)
     } // for
   
   setState(state);
-  setAction(currentIter->actionTuple[state]);
+  setAction(currentIter->getActionTuple()[state]);
 
   emit iterationChanged();
 } // setCurrentIteration
@@ -175,38 +175,38 @@ void SGPlotController::synchronizeSliders()
   end = std::max(-1,std::max(start,end));
   iterSlider->setMinimum(std::max(start,-1));
   
-  while (currentIter->iteration < end
-	 && currentIter!=soln->iterations.end())
+  while (currentIter->getIteration() < end
+	 && currentIter!=soln->getIterations().end())
     ++currentIter;
-  while (currentIter->iteration > end
-	 && currentIter!=soln->iterations.begin())
+  while (currentIter->getIteration() > end
+	 && currentIter!=soln->getIterations().begin())
     --currentIter;
-  if (currentIter == soln->iterations.end())
+  if (currentIter == soln->getIterations().end())
     --currentIter;
   
   if (mode==Progress)
     endIter = currentIter;
   else
     {
-      endIter = soln->iterations.end();
+      endIter = soln->getIterations().end();
       endIter--;
     }
   
   if (start==-1)
-    startIter = soln->iterations.begin();
+    startIter = soln->getIterations().begin();
   else
     {
-      while (startIter->iteration < start
-	     && startIter!=soln->iterations.end())
+      while (startIter->getIteration() < start
+	     && startIter!=soln->getIterations().end())
 	++startIter;
-      while (startIter->iteration > start
-	     && startIter!=soln->iterations.begin())
+      while (startIter->getIteration() > start
+	     && startIter!=soln->getIterations().begin())
 	--startIter;
-      if (startIter == soln->iterations.end())
+      if (startIter == soln->getIterations().end())
 	--startIter;
     }
 
-  if (currentIter == soln->iterations.begin())
+  if (currentIter == soln->getIterations().begin())
     currentIter++;
 } // synchronizeSliders
 
@@ -217,8 +217,8 @@ void SGPlotController::iterSliderUpdate(int value)
 
   synchronizeSliders();
 
-  setState(currentIter->bestState);
-  setAction(currentIter->bestAction);
+  setState(currentIter->getBestState());
+  setAction(currentIter->getBestAction());
 
   plotMode = Directions;
   
@@ -254,15 +254,15 @@ void SGPlotController::prevAction()
       iterSlider->setSliderPosition(std::max(iterSlider->minimum(),
 					     iterSlider->value()-1));
       synchronizeSliders();
-      setState(soln->game.getNumStates()-1);
-      setAction(currentIter->actions[state].size()-1);
+      setState(soln->getGame().getNumStates()-1);
+      setAction(currentIter->getActions()[state].size()-1);
       emit iterationChanged();
     }
   else if (state > 0
 	   && action <= 0)
     {
       setState(state-1);
-      setAction(currentIter->actions[state].size()-1);
+      setAction(currentIter->getActions()[state].size()-1);
       emit iterationChanged();
     }
   else 
@@ -281,13 +281,13 @@ void SGPlotController::nextAction()
     {
       setState(0);
     }
-  else if (state>-1 && action+1 < currentIter->actions[state].size())
+  else if (state>-1 && action+1 < currentIter->getActions()[state].size())
     {
       setAction(action+1);
       emit iterationChanged();
     }
-  else if (state>-1 && state+1 < soln->game.getNumStates()
-	   && action+1==currentIter->actions[state].size())
+  else if (state>-1 && state+1 < soln->getGame().getNumStates()
+	   && action+1==currentIter->getActions()[state].size())
     {
       setState(state+1);
       setAction(0);
@@ -310,7 +310,7 @@ void SGPlotController::changeMode(int newMode)
     {
       mode = Progress;
 
-      startIter = soln->iterations.begin();
+      startIter = soln->getIterations().begin();
     }
   else if (newMode == 1)
     {
@@ -318,15 +318,15 @@ void SGPlotController::changeMode(int newMode)
       
       startIter = startOfLastRev;
 
-      if (currentIter->iteration < startIter->iteration)
+      if (currentIter->getIteration() < startIter->getIteration())
 	{
-	  currentIter = soln->iterations.end();
+	  currentIter = soln->getIterations().end();
 	  currentIter--;
 	}
     }
 
-  setSliderRanges(startIter->iteration,soln->iterations.back().iteration);
+  setSliderRanges(startIter->getIteration(),soln->getIterations().back().getIteration());
   
-  iterSlider->setValue(endIter->iteration);
-  iterSliderUpdate(endIter->iteration);
+  iterSlider->setValue(endIter->getIteration());
+  iterSliderUpdate(endIter->getIteration());
 } // changeMode

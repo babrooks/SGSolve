@@ -83,7 +83,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   controlLayout->addRow(new QLabel(tr("Elapsed time (s):")),
 			timeEdit);
   
-  distrPlot = new SGSimulationPlot(soln.game.getNumStates());
+  distrPlot = new SGSimulationPlot(soln.getGame().getNumStates());
   distrPlot->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
   QScrollArea * scrollArea = new QScrollArea();
@@ -115,20 +115,20 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   // Find the point that is closest for the given state.
   double minDistance = numeric_limits<double>::max();
 
-  for (list<SGIteration>::const_reverse_iterator iter = soln.iterations.rbegin();
-       iter != soln.iterations.rend();
+  for (list<SGIteration>::const_reverse_iterator iter = soln.getIterations().rbegin();
+       iter != soln.getIterations().rend();
        ++iter)
     {
-      if (iter->revolution != soln.iterations.back().revolution)
+      if (iter->getRevolution() != soln.getIterations().back().getRevolution())
 	break;
 
-      double newDistance = ( (iter->pivot[state] - point)
-			     *(iter->pivot[state] - point) );
+      double newDistance = ( (iter->getPivot()[state] - point)
+			     *(iter->getPivot()[state] - point) );
       if (newDistance < minDistance-1e-7)
 	{
 	  minDistance = newDistance;
 	  
-	  initialTuple = iter->numExtremeTuples;
+	  initialTuple = iter->getNumExtremeTuples();
 	} // if
     } // for
    
@@ -148,9 +148,9 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   QVector<double> ticks;
   QVector<QString> labels;
   
-  int numStateTicks = min(soln.game.getNumStates(),20);
+  int numStateTicks = min(soln.getGame().getNumStates(),20);
 
-  for (int state = 0; state < soln.game.getNumStates(); state+=soln.game.getNumStates()/numStateTicks)
+  for (int state = 0; state < soln.getGame().getNumStates(); state+=soln.getGame().getNumStates()/numStateTicks)
     {
       ticks << state+1;
       labels << QString("S")+QString::number(state);
@@ -162,7 +162,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   distrPlot->xAxis->setTickLabelRotation(60);
   distrPlot->xAxis->setSubTickCount(0);
   distrPlot->xAxis->setTickLength(0,4);
-  distrPlot->xAxis->setRange(0,soln.game.getNumStates()+1);
+  distrPlot->xAxis->setRange(0,soln.getGame().getNumStates()+1);
 
   // Tuple distribution
   distrPlot->plotLayout()
@@ -175,7 +175,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   // Prep x axis with tuple labels
   QVector<double> tupleTicks;
   QVector<QString> tupleLabels;
-  int numTuplesInLastRev = soln.iterations.size()-sim.getStartOfLastRev();
+  int numTuplesInLastRev = soln.getIterations().size()-sim.getStartOfLastRev();
   int numTupleTicks = min(numTuplesInLastRev,20);
   for (int tuple = 0; tuple < numTuplesInLastRev; 
        tuple+= numTuplesInLastRev/numTupleTicks)
@@ -195,12 +195,12 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   tupleDistrRect->axis(QCPAxis::atBottom)->setSubTickCount(0);
   tupleDistrRect->axis(QCPAxis::atBottom)->setTickLength(0,4);
   tupleDistrRect->axis(QCPAxis::atBottom)->setRange(sim.getStartOfLastRev(),
-						    soln.iterations.back().iteration);
+						    soln.getIterations().back().getIteration());
 
   // Action distributions
-  actionBars = vector<QCPBars *>(soln.game.getNumStates());
-  actionDistrRects = vector<QCPAxisRect *>(soln.game.getNumStates());
-  for (int state = 0; state < soln.game.getNumStates(); state++)
+  actionBars = vector<QCPBars *>(soln.getGame().getNumStates());
+  actionDistrRects = vector<QCPAxisRect *>(soln.getGame().getNumStates());
+  for (int state = 0; state < soln.getGame().getNumStates(); state++)
     {
       distrPlot->plotLayout()->addElement(2*(state+2),0,
 					  new QCPPlotTitle(distrPlot,
@@ -213,10 +213,10 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
       QVector<double> actionTicks; 
       QVector<QString> actionLabels;
-      int numActionTicks = min(20,soln.game.getNumActions_total()[state]);
+      int numActionTicks = min(20,soln.getGame().getNumActions_total()[state]);
       for (int action = 0; 
-	   action < soln.game.getNumActions_total()[state];
-	   action += soln.game.getNumActions_total()[state]/numActionTicks)
+	   action < soln.getGame().getNumActions_total()[state];
+	   action += soln.getGame().getNumActions_total()[state]/numActionTicks)
 	{
 	  actionTicks << action+1;
 	  actionLabels << QString("A")+QString::number(action);
@@ -233,7 +233,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
       actionDistrRects[state]->axis(QCPAxis::atBottom)->setTickLabelRotation(60);
       actionDistrRects[state]->axis(QCPAxis::atBottom)->setSubTickCount(0);
       actionDistrRects[state]->axis(QCPAxis::atBottom)->setTickLength(0,4);
-      actionDistrRects[state]->axis(QCPAxis::atBottom)->setRange(0,soln.game.getNumActions_total()[state]+1);
+      actionDistrRects[state]->axis(QCPAxis::atBottom)->setRange(0,soln.getGame().getNumActions_total()[state]+1);
     } // for action
 } // constructor
 
@@ -257,7 +257,7 @@ void SGSimulationHandler::simulate()
   QVector<double> stateDistr;
   QVector<double> ticks;
   double stateMax = 0.0;
-  for (int state = 0; state < soln.game.getNumStates(); state++)
+  for (int state = 0; state < soln.getGame().getNumStates(); state++)
     {
       ticks << state+1;
 
@@ -284,13 +284,13 @@ void SGSimulationHandler::simulate()
   tupleBars->setData(tupleX,tupleDistr);
 
   // Action distributions
-  for (int state = 0; state < soln.game.getNumStates(); state++)
+  for (int state = 0; state < soln.getGame().getNumStates(); state++)
     {
       QVector<double> actionDistr;
       QVector<double> actionTicks; 
       double actionMax = 0.0;
 
-      for (int action = 0; action < soln.game.getNumActions_total()[state];
+      for (int action = 0; action < soln.getGame().getNumActions_total()[state];
 	   action++)
 	{
 	  actionTicks << action+1;

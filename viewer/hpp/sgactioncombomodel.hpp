@@ -43,7 +43,7 @@ public:
   {
     if (controller->hasSolution()
 	&& controller->getState()>-1)
-      return controller->getCurrentIter().actions[controller->getState()].size()+1;
+      return controller->getCurrentIter().getActions()[controller->getState()].size()+1;
     else
       return 1;
   } // rowCount
@@ -54,8 +54,8 @@ public:
     if (index.row()>0)
       {
 	int state = controller->getState();
-	int action = controller->getCurrentIter().actions[state][index.row()-1].getAction();
-	const vector< int >& numActions = controller->getSolution()->game.getNumActions()[state];
+	int action = controller->getCurrentIter().getActions()[state][index.row()-1].getAction();
+	const vector< int >& numActions = controller->getSolution()->getGame().getNumActions()[state];
 	QString dataString = QString("A")
 	  + QString::number(action)
 	  + QString(": (R")
@@ -63,8 +63,8 @@ public:
 	  + QString(",C")
 	  + QString::number(action/numActions[0])
 	  + QString(")");
-	if (state == controller->getCurrentIter().bestState
-	    && action == controller->getCurrentIter().bestAction)
+	if (state == controller->getCurrentIter().getBestState()
+	    && action == controller->getCurrentIter().getBestAction())
 	  dataString += QString("*");
 	return dataString;
       }

@@ -106,7 +106,7 @@ public:
   //! Returns the tuple frequency distribution.
   const vector<int> getTupleDistr() const { return tupleDistr; }
   //! Returns the start of the last revolution.
-  int getStartOfLastRev() const { return startOfLastRev->iteration; }
+  int getStartOfLastRev() const { return startOfLastRev->getIteration(); }
   //! Returns the number of iterations for the current simulation.
   int getNumIter() const { return numIter; } 
 
@@ -130,15 +130,15 @@ public:
   {
     SGPoint payoffs(0.0,0.0);
     for (int state = 0; 
-	 state < soln.game.getNumStates(); 
+	 state < soln.getGame().getNumStates(); 
 	 state++)
       {
 	for (int action = 0;
-	     action < soln.game.getNumActions_total()[state];
+	     action < soln.getGame().getNumActions_total()[state];
 	     action++)
 	  {
 	    payoffs += (1.0*actionDistr[state][action])/(1.0*numIter)
-	      * soln.game.getPayoffs()[state][action];
+	      * soln.getGame().getPayoffs()[state][action];
 	  }
       } // state
 

@@ -3,21 +3,21 @@
 void SGSimulator::initialize()
 {
   // Build the transition table
-  const SGGame & game = soln.game;
+  const SGGame & game = soln.getGame();
   const int numStates = game.getNumStates();
   const double delta = game.getDelta();
 
   transitionTableSS.str(""); // Reset the string
   
   // First find the iteration that starts the last revolution.
-  startOfLastRev = soln.iterations.end();
+  startOfLastRev = soln.getIterations().end();
   startOfLastRev--;
-  while (startOfLastRev->revolution == soln.iterations.back().revolution)
+  while (startOfLastRev->getRevolution() == soln.getIterations().back().getRevolution())
     startOfLastRev--;
   startOfLastRev++;
 
-  int itersInLastRev = soln.iterations.back().iteration
-    - startOfLastRev->iteration+1;
+  int itersInLastRev = soln.getIterations().back().getIteration()
+    - startOfLastRev->getIteration()+1;
 
   // Initialize the transition table
   transitionTable
@@ -30,17 +30,17 @@ void SGSimulator::initialize()
 
   int tupleCounter = 0;
   // for (int tupleCounter = 0; 
-  // 	 tupleCounter < soln.iterations.size() - startOfLastRev->iteration;
+  // 	 tupleCounter < soln.getIterations().size() - startOfLastRev->getIteration();
   // 	 tupleCounter++ ) 
-  while (currentIter != soln.iterations.end())
+  while (currentIter != soln.getIterations().end())
     {
       for (int state = 0; state < numStates; state++)
 	{
-	  transitionTableSS << "Tuple " << currentIter->iteration
+	  transitionTableSS << "Tuple " << currentIter->getIteration()
 			    << ", state " << state
-			    << ", action " << currentIter->actionTuple[state];
+			    << ", action " << currentIter->getActionTuple()[state];
 
-	  if (currentIter->regimeTuple[state]==SG::NonBinding)
+	  if (currentIter->getRegimeTuple()[state]==SG::NonBinding)
 	    {
 	      transitionTable[tupleCounter][state]
 		.push_back(transitionPair(currentIter,1.0));
@@ -49,16 +49,16 @@ void SGSimulator::initialize()
 	    }
 	  else
 	    {
-	      int action = currentIter->actionTuple[state];
+	      int action = currentIter->getActionTuple()[state];
 
 	      list<SGIteration>::const_iterator iter = startOfLastRev;
 	      SGPoint continuationValue
-		= (currentIter->pivot[state]
-		   - (1-delta)*soln.game.getPayoffs()[state][action])/delta;
+		= (currentIter->getPivot()[state]
+		   - (1-delta)*soln.getGame().getPayoffs()[state][action])/delta;
 	      SGPoint expPivot
-		= iter->pivot.expectation(game.getProbabilities()[state][action]);
+		= iter->getPivot().expectation(game.getProbabilities()[state][action]);
 
-	      if (currentIter->regimeTuple[state] != SG::Binding01)
+	      if (currentIter->getRegimeTuple()[state] != SG::Binding01)
 		{
 		
 		  transitionTableSS << ", binding 0 or 1";
@@ -74,11 +74,11 @@ void SGSimulator::initialize()
 		  double newDist;
 		  SGPoint weights;
 
-		  while (iter != soln.iterations.end())
+		  while (iter != soln.getIterations().end())
 		    {
 
 		      SGPoint nextExpPivot
-			= nextIter->pivot.expectation(game.getProbabilities()
+			= nextIter->getPivot().expectation(game.getProbabilities()
 						      [state][action]);
 		      SGPoint dir = nextExpPivot - expPivot;
 
@@ -117,23 +117,23 @@ void SGSimulator::initialize()
 
 		      iter++;
 		      nextIter++;
-		      if (nextIter == soln.iterations.end())
+		      if (nextIter == soln.getIterations().end())
 			nextIter = startOfLastRev;
 		    } // while
 
-		  // assert(transitionTable[tupleCounter][state].first->iteration
-		  //        >= startOfLastRev->iteration);
+		  // assert(transitionTable[tupleCounter][state].first->getIteration()
+		  //        >= startOfLastRev->getIteration());
 
 		} // binding case
-	      else if (currentIter->regimeTuple[state]==SG::Binding01)
+	      else if (currentIter->getRegimeTuple()[state]==SG::Binding01)
 		{
 		  // Just project the continuation value away from
-		  // currentIter->pivot and find the segment on
+		  // currentIter->getPivot() and find the segment on
 		  // the other side.
 
 		  transitionTableSS << ", binding 0 and 1";
 		  
-		  SGPoint expStartOfLastRev = iter->pivot
+		  SGPoint expStartOfLastRev = iter->getPivot()
 		    .expectation(game.getProbabilities()[state][action]);
 		  SGPoint direction = continuationValue - expStartOfLastRev,
 		    normal = direction.getNormal();
@@ -142,7 +142,7 @@ void SGSimulator::initialize()
 		  ++iter;
 		  do
 		    {
-		      expPivot = iter->pivot
+		      expPivot = iter->getPivot()
 			.expectation(game.getProbabilities()[state][action]);
 			
 		      double newLevel = expPivot * normal;
@@ -151,7 +151,7 @@ void SGSimulator::initialize()
 			  *(expPivot-expStartOfLastRev) > 1e-5)
 			{
 			  list<SGIteration>::const_iterator nextIter = (iter--);
-			  SGPoint oldExpPivot = iter->pivot
+			  SGPoint oldExpPivot = iter->getPivot()
 			    .expectation(game.getProbabilities()[state][action]);
 			  double oldLevel = oldExpPivot*normal;
 			  double weightOnNew
@@ -185,7 +185,7 @@ void SGSimulator::initialize()
 			}
 		      ++iter;
 		      
-		    } while (iter != soln.iterations.end() );// for iter
+		    } while (iter != soln.getIterations().end() );// for iter
 		    
 		    
 		} // currentIter
@@ -201,7 +201,7 @@ void SGSimulator::initialize()
 	    {
 	      transitionTableSS << continuationTupleCounter
 				<< ": ("
-				<< continuationIter->first->iteration
+				<< continuationIter->first->getIteration()
 				<< ", "
 				<< setprecision(2)
 				<< continuationIter->second
@@ -223,9 +223,9 @@ void SGSimulator::simulate(int _numIter,
 			   int initialTuple)
 {
   numIter = _numIter;
-  const int numStates = soln.game.getNumStates();
-  const vector<int> & numActions_total = soln.game.getNumActions_total();
-  const SGGame & game = soln.game;
+  const int numStates = soln.getGame().getNumStates();
+  const vector<int> & numActions_total = soln.getGame().getNumActions_total();
+  const SGGame & game = soln.getGame();
 
   // Random number generator
   unsigned seed (std::chrono::system_clock::now().time_since_epoch().count());
@@ -234,25 +234,25 @@ void SGSimulator::simulate(int _numIter,
 
   // Reinitialize distribution containers
   stateDistr = vector<int>(numStates,0);
-  tupleDistr = vector<int>(soln.iterations.back().iteration
-			   - startOfLastRev->iteration+1,0);
+  tupleDistr = vector<int>(soln.getIterations().back().getIteration()
+			   - startOfLastRev->getIteration()+1,0);
   actionDistr = vector< vector<int> > (numStates);
   for (int state = 0; state < numStates; state++)
     actionDistr[state] = vector<int>(numActions_total[state],0);
 
   int currentState = initialState;
-  list<SGIteration>::const_iterator currentTuple = soln.iterations.end();
+  list<SGIteration>::const_iterator currentTuple = soln.getIterations().end();
 
-  assert(initialTuple >= startOfLastRev->iteration);
-  assert(initialTuple <= soln.iterations.back().iteration);
+  assert(initialTuple >= startOfLastRev->getIteration());
+  assert(initialTuple <= soln.getIterations().back().getIteration());
     
   currentTuple--;
-  while (currentTuple->iteration != initialTuple)
+  while (currentTuple->getIteration() != initialTuple)
     currentTuple--;
 
-  assert(currentTuple->iteration >= startOfLastRev->iteration);
+  assert(currentTuple->getIteration() >= startOfLastRev->getIteration());
       
-  int currentAction = currentTuple->actionTuple[currentState];
+  int currentAction = currentTuple->getActionTuple()[currentState];
 
   if (logFlag)
     ss.str(""); // clear the stringstream
@@ -264,26 +264,26 @@ void SGSimulator::simulate(int _numIter,
 	ss << "Period: " << iter
 	   << ", state: " << currentState
 	   << ", action: " << currentAction
-	   << ", tuple: " << currentTuple->iteration
+	   << ", tuple: " << currentTuple->getIteration()
 	   << endl;
 	  
 
       // Increment state/action counters
       stateDistr[currentState]++;
-      actionDistr[currentState][currentTuple->actionTuple[currentState]]++;
-      tupleDistr[currentTuple->iteration-startOfLastRev->iteration]++;
+      actionDistr[currentState][currentTuple->getActionTuple()[currentState]]++;
+      tupleDistr[currentTuple->getIteration()-startOfLastRev->getIteration()]++;
 	
       // Find new tuple/state/action
       double probSum = 0;
       double tupleDraw = distribution(generator);
       list<transitionPair>::const_iterator pairIter
-	= transitionTable[currentTuple->iteration
-			  - startOfLastRev->iteration]
+	= transitionTable[currentTuple->getIteration()
+			  - startOfLastRev->getIteration()]
 	[currentState].begin();
       list<SGIteration>::const_iterator newTuple;
       while (pairIter
-	     != transitionTable[currentTuple->iteration
-				- startOfLastRev->iteration][currentState].end())
+	     != transitionTable[currentTuple->getIteration()
+				- startOfLastRev->getIteration()][currentState].end())
 	{
 	  probSum += pairIter->second;
 	  newTuple = pairIter->first;
@@ -294,7 +294,7 @@ void SGSimulator::simulate(int _numIter,
 
       // If we have exceeded number of iterations, wrap around to
       // start of last revolution.
-      if (newTuple == soln.iterations.end())
+      if (newTuple == soln.getIterations().end())
 	newTuple = startOfLastRev;
 
       // Find the new state
@@ -303,7 +303,7 @@ void SGSimulator::simulate(int _numIter,
       int newState=0;
       while (newState < numStates-1)
 	{
-	  probSum += soln.game.getProbabilities()[currentState]
+	  probSum += soln.getGame().getProbabilities()[currentState]
 	    [currentAction][newState];
 	  if (stateDraw < probSum)
 	    break;
@@ -313,6 +313,6 @@ void SGSimulator::simulate(int _numIter,
       // Update state variables
       currentTuple = newTuple;
       currentState = newState;
-      currentAction = currentTuple->actionTuple[currentState];
+      currentAction = currentTuple->getActionTuple()[currentState];
     }
 } // simulate

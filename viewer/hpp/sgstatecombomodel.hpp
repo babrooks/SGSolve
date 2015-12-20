@@ -38,7 +38,7 @@ public:
   int rowCount(const QModelIndex & parent) const
   {
     if (controller->hasSolution())
-      return controller->getCurrentIter().actions.size()+1;
+      return controller->getCurrentIter().getActions().size()+1;
     else
       return 1;
   } // rowCount
@@ -49,7 +49,7 @@ public:
     if (index.row()>0)
       {
 	QString dataString = QString("S")+QString::number(index.row()-1);
-	if ( (index.row()-1) == controller->getCurrentIter().bestState)
+	if ( (index.row()-1) == controller->getCurrentIter().getBestState())
 	  dataString += QString("*");
 	return dataString;
       }

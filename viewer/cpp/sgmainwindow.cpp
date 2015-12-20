@@ -130,7 +130,7 @@ void SGMainWindow::loadSolution()
       
       SGSolution::load(soln,newPath_c);
 
-      gameHandler->setGame(soln.game);
+      gameHandler->setGame(soln.getGame());
       solutionHandler->setSolution(soln);
       
       tabWidget->setCurrentIndex(1);

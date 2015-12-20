@@ -145,15 +145,15 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
     delete item->widget();
   
   statePlots.clear();
-  statePlots = vector<SGCustomPlot *>(soln.game.getNumStates());
+  statePlots = vector<SGCustomPlot *>(soln.getGame().getNumStates());
   
   SGPoint UB, LB;
-  soln.game.getPayoffBounds(UB,LB);
+  soln.getGame().getPayoffBounds(UB,LB);
   payoffBound = std::max(UB[0]-LB[0],
 			 UB[1]-LB[1]);
 
   for (int state = 0;
-       state < soln.game.getNumStates();
+       state < soln.getGame().getNumStates();
        state ++)
     {
       statePlots[state] =  new SGCustomPlot(state,false);
@@ -181,10 +181,10 @@ void SGSolutionHandler::plotSolution()
   if (start == -1)
     start = 0;
   else
-    start = startIter.numExtremeTuples-1;
-  int end = endIter.numExtremeTuples-1;
+    start = startIter.getNumExtremeTuples()-1;
+  int end = endIter.getNumExtremeTuples()-1;
 
-  int numStates = soln.game.getNumStates();
+  int numStates = soln.getGame().getNumStates();
 
   detailPlot->clearPlottables();
   detailPlot->clearItems();
@@ -196,13 +196,13 @@ void SGSolutionHandler::plotSolution()
   int action = controller->getAction();
   int actionIndex = controller->getActionIndex();
 
-  if (state >= 0 && action >= 0 && endIter.iteration>=0)
+  if (state >= 0 && action >= 0 && endIter.getIteration()>=0)
     {
       detailPlot->setState(state);
   
       plotSolution(detailPlot,state,false);
 
-      const SGBaseAction & actionObject = pivotIter.actions[state][actionIndex];
+      const SGBaseAction & actionObject = pivotIter.getActions()[state][actionIndex];
 
       // Add expected set
       QVector<double> expSetX(end-start),
@@ -211,8 +211,8 @@ void SGSolutionHandler::plotSolution()
 
       int tupleC = 0;
 
-      for (list<SGTuple>::const_iterator tuple = soln.extremeTuples.begin();
-	   tuple != soln.extremeTuples.end();
+      for (list<SGTuple>::const_iterator tuple = soln.getExtremeTuples().begin();
+	   tuple != soln.getExtremeTuples().end();
 	   ++tuple)
 	{
 	  if (tupleC >= end)
@@ -220,7 +220,7 @@ void SGSolutionHandler::plotSolution()
 	  else if (tupleC >= start)
 	    {
 	      SGPoint expPoint
-		= tuple->expectation(soln.game.getProbabilities()
+		= tuple->expectation(soln.getGame().getProbabilities()
 				     [state][action]);
 	      expSetX[tupleC-start] = expPoint[0];
 	      expSetY[tupleC-start] = expPoint[1];
@@ -239,12 +239,12 @@ void SGSolutionHandler::plotSolution()
       QCPRange xrange = getBounds(expSetX),
 	yrange = getBounds(expSetY);
 
-      SGPoint stagePayoffs = soln.game.getPayoffs()[state][action];
-      double delta = soln.game.getDelta();
+      SGPoint stagePayoffs = soln.getGame().getPayoffs()[state][action];
+      double delta = soln.getGame().getDelta();
       if (controller->getPlotMode() == SGPlotController::Directions)
 	{
 	  // Non-binding direction
-	  SGPoint expPivot = pivotIter.pivot.expectation(soln.game.getProbabilities()
+	  SGPoint expPivot = pivotIter.getPivot().expectation(soln.getGame().getProbabilities()
 							 [state][action]);
 	  
 	  SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
@@ -260,8 +260,8 @@ void SGSolutionHandler::plotSolution()
 				   QBrush(Qt::black),6));
 
 	  QCPItemLine * nonBindingDirection
-	    = sgToQCPItemLine(detailPlot,pivotIter.pivot[state],
-			      nonBindingPayoff-pivotIter.pivot[state]);
+	    = sgToQCPItemLine(detailPlot,pivotIter.getPivot()[state],
+			      nonBindingPayoff-pivotIter.getPivot()[state]);
 	  nonBindingDirection->setHead(QCPLineEnding::esSpikeArrow);
 	  detailPlot->addItem(nonBindingDirection);
       
@@ -283,8 +283,8 @@ void SGSolutionHandler::plotSolution()
 		  detailPlot->addItem(bindingGenCurve);
 
 		  QCPItemLine * bindingDirection
-		    = sgToQCPItemLine(detailPlot,pivotIter.pivot[state],
-				      bindingPayoff - pivotIter.pivot[state]);
+		    = sgToQCPItemLine(detailPlot,pivotIter.getPivot()[state],
+				      bindingPayoff - pivotIter.getPivot()[state]);
 		  bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
 		  detailPlot->addItem(bindingDirection);
 				   
@@ -305,7 +305,7 @@ void SGSolutionHandler::plotSolution()
       else
 	{
 	  // Plot the generation only of the current pivot
-	  SGPoint continuationValue = (pivotIter.pivot[state]-(1-delta)*stagePayoffs)/delta;
+	  SGPoint continuationValue = (pivotIter.getPivot()[state]-(1-delta)*stagePayoffs)/delta;
 	  QCPItemLine * genLine
 	    = sgToQCPItemLine(detailPlot,stagePayoffs,continuationValue-stagePayoffs);
 	  detailPlot->addItem(genLine);
@@ -329,7 +329,7 @@ void SGSolutionHandler::plotSolution()
       yrange.expand(detailPlot->getNominalYRange());
 
       // Add IC region
-      const SGPoint & minIC = pivotIter.actions[state][actionIndex].getMinICPayoffs();
+      const SGPoint & minIC = pivotIter.getActions()[state][actionIndex].getMinICPayoffs();
 
       QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
 					     SGPoint(0,yrange.upper-minIC[1]));
@@ -346,7 +346,7 @@ void SGSolutionHandler::plotSolution()
     }
   else if (state < 0)
     {
-      plotSolution(detailPlot,pivotIter.bestState,false);
+      plotSolution(detailPlot,pivotIter.getBestState(),false);
     }
   else
     plotSolution(detailPlot,0,false);
@@ -383,8 +383,8 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   if (start == -1)
     start = 0;
   else
-    start = controller->getStartIter().numExtremeTuples-1;
-  int end = controller->getEndIter().numExtremeTuples-1;
+    start = controller->getStartIter().getNumExtremeTuples()-1;
+  int end = controller->getEndIter().getNumExtremeTuples()-1;
 
   QVector<double> x(end-start+1);
   QVector<double> y(x.size());
@@ -394,8 +394,8 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
 
   int tupleC = 0;
   
-  for (list<SGTuple>::const_iterator tuple = soln.extremeTuples.begin();
-       tuple != soln.extremeTuples.end();
+  for (list<SGTuple>::const_iterator tuple = soln.getExtremeTuples().begin();
+       tuple != soln.getExtremeTuples().end();
        ++tuple)
     {
       if (tupleC >= end)
@@ -411,8 +411,8 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
     }
   const SGIteration & endIter = controller->getEndIter();
   t[tupleC-start] = tupleC;
-  x[tupleC-start] = endIter.pivot[state][0];
-  y[tupleC-start] = endIter.pivot[state][1];
+  x[tupleC-start] = endIter.getPivot()[state][0];
+  y[tupleC-start] = endIter.getPivot()[state][1];
   
   QCPRange xrange = getBounds(x),
     yrange = getBounds(y);
@@ -425,14 +425,14 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   // Add current pivot and current direction
   const SGIteration & pivotIter = controller->getCurrentIter();
   QCPCurve * directionCurve = vectorToQCPCurve(plot,
-					       pivotIter.pivot[state],
-					       pivotIter.direction*1.5*payoffBound/pivotIter.direction.norm());
+					       pivotIter.getPivot()[state],
+					       pivotIter.getDirection()*1.5*payoffBound/pivotIter.getDirection().norm());
   QPen pen (Qt::darkGreen);
   pen.setStyle(Qt::DashLine);
   directionCurve->setPen(pen);
   plot->addPlottable(directionCurve);
 
-  addPoint(pivotIter.pivot[state],plot,
+  addPoint(pivotIter.getPivot()[state],plot,
 	   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::blue),
 			   QBrush(Qt::blue),8));
 
@@ -450,7 +450,7 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   plot->setRanges(xrange,yrange);
 
   plot->getTitle()->setText(generatePlotTitle(state,
-					      pivotIter.actionTuple[state],
+					      pivotIter.getActionTuple()[state],
 					      false));
 } // plotSolution
 
@@ -463,12 +463,12 @@ QString SGSolutionHandler::generatePlotTitle(int state, int action,
   if (addIterRev)
     {
       titleString += QString("Iteration: ");
-      titleString += QString::number(pivotIter.iteration);
+      titleString += QString::number(pivotIter.getIteration());
       titleString += QString(", Revolution: ");
-      titleString += QString::number(pivotIter.revolution);
+      titleString += QString::number(pivotIter.getRevolution());
       titleString += QString(", ");
     }
-  if (pivotIter.iteration >=0
+  if (pivotIter.getIteration() >=0
       && detailedTitlesAction->isChecked())
     {
       titleString += QString("S");
@@ -476,14 +476,14 @@ QString SGSolutionHandler::generatePlotTitle(int state, int action,
 
       vector<int> actions;
       indexToVector(action,actions,
-		    soln.game.getNumActions()[state]);
+		    soln.getGame().getNumActions()[state]);
       titleString += QString(", (R");
       titleString += QString::number(actions[0]);
       titleString += QString(",C");
       titleString += QString::number(actions[1]);
       titleString += QString(")");
 
-      switch (pivotIter.regime)
+      switch (pivotIter.getRegime())
 	{
 	case SG::NonBinding:
 	  titleString += "\n(Non-binding direction)";

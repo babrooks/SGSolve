@@ -111,8 +111,8 @@ double SGApprox::generate()
 				 pivot,bestDirection,
 				 actionTuple,regimeTuple,
 				 threatTuple));
-      assert(soln.iterations.back().bestAction
-	     < game.getNumActions_total()[soln.iterations.back().bestState]);
+      assert(soln.getIterations().back().getBestAction()
+	     < game.getNumActions_total()[soln.getIterations().back().getBestState()]);
     }
 
   // Update the pivot.
