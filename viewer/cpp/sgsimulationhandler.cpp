@@ -34,7 +34,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   controlLayout->addRow(new QLabel(tr("Number of periods:")),
 			iterationEdit);
 
-  simulateButton = new QPushButton(tr("Simulate"));
+  QPushButton * simulateButton = new QPushButton(tr("Simulate"));
 
   iterationEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
   simulateButton->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
@@ -95,7 +95,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   scrollArea->setWidgetResizable(true);
   scrollArea->setSizePolicy(QSizePolicy::Expanding,
-  				    QSizePolicy::Preferred);
+			    QSizePolicy::Preferred);
   scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
   QSplitter * ewSplitter = new QSplitter();
@@ -137,7 +137,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   // Set up the plots
   stateBars = new QCPBars(distrPlot->xAxis,
-				    distrPlot->yAxis);
+			  distrPlot->yAxis);
   distrPlot->addPlottable(stateBars);
   distrPlot->plotLayout()->insertRow(0);
   distrPlot->plotLayout()
@@ -235,8 +235,6 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
       actionDistrRects[state]->axis(QCPAxis::atBottom)->setTickLength(0,4);
       actionDistrRects[state]->axis(QCPAxis::atBottom)->setRange(0,soln.game.getNumActions_total()[state]+1);
     } // for action
-
-
 } // constructor
 
 void SGSimulationHandler::simulate()
@@ -312,4 +310,4 @@ void SGSimulationHandler::simulate()
 
   distrPlot->replot();
   
-}
+} // simulate

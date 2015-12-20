@@ -10,13 +10,26 @@
 #include <QCheckBox>
 #include "sgenv.hpp"
 
+//! Class for changing double parameters.
+/*! A customized version of QLineEdit for modifying double parameters
+    in an SGEnv object that is used by the SGSettingsHandler. It has a
+    private members which are the particular SGEnv::DBL_PARAM that is
+    associated with this edit and a pointer to an associated SGEnv
+    object. There are also mutator methods for setting the parameter
+    value and resetting to the default value of the given parameter.
+
+    \ingroup viewer
+*/
 class SGDblParamEdit : public QLineEdit
 {
   Q_OBJECT;
 private:
+  //! The double parameter associated with this edit.
   SGEnv::DBL_PARAM param;
+  //! The associated SGEnv object.
   SGEnv * env;
 public:
+  //! Constructor
   SGDblParamEdit(QWidget * parent,
 		 SGEnv * _env,SGEnv::DBL_PARAM _param): 
     env(_env),
@@ -28,27 +41,41 @@ public:
 	    this,SLOT(changeParam(const QString &)));
     connect(parent,SIGNAL(restoreDefaultSignal()),
 	    this,SLOT(resetParam()));
-  }
+  } // constructor
 
 private slots:
+  //! Slot called when the QLineEdit is edited.
   void changeParam(const QString & text)
   {
     double newValue = text.toDouble();
     env->setParam(param,newValue);
   }
-  
+  //! Slot called when resetting to default values.
   void resetParam()
   { setText(QString::number(env->getParam(param))); }
 
 }; // SGDblParamEdit
 
+//! Class for changing integer parameters.
+/*! A customized version of QLineEdit for modifying int parameters
+    in an SGEnv object that is used by the SGSettingsHandler. It has a
+    private members which are the particular SGEnv::INT_PARAM that is
+    associated with this edit and a pointer to an associated SGEnv
+    object. There are also mutator methods for setting the parameter
+    value and resetting to the default value of the given parameter.
+
+    \ingroup viewer
+*/
 class SGIntParamEdit : public QLineEdit
 {
   Q_OBJECT;
 private:
+  //! The int parameter associated with this edit.
   SGEnv::INT_PARAM param;
+  //! The associated SGEnv object.
   SGEnv * env;
 public:
+  //! Constructor
   SGIntParamEdit(QWidget * parent,
 		 SGEnv * _env,SGEnv::INT_PARAM _param): 
     env(_env),
@@ -60,27 +87,40 @@ public:
 	    this,SLOT(changeParam(const QString &)));
     connect(parent,SIGNAL(restoreDefaultSignal()),
 	    this,SLOT(resetParam()));
-  }
+  } // constructor
 
 private slots:
+  //! Slot called when the QLineEdit is edited.
   void changeParam(const QString & text)
   {
     double newValue = text.toInt();
     env->setParam(param,newValue);
-  }
-
+  } 
+  //! Slot called when resetting to default values.
   void resetParam()
   { setText(QString::number(env->getParam(param))); }
 
 }; // SGIntParamEdit
 
+//! Class for changing boolean parameters.
+/*! A customized version of QCheckBox for modifying boolean parameters
+    in an SGEnv object that is used by the SGSettingsHandler. It has a
+    private members which are the particular SGEnv::BOOL_PARAM that is
+    associated with this edit and a pointer to an associated SGEnv
+    object. There are also mutator methods for setting the parameter
+    value and resetting to the default value of the given parameter.
+
+    \ingroup viewer
+*/
 class SGBoolParamBox : public QCheckBox
 {
   Q_OBJECT;
 private:
+  //! The boolean parameter associated with the box.
   SGEnv::BOOL_PARAM param;
+  //! The associated environment.
   SGEnv * env;
-  
+  //! The set method.
   void setCheck(bool tf)
   {
     if (tf)
@@ -90,6 +130,7 @@ private:
   }
 
 public:
+  //! Constructor
   SGBoolParamBox(QWidget * parent,
 		 SGEnv * _env,
 		 SGEnv::BOOL_PARAM _param): 
@@ -104,66 +145,61 @@ public:
     connect(parent,SIGNAL(restoreDefaultSignal()),
 	    this,SLOT(resetParam()));
     
-  }
+  } // constructor
 
 private slots:
+  //! Slot called when the check is modified.
   void changeParam()
   {
     env->setParam(param,isChecked());
     setCheck(env->getParam(param));
   }
-
+  //! Slot called when resetting to default values.
   void resetParam()
   { setCheck(env->getParam(param)); }
 }; // SGBoolParamBox
 
+//! A widget for setting parameters of the algorithm.
+/*! This widget is created from the Tools->Settings menu in the main
+    SGViewer window, and it allows for the editing of algorithm
+    parameters in the SGEnv object that is used for the
+    computation. It uses edits that are derived from the QLineEdit and
+    QCheckBox, one for each parameter, that directly synchronize the
+    entered values with those in the associated SGEnv.
+
+  \ingroup viewer
+ */
 class SGSettingsHandler : public QWidget
 {
   Q_OBJECT;
   
 private:
+  //! Pointer to the associated SGEnv object.
   SGEnv * env;
 
-  QPushButton * closeButton;
-  QPushButton * defaultButton;
-
-  SGDblParamEdit * errorTolEdit;
-  SGDblParamEdit * directionTolEdit;
-  SGDblParamEdit * pastThreatTolEdit;
-  SGDblParamEdit * updatePivotTolEdit;
-  SGDblParamEdit * ICTolEdit;
-  SGDblParamEdit * normTolEdit;
-  SGDblParamEdit * flatTolEdit;
-  SGDblParamEdit * levelTolEdit;
-  SGDblParamEdit * improveTolEdit;
-  SGDblParamEdit * roundTolEdit;
-  SGDblParamEdit * backBendingTolEdit;
-  SGDblParamEdit * movementTolEdit;
-
-  SGIntParamEdit * maxIterationsEdit;
-  SGIntParamEdit * maxUpdatePivotPassesEdit;
-  SGIntParamEdit * tupleReserveSizeEdit;
-  
-  SGBoolParamBox * mergeTuplesButton;
-  SGBoolParamBox * storeIterationsButton;
-
 public:
+  //! Constructor
   SGSettingsHandler(QWidget * parent,
 		    SGEnv * _env);
-
+  //! Destructor
   virtual ~SGSettingsHandler() {}
 
-signals: 
+signals:
+  //! Signals to SGSolutionHandler to delete this widget.
   void closeSettingsHandler();
+  //! Signals all of the edits and check boxes to reset to default values.
   void restoreDefaultSignal();
 private slots:
+  //! Closes the window by sending signal to SGSolutionHandler.
   void closeWindow() {emit closeSettingsHandler();}
+  //! Restores default parameter values in the SGEnv object and
+  //! signals edits/boxes to reset.
   void restoreDefaults() 
   { 
     env->restoreDefaults();
     env->setParam(SGEnv::PRINTTOCOUT,false);
     emit restoreDefaultSignal();
-  }
+  } // restoreDefaults
   
 };
 

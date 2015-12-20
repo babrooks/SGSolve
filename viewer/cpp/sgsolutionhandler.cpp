@@ -80,6 +80,10 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
 	  controller,SLOT(nextAction()));
   connect(prevActionButton,SIGNAL(clicked()),
 	  controller,SLOT(prevAction()));
+  connect(this,SIGNAL(nextActionSignal()),
+	  controller,SLOT(nextAction()));
+  connect(this,SIGNAL(prevActionSignal()),
+	  controller,SLOT(prevAction()));
 
   // Combine the detail plot and controls into a detail plot widget
   QWidget * detailPlotWidget = new QWidget();
@@ -196,6 +200,8 @@ void SGSolutionHandler::plotSolution()
     {
       detailPlot->setState(state);
   
+      plotSolution(detailPlot,state,false);
+
       const SGBaseAction & actionObject = pivotIter.actions[state][actionIndex];
 
       // Add expected set
@@ -220,7 +226,7 @@ void SGSolutionHandler::plotSolution()
 	      expSetY[tupleC-start] = expPoint[1];
 	      expSetT[tupleC-start] = tupleC;
 	    }
-      
+	  
 	  tupleC++;
 	}
       
@@ -233,64 +239,92 @@ void SGSolutionHandler::plotSolution()
       QCPRange xrange = getBounds(expSetX),
 	yrange = getBounds(expSetY);
 
-      // Non-binding direction
-      double delta = soln.game.getDelta();
-      SGPoint expPivot = pivotIter.pivot.expectation(soln.game.getProbabilities()
-						      [state][action]);
       SGPoint stagePayoffs = soln.game.getPayoffs()[state][action];
-      SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
-
-      QCPItemLine * nonBindingGenLine
-	= sgToQCPItemLine(detailPlot,stagePayoffs,
-			  expPivot-stagePayoffs);
-      nonBindingGenLine->setPen(QPen(Qt::DashLine));
-      detailPlot->addItem(nonBindingGenLine);
-
-      QCPItemLine * nonBindingDirection
-	= sgToQCPItemLine(detailPlot,pivotIter.pivot[state],
-			  nonBindingPayoff-pivotIter.pivot[state]);
-      nonBindingDirection->setHead(QCPLineEnding::esSpikeArrow);
-      detailPlot->addItem(nonBindingDirection);
-      
-      // Binding directions
-      for (vector<SGTuple>::const_iterator tuple
-	     = actionObject.getBindingContinuations().begin();
-	   tuple != actionObject.getBindingContinuations().end();
-	   ++tuple)
+      double delta = soln.game.getDelta();
+      if (controller->getPlotMode() == SGPlotController::Directions)
 	{
-	  for (int pointIndex = 0; pointIndex < tuple->size(); pointIndex++)
+	  // Non-binding direction
+	  SGPoint expPivot = pivotIter.pivot.expectation(soln.game.getProbabilities()
+							 [state][action]);
+	  
+	  SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
+
+	  QCPItemLine * nonBindingGenLine
+	    = sgToQCPItemLine(detailPlot,stagePayoffs,
+			      expPivot-stagePayoffs);
+	  nonBindingGenLine->setPen(QPen(Qt::DashLine));
+	  detailPlot->addItem(nonBindingGenLine);
+
+	  addPoint(nonBindingPayoff,detailPlot,
+		   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::black),
+				   QBrush(Qt::black),6));
+
+	  QCPItemLine * nonBindingDirection
+	    = sgToQCPItemLine(detailPlot,pivotIter.pivot[state],
+			      nonBindingPayoff-pivotIter.pivot[state]);
+	  nonBindingDirection->setHead(QCPLineEnding::esSpikeArrow);
+	  detailPlot->addItem(nonBindingDirection);
+      
+	  // Binding directions
+	  for (vector<SGTuple>::const_iterator tuple
+		 = actionObject.getBindingContinuations().begin();
+	       tuple != actionObject.getBindingContinuations().end();
+	       ++tuple)
 	    {
-	      SGPoint continuationValue = (*tuple)[pointIndex];
-	      SGPoint bindingPayoff = (1-delta)*stagePayoffs
-		+ delta*continuationValue;
-	      QCPItemLine * bindingGenCurve
-		= sgToQCPItemLine(detailPlot,stagePayoffs,
-				  continuationValue - stagePayoffs);
-	      bindingGenCurve->setPen(QPen(Qt::DashLine));
-	      detailPlot->addItem(bindingGenCurve);
+	      for (int pointIndex = 0; pointIndex < tuple->size(); pointIndex++)
+		{
+		  SGPoint continuationValue = (*tuple)[pointIndex];
+		  SGPoint bindingPayoff = (1-delta)*stagePayoffs
+		    + delta*continuationValue;
+		  QCPItemLine * bindingGenCurve
+		    = sgToQCPItemLine(detailPlot,stagePayoffs,
+				      continuationValue - stagePayoffs);
+		  bindingGenCurve->setPen(QPen(Qt::DashLine));
+		  detailPlot->addItem(bindingGenCurve);
 
-	      QCPItemLine * bindingDirection
-		= sgToQCPItemLine(detailPlot,pivotIter.pivot[state],
-				  bindingPayoff - pivotIter.pivot[state]);
-	      bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
-	      detailPlot->addItem(bindingDirection);
+		  QCPItemLine * bindingDirection
+		    = sgToQCPItemLine(detailPlot,pivotIter.pivot[state],
+				      bindingPayoff - pivotIter.pivot[state]);
+		  bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
+		  detailPlot->addItem(bindingDirection);
 				   
-	    } // for 
-	} // for tuple
+		  addPoint(bindingPayoff,detailPlot,
+			   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::black),
+					   QBrush(Qt::black),6));
+		  addPoint(continuationValue,detailPlot,
+			   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::magenta),
+					   QBrush(Qt::magenta),6));
+		} // for 
+	    } // for tuple
 
-      plotSolution(detailPlot,state,true);
+	  // Add expected pivot
+	  addPoint(expPivot,detailPlot,
+		   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::red),
+				   QBrush(Qt::red),6));
+	}
+      else
+	{
+	  // Plot the generation only of the current pivot
+	  SGPoint continuationValue = (pivotIter.pivot[state]-(1-delta)*stagePayoffs)/delta;
+	  QCPItemLine * genLine
+	    = sgToQCPItemLine(detailPlot,stagePayoffs,continuationValue-stagePayoffs);
+	  detailPlot->addItem(genLine);
+
+	  // Add continuation value
+	  addPoint(continuationValue,detailPlot,
+		   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::black),
+				   QBrush(Qt::black),6));
+	  
+	}
 
       // Add action
-      QVector<double> actionPointX(1), actionPointY(1);
-      actionPointX[0] = stagePayoffs[0];
-      actionPointY[0] = stagePayoffs[1];
-      
-      detailPlot->addGraph();
-      detailPlot->graph(1)->setData(actionPointX,actionPointY);
-      detailPlot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssStar,
-							    QPen(Qt::black),
-							    QBrush(Qt::black),
-							    8));
+      addPoint(stagePayoffs,detailPlot,
+	       QCPScatterStyle(QCPScatterStyle::ssStar,QPen(Qt::black),
+			       QBrush(Qt::black),6));
+
+
+      xrange.expand(QCPRange(stagePayoffs[0],stagePayoffs[0]));
+      yrange.expand(QCPRange(stagePayoffs[1],stagePayoffs[1]));
       xrange.expand(detailPlot->getNominalXRange());
       yrange.expand(detailPlot->getNominalYRange());
 
@@ -398,16 +432,10 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   directionCurve->setPen(pen);
   plot->addPlottable(directionCurve);
 
-  QVector<double> pivotPointX(1), pivotPointY(1);
-  pivotPointX[0] = pivotIter.pivot[state][0];
-  pivotPointY[0] = pivotIter.pivot[state][1];
+  addPoint(pivotIter.pivot[state],plot,
+	   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::blue),
+			   QBrush(Qt::blue),8));
 
-  plot->addGraph();
-  plot->graph(0)->setData(pivotPointX,pivotPointY);
-  plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
-						  QPen(Qt::blue),
-						  QBrush(Qt::blue),
-						  8));
   if (addSquares)
     {
       plot->addGraph();
@@ -482,6 +510,18 @@ QString SGSolutionHandler::generatePlotTitle(int state, int action,
   return titleString;
 } // generatePlotTitle
 
+void SGSolutionHandler::addPoint(const SGPoint & point,QCustomPlot* plot,
+				 const QCPScatterStyle & style)
+{
+  QVector<double> X(1), Y(1);
+  X[0] = point[0];
+  Y[0] = point[1];
+
+  plot->addGraph();
+  plot->graph()->setData(X,Y);
+  plot->graph()->setScatterStyle(style);
+} // addPoint
+
 QCPCurve * SGSolutionHandler::vectorToQCPCurve(SGCustomPlot * plot,
 					       const SGPoint & point,
 					       const SGPoint & dir)
@@ -535,12 +575,11 @@ void SGSolutionHandler::inspectPoint(SGPoint point,
 				     int state, bool isDetailPlot)
 {
   // Find the point that is closest for the given state.
+  controller->setPlotMode(SGPlotController::Generation);
   controller->setCurrentIteration(point,state);
 
 } // inspectPoint
 
-
-					       
 void SGSolutionHandler::simulateEquilibrium(SGPoint point,
 					    int state, bool isDetailPlot)
 {
@@ -556,3 +595,4 @@ void SGSolutionHandler::simulateEquilibrium(SGPoint point,
   
   simHandler->show();
 } // simulateEquilibrium
+

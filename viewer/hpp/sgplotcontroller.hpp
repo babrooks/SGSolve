@@ -6,91 +6,119 @@
 #include <QScrollBar>
 #include "sgsolution.hpp"
 
+//! Handles the plot settings for SGSolutionHandler
+/*! This class intermediates between the controllers (iterSlider,
+    stateCombo, actionCombo) and the plotting methods in the
+    SGSSolutionHandler (i.e., plotSolution(...)).
+
+  \ingroup viewer
+*/
 class SGPlotController : public QObject
 {
   Q_OBJECT;
-
-private:
-  int state;
-  int action;
-  int actionIndex;
-  int iteration;
+public:
+  //! Plot mode for the detailPlot
+  /*! Indicates whether to plot all of the test directions
+   (Directions) or just plot the way the current pivot is generated
+   (Generation). */
+  enum PlotMode {Directions,Generation};
+  //! Solution mode
+  /*! Indicates whether or not to plot all of the iterations from a
+      user-defined start point to the current iteration (Progress) or
+      just plot all of the iterations on the last revolution
+      (Final). */
+  enum SolutionMode {Progress, Final};
   
+private:
+  //! Current state
+  int state;
+  //! Current action
+  int action;
+  //! Index of the current action within the list of actions in
+  //! currentIter->actions[state]
+  int actionIndex;
+  //! The current iteration
+  int iteration;
+
+  //! The current solution object
   SGSolution * soln;
   
-  //! Solution mode
-  enum SolutionMode {Progress, Final} mode;
+  //! The current plot mode
+  PlotMode plotMode;
   
-  //! Points to the first iteration from which to plot.
+  //! The current solution mode
+  SolutionMode mode;
+  
+  //! Points to the first SGIteration object from which to plot.
   list<SGIteration>::const_iterator startIter;
-  //! Points to the last iteration to which to plot.
+  //! Points to the last SGIteration object to which to plot.
   list<SGIteration>::const_iterator endIter;
-  //! Points to the pivot iteration.
+  //! Points to the current SGiteration.
   list<SGIteration>::const_iterator currentIter;
-  //! Points to the pivot iteration.
+  //! Points to the SGIteration that starts the last revolution.
   list<SGIteration>::const_iterator startOfLastRev;
 
+  //! Indicates when an SGSolution object has been loaded
   bool solnLoaded;
-  bool plotAllDirections;
 
+  //! Points to the stateCombo QComboBox selector.
   QComboBox * stateCombo;
+  //! Points to the actionCombo QComboBox selector.
   QComboBox * actionCombo;
-
+  //! Points to the solutionMode QComboBox selector.
   QComboBox * solutionModeCombo;
-
+  //! Points to the iterSlider QScrollBar for selecting the current iteration
   QScrollBar * iterSlider;
+  //! Points to the startSlider QScrollBar for selecting the start
+  //! iteration when the solution mode is Progress.
   QScrollBar * startSlider;
 public:
+  //! Constructor
   SGPlotController(QComboBox * _stateCombo,
 		   QComboBox *_actionCombo,
 		   QScrollBar * _iterSlider,
 		   QScrollBar * _startSlider,
-		   QComboBox * _solutionModeCombo):
-    solnLoaded(false), action(-1),state(-1),iteration(0),
-    stateCombo(_stateCombo), actionCombo(_actionCombo),
-    solutionModeCombo(_solutionModeCombo),
-    iterSlider(_iterSlider), startSlider(_startSlider),
-    plotAllDirections(false),
-    mode(Progress)
-  {
-    connect(actionCombo,SIGNAL(currentIndexChanged(int)),
-	    this,SLOT(changeAction(int)));
-    connect(iterSlider,SIGNAL(valueChanged(int)),
-	    this,SLOT(iterSliderUpdate(int)));
-    connect(startSlider,SIGNAL(valueChanged(int)),
-	    this,SLOT(iterSliderUpdate(int)));
-    connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
-	    this,SLOT(changeMode(int)));
-  }
+		   QComboBox * _solutionModeCombo);
 
+  //! Access method for the current state.
   int getState() const { return state; }
+  //! Access method for the current action.
   int getAction() const { return action; }
+  //! Access method for the current action index.
   int getActionIndex() const { return actionIndex; }
+  //! Access method for the current iteration number.
   int getIteration() const { return iteration; }
+  //! Access method for the current plot mode.
+  PlotMode getPlotMode() const { return plotMode; }
+  //! Access method for the current solution mode.
   SolutionMode getMode () const { return mode; }
+  //! Access method for the current SGIteration pointer.
   const SGIteration & getCurrentIter() const { return *currentIter; }
+  //! Access method for the start SGIteration pointer.
   const SGIteration & getStartIter() const { return *startIter; }
+  //! Access method for the end SGIteration pointer.
   const SGIteration & getEndIter() const { return *endIter; }
+  //! Access method for the SGIteration pointer that starts the last revolution.
   const SGIteration & getStartOfLastRev() const { return *startOfLastRev; }
+  //! Returns the position of the startSlider.
   int getStartSliderPosition() const { return startSlider->sliderPosition(); }
-  bool getPlotAllDirections() const { return plotAllDirections; }
+  //! Returns true if a solution has been loaded.
   bool hasSolution() const { return solnLoaded; }
+  //! Returns the current solution.
   const SGSolution * getSolution() const { return soln; }
-  
-  void setPlotAllDirections(bool tf) { plotAllDirections = tf; }
+  //! Sets the solution.
   void setSolution(SGSolution * newSoln);
+  //! Sets the current state.
   bool setState(int newState);
-
+  //! Sets the plot mode.
+  void setPlotMode(PlotMode newMode) { plotMode = newMode; }
+  //! Sets the current action index.
   bool setActionIndex(int newActionIndex);
-
-  bool setAction(int newAction)
-  {
-    
-    return false;
-  }
-
+  //! Sets the current action.
+  bool setAction(int newAction);
+  //! Sets the current iteration.
   bool setIteration(int newIter);
-
+  //! Increments the current iteration.
   void moveForwards()
   {
     if (!solnLoaded)
@@ -98,9 +126,9 @@ public:
       
     iterSlider->setSliderPosition(std::max(iterSlider->minimum(),
 					   iterSlider->value()-1));
-    iterSliderUpdate(iterSlider->value());
+    // iterSliderUpdate(iterSlider->value());
   }
-
+  //! Decrements the current iteration.
   void moveBackwards()
   {
     if (!solnLoaded)
@@ -108,71 +136,37 @@ public:
       
     iterSlider->setSliderPosition(std::min(iterSlider->maximum(),
 					   iterSlider->value()+1));
-    iterSliderUpdate(iterSlider->value());
+    // iterSliderUpdate(iterSlider->value());
   }
-
+  //! Sets the current iteration to be the one where the pivot in the
+  //! given state is closest to point.
   void setCurrentIteration(SGPoint point, int state);
+  //! Synchronizes sliders with controls.
+  /*! Sets startIter and currentIter to be equal to the values
+      indicated in the respective sliders. */
+  void synchronizeSliders();
 
 signals:
+  //! Signal to the state and action models that the solution changed.
   void solutionChanged();
-
-  void stateChanged();
+  //! Signal to the solutionHandler that the action changed.
   void actionChanged();
-
+  //! Signal to solutionHandler that the iteration changed.
   void iterationChanged();
 
+    
 public slots:
   //! Toggles the solution mode
-  void changeMode(int newMode)
-  {
-    if (newMode == 0)
-      {
-	mode = Progress;
-
-	startIter = soln->iterations.begin();
-      }
-    else if (newMode == 1)
-      {
-	mode = Final;
-      
-	startIter = startOfLastRev;
-
-	if (currentIter->iteration < startIter->iteration)
-	  {
-	    currentIter = soln->iterations.end();
-	    currentIter--;
-	  }
-      }
-
-    setSliderRanges(startIter->iteration,soln->iterations.back().iteration);
-  
-    iterSlider->setValue(endIter->iteration);
-    iterSliderUpdate(endIter->iteration);
-  } // changeMode
-
+  void changeMode(int newMode);
+  //! Slot when the iter and start sliders are moved.
   void iterSliderUpdate(int value);
-
-  void actionUpdate(int value)
-  {
-
-  } // actionUpdate
-
-  void changeAction(int index)
-  {
-    setActionIndex(index-1);
-  }
-  
+  //! Slot used to set up the sliders when changing between Progress
+  //! and Final modes.
   void setSliderRanges(int start, int end);
-
-  void prevAction()
-  {
-
-  } // prevAction
-
-  void nextAction()
-  {
-
-  } // nextAction
+  //! Decrements the action.
+  void prevAction();
+  //! Increments the action.
+  void nextAction();
 
   
 

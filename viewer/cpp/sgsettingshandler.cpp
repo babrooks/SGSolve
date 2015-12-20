@@ -10,8 +10,8 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
   
   setMinimumSize(parent->size()/2);
 
-  closeButton = new QPushButton(QString("Close"));
-  defaultButton = new QPushButton(QString("Restore defaults"));
+  QPushButton * closeButton = new QPushButton(QString("Close"));
+  QPushButton * defaultButton = new QPushButton(QString("Restore defaults"));
 
   connect(closeButton,SIGNAL(clicked()),
 	  this,SLOT(closeWindow()));
@@ -19,46 +19,47 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 	  this,SLOT(restoreDefaults()));
 
   QVBoxLayout * mainLayout = new QVBoxLayout();
-
-  errorTolEdit = new SGDblParamEdit(this,env,SGEnv::ERRORTOL);
-  directionTolEdit = new SGDblParamEdit(this,env,SGEnv::DIRECTIONTOL);
-  pastThreatTolEdit = new SGDblParamEdit(this,env,SGEnv::PASTTHREATTOL);
-  updatePivotTolEdit = new SGDblParamEdit(this,env,SGEnv::UPDATEPIVOTTOL);
-  ICTolEdit = new SGDblParamEdit(this,env,SGEnv::ICTOL);
-  normTolEdit = new SGDblParamEdit(this,env,SGEnv::NORMTOL);
-  flatTolEdit = new SGDblParamEdit(this,env,SGEnv::FLATTOL);
-  improveTolEdit = new SGDblParamEdit(this,env,SGEnv::IMPROVETOL);
-  levelTolEdit = new SGDblParamEdit(this,env,SGEnv::LEVELTOL);
-  roundTolEdit = new SGDblParamEdit(this,env,SGEnv::ROUNDTOL);
-  backBendingTolEdit = new SGDblParamEdit(this,env,SGEnv::BACKBENDINGTOL);
-  movementTolEdit = new SGDblParamEdit(this,env,SGEnv::ROUNDTOL);
-
-  maxIterationsEdit = new SGIntParamEdit(this,env,SGEnv::MAXITERATIONS);
-  maxUpdatePivotPassesEdit = new SGIntParamEdit(this,env,SGEnv::MAXUPDATEPIVOTPASSES);
-  tupleReserveSizeEdit = new SGIntParamEdit(this,env,SGEnv::TUPLERESERVESIZE);
-  
-  mergeTuplesButton = new SGBoolParamBox(this,env,SGEnv::MERGETUPLES);
-  storeIterationsButton = new SGBoolParamBox(this,env,SGEnv::STOREITERATIONS);
   
   QFormLayout * editLayout = new QFormLayout ();
-  editLayout->addRow(QString("Error tolerance:"),errorTolEdit);
-  editLayout->addRow(QString("Direction tolerance:"),directionTolEdit);
-  editLayout->addRow(QString("Past threat tolerance:"),pastThreatTolEdit);
-  editLayout->addRow(QString("Update pivot tolerance:"),updatePivotTolEdit);
-  editLayout->addRow(QString("IC tolerance:"),ICTolEdit);
-  editLayout->addRow(QString("Norm tolerance:"),normTolEdit);
-  editLayout->addRow(QString("Improvement tolerance:"),improveTolEdit);
-  editLayout->addRow(QString("Level tolerance:"),levelTolEdit);
-  editLayout->addRow(QString("Rounding:"),roundTolEdit);
-  editLayout->addRow(QString("Back bending tolerance:"),backBendingTolEdit);
-  editLayout->addRow(QString("Movement tolerance:"),movementTolEdit);
-  
-  editLayout->addRow(QString("Max iterations:"),maxIterationsEdit);
-  editLayout->addRow(QString("Max update pivot passes:"),maxUpdatePivotPassesEdit);
-  editLayout->addRow(QString("Tuple reserve size:"),tupleReserveSizeEdit);
+  // Construct and add the double parameter edits
+  editLayout->addRow(QString("Error tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::ERRORTOL));
+  editLayout->addRow(QString("Direction tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::DIRECTIONTOL));
+  editLayout->addRow(QString("Past threat tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::UPDATEPIVOTTOL));
+  editLayout->addRow(QString("Update pivot tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::UPDATEPIVOTTOL));
+  editLayout->addRow(QString("IC tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::ICTOL));
+  editLayout->addRow(QString("Norm tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::NORMTOL));
+  editLayout->addRow(QString("Improvement tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::IMPROVETOL));
+  editLayout->addRow(QString("Flat tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::FLATTOL));
+  editLayout->addRow(QString("Level tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::LEVELTOL));
+  editLayout->addRow(QString("Rounding:"),
+		     new SGDblParamEdit(this,env,SGEnv::ROUNDTOL));
+  editLayout->addRow(QString("Back bending tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::BACKBENDINGTOL));
+  editLayout->addRow(QString("Movement tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::ROUNDTOL));
 
-  editLayout->addRow(QString("Merge tuples:"),mergeTuplesButton);
-  editLayout->addRow(QString("Store iterations:"),storeIterationsButton);
+  // Construct and add integer parameter edits.
+  editLayout->addRow(QString("Max iterations:"),
+		     new SGIntParamEdit(this,env,SGEnv::MAXITERATIONS));
+  editLayout->addRow(QString("Max update pivot passes:"),
+		     new SGIntParamEdit(this,env,SGEnv::MAXUPDATEPIVOTPASSES));
+  editLayout->addRow(QString("Tuple reserve size:"),
+		     new SGIntParamEdit(this,env,SGEnv::TUPLERESERVESIZE));
+
+  // Construct and add boolean parameter edits.
+  editLayout->addRow(QString("Merge tuples:"),
+		     new SGBoolParamBox(this,env,SGEnv::MERGETUPLES));
+  editLayout->addRow(QString("Store iterations:"),
+		     new SGBoolParamBox(this,env,SGEnv::STOREITERATIONS));
 
   mainLayout->addLayout(editLayout);
   mainLayout->addWidget(defaultButton);

@@ -14,6 +14,7 @@ class SGSimulationPlot : public QCustomPlot
 {
   Q_OBJECT;
 private:
+  //! The number of states in the given plot.
   int numStates;
 
 public:

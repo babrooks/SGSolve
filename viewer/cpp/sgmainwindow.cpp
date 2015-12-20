@@ -388,12 +388,26 @@ void SGMainWindow::keyPressEvent(QKeyEvent * event)
   else if (event->key() == Qt::Key_B
 	   && event->modifiers() == Qt::ControlModifier)
     {
+      // Move iteration forwards
       solutionHandler->moveForwards();
     }
   else if (event->key() == Qt::Key_F
 	   && event->modifiers() == Qt::ControlModifier)
     {
+      // Move iteration backwards
       solutionHandler->moveBackwards();
+    }
+  else if (event->key() == Qt::Key_P
+	   && event->modifiers() == Qt::ControlModifier)
+    {
+      // previous action
+      solutionHandler->prevAction();
+    }
+  else if (event->key() == Qt::Key_N
+	   && event->modifiers() == Qt::ControlModifier)
+    {
+      // next action
+      solutionHandler->nextAction();
     }
 } // keyPressEvent
 
