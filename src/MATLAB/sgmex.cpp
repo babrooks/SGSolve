@@ -55,7 +55,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
       {
 	SGSolution::load(soln, inputFileName);
 	currentIterationIndex = 0;
-	currentIteration = soln.iterations.begin();
+	currentIteration = soln.getIterations().begin();
 			
 	solnLoaded = true;
       }
@@ -100,7 +100,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
       if (numIter<=0)
 	mexErrMsgTxt("Number of iterations must be at least 1.");
-      if (initialState < 0 | initialState >= soln.game.getNumStates())
+      if (initialState < 0 | initialState >= soln.getGame().getNumStates())
 	mexErrMsgTxt("Initial state is out of bounds.");
 
       try
@@ -110,7 +110,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  sim.initialize();
 
 	  if (initialTuple < sim.getStartOfLastRev()
-	      | initialTuple > soln.iterations.back().iteration )
+	      | initialTuple > soln.getIterations().back().getIteration() )
 	    mexErrMsgTxt("Initial tuple must be in the last iteration.");
 
 	  sim.simulate(numIter,initialState,initialTuple);
@@ -119,7 +119,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  mexEvalString("drawnow;");
 	  
 	  vector< vector<int> > actionDistr = sim.getActionDistr();
-	  plhs[0] = mxCreateCellMatrix(soln.game.getNumStates(),1);
+	  plhs[0] = mxCreateCellMatrix(soln.getGame().getNumStates(),1);
 	  for (state = 0; state < actionDistr.size(); state++)
 	    {
 	      mxArray * distrPtr = mxCreateDoubleMatrix(actionDistr[state].size(),1,mxREAL);
@@ -298,9 +298,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  // soln = solver.getSolution();
 	  solnLoaded = true;
 
-	  currentIteration = soln.iterations.end();
+	  currentIteration = soln.getIterations().end();
 	  currentIteration--;
-	  currentIterationIndex = soln.iterations.size()-1;
+	  currentIterationIndex = soln.getIterations().size()-1;
 	}
       catch (SGException & e)
 	{
@@ -331,7 +331,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    mexErrMsgTxt("One output required.");
 	  plhs[0] = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(plhs[0]);
-	  outputPtr[0] = soln.game.getDelta();
+	  outputPtr[0] = soln.getGame().getDelta();
 	} // GetDelta
 		
       // GetNumStates
@@ -341,7 +341,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    mexErrMsgTxt("One output required.");
 	  plhs[0] = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(plhs[0]);
-	  outputPtr[0] = soln.game.getNumStates();
+	  outputPtr[0] = soln.getGame().getNumStates();
 	} // GetNumStates
 		
       // GetNumActions
@@ -349,16 +349,16 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	{
 	  if (nlhs!=1)
 	    mexErrMsgTxt("One output required.");
-	  plhs[0] = mxCreateDoubleMatrix(soln.game.getNumStates(),
-					 soln.game.getNumPlayers(),mxREAL);
+	  plhs[0] = mxCreateDoubleMatrix(soln.getGame().getNumStates(),
+					 soln.getGame().getNumPlayers(),mxREAL);
 	  outputPtr = mxGetPr(plhs[0]);
 	  outputCounter = 0;
 			
-	  numActions = soln.game.getNumActions();
+	  numActions = soln.getGame().getNumActions();
 			
-	  for (player = 0; player < soln.game.getNumPlayers(); player++)
+	  for (player = 0; player < soln.getGame().getNumPlayers(); player++)
 	    {
-	      for (state = 0; state < soln.game.getNumStates(); state++)
+	      for (state = 0; state < soln.getGame().getNumStates(); state++)
 		{
 		  outputPtr[outputCounter] = numActions[state][player];
 		  outputCounter++;
@@ -383,16 +383,16 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    mexErrMsgTxt("Input must be scalar double.");
 	  state = static_cast<int>(inputPtr[0]);
 			
-	  if (state < 0 || state > soln.game.getNumStates()-1)
+	  if (state < 0 || state > soln.getGame().getNumStates()-1)
 	    mexErrMsgTxt("State is out of range.");
 	  probabilities =
-	    vector< vector<double > >(soln.game.getProbabilities()[state]);
+	    vector< vector<double > >(soln.getGame().getProbabilities()[state]);
 			
 	  plhs[0] = mxCreateDoubleMatrix(probabilities.size(),
 					 probabilities[0].size(),mxREAL);
 	  outputPtr = mxGetPr(plhs[0]);
 	  outputCounter = 0;
-	  for (state = 0; state < soln.game.getNumStates(); state++)
+	  for (state = 0; state < soln.getGame().getNumStates(); state++)
 	    {
 	      for (action = 0; action < probabilities.size(); action++)
 		{
@@ -422,11 +422,11 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  if (rows!=1 || cols!=1)
 	    mexErrMsgTxt("Input must be scalar double.");
 	  state = static_cast<int>(inputPtr[0]);
-	  if (state < 0 || state > soln.game.getNumStates()-1)
+	  if (state < 0 || state > soln.getGame().getNumStates()-1)
 	    mexErrMsgTxt("State is out of range.");
 			
-	  numActions = soln.game.getNumActions();
-	  payoffs = vector<SGPoint>(soln.game.getPayoffs()[state]);
+	  numActions = soln.getGame().getNumActions();
+	  payoffs = vector<SGPoint>(soln.getGame().getPayoffs()[state]);
 			
 	  plhs[0] = mxCreateDoubleMatrix(numActions[state][0],
 					 numActions[state][1],mxREAL);
@@ -461,7 +461,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    mexErrMsgTxt("Only zero or one arguments supported.");
 			
 	  currentIteration++;
-	  if (currentIteration == soln.iterations.end())
+	  if (currentIteration == soln.getIterations().end())
 	    currentIteration--;
 	  else
 	    currentIterationIndex++;
@@ -475,7 +475,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  else if (nrhs!=1 && nrhs!=2)
 	    mexErrMsgTxt("Only zero or one arguments supported.");
 			
-	  if (currentIteration != soln.iterations.begin())
+	  if (currentIteration != soln.getIterations().begin())
 	    {
 	      currentIteration--;
 	      currentIterationIndex--;
@@ -488,7 +488,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  if (nlhs!=0)
 	    mexErrMsgTxt("No outputs supported.");
 			
-	  currentIteration = soln.iterations.begin();
+	  currentIteration = soln.getIterations().begin();
 	  currentIterationIndex = 0;
 	} // IterToBeginning
 		
@@ -498,9 +498,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  if (nlhs!=0)
 	    mexErrMsgTxt("No outputs supported.");
 			
-	  currentIteration = soln.iterations.end();
+	  currentIteration = soln.getIterations().end();
 	  currentIteration--;
-	  currentIterationIndex = soln.iterations.size()-1;
+	  currentIterationIndex = soln.getIterations().size()-1;
 	} // IterToEnd
 		
       // GetCurentIteration
@@ -528,27 +528,27 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  // Iteration
 	  fieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  outputPtr[0] = currentIteration->iteration;
+	  outputPtr[0] = currentIteration->getIteration();
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // Revolution
 	  fieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  outputPtr[0] = currentIteration->revolution;
+	  outputPtr[0] = currentIteration->getRevolution();
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // Pivot
-	  fieldOutput = mxCreateDoubleMatrix(soln.game.getNumStates(),
-					     soln.game.getNumPlayers(),
+	  fieldOutput = mxCreateDoubleMatrix(soln.getGame().getNumStates(),
+					     soln.getGame().getNumPlayers(),
 					     mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
 	  outputCounter=0;
-	  for (player=0; player<soln.game.getNumPlayers(); player++)
+	  for (player=0; player<soln.getGame().getNumPlayers(); player++)
 	    {
-	      for (state=0; state<soln.game.getNumStates(); state++)
+	      for (state=0; state<soln.getGame().getNumStates(); state++)
 		{
 		  outputPtr[outputCounter]
-		    = currentIteration->pivot[state][player];
+		    = currentIteration->getPivot()[state][player];
 		  outputCounter++;
 		}
 	    }
@@ -556,38 +556,38 @@ void mexFunction(int nlhs, mxArray *plhs[],
 						
 	  // Direction
 	  fieldOutput = mxCreateDoubleMatrix(1,
-					     soln.game.getNumPlayers(),
+					     soln.getGame().getNumPlayers(),
 					     mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  for (player=0; player<soln.game.getNumPlayers(); player++)
+	  for (player=0; player<soln.getGame().getNumPlayers(); player++)
 	    outputPtr[player]
-	      = currentIteration->direction[player];
+	      = currentIteration->getDirection()[player];
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // action
-	  fieldOutput = mxCreateDoubleMatrix(1,soln.game.getNumStates(),mxREAL);
+	  fieldOutput = mxCreateDoubleMatrix(1,soln.getGame().getNumStates(),mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  for (state = 0; state < soln.game.getNumStates(); state++)
-	    outputPtr[state] = currentIteration->actionTuple[state];
+	  for (state = 0; state < soln.getGame().getNumStates(); state++)
+	    outputPtr[state] = currentIteration->getActionTuple()[state];
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // nonBinding
-	  fieldOutput = mxCreateDoubleMatrix(1,soln.game.getNumStates(),mxREAL);
+	  fieldOutput = mxCreateDoubleMatrix(1,soln.getGame().getNumStates(),mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  for (state = 0; state < soln.game.getNumStates(); state++)
-	    outputPtr[state] = static_cast<double>(currentIteration->regimeTuple[state]==SG::NonBinding);
+	  for (state = 0; state < soln.getGame().getNumStates(); state++)
+	    outputPtr[state] = static_cast<double>(currentIteration->getRegimeTuple()[state]==SG::NonBinding);
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 	  
 	  // state
 	  fieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  outputPtr[0] = currentIteration->bestState;
+	  outputPtr[0] = currentIteration->getBestState();
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	  // numExtremeTuples
 	  fieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
-	  outputPtr[0] = currentIteration->numExtremeTuples;
+	  outputPtr[0] = currentIteration->getNumExtremeTuples();
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
 	} // GetCurentIteration
@@ -598,17 +598,17 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  if (nlhs!=1)
 	    mexErrMsgTxt("One output required.");
 			
-	  plhs[0] = mxCreateDoubleMatrix(soln.extremeTuples.size(),
-					 soln.game.getNumPlayers()
-					 *soln.game.getNumStates(),mxREAL);
+	  plhs[0] = mxCreateDoubleMatrix(soln.getExtremeTuples().size(),
+					 soln.getGame().getNumPlayers()
+					 *soln.getGame().getNumStates(),mxREAL);
 	  outputPtr = mxGetPr(plhs[0]);
 	  outputCounter=0;
-	  for (state=0; state<soln.game.getNumStates(); state++)
+	  for (state=0; state<soln.getGame().getNumStates(); state++)
 	    {
-	      for (player=0; player<soln.game.getNumPlayers(); player++)
+	      for (player=0; player<soln.getGame().getNumPlayers(); player++)
 		{
-		  for (list<SGTuple>::iterator tuple = soln.extremeTuples.begin();
-		       tuple != soln.extremeTuples.end();
+		  for (list<SGTuple>::iterator tuple = soln.getExtremeTuples().begin();
+		       tuple != soln.getExtremeTuples().end();
 		       tuple++)
 		    {
 		      outputPtr[outputCounter] = (*tuple)[state][player];

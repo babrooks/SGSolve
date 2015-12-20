@@ -41,7 +41,7 @@ int main ()
       
       // sim.initialize();
 
-      // sim.simulate(100,0,soln.iterations.back().iteration);
+      // sim.simulate(100,0,soln.getIterations().back().getIteration());
       
     }
   catch (SGException e)

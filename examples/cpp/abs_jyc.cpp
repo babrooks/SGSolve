@@ -23,19 +23,19 @@ int main()
 
   for (int dir = 0; dir < numDirections; dir++)
     {
-      ofs << solver_jyc.directions[dir][0] << " ";
+      ofs << solver_jyc.getDirections()[dir][0] << " ";
     }
   ofs << endl;
   for (int dir = 0; dir < numDirections; dir++)
     {
-      ofs << solver_jyc.directions[dir][1] << " ";
+      ofs << solver_jyc.getDirections()[dir][1] << " ";
     }
   ofs << endl;
   for (state = 0; state < game.getNumStates(); state++)
     {
       for (int dir = 0; dir < numDirections; dir++)
 	{
-	  ofs << solver_jyc.bounds[state][dir] << " ";
+	  ofs << solver_jyc.getBounds()[state][dir] << " ";
 	}
       ofs << endl;
     } // for state
@@ -66,13 +66,13 @@ int main()
 	{
 	  for (int dir = 0; dir < numDirections; dir++)
 	    {
-	      if (solver_jyc.directions[dir]*(iter->pivot[state])
-		  > solver_jyc.bounds[state][dir])
+	      if (solver_jyc.getDirections()[dir]*(iter->pivot[state])
+		  > solver_jyc.getBounds()[state][dir])
 		{
 		  cout << "Here I am! I'm at iteration "
-		       << iter->iteration
+		       << iter->getIteration()
 		       << " and revolution "
-		       << iter->revolution << endl;
+		       << iter->getRevolution() << endl;
 		  insideJYC = false;
 		  break;
 		}
@@ -82,8 +82,8 @@ int main()
 	} // for state
       if (!insideJYC)
 	{
-	  lastIterOutsideJYC = iter->iteration;
-	  lastRevOutsideJYC = iter->revolution;
+	  lastIterOutsideJYC = iter->getIteration();
+	  lastRevOutsideJYC = iter->getRevolution();
 	  break;
 	}
     } // for tuple
@@ -100,13 +100,13 @@ int main()
 	{
 	  for (int dir = 0; dir < numDirections; dir++)
 	    {
-	      if (solver_jyc.directions[dir]*(iter->pivot[state])
-		  < solver_jyc.bounds[state][dir])
+	      if (solver_jyc.getDirections()[dir]*(iter->pivot[state])
+		  < solver_jyc.getBounds()[state][dir])
 		{
 		  cout << "Here I am! I'm at iteration "
-		       << iter->iteration
+		       << iter->getIteration()
 		       << " and revolution "
-		       << iter->revolution << endl;
+		       << iter->getRevolution() << endl;
 		  outsideJYC = false;
 		  break;
 		}
@@ -116,8 +116,8 @@ int main()
 	} // for state
       if (!outsideJYC)
 	{
-	  firstIterInsideJYC = iter->iteration;
-	  firstRevInsideJYC = iter->revolution;
+	  firstIterInsideJYC = iter->getIteration();
+	  firstRevInsideJYC = iter->getRevolution();
 	  break;
 	}
     } // for tuple

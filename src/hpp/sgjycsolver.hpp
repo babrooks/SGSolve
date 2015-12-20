@@ -9,20 +9,23 @@
 
 //! Class that implements the JYC algorithm using Gurobi
 /*! This class implements the generalization of the algorithm of Judd,
-    Yeltekin, and Conklin (2002) for solving stochastic games.
+  Yeltekin, and Conklin (2002) for solving stochastic games.
+
+  This file has no associated cpp file, so that libsg does not have to
+  link to Gurobi. 
 
   \ingroup src
  */
 class SGJYCSolver
 {
-public:
+private:
   //! Const reference to the game being solved.
   const SGGame & game;
 
   //! The Gurobi environment.
-  GRBEnv * env;
+  GRBEnv env;
   //! The Gurobi model.
-  GRBModel * model;
+  GRBModel model;
 
   //! Payoff bounds.
   vector< vector<double> > bounds;
@@ -36,24 +39,34 @@ public:
 public:
   //! Constructor
   SGJYCSolver(const SGGame & _game, int _numDirections):
+    env(),
+    model(env),
     game(_game),
     bounds(vector< vector<double> > (game.getNumStates(),
 				     vector<double>(_numDirections,0))),
     directions(_numDirections),
     numDirections(_numDirections)
-  { 
-    env = new GRBEnv();
-    model = new GRBModel(*env);
-
-    env->set(GRB_IntParam_Method,2); // barrier
-    env->set(GRB_IntParam_Crossover,0); // disable crossover
-    env->set(GRB_DoubleParam_BarConvTol,1e-12);
-    env->set(GRB_DoubleParam_OptimalityTol,1e-9);
-    env->set(GRB_DoubleParam_MarkowitzTol,0.999);
-    env->set(GRB_DoubleParam_FeasibilityTol,1e-9);
-    env->set(GRB_IntParam_OutputFlag,0);
+  {
+    env.set(GRB_IntParam_Method,2); // barrier
+    env.set(GRB_IntParam_Crossover,0); // disable crossover
+    env.set(GRB_DoubleParam_BarConvTol,1e-12);
+    env.set(GRB_DoubleParam_OptimalityTol,1e-9);
+    env.set(GRB_DoubleParam_MarkowitzTol,0.999);
+    env.set(GRB_DoubleParam_FeasibilityTol,1e-9);
+    env.set(GRB_IntParam_OutputFlag,0);
   }
 
+  //! Returns the current game
+  const SGGame & getGame() const { return game; }
+  //! Returns the environment
+  GRBEnv & getEnv() {return env; }
+  //! Returns payoff bounds
+  const vector< vector<double> > & getBounds() const { return bounds; }
+  //! Return directions
+  const vector<SGPoint> & getDirections() const { return directions; }
+  //! Return numDirections
+  int getNumDirections() const { return numDirections; }
+  
   //! Solve routine
   void solve();
 
@@ -80,9 +93,6 @@ void SGJYCSolver::solve()
 
       numIterations++;
     }
-
-  // delete[] model;
-  // delete[] env;
 }
 
 void SGJYCSolver::initialize()
@@ -97,20 +107,20 @@ void SGJYCSolver::initialize()
     }
 
   // Variables 
-  GRBVar *  var = model->addVars(4*game.getNumStates()); // One variable for each
+  GRBVar *  var = model.addVars(4*game.getNumStates()); // One variable for each
 					      // player/state in
 					      // equilibrium and one
 					      // variable for each
 					      // player/state as the
 					      // threat
-  for (int varCtr = 0; varCtr < model->get(GRB_IntAttr_NumVars); varCtr++)
+  for (int varCtr = 0; varCtr < model.get(GRB_IntAttr_NumVars); varCtr++)
     {
       var[varCtr].set(GRB_DoubleAttr_LB,-1e20);
     }
 
   // First 2*numStates variables correspond to eq payoffs, second
   // 2*numStates are threats.
-  model->update();
+  model.update();
 
   // Calculate initial bounds. 
   SGPoint NE, SW;
@@ -137,7 +147,7 @@ void SGJYCSolver::initialize()
       // Equilibrium payoffs
       for (int dir = 0; dir < numDirections; dir++)
 	{
-	  model->addConstr(var[2*state]*directions[dir][0]
+	  model.addConstr(var[2*state]*directions[dir][0]
 			  + var[2*state+1]*directions[dir][1]
 			  <= bounds[state][dir]);
 	} // direction
@@ -145,12 +155,12 @@ void SGJYCSolver::initialize()
       // Threat points
       for (int dir = 0; dir < numDirections; dir++)
 	{
-	  model->addConstr(var[2*game.getNumStates()+2*state]*directions[dir][0]
+	  model.addConstr(var[2*game.getNumStates()+2*state]*directions[dir][0]
 			  + var[2*game.getNumStates()+2*state+1]*directions[dir][1]
 			  <= bounds[state][dir]);
 	} // direction
     } // state
-  model->update();
+  model.update();
   
   delete[] var;
 }
@@ -167,9 +177,9 @@ double SGJYCSolver::iterate()
   int numStates = game.getNumStates();
   double delta = game.getDelta();
 
-  GRBVar * var = model->getVars();
+  GRBVar * var = model.getVars();
 
-  GRBConstr * constr = model->getConstrs();
+  GRBConstr * constr = model.getConstrs();
 
   // Update feasibility constraints.
   for (int state = 0; state < numStates; state++)
@@ -181,8 +191,6 @@ double SGJYCSolver::iterate()
   	  constr[(2*state+1)*numDirections+dir].set(GRB_DoubleAttr_RHS,bounds[state][dir]);
   	} // direction
     } // state
-
-  // delete[] constr;
 
   vector< vector<double> > 
     newBounds(numStates,
@@ -221,13 +229,13 @@ double SGJYCSolver::iterate()
 	  						       +2*sp+player];
 	  	    }
 		  
-	  	  model->addConstr(lhs >= rhs);
+	  	  model.addConstr(lhs >= rhs);
 	  	} // dev
 
 	      deviations[player] = actions[player];
 	    } // player
 
-	  model->update();
+	  model.update();
 
 	  for (int dir = 0; dir < numDirections; dir++)
 	    {
@@ -240,15 +248,15 @@ double SGJYCSolver::iterate()
 		  
 		}
 	      
-	      model->setObjective(obj);
-	      model->getEnv().set(GRB_IntParam_OutputFlag,0);
-	      model->set(GRB_IntAttr_ModelSense,-1); // maximize
-	      model->optimize();
+	      model.setObjective(obj);
+	      model.getEnv().set(GRB_IntParam_OutputFlag,0);
+	      model.set(GRB_IntAttr_ModelSense,-1); // maximize
+	      model.optimize();
 
-	      if (model->get(GRB_IntAttr_Status)==GRB_OPTIMAL)
+	      if (model.get(GRB_IntAttr_Status)==GRB_OPTIMAL)
 		{
 		  double val = (1-delta)*payoffs[state][action]*directions[dir]
-		    + delta * model->get(GRB_DoubleAttr_ObjVal);
+		    + delta * model.get(GRB_DoubleAttr_ObjVal);
 
 		  if (val > newBounds[state][dir])
 		    newBounds[state][dir] = val;
@@ -258,13 +266,13 @@ double SGJYCSolver::iterate()
 	    } // direction
 
 	  // Remove IC constraints.
-	  constr = model->getConstrs();
+	  constr = model.getConstrs();
 	  for (int constrCtr = 2*numStates*numDirections; 
-	       constrCtr < model->get(GRB_IntAttr_NumConstrs);
+	       constrCtr < model.get(GRB_IntAttr_NumConstrs);
 	       constrCtr++)
-	    model->remove(constr[constrCtr]);
+	    model.remove(constr[constrCtr]);
 
-	  model->update();
+	  model.update();
 	  // delete[] constr;
 	} // action
     } // state

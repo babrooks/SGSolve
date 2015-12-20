@@ -90,7 +90,7 @@ int main ()
 
   sim.initialize();
 
-  sim.simulate(10000,0,soln.iterations.back().iteration-4);
+  sim.simulate(10000,0,soln.getIterations().back().getIteration()-4);
 
   vector<int> stateDistr = sim.getStateDistr();
   vector< vector<int> > actionDistr = sim.getActionDistr();

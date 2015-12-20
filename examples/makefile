@@ -1,4 +1,8 @@
-CXX=g++
+
+CSYSFLAGS = -fPIC 
+CMTFLAGS = 
+LDMTFLAGS = -lpthread -lm
+
 CPPDIR=../src/cpp
 HPPDIR=../src/hpp
 EXAMPLEDIR=./cpp
@@ -9,20 +13,7 @@ LIBDIR=../lib
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
 MAINS= as_twostate kocherlakota abreusannikov kocherlakota2 pd guitester
 
-# CPLEX
-SYSTEM = x86-64_sles10_4.1
-LIBFORMAT = static_pic
-CSYSFLAGS  = -fPIC -DIL_STD -std=gnu++11
-# Compilation and linking flags enabling Multi-threading
-CMTFLAGS = -DILOUSEMT -D_REENTRANT
-LDMTFLAGS = -lpthread
-# Code optimization/debugging options
-
-# GRB
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc
-GRBDIR=/opt/gurobi563/linux64
-GRBINCLDIR=$(GRBDIR)/include
-GRBLIBDIR=$(GRBDIR)/lib
+include ../grb.mk
 
 BOOSTINCLDIR=/usr/local/include/boost/serialization/
 BOOSTDIR=/usr/local/lib/
@@ -32,20 +23,14 @@ CFLAGS = $(CSYSFLAGS) $(DEBUG) \
 	$(CMTFLAGS) \
 	-I$(HPPDIR) \
 	-I$(BOOSTINCLDIR) \
-	$(OPTIONS)  
+	$(OPTIONS) \
+	-m64
 LDFLAGS = -L$(BOOSTDIR) \
 	$(LDMTFLAGS) \
 	-L.
 
-OS := $(shell uname)
-ifeq ($(OS),Linux)
-	STATIC=-Wl,-Bstatic
-	DYNAMIC=-Wl,-Bdynamic
-else
-	STATIC=
-	DYNAMIC=
-endif
-
+# GRB
+MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc
 
 all: libsg.a $(MAINS)
 
@@ -54,10 +39,10 @@ all: libsg.a $(MAINS)
 $(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
-$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp libsg.a
+$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp
 	$(CXX) -I$(GRBINCLDIR) $(CFLAGS) $< -L$(GRBLIBDIR)	\
-	-lgurobi_c++ -lgurobi56 -L$(LIBDIR) -lsg -Wl,-Bstatic	\
-	-lboost_serialization -Wl,-Bdynamic $(LDFLAGS) -o $@
+	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
+	-lboost_serialization $(DYNAMIC) $(LDFLAGS) -o $@
 
 libsg.a: 
 	make -C ../src
