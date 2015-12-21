@@ -1,5 +1,46 @@
 #include "sggame.hpp"
 
+SGGame::SGGame(const SGAbstractGame & game):
+  numPlayers(2),
+  delta(game.getDelta()),
+  numStates(game.getNumStates()),
+  numActions(game.getNumActions()),
+  numActions_total(numStates),
+  payoffs(numStates),
+  probabilities(numStates),
+  eqActions(numStates),
+  unconstrained(2)
+{
+  for (int player = 0; player < numPlayers; player++)
+    unconstrained[player] = !game.constrained(player);
+
+  for (int state = 0; state < numStates; state++)
+    {
+      numActions_total[state] = numActions[state][0] * numActions[state][1];
+      payoffs[state] = vector<SGPoint>(numActions_total[state]);
+      probabilities[state] = vector< vector<double> >(numActions_total[state],
+						      vector<double> (numStates,0));
+
+      for (int action = 0; action < numActions_total[state]; action++)
+	{
+	  double probSum = 0;
+	  payoffs[state][action] = game.payoffs(state,action);
+	  for (int statep = 0; statep < numStates; statep++)
+	    {
+	      probSum +=
+		(probabilities[state][action][statep]
+		 = game.probability(state,action,statep));
+	      assert (game.probability(state,action,statep)>=0);
+	    }
+	  assert(abs(probSum-1.0)<1e-6);
+
+	  if (game.isEquilibriumAction(state,action))
+	    eqActions[state].push_back(action);
+	  
+	} // for action
+    } // for state
+} // Conversion from SGAbstractGame
+
 SGGame::SGGame(double _delta,
 	       int _numStates,
 	       const vector< vector<int> > & _numActions,

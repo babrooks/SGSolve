@@ -260,7 +260,7 @@ void SGSimulator::simulate(int _numIter,
   // Main simulation loop
   for (int iter = 0; iter < numIter; iter++)
     {
-      if (logFlag & iter<200)
+      if (logFlag && iter<200)
 	ss << "Period: " << iter
 	   << ", state: " << currentState
 	   << ", action: " << currentAction

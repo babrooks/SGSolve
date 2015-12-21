@@ -5,6 +5,7 @@
 #include "sgutilities.hpp"
 #include "sgexception.hpp"
 #include "sgtuple.hpp"
+#include "sgabstractgame.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
@@ -87,8 +88,9 @@ public:
     delta(0.9),
     numPlayers(2),
     unconstrained(2,false)
-  {
-  }
+  {}
+
+  SGGame(const SGAbstractGame & game);
     
   ~SGGame() {}
   //! Constructor excluding eqActions

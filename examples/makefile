@@ -11,7 +11,7 @@ LIBDIR=../lib
 # DEBUG=-DNDEBUG -O
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
-MAINS= as_twostate kocherlakota abreusannikov kocherlakota2 pd guitester
+MAINS= as_twostate kocherlakota abreusannikov kocherlakota2 pd guitester risksharing
 
 include ../grb.mk
 
@@ -22,6 +22,7 @@ CFLAGS = $(CSYSFLAGS) $(DEBUG) \
 	-I$(BOOSTDIR) \
 	$(CMTFLAGS) \
 	-I$(HPPDIR) \
+	-I./hpp/ \
 	-I$(BOOSTINCLDIR) \
 	$(OPTIONS) \
 	-m64

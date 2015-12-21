@@ -9,7 +9,7 @@
 #include "sgsimulator.hpp"
 
 SGSolution soln;
-list<SGIteration>::iterator currentIteration;
+list<SGIteration>::const_iterator currentIteration;
 int currentIterationIndex;
 bool solnLoaded;
 
@@ -607,7 +607,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    {
 	      for (player=0; player<soln.getGame().getNumPlayers(); player++)
 		{
-		  for (list<SGTuple>::iterator tuple = soln.getExtremeTuples().begin();
+		  for (list<SGTuple>::const_iterator tuple = soln.getExtremeTuples().begin();
 		       tuple != soln.getExtremeTuples().end();
 		       tuple++)
 		    {
