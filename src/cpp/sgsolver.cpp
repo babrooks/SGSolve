@@ -14,9 +14,23 @@ void SGSolver::solve()
 
   approx.initialize();
 
-  while (approx.generate() > env.errorTol
-	 && approx.numIterations < env.maxIterations)
+  bool storeIterations = false;
+  if (env.getParam(SGEnv::STOREITERATIONS) == 2)
+    storeIterations = true;
+  
+  while (approx.generate(storeIterations) > env.getParam(SGEnv::ERRORTOL)
+	 && approx.numIterations < env.getParam(SGEnv::MAXITERATIONS))
     {};
+
+  if (env.getParam(SGEnv::STOREITERATIONS) == 1)
+    {
+      int lastRev = approx.numRevolutions;
+      while (approx.numRevolutions == lastRev
+	     && approx.numIterations < env.getParam(SGEnv::MAXITERATIONS))
+	{
+	  approx.generate(true);
+	}
+    }
 
   // Add the extreme tuples array to soln.
   for (vector<SGTuple>::const_iterator tuple

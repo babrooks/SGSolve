@@ -3,7 +3,7 @@
 
 int main()
 {
-  int numDirections = 50;
+  int numDirections = 100;
 
   int action, state, player;
 
@@ -11,7 +11,8 @@ int main()
   ofs.open("abs_jyc.log");
 
   SGGame game;
-  SGGame::load(game,"../src/MATLAB/games/koch_ne=5_c2e=25_d=0.90_p=4.00.sgm");
+  // SGGame::load(game,"../src/MATLAB/games/koch_ne=5_c2e=25_d=0.90_p=4.00.sgm");
+  SGGame::load(game,"rsgtest.sgm");
   game.setDiscountFactor(0.85);
   
   std::clock_t start = std::clock();
@@ -47,18 +48,19 @@ int main()
   SGEnv env;
   start = std::clock();
   SGSolver solver_abs(env,game);
+  env.setParam(SGEnv::STOREITERATIONS,2);
   solver_abs.solve();
 
   double duration_abs = (std::clock() - start) / (double) CLOCKS_PER_SEC;
   
   SGSolution soln = solver_abs.getSolution();
-  SGSolution::save(soln,"abs_jyc.sln");
+  // SGSolution::save(soln,"abs_jyc.sln");
 
   int lastIterOutsideJYC;
   int lastRevOutsideJYC;
   for (list<SGIteration>::const_reverse_iterator iter
-	 = soln.iterations.rbegin();
-       iter != soln.iterations.rend();
+	 = soln.getIterations().rbegin();
+       iter != soln.getIterations().rend();
        ++iter)
     {
       bool insideJYC = true;
@@ -66,7 +68,7 @@ int main()
 	{
 	  for (int dir = 0; dir < numDirections; dir++)
 	    {
-	      if (solver_jyc.getDirections()[dir]*(iter->pivot[state])
+	      if (solver_jyc.getDirections()[dir]*(iter->getPivot()[state])
 		  > solver_jyc.getBounds()[state][dir])
 		{
 		  cout << "Here I am! I'm at iteration "
@@ -91,8 +93,8 @@ int main()
   int firstIterInsideJYC;
   int firstRevInsideJYC;
   for (list<SGIteration>::const_iterator iter
-	 = soln.iterations.begin();
-       iter != soln.iterations.end();
+	 = soln.getIterations().begin();
+       iter != soln.getIterations().end();
        ++iter)
     {
       bool outsideJYC = true;
@@ -100,7 +102,7 @@ int main()
 	{
 	  for (int dir = 0; dir < numDirections; dir++)
 	    {
-	      if (solver_jyc.getDirections()[dir]*(iter->pivot[state])
+	      if (solver_jyc.getDirections()[dir]*(iter->getPivot()[state])
 		  < solver_jyc.getBounds()[state][dir])
 		{
 		  cout << "Here I am! I'm at iteration "
@@ -124,7 +126,7 @@ int main()
 
   
   // Now run until the end of the revolution after lastOutsideJYC.
-  env.setParam(SGEnv::STOREITERATIONS,false);
+  env.setParam(SGEnv::STOREITERATIONS,0);
   SGApprox approx(env,game,soln);
   
   start = std::clock();
@@ -136,7 +138,7 @@ int main()
   start = std::clock();
   approx.initialize();
   while (approx.getNumRevolutions() < lastRevOutsideJYC+1) 
-    approx.generate();
+    approx.generate(false);
   double passTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 
   cout << "JYC took " << duration_jyc << " seconds." << endl;

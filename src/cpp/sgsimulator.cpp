@@ -12,9 +12,11 @@ void SGSimulator::initialize()
   // First find the iteration that starts the last revolution.
   startOfLastRev = soln.getIterations().end();
   startOfLastRev--;
-  while (startOfLastRev->getRevolution() == soln.getIterations().back().getRevolution())
+  while (startOfLastRev->getRevolution() == soln.getIterations().back().getRevolution()
+	 && startOfLastRev != soln.getIterations().begin())
     startOfLastRev--;
-  startOfLastRev++;
+  if (startOfLastRev != soln.getIterations().begin())
+    startOfLastRev++;
 
   int itersInLastRev = soln.getIterations().back().getIteration()
     - startOfLastRev->getIteration()+1;

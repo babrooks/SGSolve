@@ -2,33 +2,36 @@
 
 SGEnv::SGEnv()
 {
+  doubleParams = vector<double>(NUMDOUBLEPARAMS,0);
+  boolParams = vector<bool>(NUMBOOLPARAMS,0);
+  intParams = vector<int>(NUMINTPARAMS,0);
   restoreDefaults();
 }
 
 void SGEnv::restoreDefaults()
 {
-  maxIterations = 1e6;
-  maxUpdatePivotPasses = 1e8;
-  tupleReserveSize = 1e4;
+  intParams[MAXITERATIONS] = 1e6;
+  intParams[MAXUPDATEPIVOTPASSES] = 1e8;
+  intParams[TUPLERESERVESIZE] = 1e4;
+  intParams[STOREITERATIONS] = 2;
 
-  errorTol = 1e-8;
-  directionTol = 1e-11;
-  pastThreatTol = 1e-10;
-  updatePivotTol = 1e-13;
-  ICTol = 1e-12;
-  normTol = 1e-12;
-  flatTol = 1e-10;
-  levelTol = 1e-12;
-  improveTol = 1e-13;
-  backBendingTol = 1e-6;
-  movementTol = 1e-14; 
-  roundTol = 0.0;
-  intersectTol = 1e-10;
+  doubleParams[ERRORTOL] = 1e-8;
+  doubleParams[DIRECTIONTOL] = 1e-11;
+  doubleParams[PASTTHREATTOL] = 1e-10;
+  doubleParams[UPDATEPIVOTTOL] = 1e-13;
+  doubleParams[ICTOL] = 1e-12;
+  doubleParams[NORMTOL] = 1e-12;
+  doubleParams[FLATTOL] = 1e-10;
+  doubleParams[LEVELTOL] = 1e-12;
+  doubleParams[IMPROVETOL] = 1e-13;
+  doubleParams[BACKBENDINGTOL] = 1e-6;
+  doubleParams[MOVEMENTTOL] = 1e-14; 
+  doubleParams[ROUNDTOL] = 0.0;
+  doubleParams[INTERSECTTOL] = 1e-10;
 
-  mergeTuples = false;
-  backBendingWarning = false;
-  storeIterations = true;
-  printToCout = true;
+  boolParams[MERGETUPLES] = false;
+  boolParams[BACKBENDINGWARNING] = false;
+  boolParams[PRINTTOCOUT] = true;
 
   setOStream(cout);
 }
@@ -38,89 +41,17 @@ void SGEnv::setParam(SGEnv::DBL_PARAM param, double value)
   if (value<0)
     throw(SGException(SGException::BAD_PARAM_VALUE));
 
-  switch (param)
-    {
-    case ERRORTOL:
-      errorTol = value;
-      break;
+  if (param < 0 || param > NUMDOUBLEPARAMS)
+    throw(SGException(SGException::UNKNOWN_PARAM));
 
-    case DIRECTIONTOL:
-      directionTol = value;
-      break;
-
-    case PASTTHREATTOL:
-      pastThreatTol = value;
-      break;
-      
-    case UPDATEPIVOTTOL:
-      updatePivotTol = value;
-      break;
-
-    case ICTOL:
-      ICTol = value;
-      break;
-
-    case NORMTOL:
-      normTol = value;
-      break;
-
-    case FLATTOL:
-      flatTol = value;
-      break;
-
-    case LEVELTOL:
-      levelTol = value;
-      break;
-
-    case IMPROVETOL:
-      improveTol = value;
-      break;
-
-    case ROUNDTOL:
-      roundTol = value;
-      break;
-      
-    case BACKBENDINGTOL:
-      backBendingTol = value;
-      break;
-
-    case MOVEMENTTOL:
-      movementTol = value;
-      break;
-
-    default:
-      throw(SGException(SGException::UNKNOWN_PARAM));
-    }
-
+  doubleParams[param] = value;
 } // setParam
 
 void SGEnv::setParam(SGEnv::BOOL_PARAM param, bool value)
 {
-  switch (param)
-    {
-    case BACKBENDINGWARNING:
-      backBendingWarning = value;
-      break;
-
-    case MERGETUPLES:
-      mergeTuples = value;
-      break;
-
-    case STOREITERATIONS:
-      storeIterations = value;
-      break;
-
-    case PRINTTOLOG:
-      printToLog = value;
-      break;
-      
-    case PRINTTOCOUT:
-      printToCout = value;
-      break;
-      
-    default:
-      throw(SGException(SGException::UNKNOWN_PARAM));
-    }
+  if (param < 0 || param > NUMBOOLPARAMS)
+    throw(SGException(SGException::UNKNOWN_PARAM));
+  boolParams[param] = value;
 } // setParam
 
 void SGEnv::setParam(SGEnv::INT_PARAM param, int value)
@@ -128,109 +59,29 @@ void SGEnv::setParam(SGEnv::INT_PARAM param, int value)
   if (value<0)
     throw(SGException(SGException::BAD_PARAM_VALUE));
 
-  switch (param)
-    {
-    case MAXITERATIONS:
-      maxIterations = value;
-      break;
-      
-    case MAXUPDATEPIVOTPASSES:
-      maxUpdatePivotPasses = value;
-      break;
-
-    case TUPLERESERVESIZE:
-      tupleReserveSize = value;
-      break;
-
-    default:
+  if (param < 0 || param > NUMINTPARAMS)
       throw(SGException(SGException::UNKNOWN_PARAM));
-    }
+  intParams[param] = value;
 } // setParam
 
 double SGEnv::getParam(SGEnv::DBL_PARAM param) const
 {
-  switch (param)
-    {
-    case ERRORTOL:
-      return errorTol;
+  if (param < 0 || param > NUMDOUBLEPARAMS)
+    throw(SGException(SGException::UNKNOWN_PARAM));
 
-    case DIRECTIONTOL:
-      return directionTol;
-
-    case PASTTHREATTOL:
-      return pastThreatTol;
-      
-    case UPDATEPIVOTTOL:
-      return updatePivotTol;
-
-    case ICTOL:
-      return ICTol;
-
-    case NORMTOL:
-      return normTol;
-
-    case FLATTOL:
-      return flatTol;
-
-    case LEVELTOL:
-      return levelTol;
-
-    case IMPROVETOL:
-      return improveTol;
-
-    case ROUNDTOL:
-      return roundTol;
-      
-    case BACKBENDINGTOL:
-      return backBendingTol;
-
-    case MOVEMENTTOL:
-      return movementTol;
-
-    default:
-      throw(SGException(SGException::UNKNOWN_PARAM));
-    }
-
+  return doubleParams[param];
 } // getParam
 
 bool SGEnv::getParam(SGEnv::BOOL_PARAM param) const
 {
-  switch (param)
-    {
-    case BACKBENDINGWARNING:
-      return backBendingWarning;
-
-    case MERGETUPLES:
-      return mergeTuples;
-
-    case STOREITERATIONS:
-      return storeIterations;
-
-    case PRINTTOLOG:
-      return printToLog;
-      
-    case PRINTTOCOUT:
-      return printToCout;
-      
-    default:
-      throw(SGException(SGException::UNKNOWN_PARAM));
-    }
+  if (param < 0 || param > NUMBOOLPARAMS)
+    throw(SGException(SGException::UNKNOWN_PARAM));
+  return boolParams[param];
 } // getParam
 
 int SGEnv::getParam(SGEnv::INT_PARAM param) const
 {
-  switch (param)
-    {
-    case MAXITERATIONS:
-      return maxIterations;
-      
-    case MAXUPDATEPIVOTPASSES:
-      return maxUpdatePivotPasses;
-
-    case TUPLERESERVESIZE:
-      return tupleReserveSize;
-
-    default:
+  if (param < 0 || param > NUMINTPARAMS)
       throw(SGException(SGException::UNKNOWN_PARAM));
-    }
+  return intParams[param];
 } // getParam

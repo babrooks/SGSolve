@@ -40,6 +40,8 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 		     new SGDblParamEdit(this,env,SGEnv::FLATTOL));
   editLayout->addRow(QString("Level tolerance:"),
 		     new SGDblParamEdit(this,env,SGEnv::LEVELTOL));
+  editLayout->addRow(QString("Intersection tolerance:"),
+		     new SGDblParamEdit(this,env,SGEnv::INTERSECTTOL));
   editLayout->addRow(QString("Rounding:"),
 		     new SGDblParamEdit(this,env,SGEnv::ROUNDTOL));
   editLayout->addRow(QString("Back bending tolerance:"),
@@ -54,12 +56,12 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 		     new SGIntParamEdit(this,env,SGEnv::MAXUPDATEPIVOTPASSES));
   editLayout->addRow(QString("Tuple reserve size:"),
 		     new SGIntParamEdit(this,env,SGEnv::TUPLERESERVESIZE));
+  editLayout->addRow(QString("Store iterations:"),
+		     new SGIntParamEdit(this,env,SGEnv::STOREITERATIONS));
 
   // Construct and add boolean parameter edits.
   editLayout->addRow(QString("Merge tuples:"),
 		     new SGBoolParamBox(this,env,SGEnv::MERGETUPLES));
-  editLayout->addRow(QString("Store iterations:"),
-		     new SGBoolParamBox(this,env,SGEnv::STOREITERATIONS));
 
   mainLayout->addLayout(editLayout);
   mainLayout->addWidget(defaultButton);

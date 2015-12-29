@@ -84,8 +84,8 @@ public slots:
 	else
 	  soln.push_back(approx.extremeTuples.back());
 	
-	if (approx.generate() > env.errorTol
-	    && approx.numIterations < env.maxIterations)
+	if (approx.generate() > env.getParam(SGEnv::ERRORTOL)
+	    && approx.numIterations < env.getParam(SGEnv::MAXITERATIONS))
 	  {
 	    status = NOTCONVERGED;
 	    emit resultReady(false);

@@ -71,6 +71,7 @@ int main ()
 	      unconstrained);
 
   SGEnv env;
+  env.setParam(SGEnv::STOREITERATIONS,1);
   env.setParam(SGEnv::LEVELTOL,1e-12);
   
   cout << "Building solver" << endl;
@@ -81,16 +82,21 @@ int main ()
   
   cout << "Saving data... ";
   SGSolution soln = solver.getSolution();
-  SGSolution::save(soln,"sgtest.sln");
+  stringstream ss;
+  ss << "sgtest.sln";
+  SGSolution::save(soln,ss.str().c_str());
   cout << "Done!" << endl;
 
   SGGame::save(game,"as_twostate.sgm");
 
-  SGSimulator sim(soln);
+  SGSolution soln2;
+  SGSolution::load(soln2,ss.str().c_str());
+  
+  SGSimulator sim(soln2);
 
   sim.initialize();
 
-  sim.simulate(10000,0,soln.getIterations().back().getIteration()-4);
+  sim.simulate(10000,0,soln2.getIterations().back().getIteration()-4);
 
   vector<int> stateDistr = sim.getStateDistr();
   vector< vector<int> > actionDistr = sim.getActionDistr();

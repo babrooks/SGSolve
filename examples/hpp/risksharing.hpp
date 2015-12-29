@@ -71,23 +71,10 @@ public:
       {
 	E[e] = (1.0*e)/(numEndowments-1); // player 0's endowment
 
-	cout << E[e] << endl;
-	
-	numActions_total[e] = abs(e-midPoint)*c2e+1;
-	if (e < midPoint)
-	  {
-	    numActions[e][0] = 1;
-	    numActions[e][1] = numActions_total[e];
-	  }
-	else if (e>midPoint)
-	  {
-	    numActions[e][1] = 1;
-	    numActions[e][0] = numActions_total[e];
-	  }
+	numActions[e][0] = e*c2e+1;
+	numActions[e][1] = (numEndowments-e)*c2e+1;
       } // for e
 
-    cout << endl << E[midPoint] << endl;
-    
     cIncr = (E[1]-E[0])/2.0;
 
     // Sum the pseudo probabilities for each state and action

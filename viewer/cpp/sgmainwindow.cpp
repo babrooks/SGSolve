@@ -116,9 +116,11 @@ void SGMainWindow::loadSolution()
 						 "./",
 						 tr("SGViewer solution files (*.sln)"));
 
+  qDebug() << "did I get to here? " << endl; 
   if (newPath.isEmpty())
     return;
 
+  qDebug() << "did I get to here? " << endl; 
   path = newPath;
 
   try
@@ -142,9 +144,11 @@ void SGMainWindow::loadSolution()
       setWindowTitle(newWindowTitle);
       
     }
-  catch (std::exception & e)
+  catch (...)
     {
       qDebug() << "Load solution didnt work :(" << endl;
+      QErrorMessage em(this);
+      em.showMessage(QString("Load solution didnt work :("));
     }
 } // loadSolution
 

@@ -90,7 +90,7 @@ public:
   void serialize(Archive &ar, const unsigned int version)
   {
     ar & state & action & minIC 
-      & points & tuples & corner;
+      & points & tuples & isNull & corner;
   }
 
   friend class boost::serialization::access;

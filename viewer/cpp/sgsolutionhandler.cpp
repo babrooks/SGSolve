@@ -159,7 +159,7 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
       statePlots[state] =  new SGCustomPlot(state,false);
       statePlots[state]->setInteraction(QCP::iRangeZoom,true);
       statePlots[state]->setInteraction(QCP::iRangeDrag,true);
-
+      
       connect(statePlots[state],SIGNAL(inspectPoint(SGPoint,int,bool)),
 	      this,SLOT(inspectPoint(SGPoint,int,bool)) );
       connect(statePlots[state],SIGNAL(simulateEquilibrium(SGPoint,int,bool)),

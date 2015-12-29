@@ -209,7 +209,7 @@ public:
    finds the best new direction, advances the pivot, and resets the
    flags. Also returns the distance between revolutions when a
    revolution is completed. Otherwise, returns 1. */
-  double generate();
+  double generate(bool storeIteration = true);
 
   //! Algorithm just passed north.
   /*! Indicates whether or not the current direction passed north on

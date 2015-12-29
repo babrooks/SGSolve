@@ -6,6 +6,8 @@
 //! Manages parameters for algorithm behavior
 /*!  This class contains parameters for the algorithm.
 
+  TODO: Add more checks on the correctness of passed parameter values.
+
   \ingroup src
  */
 class SGEnv
@@ -13,42 +15,15 @@ class SGEnv
 private:
   // Parameters
 
-  // Double parameters
-  double errorTol; /*!< Level at which algorithm converges. */
-  double directionTol; /*!< Threshhold for changing cardinal directions. */
-  double updatePivotTol; /*!< Threshhold for pivot update. */
-  double pastThreatTol; /*!< Threshhold for updating the threat tuple. */
-  double ICTol; /*!< Threshold for violation of IC constraints. */
-  double normTol; /*!< Minimum norm for admissible directions. */
-  double flatTol; /*!< Direction changes less than this will be merged. */
-  double levelTol; /*!< Closeness to non-binding direction to test
-		     feasibility. */
-  double improveTol; /*!< Minimum improvement in direction to replace
-		       best direction. */
-  double roundTol; /*!< Pivot coordinates are rounded off to this tol. */
-  double backBendingTol; /*!< Threshold improvement for considering a
-			   direction "back-bending". */
-  double movementTol; /*!< Movements below this will replace the
-			previous pivot. */
-  double intersectTol; /*!< Threshold difference in levels above which
-                          the SGAction class will consider two points
-                          to be distinct. */
+  //! Double parameters
+  vector<double> doubleParams;
 
-  // Bool parameters
-  bool backBendingWarning; /*!< Flag to issue warnings when back-bending
-			     detected. */
-  bool mergeTuples; /*!< Flag to control whether or not flats are merged. */
-  bool storeIterations; /*!< If true, store iterations in data. */
-  bool printToLog; /*!< If true, prints progress to a log file. */
-  bool printToCout; /*!< If true, prints progress to cout. */
+  //! Bool parameters
+  vector<bool> boolParams;
+
+  //! Int parameters
+  vector<int> intParams;
   
-  // Int parameters
-  long int maxIterations; /*!< Maximum number of iterations. */
-  long int maxUpdatePivotPasses; /*!< Maximum number of passes to update
-			      pivot. */
-  int tupleReserveSize; /*!< Increment the extremeTuples array by this
-			  amount when capacity reached. */
-
   //! Output stream. Not currently used.
   ofstream os; 
   
@@ -84,10 +59,15 @@ public:
                          the current direction is above this
                          threshold, the direction is considered
                          "back-bending". */
-      MOVEMENTTOL /*!< If the movement of the pivot in multiples of
+      MOVEMENTTOL, /*!< If the movement of the pivot in multiples of
                      the current direction is below this threshold,
                      the new pivot will replace the current last
                      extreme point. */
+      INTERSECTTOL, /*! Controls the length of segment that is
+                        sufficient to take an intersection in
+                        SGAction. */
+      NUMDOUBLEPARAMS /*!< Used internally to indicate the number of
+			enumerated double parameters. */
     };
 
   //! Boolean parameters
@@ -102,13 +82,12 @@ public:
                       extreme tuple with the new pivot when either a
                       flat has been detected or the movement in the
                       pivot is too small. */
-      STOREITERATIONS, /*!< If true, the algorithm will store
-                         information about the pivot, best action, and
-                         best direction at each iteration. */
       PRINTTOLOG, /*!< If true, the algorithm will print progress to a
                     log file. */
-      PRINTTOCOUT /*!< If true, the algorithm will print progress to
+      PRINTTOCOUT, /*!< If true, the algorithm will print progress to
                      cout. */
+      NUMBOOLPARAMS /*!< Used internally to indicate the number of
+			enumerated bool parameters. */
     };
 
   //! Integer parameters
@@ -120,9 +99,15 @@ public:
                        iterations has been reached. */
       MAXUPDATEPIVOTPASSES, /*!< The algorithm stops updating the
                                pivot after this many updates. */
-      TUPLERESERVESIZE /*!< The amount by which the extremeTuples
+      STOREITERATIONS, /*!< Controlls whether or not the algorithm
+                         stores information about the pivot, best
+                         action, and best direction at each
+                         iteration. */
+      TUPLERESERVESIZE, /*!< The amount by which the extremeTuples
                           member of SGApproximation is incremented
                           when the capacity is reached. */
+      NUMINTPARAMS /*!< Used internally to indicate the number of
+			enumerated int parameters. */
     };
 
   //! Constructor

@@ -44,8 +44,8 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
       double l0 = normal * segment[0];
       double l1 = normal * segment[1];
 
-      if (l0 > level + env.ICTol
-	  && l1 > level + env.ICTol)
+      if (l0 > level + env.getParam(SGEnv::ICTOL)
+	  && l1 > level + env.getParam(SGEnv::ICTOL))
 	{
 	  // Both lie above the ray.
 	  segment.clear();
@@ -55,7 +55,7 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
 	{
 	  // Leave points alone.
 	}
-      else if (abs(l0 - l1)>env.intersectTol)
+      else if (abs(l0 - l1)>env.getParam(SGEnv::INTERSECTTOL))
 	{
 	  // Can take intersection.
 	  double weightOn1 = (level - l0)/(l1 - l0);
