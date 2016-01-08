@@ -1,4 +1,20 @@
 
+sgmex('IterToBeginning');
+firstIter = sgmex('GetCurrentIteration');
+
+numStates = sgmex('GetNumStates');
+T=sgmex('GetTuples');
+for s = 1:numStates
+	plot(T(firstIter.numExtremeTuples:end,2*s-1),...
+		T(firstIter.numExtremeTuples:end,2*s),'b-');
+	hold on;
+end
+
+
+hold off;
+
+%%
+
 
 sgviewer('/home/babrooks/Dropbox/benshare/stochasticgames/code/examples/sgtest.dat');
 

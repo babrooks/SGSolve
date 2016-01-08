@@ -65,7 +65,8 @@ public:
     state(_state),
     action(_action),
     minIC(-numeric_limits<double>::max()),
-    isNull(false)
+    isNull(false),
+    corner(false)
   {
     points.resize(2);
     tuples.resize(2); 
@@ -89,8 +90,13 @@ public:
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)
   {
-    ar & state & action & minIC 
-      & points & tuples & isNull & corner;
+    ar & state;
+    ar & action;
+    ar & minIC;
+    ar & points;
+    ar & tuples;
+    ar & isNull;
+    ar & corner;
   }
 
   friend class boost::serialization::access;

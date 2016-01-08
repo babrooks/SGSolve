@@ -62,7 +62,7 @@ public:
   //! Static method for saving an SGSolution object to the file filename.
   static void save(const SGSolution & soln, const char* filename)
   {
-    std::ofstream ofs(filename);
+    std::ofstream ofs(filename,std::fstream::out);
 
     if (ofs.good())
       {
@@ -76,8 +76,8 @@ public:
   //! Static method for loading an SGSolution object from the file filename.
   static void load(SGSolution & soln, const char* filename)
   {
-    std::ifstream ifs(filename);
-    if (ifs.good())
+    std::ifstream ifs(filename,std::fstream::in);
+    if (ifs.good() && ifs.is_open())
       {
 	boost::archive::text_iarchive ia(ifs);
 	ia >> soln;

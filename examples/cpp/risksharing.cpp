@@ -4,7 +4,7 @@
 int main()
 {
   double delta = 0.85;
-  int numEndowments = 11;
+  int numEndowments = 9;
   int c2e = 10;
   int numSimIters = 1e7;
 

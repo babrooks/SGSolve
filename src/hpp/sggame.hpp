@@ -72,9 +72,15 @@ private:
   template <class Archive> 
   void serialize(Archive& ar, const unsigned int version)
   {
-    ar & delta & numPlayers & numStates
-      & numActions & numActions_total;
-    ar & payoffs & probabilities & eqActions & unconstrained;
+    ar & delta;
+    ar & numPlayers;
+    ar & numStates;
+    ar & numActions;
+    ar & numActions_total;
+    ar & payoffs;
+    ar & probabilities;
+    ar & eqActions;
+    ar & unconstrained;
   }
 
 public:

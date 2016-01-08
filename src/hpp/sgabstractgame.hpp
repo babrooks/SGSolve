@@ -1,6 +1,12 @@
 #ifndef SGABSTRACTGAME_HPP
 #define SGABSTRACTGAME_HPP
 
+//! A virtual class for constructing games
+/*! This class can be derived from to create a template from which an
+    SGGame is constructed.
+
+   \ingroup src
+ */
 class SGAbstractGame
 {
 protected:

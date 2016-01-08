@@ -8,26 +8,16 @@ private:
   double persistence;
   vector<double> E;
   int midPoint;
+  double eIncr;
   double cIncr;
   vector< vector<double> > stateProbSum;
   vector<int> numActions_total;
 
   double consumption(int e, int t) const
   {
-    double alpha = (1.0*t)/(numActions_total[e]-1.0);
-    
-    if (e<midPoint)
-      {
- 	// Player 1 is transferring to player 0
-	return E[e] + (1.0-alpha)*(0.5-E[e]);
-      }
-    else if (e>midPoint)
-      {
- 	// Player 0 is transferring to player 1
-	return E[e] + alpha*(0.5-E[e]);
-      }
-    else
-      return E[midPoint];
+    assert(E[e]+t*cIncr>=0);
+    assert(E[e]+t*cIncr<=1);
+    return E[e]+t*cIncr;
   }
 
   double cdf(double x) const
@@ -42,8 +32,8 @@ private:
   {
     double c = consumption(e,t);
     
-    return ( cdf(E[ep]-c+cIncr) - cdf(E[ep]-c-cIncr)
-	     + cdf(c-E[ep]+cIncr) - cdf(c-E[ep]-cIncr) );
+    return ( cdf(E[ep]-c+eIncr) - cdf(E[ep]-c-eIncr)
+	     + cdf(c-E[ep]+eIncr) - cdf(c-E[ep]-eIncr) );
   } // probHelper
   
 public:
@@ -72,34 +62,48 @@ public:
 	E[e] = (1.0*e)/(numEndowments-1); // player 0's endowment
 
 	numActions[e][0] = e*c2e+1;
-	numActions[e][1] = (numEndowments-e)*c2e+1;
+	numActions[e][1] = (numEndowments-e-1)*c2e+1;
+	numActions_total[e] = numActions[e][0]*numActions[e][1];
       } // for e
 
-    cIncr = (E[1]-E[0])/2.0;
+    eIncr = (E[1]-E[0])/2.0;
+    cIncr = 1.0/( (numEndowments-1)*c2e + 1 );
 
     // Sum the pseudo probabilities for each state and action
     for (int e = 0; e < numEndowments; e++)
       {
 	stateProbSum[e] = vector<double> (numActions_total[e],0);
-	for (int t = 0; t < numActions_total[e]; t++)
+	for (int a = 0; a < numActions_total[e]; a++)
 	  {
+	    int t = (a/numActions[e][0])-(a%numActions[e][0]);
 	    for (int ep = 0; ep < numStates; ep++)
-	      stateProbSum[e][t] += probHelper(e,t,ep);
+	      stateProbSum[e][a] += probHelper(e,t,ep);
 	  } // for t
       } // for e
   } // constructor
 
   virtual SGPoint payoffs(int state, const vector<int> & actions) const
   {
-    int t = max(actions[0],actions[1]);
+    int t = actions[1]-actions[0]; // net transfer from 0 to 1
     double c = consumption(state,t);
+
     return SGPoint(sqrt(c),sqrt(1-c));
   } // payoffs
 
   virtual double probability(int e, const vector<int> & actions, int ep) const
   {
-    int t = max(actions[0],actions[1]);
-    return probHelper(e,t,ep)/stateProbSum[e][t];
+    int t = actions[1]-actions[0];
+    int a = actions[0]+actions[1]*numActions[e][0];
+    return probHelper(e,t,ep)/stateProbSum[e][a];
   } // probability
+
+  virtual bool isEquilibriumAction(int state, int action) const
+  {
+    // Return true iff one of the players' actions is zero.
+    if ( (action<numActions[state][0])
+	 || ( (action%numActions[state][0]) == 0 ) )
+      return true;
+    return false;
+  } // isEquilibriumAction
   
 };

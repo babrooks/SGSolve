@@ -1,14 +1,14 @@
 
-CSYSFLAGS = -fPIC 
+CSYSFLAGS = -fPIC -std=gnu++11
 CMTFLAGS = 
 LDMTFLAGS = -lpthread -lm
 
 CPPDIR=../src/cpp
 HPPDIR=../src/hpp
 EXAMPLEDIR=./cpp
-DEBUG=-g
 LIBDIR=../lib
-# DEBUG=-DNDEBUG -O
+# DEBUG=-g
+DEBUG=-DNDEBUG -O
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
 MAINS= as_twostate kocherlakota abreusannikov kocherlakota2 pd guitester risksharing

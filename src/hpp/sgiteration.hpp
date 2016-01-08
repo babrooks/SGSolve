@@ -118,10 +118,18 @@ public:
   //! Serialize the iteration using Boost.
   void serialize(Archive &ar, const unsigned int version)
   {
-    ar & iteration & revolution & numExtremeTuples
-      & pivot & direction & actions
-      & bestState & bestAction & regime & actionTuple
-      & regimeTuple & threatTuple;
+    ar & iteration;
+    ar & revolution;
+    ar & numExtremeTuples;
+    ar & pivot;
+    ar & direction;
+    ar & actions;
+    ar & bestState;
+    ar & bestAction;
+    ar & regime;
+    ar & actionTuple;
+    ar & regimeTuple;
+    ar & threatTuple;
   }
 }; // SGIteration
 
