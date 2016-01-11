@@ -56,7 +56,7 @@ void SGPoint::min(const SGPoint & p)
 double& SGPoint::operator[](int player)
 {
   if(player < 0 || player >= 2)
-    throw(SGException(SGException::OUT_OF_BOUNDS));
+    throw(SGException(SG::OUT_OF_BOUNDS));
 
   return xy[player];
 }
@@ -64,7 +64,7 @@ double& SGPoint::operator[](int player)
 const double& SGPoint::operator[](int player) const
 {
   if(player < 0 || player >= 2)
-    throw(SGException(SGException::OUT_OF_BOUNDS));
+    throw(SGException(SG::OUT_OF_BOUNDS));
 
   return xy[player];
 }
@@ -109,7 +109,7 @@ SGPoint& SGPoint::operator*=(double d)
 SGPoint& SGPoint::operator/=(double d)
 {
   if(d==0.0)
-    throw(SGException(SGException::DIVIDE_BY_ZERO));
+    throw(SGException(SG::DIVIDE_BY_ZERO));
 
   for (int i=0; i<2; i++)
     this->xy[i] /= d;

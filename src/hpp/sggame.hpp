@@ -199,7 +199,7 @@ public:
 	oa << game;
       }
     else
-      throw(SGException(SGException::FAILED_OPEN));
+      throw(SGException(SG::FAILED_OPEN));
   }
 
   //! Static method for loading an SGGame object from the file filename.
@@ -212,12 +212,11 @@ public:
 	ia >> game;
       }
     else
-      throw(SGException(SGException::FAILED_OPEN));
+      throw(SGException(SG::FAILED_OPEN));
   }
 
   friend class boost::serialization::access;
   friend class SGSolver;
-  friend class SGApprox;
 };
 
 #endif

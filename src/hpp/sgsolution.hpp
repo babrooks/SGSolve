@@ -70,7 +70,7 @@ public:
 	oa << soln;
       }
     else
-      throw(SGException(SGException::FAILED_OPEN));
+      throw(SGException(SG::FAILED_OPEN));
   }
 
   //! Static method for loading an SGSolution object from the file filename.
@@ -83,7 +83,7 @@ public:
 	ia >> soln;
       }
     else
-      throw(SGException(SGException::FAILED_OPEN));
+      throw(SGException(SG::FAILED_OPEN));
   }
 
   friend class boost::serialization::access;

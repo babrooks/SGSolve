@@ -13,25 +13,24 @@ void SGApprox::initialize()
 
   logfs.open("sg.log",std::ofstream::out);
 
-  numIterations = 0; numRevolutions = 0;
-
   SGPoint payoffUB, payoffLB;
   game.getPayoffBounds(payoffUB,payoffLB);
 
   actions = vector< list<SGAction> > (numStates);
+
+  const vector< list<int> > & eqActions = game.getEquilibriumActions();
   // Create the intersection arrays.
   for (state = 0; state < numStates; state++)
     {
-      if (game.eqActions.size()==numStates 
-	  && game.eqActions[state].size()>0)
+      if (eqActions.size()==numStates && eqActions[state].size()>0)
 	{
-	  for (list<int>::const_iterator actionIter = game.eqActions[state].begin(); 
-	       actionIter != game.eqActions[state].end(); 
+	  for (list<int>::const_iterator actionIter = eqActions[state].begin(); 
+	       actionIter != eqActions[state].end(); 
 	       ++actionIter)
 	    actions[state].push_back(SGAction(env,state,*actionIter));
 	}
       else
-	for (action = 0; action < game.numActions_total[state]; action++)
+	for (action = 0; action < game.getNumActions_total()[state]; action++)
 	  actions[state].push_back(SGAction(env,state,action));
     } // state
 
@@ -42,14 +41,14 @@ void SGApprox::initialize()
   threatTuple = SGTuple(numStates,payoffLB);
 
   // Initialize extremeTuples
-  extremeTuples.clear(); extremeTuples.reserve(env.getParam(SGEnv::TUPLERESERVESIZE));
+  extremeTuples.clear(); extremeTuples.reserve(env.getParam(SG::TUPLERESERVESIZE));
   extremeTuples.push_back(SGTuple(numStates,SGPoint(payoffLB[0],payoffUB[1]))); 
   extremeTuples.push_back(SGTuple(numStates,SGPoint(payoffUB[0],payoffUB[1]))); 
   extremeTuples.push_back(SGTuple(numStates,SGPoint(payoffUB[0],payoffLB[1]))); 
   extremeTuples.push_back(SGTuple(numStates,SGPoint(payoffLB[0],payoffLB[1]))); 
   extremeTuples.push_back(SGTuple(numStates,SGPoint(payoffLB[0],payoffUB[1]))); 
 
-  if (env.getParam(SGEnv::PRINTTOLOG))
+  if (env.getParam(SG::PRINTTOLOG))
     {
       for (int point=0; point < extremeTuples.size(); point++)
 	logAppend(logfs,0,0,extremeTuples[point],0,0);
@@ -65,14 +64,15 @@ void SGApprox::initialize()
   // Initialize the currentDirection and pivot.
   currentDirection = SGPoint(payoffUB[0]-payoffLB[0],0.0);
   pivot = extremeTuples[0];
-  
-  if (env.getParam(SGEnv::STOREITERATIONS) == 2)
-    soln.push_back(SGIteration(-1,0,
-			       extremeTuples.size(),
-			       -1,-1,SG::Binding,actions,
-			       pivot,currentDirection,
-			       actionTuple,regimeTuple,
-			       threatTuple));
+
+  numIterations = -1; 
+  numRevolutions = 0;
+  bestRegime = SG::Binding;
+
+  if (env.getParam(SG::STOREITERATIONS) == 2)
+    soln.push_back(SGIteration(*this,
+			       env.getParam(SG::STOREACTIONS)));
+  numIterations = 0;
   
 } // initialize
 
@@ -103,14 +103,8 @@ double SGApprox::generate(bool storeIterations)
   
   if (storeIterations)
     {
-      soln.push_back(SGIteration(numIterations,numRevolutions,
-				 extremeTuples.size(),
-				 bestAction->getState(),bestAction->getAction(),
-				 bestRegime,
-				 actions,
-				 pivot,bestDirection,
-				 actionTuple,regimeTuple,
-				 threatTuple));
+      soln.push_back(SGIteration(*this,
+				 env.getParam(SG::STOREACTIONS)));
       assert(soln.getIterations().back().getBestAction()
 	     < game.getNumActions_total()[soln.getIterations().back().getBestState()]);
     }
@@ -124,17 +118,9 @@ double SGApprox::generate(bool storeIterations)
   
   if (passNorth)
     {
-      // for (int state = 0; state < numStates; state++)
-      // 	{
-      // 	  for (list<SGAction>::iterator action = actions[state].begin();
-      // 	       action != actions[state].end();
-      // 	       ++action)
-      // 	    action->updateTrim();
-      // 	}
-
       errorLevel = distance(westPoint, newWest, oldWest, westPoint);
 
-      if (env.getParam(SGEnv::PRINTTOCOUT))
+      if (env.getParam(SG::PRINTTOCOUT))
 	cout << progressString() << endl; 
       
       numRevolutions++;
@@ -183,23 +169,23 @@ void SGApprox::findBestDirection()
 	{
 	  SG::Regime bestBindingRegime = SG::Binding;
 
-	  SGPoint expPivot = pivot.expectation(game.probabilities[state][action->action]);
-	  SGPoint stagePayoff = game.payoffs[state][action->action];
+	  SGPoint expPivot = pivot.expectation(game.getProbabilities()[state][action->action]);
+	  SGPoint stagePayoff = game.getPayoffs()[state][action->action];
 	  SGPoint nonBindingPayoff = (1-delta) * stagePayoff + delta * expPivot;
 	  SGPoint nonBindingDirection = nonBindingPayoff - pivot[state];
 	  double nonBindingNorm = nonBindingDirection.norm();
 	  
 	  // if ( !improves(currentDirection,bestDirection,nonBindingDirection)
-	  //      && nonBindingNorm > env.getParam(SGEnv::NORMTOL) )
+	  //      && nonBindingNorm > env.getParam(SG::NORMTOL) )
 	  //   continue;
 
 	  if (expPivot >= action->minIC
-	      && nonBindingNorm > env.getParam(SGEnv::NORMTOL))
+	      && nonBindingNorm > env.getParam(SG::NORMTOL))
 	    {
-	      if (env.getParam(SGEnv::BACKBENDINGWARNING)
+	      if (env.getParam(SG::BACKBENDINGWARNING)
 		  && currentNormal*nonBindingDirection
 		  / sqrt(currentNorm*nonBindingNorm)
-		  >= env.getParam(SGEnv::BACKBENDINGTOL))
+		  >= env.getParam(SG::BACKBENDINGTOL))
 	      	cout << "Warning: Detected back-bending direction" << endl;
 
 	      if (improves(currentDirection,bestDirection,nonBindingDirection))
@@ -232,17 +218,17 @@ void SGApprox::findBestDirection()
 		  double bindingLevel = (bindingDirections[point]*nonBindingNormal)
 		    / std::sqrt(nonBindingNorm * bindingNorm);
 		      
-		  if (env.getParam(SGEnv::BACKBENDINGWARNING)
+		  if (env.getParam(SG::BACKBENDINGWARNING)
 		      && currentNormal*bindingDirections[point]
 		      / std::sqrt(currentNorm
 				  *bindingDirections[point].norm())
-		      >= env.getParam(SGEnv::BACKBENDINGTOL))
+		      >= env.getParam(SG::BACKBENDINGTOL))
 		    cout << "Warning: Detected back-bending direction" << endl;
 
-		  if (nonBindingNorm > env.getParam(SGEnv::NORMTOL)
-		      && bindingNorm > env.getParam(SGEnv::NORMTOL))
+		  if (nonBindingNorm > env.getParam(SG::NORMTOL)
+		      && bindingNorm > env.getParam(SG::NORMTOL))
 		    {
-		      if (bindingLevel < env.getParam(SGEnv::LEVELTOL)
+		      if (bindingLevel < env.getParam(SG::LEVELTOL)
 			  && (!foundBelow 
 			      || improves(nonBindingDirection,belowDirection,
 					  bindingDirections[point]) ) )
@@ -256,7 +242,7 @@ void SGApprox::findBestDirection()
 			    bestBindingRegime = SG::Binding1;
 			  foundBelow = true;
 			}
-		      if (bindingLevel > -env.getParam(SGEnv::LEVELTOL)
+		      if (bindingLevel > -env.getParam(SG::LEVELTOL)
 			  && (!foundAbove
 			      || improves(aboveDirection,nonBindingDirection,
 					  bindingDirections[point]) ) )
@@ -273,7 +259,7 @@ void SGApprox::findBestDirection()
 			  while (nextPoint < extremeTuples.size())
 			    {
 			      SGPoint newExpContVal = extremeTuples[nextPoint]
-				.expectation(game.probabilities[state][action->action]);
+				.expectation(game.getProbabilities()[state][action->action]);
 			      SGPoint nextDirection = (1-delta)*stagePayoff
 				+ delta*newExpContVal
 				- pivot[state];
@@ -287,7 +273,7 @@ void SGApprox::findBestDirection()
 				  bindingLevel = nextBindingLevel;
 				  bindingDirections[point] = nextDirection;
 
-				  if (bindingLevel > -env.getParam(SGEnv::LEVELTOL)
+				  if (bindingLevel > -env.getParam(SG::LEVELTOL)
 				      && (!foundAbove
 					  || improves(aboveDirection,
 						      nonBindingDirection,
@@ -309,10 +295,10 @@ void SGApprox::findBestDirection()
 
 		  if (foundAbove && foundBelow
 		      && (aboveDirection * belowDirection.getNormal() 
-			  >= env.getParam(SGEnv::LEVELTOL)
-			  || (belowDirection*aboveDirection >= env.getParam(SGEnv::LEVELTOL)
+			  >= env.getParam(SG::LEVELTOL)
+			  || (belowDirection*aboveDirection >= env.getParam(SG::LEVELTOL)
 			      && belowDirection * nonBindingDirection 
-			      >= env.getParam(SGEnv::LEVELTOL)) ) )
+			      >= env.getParam(SG::LEVELTOL)) ) )
 		    {
 		      available = true;
 		      
@@ -331,14 +317,14 @@ void SGApprox::findBestDirection()
 			    continue;
 			}
 
-		      if (nonBindingNorm > env.getParam(SGEnv::NORMTOL)
+		      if (nonBindingNorm > env.getParam(SG::NORMTOL)
 			  && improves(currentDirection,bestDirection,
 				      nonBindingDirection))
 			{
-			  if (env.getParam(SGEnv::BACKBENDINGWARNING)
+			  if (env.getParam(SG::BACKBENDINGWARNING)
 			      && currentNormal*nonBindingDirection
 			      /std::sqrt(currentNorm*nonBindingNorm)
-			      >= env.getParam(SGEnv::BACKBENDINGTOL))
+			      >= env.getParam(SG::BACKBENDINGTOL))
 			    cout << "Warning: Detected back-bending direction" << endl;
 
 			  bestDirection = nonBindingDirection;
@@ -368,7 +354,7 @@ void SGApprox::findBestDirection()
     } // state
 
   if (bestAction == actions[0].end())
-    throw(SGException(SGException::NO_ADMISSIBLE_DIRECTION));
+    throw(SGException(SG::NO_ADMISSIBLE_DIRECTION));
 
 } // findBestDirection
 
@@ -381,13 +367,13 @@ bool SGApprox::improves(const SGPoint & current,
   double newNorm = newDirection.norm();
   double level  =  newNormal * current/sqrt(newNorm)/sqrt(currentNorm);
 
-  return ( level > env.getParam(SGEnv::IMPROVETOL)
-	   || ( level > -env.getParam(SGEnv::IMPROVETOL)
+  return ( level > env.getParam(SG::IMPROVETOL)
+	   || ( level > -env.getParam(SG::IMPROVETOL)
 		&& newDirection*current > 0.0 ) )
     && (newNormal * best/sqrt(newNorm)/sqrt(best.norm()) 
-	< env.getParam(SGEnv::IMPROVETOL)); // This broke the kocherlakota example, but
+	< env.getParam(SG::IMPROVETOL)); // This broke the kocherlakota example, but
 			   // made the PD example and others work
-			   // beautifully (used to be -env.getParam(SGEnv::IMPROVETOL))
+			   // beautifully (used to be -env.getParam(SG::IMPROVETOL))
 } // improves
 
 void SGApprox::calculateNewPivot()
@@ -399,9 +385,9 @@ void SGApprox::calculateNewPivot()
   regimeTuple[bestAction->state] = bestRegime;
   actionTuple[bestAction->state] = &(*bestAction);
   bool flatDetected = false;
-  if (env.getParam(SGEnv::MERGETUPLES))
+  if (env.getParam(SG::MERGETUPLES))
     flatDetected = bestDirection.getNormal()*currentDirection
-      < env.getParam(SGEnv::FLATTOL)*sqrt(bestDirection.norm() * currentDirection.norm());
+      < env.getParam(SG::FLATTOL)*sqrt(bestDirection.norm() * currentDirection.norm());
   currentDirection = bestDirection;
 
   // First construct maxMovement array.
@@ -427,7 +413,7 @@ void SGApprox::calculateNewPivot()
 
 	      tempMovement = (delta*actionTuple[state]->minIC[player]
 			      -pivot[state][player]
-			      +(1-delta)*game.payoffs[state][actionTuple[state]->action][player])
+			      +(1-delta)*game.getPayoffs()[state][actionTuple[state]->action][player])
 		/ currentDirection[player];
 	      
 	      if (tempMovement < maxMovement[state]
@@ -446,11 +432,11 @@ void SGApprox::calculateNewPivot()
   vector<double> changes(movements);
 
   while (updatePivot(movements,changes,regimeTuple,
-		     maxMovement,maxMovementConstraints) > env.getParam(SGEnv::UPDATEPIVOTTOL)
-	 && (++updatePivotPasses < env.getParam(SGEnv::MAXUPDATEPIVOTPASSES)))
+		     maxMovement,maxMovementConstraints) > env.getParam(SG::UPDATEPIVOTTOL)
+	 && (++updatePivotPasses < env.getParam(SG::MAXUPDATEPIVOTPASSES)))
     {}
-  if (updatePivotPasses >= env.getParam(SGEnv::MAXUPDATEPIVOTPASSES))
-    throw(SGException(SGException::TOO_MANY_PIVOT_UPDATES));
+  if (updatePivotPasses >= env.getParam(SG::MAXUPDATEPIVOTPASSES))
+    throw(SGException(SG::TOO_MANY_PIVOT_UPDATES));
   
   double maxDistance = 0;
   for (state=0; state < numStates; state++)
@@ -466,8 +452,8 @@ void SGApprox::calculateNewPivot()
       if (regimeTuple[state]==SG::NonBinding)
 	{
 	  SGPoint tempPayoff( (1-delta)
-			      *game.payoffs[state][actionTuple[state]->action] 
-			      +delta*pivot.expectation(game.probabilities[state][actionTuple[state]->action]) );
+			      *game.getPayoffs()[state][actionTuple[state]->action] 
+			      +delta*pivot.expectation(game.getProbabilities()[state][actionTuple[state]->action]) );
 	  
 	  assert( SGPoint::distance(tempPayoff, pivot[state]) < 1e-8 );
 	  if ( SGPoint::distance(tempPayoff, pivot[state]) > 1e-5 )
@@ -476,9 +462,9 @@ void SGApprox::calculateNewPivot()
 	}
     }
   
-  pivot.roundTuple(env.getParam(SGEnv::ROUNDTOL));
-  if (env.getParam(SGEnv::MERGETUPLES) && (flatDetected
-			  || maxDistance < env.getParam(SGEnv::MOVEMENTTOL)) 
+  pivot.roundTuple(env.getParam(SG::ROUNDTOL));
+  if (env.getParam(SG::MERGETUPLES) && (flatDetected
+			  || maxDistance < env.getParam(SG::MOVEMENTTOL)) 
       && numIterations>0)
     {
       // cout << "Flat detected!" << endl;
@@ -487,7 +473,7 @@ void SGApprox::calculateNewPivot()
   else
     extremeTuples.push_back(pivot);
 
-  if (env.getParam(SGEnv::PRINTTOLOG))
+  if (env.getParam(SG::PRINTTOLOG))
     {
       logAppend(logfs,numIterations,numRevolutions,pivot,
 		bestAction->state,bestAction->action);
@@ -518,7 +504,7 @@ double SGApprox::updatePivot(vector<double> & movements,
       for (int statep = 0; statep < numStates; statep++)
 	{
 	  tempChange[state] += delta* 
-	    game.probabilities[state][actionTuple[state]->action][statep]
+	    game.getProbabilities()[state][actionTuple[state]->action][statep]
 	    * changes[statep];
 	}
     }
@@ -554,7 +540,7 @@ void SGApprox::updateFlags()
   for (int player=0; player < numPlayers; player++)
     {
       if (!facingEastNorth[player] 
-	  && currentDirection[player] > env.getParam(SGEnv::DIRECTIONTOL))
+	  && currentDirection[player] > env.getParam(SG::DIRECTIONTOL))
 	{ 
 	  // Passed due north
 	  facingEastNorth[player] = true;
@@ -572,7 +558,7 @@ void SGApprox::updateFlags()
 	  for (state = 0; state < numStates; state++)
 	    {
 	      if (pivot[state][player] > (threatTuple[state][player]
-					  + env.getParam(SGEnv::PASTTHREATTOL)) )
+					  + env.getParam(SG::PASTTHREATTOL)) )
 		{
 		  threatTuple[state][player] = extremeTuples[extremeTuples.size()-2][state][player];
 		  updatedThreatTuple[player] = true;
@@ -580,7 +566,7 @@ void SGApprox::updateFlags()
 	    } // state
 	}
       else if (facingEastNorth[player]
-	       && currentDirection[player] < -env.getParam(SGEnv::DIRECTIONTOL)) // Passed due south
+	       && currentDirection[player] < -env.getParam(SG::DIRECTIONTOL)) // Passed due south
 	facingEastNorth[player] = false;
 
     } // player
@@ -670,7 +656,7 @@ void SGApprox::updateMinPayoffs()
   for (int player = 0; player < numPlayers; player++)
     {
       if (!updatedThreatTuple[player] 
-	  || game.unconstrained[player])
+	  || game.getConstrained()[player])
 	update[player] = false;
     }
 
@@ -707,7 +693,7 @@ void SGApprox::calculateBindingContinuations()
 	  for (int player = 0; player < numPlayers; player++)
 	    {
 	      if (!updatedThreatTuple[player]
-		  || game.unconstrained[player])
+		  || game.getConstrained()[player])
 		continue;
 	      anyUpdate = true;
 
@@ -715,7 +701,7 @@ void SGApprox::calculateBindingContinuations()
 	      action->points[player].clear(); 
 	      
 	      nextPoint = extremeTuples.back()
-		.expectation(game.probabilities[action->state]
+		.expectation(game.getProbabilities()[action->state]
 			     [action->action]);
 
 	      for (tuple = extremeTuples.rbegin(),
@@ -726,13 +712,13 @@ void SGApprox::calculateBindingContinuations()
 		   ++tuple,++nextTuple, --tupleIndex)
 		{
 		  point = nextPoint;
-		  nextPoint = nextTuple->expectation(game.probabilities
+		  nextPoint = nextTuple->expectation(game.getProbabilities()
 						     [action->state]
 						     [action->action]);
 
 		  double gap = point[player] - nextPoint[player];
-		  if ( abs(gap) < env.getParam(SGEnv::FLATTOL)
-		       && abs(point[player] - action->minIC[player]) < env.getParam(SGEnv::FLATTOL) )
+		  if ( abs(gap) < env.getParam(SG::FLATTOL)
+		       && abs(point[player] - action->minIC[player]) < env.getParam(SG::FLATTOL) )
 		    {
 		      // A flat.
 		      newTuples[player].push_back(tupleIndex);
@@ -754,11 +740,11 @@ void SGApprox::calculateBindingContinuations()
 		    }
 
 		  // Break when the payoff for this player is below
-		  // but within env.getParam(SGEnv::PASTTHREATTOL)/2.0 of the threat
+		  // but within env.getParam(SG::PASTTHREATTOL)/2.0 of the threat
 		  // tuple
 		  if ( tuple->strictlyLessThan(threatTuple,player) 
 		       && !threatTuple
-		       .strictlyLessThan(*tuple+SGPoint(env.getParam(SGEnv::PASTTHREATTOL)/2.0),
+		       .strictlyLessThan(*tuple+SGPoint(env.getParam(SG::PASTTHREATTOL)/2.0),
 					 player) )
 		    break;
 		} // for point
@@ -767,7 +753,7 @@ void SGApprox::calculateBindingContinuations()
 	  for (int player = 0; player < numPlayers; player++)
 	    {	      
 	      if (updatedThreatTuple[player] 
-		  && !game.unconstrained[player])
+		  && !game.getConstrained()[player])
 		{
 		  // Remove points that are not IC
 		  int maxIndex, minIndex;
@@ -797,7 +783,7 @@ void SGApprox::calculateBindingContinuations()
 			}
 
 		      SGPoint expPivot 
-			= pivot.expectation(game.probabilities[state][action->getAction()]);
+			= pivot.expectation(game.getProbabilities()[state][action->getAction()]);
 		      action->intersectRaySegment(expPivot,currentDirection,
 						  player);
 		      
@@ -830,11 +816,11 @@ void SGApprox::calculateBindingContinuations()
 		   || (action->points[player].size()==2
 		       && (action->points[player][0][1-player]
 			   >= action->points[player][1][1-player]
-			   -env.getParam(SGEnv::PASTTHREATTOL))));
+			   -env.getParam(SG::PASTTHREATTOL))));
 
 	  // Drop the point if no longer IC
-	  if ((action->points[0].size() == 0 && !game.unconstrained[0])
-	      && (action->points[1].size() == 0 && !game.unconstrained[1]))
+	  if ((action->points[0].size() == 0 && !game.getConstrained()[0])
+	      && (action->points[1].size() == 0 && !game.getConstrained()[1]))
 	    {
 	      if (actionTuple[state] == &(*action))
 		regimeTuple[state] = SG::Binding;
@@ -862,7 +848,7 @@ void SGApprox::trimBindingContinuations()
 	  // Check if the line starting from pivot towards direction
 	  // cuts any of the intersection lines.
 	  expPivot 
-	    = pivot.expectation(game.probabilities[state][action->getAction()]);
+	    = pivot.expectation(game.getProbabilities()[state][action->getAction()]);
 
 	  action->trim(expPivot,currentDirection);
 
@@ -875,7 +861,7 @@ void SGApprox::trimBindingContinuations()
 		     || (action->trimmedPoints[player].size()==2
 			 && (action->trimmedPoints[player][0][1-player]
 			     >= action->trimmedPoints[player][1][1-player]
-			     -env.getParam(SGEnv::PASTTHREATTOL))));
+			     -env.getParam(SG::PASTTHREATTOL))));
 	      if (action->trimmedPoints[player].size()>0)
 		drop = false;
 	    }

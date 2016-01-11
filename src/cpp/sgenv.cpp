@@ -2,86 +2,87 @@
 
 SGEnv::SGEnv()
 {
-  doubleParams = vector<double>(NUMDOUBLEPARAMS,0);
-  boolParams = vector<bool>(NUMBOOLPARAMS,0);
-  intParams = vector<int>(NUMINTPARAMS,0);
+  doubleParams = vector<double>(SG::NUMDOUBLEPARAMS,0);
+  boolParams = vector<bool>(SG::NUMBOOLPARAMS,0);
+  intParams = vector<int>(SG::NUMINTPARAMS,0);
   restoreDefaults();
 }
 
 void SGEnv::restoreDefaults()
 {
-  intParams[MAXITERATIONS] = 1e6;
-  intParams[MAXUPDATEPIVOTPASSES] = 1e8;
-  intParams[TUPLERESERVESIZE] = 1e4;
-  intParams[STOREITERATIONS] = 2;
+  intParams[SG::MAXITERATIONS] = 1e6;
+  intParams[SG::MAXUPDATEPIVOTPASSES] = 1e8;
+  intParams[SG::TUPLERESERVESIZE] = 1e4;
+  intParams[SG::STOREITERATIONS] = 2;
 
-  doubleParams[ERRORTOL] = 1e-8;
-  doubleParams[DIRECTIONTOL] = 1e-11;
-  doubleParams[PASTTHREATTOL] = 1e-10;
-  doubleParams[UPDATEPIVOTTOL] = 1e-13;
-  doubleParams[ICTOL] = 1e-12;
-  doubleParams[NORMTOL] = 1e-12;
-  doubleParams[FLATTOL] = 1e-10;
-  doubleParams[LEVELTOL] = 1e-12;
-  doubleParams[IMPROVETOL] = 1e-13;
-  doubleParams[BACKBENDINGTOL] = 1e-6;
-  doubleParams[MOVEMENTTOL] = 1e-14; 
-  doubleParams[ROUNDTOL] = 0.0;
-  doubleParams[INTERSECTTOL] = 1e-10;
+  doubleParams[SG::ERRORTOL] = 1e-8;
+  doubleParams[SG::DIRECTIONTOL] = 1e-11;
+  doubleParams[SG::PASTTHREATTOL] = 1e-10;
+  doubleParams[SG::UPDATEPIVOTTOL] = 1e-13;
+  doubleParams[SG::ICTOL] = 1e-12;
+  doubleParams[SG::NORMTOL] = 1e-12;
+  doubleParams[SG::FLATTOL] = 1e-10;
+  doubleParams[SG::LEVELTOL] = 1e-12;
+  doubleParams[SG::IMPROVETOL] = 1e-13;
+  doubleParams[SG::BACKBENDINGTOL] = 1e-6;
+  doubleParams[SG::MOVEMENTTOL] = 1e-14; 
+  doubleParams[SG::ROUNDTOL] = 0.0;
+  doubleParams[SG::INTERSECTTOL] = 1e-10;
 
-  boolParams[MERGETUPLES] = false;
-  boolParams[BACKBENDINGWARNING] = false;
-  boolParams[PRINTTOCOUT] = true;
+  boolParams[SG::MERGETUPLES] = false;
+  boolParams[SG::BACKBENDINGWARNING] = false;
+  boolParams[SG::PRINTTOCOUT] = true;
+  boolParams[SG::STOREACTIONS] = true;
 
   setOStream(cout);
 }
 
-void SGEnv::setParam(SGEnv::DBL_PARAM param, double value)
+void SGEnv::setParam(SG::DBL_PARAM param, double value)
 {
   if (value<0)
-    throw(SGException(SGException::BAD_PARAM_VALUE));
+    throw(SGException(SG::BAD_PARAM_VALUE));
 
-  if (param < 0 || param > NUMDOUBLEPARAMS)
-    throw(SGException(SGException::UNKNOWN_PARAM));
+  if (param < 0 || param > SG::NUMDOUBLEPARAMS)
+    throw(SGException(SG::UNKNOWN_PARAM));
 
   doubleParams[param] = value;
 } // setParam
 
-void SGEnv::setParam(SGEnv::BOOL_PARAM param, bool value)
+void SGEnv::setParam(SG::BOOL_PARAM param, bool value)
 {
-  if (param < 0 || param > NUMBOOLPARAMS)
-    throw(SGException(SGException::UNKNOWN_PARAM));
+  if (param < 0 || param > SG::NUMBOOLPARAMS)
+    throw(SGException(SG::UNKNOWN_PARAM));
   boolParams[param] = value;
 } // setParam
 
-void SGEnv::setParam(SGEnv::INT_PARAM param, int value)
+void SGEnv::setParam(SG::INT_PARAM param, int value)
 {
   if (value<0)
-    throw(SGException(SGException::BAD_PARAM_VALUE));
+    throw(SGException(SG::BAD_PARAM_VALUE));
 
-  if (param < 0 || param > NUMINTPARAMS)
-      throw(SGException(SGException::UNKNOWN_PARAM));
+  if (param < 0 || param > SG::NUMINTPARAMS)
+      throw(SGException(SG::UNKNOWN_PARAM));
   intParams[param] = value;
 } // setParam
 
-double SGEnv::getParam(SGEnv::DBL_PARAM param) const
+double SGEnv::getParam(SG::DBL_PARAM param) const
 {
-  if (param < 0 || param > NUMDOUBLEPARAMS)
-    throw(SGException(SGException::UNKNOWN_PARAM));
+  if (param < 0 || param > SG::NUMDOUBLEPARAMS)
+    throw(SGException(SG::UNKNOWN_PARAM));
 
   return doubleParams[param];
 } // getParam
 
-bool SGEnv::getParam(SGEnv::BOOL_PARAM param) const
+bool SGEnv::getParam(SG::BOOL_PARAM param) const
 {
-  if (param < 0 || param > NUMBOOLPARAMS)
-    throw(SGException(SGException::UNKNOWN_PARAM));
+  if (param < 0 || param > SG::NUMBOOLPARAMS)
+    throw(SGException(SG::UNKNOWN_PARAM));
   return boolParams[param];
 } // getParam
 
-int SGEnv::getParam(SGEnv::INT_PARAM param) const
+int SGEnv::getParam(SG::INT_PARAM param) const
 {
-  if (param < 0 || param > NUMINTPARAMS)
-      throw(SGException(SGException::UNKNOWN_PARAM));
+  if (param < 0 || param > SG::NUMINTPARAMS)
+      throw(SGException(SG::UNKNOWN_PARAM));
   return intParams[param];
 } // getParam

@@ -7,6 +7,9 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
 
+// Forward declaration of SGApprox
+class SGApprox;
+
 //! Stores data on the behavior of SGApprox::generate()
 /*! This class records information on each cut made by the twist
     algorithm. 
@@ -44,47 +47,8 @@ public:
   SGIteration() {}
   //! Initializes a new SGIteration object with data on the current
   //! iteration
-  SGIteration(int _iteration,
-	      int _revolution,
-	      int _numExtremeTuples,
-	      int _bestState,
-	      int _bestAction,
-	      SG::Regime _regime,
-	      const vector< list<SGAction> > & _actions,
-	      const SGTuple &_pivot,
-	      const SGPoint & _direction,
-	      const vector<const SGAction*> &_actionTuple,
-	      const vector<SG::Regime> & _regimeTuple,
-	      const SGTuple & _threatTuple):
-    iteration(_iteration),
-    revolution(_revolution),
-    numExtremeTuples(_numExtremeTuples),
-    regime(_regime),
-    actions(_actions.size()),
-    pivot(_pivot),
-    bestState(_bestState),
-    bestAction(_bestAction),
-    direction(_direction),
-    regimeTuple(_regimeTuple),
-    threatTuple(_threatTuple)
-  {
-    actionTuple = vector<int>(_actionTuple.size(),-1);
-    for (int state = 0; state < actionTuple.size(); state++)
-      {
-	if (!(_actionTuple[state]->getIsNull()))
-	  actionTuple[state] = _actionTuple[state]->getAction();
-      }
-
-    for (int state = 0; state < actions.size(); state++)
-      {
-	for (list<SGAction>::const_iterator action = _actions[state].begin();
-	     action != _actions[state].end();
-	     ++action)
-	  {
-	    actions[state].push_back(SGBaseAction(*action));
-	  }
-      }
-  }
+  SGIteration(const SGApprox & approx,
+	      bool storeActions = true);
 
   //! Get method for the iteration.
   int getIteration() const { return iteration; } 

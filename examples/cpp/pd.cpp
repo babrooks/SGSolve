@@ -42,10 +42,10 @@ int main ()
 
   SGEnv env;
 
-  env.setParam(SGEnv::DIRECTIONTOL,1e-12); // 1e-13
-  env.setParam(SGEnv::NORMTOL,1e-12); // 1e-12
-  env.setParam(SGEnv::LEVELTOL,1e-12); // 1e-12x
-  env.setParam(SGEnv::IMPROVETOL,1e-13); // 1e-14
+  env.setParam(SG::DIRECTIONTOL,1e-12); // 1e-13
+  env.setParam(SG::NORMTOL,1e-12); // 1e-12
+  env.setParam(SG::LEVELTOL,1e-12); // 1e-12x
+  env.setParam(SG::IMPROVETOL,1e-13); // 1e-14
   
   
   cout << "Building solver" << endl;

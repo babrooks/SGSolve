@@ -4,8 +4,8 @@
 int main()
 {
   double delta = 0.85;
-  int numEndowments = 9;
-  int c2e = 10;
+  int numEndowments = 5;
+  int c2e = 20;
   int numSimIters = 1e7;
 
   stringstream nashname, lrpname, prename, name, gamename, solnname;
@@ -63,7 +63,8 @@ int main()
 	      SGGame::save(game,gamename.str().c_str());
 
 	      SGEnv env;
-	      env.setParam(SGEnv::STOREITERATIONS,1);
+	      env.setParam(SG::STOREITERATIONS,1);
+	      env.setParam(SG::STOREACTIONS,false);
 	      solver = new SGSolver(env,game);
 
 	      solver->solve();

@@ -88,7 +88,7 @@ SGGame::SGGame(double _delta,
       || numActions_total.size() != numStates
       || !(eqActions.size() == numStates
 	   || eqActions.size() == 0))
-    throw(SGException(SGException::INCONSISTENT_INPUTS));
+    throw(SGException(SG::INCONSISTENT_INPUTS));
 
 
   for (int state = 0; 
@@ -102,7 +102,7 @@ SGGame::SGGame(double _delta,
 
       if (probabilities[state].size() != numActions_total[state]
 	  || _payoffs[state].size() != numActions_total[state])
-	throw(SGException(SGException::INCONSISTENT_INPUTS));
+	throw(SGException(SG::INCONSISTENT_INPUTS));
       
       payoffs.push_back(vector<SGPoint>(numActions_total[state]));
 
@@ -112,7 +112,7 @@ SGGame::SGGame(double _delta,
 	{
 	  if (probabilities[state][action].size() != numStates
 	      || _payoffs[state][action].size() != numPlayers)
-	    throw(SGException(SGException::INCONSISTENT_INPUTS));
+	    throw(SGException(SG::INCONSISTENT_INPUTS));
 	  
 	  payoffs[state][action] 
 	    = SGPoint(_payoffs[state][action]);
@@ -148,13 +148,13 @@ SGGame::SGGame(double _delta,
 	       action++)
 	    {
 	      if(*action<0 || *action>=numActions_total[state])
-		throw(SGException(SGException::OUT_OF_BOUNDS));
+		throw(SGException(SG::OUT_OF_BOUNDS));
 	    }
 	} // for state
     }
 
   if(unconstrained.size()!=2)
-    throw(SGException(SGException::OUT_OF_BOUNDS));
+    throw(SGException(SG::OUT_OF_BOUNDS));
 
 } // SGGame
 

@@ -183,8 +183,8 @@ public:
 	   const SGGame & _game,
 	   SGSolution & _soln):
     env(_env), game(_game), soln(_soln),
-    delta(game.delta), numPlayers(game.numPlayers),
-    numStates(game.numStates), errorLevel(1)
+    delta(game.getDelta()), numPlayers(game.getNumPlayers()),
+    numStates(game.getNumStates()), errorLevel(1)
   { }
   
   //! Prepares the approximation for generation
@@ -198,6 +198,16 @@ public:
 
   int getNumIterations() const {return numIterations; }
   int getNumRevolutions() const {return numRevolutions; }
+  int getNumExtremeTuples() const {return extremeTuples.size(); }
+  SG::Regime getBestRegime() const {return bestRegime; }
+  list<SGAction>::const_iterator  getBestAction() const { return bestAction; }
+  const SGPoint & getBestDirection() const { return bestDirection; }
+  const vector<const SGAction*> & getActionTuple() const { return actionTuple; }
+  const vector<SG::Regime> & getRegimeTuple() const { return regimeTuple; }
+  const SGPoint & getDirection() const { return currentDirection; }
+  const SGTuple & getPivot() const {return pivot; }
+  const SGTuple & getThreatTuple() const {return threatTuple; }
+  const vector< list<SGAction> > & getActions() const { return actions; }
   const vector<SGTuple> & getExtremeTuples() const {return extremeTuples; }
 
   //! Returns a string indicating the algorithms progress
@@ -221,9 +231,6 @@ public:
   /*! Only purpose right now is to close the log file. */
   void end();
 
-  friend class SGSolver;
-  friend class SGMainWindow;
-  friend class SGSolverWorker;
 };
 
 

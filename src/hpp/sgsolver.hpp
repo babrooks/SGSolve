@@ -10,7 +10,7 @@
 #include "sgsolution.hpp"
 
 //! Class for solving stochastic games
-/*!  This class contains parameters for the algorithm, the solve
+/*! This class contains parameters for the algorithm, the solve
   method, as well as the data structure produced by solve. It
   calculates the equilibrium payoff correspondence corresponding to an
   SGGame object.
@@ -53,9 +53,5 @@ public:
   const SGSolution& getSolution() const {return soln;}
 };
 
-/** \example as_twostate.cpp 
-    \example kocherlakota.cpp
-    \example abreusannikov.cpp
- */
 
 #endif

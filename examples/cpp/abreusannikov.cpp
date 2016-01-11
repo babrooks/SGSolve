@@ -17,25 +17,6 @@ int main ()
   // Payoffs
   vector< vector< vector<double> > > 
     payoffs(1,vector< vector<double> >(9,vector<double>(numPlayers,0.0)));
-  // payoffs[0][0][0] = 16;
-  // payoffs[0][1][0] = 21;
-  // payoffs[0][2][0] = 9;
-  // payoffs[0][3][0] = 3;
-  // payoffs[0][4][0] = 10;
-  // payoffs[0][5][0] = 5;
-  // payoffs[0][6][0] = 0;
-  // payoffs[0][7][0] = -1;
-  // payoffs[0][8][0] = -5;
-  // payoffs[0][0][1] = 9;
-  // payoffs[0][1][1] = 1;
-  // payoffs[0][2][1] = 0;
-  // payoffs[0][3][1] = 13;
-  // payoffs[0][4][1] = 4;
-  // payoffs[0][5][1] = -4;
-  // payoffs[0][6][1] = 3;
-  // payoffs[0][7][1] = 0;
-  // payoffs[0][8][1] = -15;
-
   payoffs[0][0][0] = 18;
   payoffs[0][1][0] = 23;
   payoffs[0][2][0] = 11;
@@ -64,18 +45,16 @@ int main ()
   for (action = 0; action<9; action++)
     actionsPerState.push_back(action);
 
-  vector< list<int> > equilibriumActions(1,actionsPerState);
-
   cout << "Constructing game object" << endl;
   SGGame game(delta,
 	      numStates,
 	      numActions,
 	      payoffs,
-	      probabilities,
-	      equilibriumActions);
+	      probabilities);
 
   cout << "Building solver" << endl;
-  SGSolver solver(game);
+  SGEnv env;
+  SGSolver solver(env,game);
 
   cout << "Starting solve routine" << endl;
   solver.solve();

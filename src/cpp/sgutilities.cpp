@@ -6,10 +6,10 @@ int indexToVector(int index,
 		  const vector<int> & sizes)
 {
   if (index < 0)
-    throw(SGException(SGException::OUT_OF_BOUNDS));
+    throw(SGException(SG::OUT_OF_BOUNDS));
 
   if(sizes.size()==0)
-    throw(SGException(SGException::EMPTY_TUPLE));
+    throw(SGException(SG::EMPTY_TUPLE));
 
   v.resize(sizes.size(),0);
 
@@ -29,7 +29,7 @@ int vectorToIndex(const vector<int> & v,
   int index = 0;
 
   if (v.size() != sizes.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
   for (int coordinate = sizes.size()-1;
        coordinate >= 0;
        coordinate -- )

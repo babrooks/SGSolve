@@ -169,7 +169,7 @@ void SGSimulator::initialize()
 
 			  if (weightOnNew < -weightTol | weightOnNew > 1+weightTol
 			      | weightOnAvg < -weightTol && weightOnAvg > 1+weightTol)
-			    throw(SGException(SGException::SIMERROR));
+			    throw(SGException(SG::SIMERROR));
 
 			  transitionTable[tupleCounter][state].clear();
 			  

@@ -7,7 +7,7 @@
 SGPoint SGTuple::expectation(const vector<double> & prob) const
 {
   if(prob.size() != points.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
   SGPoint point(0);
   for (int state=0; state<points.size(); state++)
@@ -19,7 +19,7 @@ double SGTuple::expectation(const vector<double> & prob,
 			    int player) const
 {
   if(prob.size() != points.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
   double e = 0.0;
   for (int state=0; state<points.size(); state++)
@@ -30,7 +30,7 @@ double SGTuple::expectation(const vector<double> & prob,
 SGPoint SGTuple::average() const
 {
   if (points.size()==0)
-    throw(SGException(SGException::EMPTY_TUPLE));
+    throw(SGException(SG::EMPTY_TUPLE));
 
   SGPoint p;
   for (int state=0; state < points.size(); state++)
@@ -41,7 +41,7 @@ SGPoint SGTuple::average() const
 double SGTuple::average(int player) const
 {
   if(points.size() == 0)
-    throw(SGException(SGException::EMPTY_TUPLE));
+    throw(SGException(SG::EMPTY_TUPLE));
 
   double e = 0.0;
   for (int state=0; state<points.size(); state++)
@@ -53,7 +53,7 @@ SGPoint& SGTuple::operator[](int state)
 {
   if(state < 0 || 
      state >= points.size())
-    throw(SGException(SGException::OUT_OF_BOUNDS));
+    throw(SGException(SG::OUT_OF_BOUNDS));
 
   return points[state];
 }
@@ -62,7 +62,7 @@ const SGPoint& SGTuple::operator[](int state) const
 {
   if(state < 0 || 
      state >= points.size())
-    throw(SGException(SGException::OUT_OF_BOUNDS));
+    throw(SGException(SG::OUT_OF_BOUNDS));
 
   return points[state];
 }
@@ -79,7 +79,7 @@ SGTuple& SGTuple::operator=(const SGTuple & rhs)
 SGTuple& SGTuple::operator+=(const SGTuple & rhs)
 {
   if(this->points.size() != rhs.points.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
   for (int i=0; i < this->points.size(); i++)
     this->points[i] += rhs.points[i];
@@ -89,7 +89,7 @@ SGTuple& SGTuple::operator+=(const SGTuple & rhs)
 SGTuple& SGTuple::operator+=(const SGPoint & rhs)
 {
   if (this->points.size()==0)
-    throw(SGException(SGException::EMPTY_TUPLE));
+    throw(SGException(SG::EMPTY_TUPLE));
 
   for (int i=0; i < this->points.size(); i++)
     this->points[i] += rhs;
@@ -99,7 +99,7 @@ SGTuple& SGTuple::operator+=(const SGPoint & rhs)
 SGTuple& SGTuple::operator-=(const SGTuple & rhs)
 {
   if(this->points.size() != rhs.points.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
   for (int i=0; i < this->points.size(); i++)
     this->points[i] -= rhs.points[i];
@@ -123,7 +123,7 @@ SGTuple& SGTuple::operator*=(double d)
 SGTuple& SGTuple::operator/=(double d)
 {
   if(d<=0)
-    throw(SGException(SGException::DIVIDE_BY_ZERO));
+    throw(SGException(SG::DIVIDE_BY_ZERO));
 
   for (int i=0; i < this->points.size(); i++)
     this->points[i] /= d;
@@ -164,7 +164,7 @@ double SGTuple::distance(const SGTuple& t0,
 			 const SGTuple& t1)
 {
   if(t0.points.size() != t1.points.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
   double d = 0.0;
   
@@ -180,7 +180,7 @@ bool SGTuple::strictlyLessThan(const SGTuple & tuple,int coordinate) const
   bool strict = false;
 
   if (this->points.size()!=tuple.points.size())
-    throw(SGException(SGException::TUPLE_SIZE_MISMATCH));
+    throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
   for (state=0; state < points.size(); state++)
     {
