@@ -13,7 +13,7 @@
 //! Class for changing double parameters.
 /*! A customized version of QLineEdit for modifying double parameters
     in an SGEnv object that is used by the SGSettingsHandler. It has a
-    private members which are the particular SGEnv::DBL_PARAM that is
+    private members which are the particular SG::DBL_PARAM that is
     associated with this edit and a pointer to an associated SGEnv
     object. There are also mutator methods for setting the parameter
     value and resetting to the default value of the given parameter.
@@ -25,13 +25,13 @@ class SGDblParamEdit : public QLineEdit
   Q_OBJECT;
 private:
   //! The double parameter associated with this edit.
-  SGEnv::DBL_PARAM param;
+  SG::DBL_PARAM param;
   //! The associated SGEnv object.
   SGEnv * env;
 public:
   //! Constructor
   SGDblParamEdit(QWidget * parent,
-		 SGEnv * _env,SGEnv::DBL_PARAM _param): 
+		 SGEnv * _env,SG::DBL_PARAM _param): 
     env(_env),
     param(_param), 
     QLineEdit()
@@ -59,7 +59,7 @@ private slots:
 //! Class for changing integer parameters.
 /*! A customized version of QLineEdit for modifying int parameters
     in an SGEnv object that is used by the SGSettingsHandler. It has a
-    private members which are the particular SGEnv::INT_PARAM that is
+    private members which are the particular SG::INT_PARAM that is
     associated with this edit and a pointer to an associated SGEnv
     object. There are also mutator methods for setting the parameter
     value and resetting to the default value of the given parameter.
@@ -71,13 +71,13 @@ class SGIntParamEdit : public QLineEdit
   Q_OBJECT;
 private:
   //! The int parameter associated with this edit.
-  SGEnv::INT_PARAM param;
+  SG::INT_PARAM param;
   //! The associated SGEnv object.
   SGEnv * env;
 public:
   //! Constructor
   SGIntParamEdit(QWidget * parent,
-		 SGEnv * _env,SGEnv::INT_PARAM _param): 
+		 SGEnv * _env,SG::INT_PARAM _param): 
     env(_env),
     param(_param), 
     QLineEdit()
@@ -105,7 +105,7 @@ private slots:
 //! Class for changing boolean parameters.
 /*! A customized version of QCheckBox for modifying boolean parameters
     in an SGEnv object that is used by the SGSettingsHandler. It has a
-    private members which are the particular SGEnv::BOOL_PARAM that is
+    private members which are the particular SG::BOOL_PARAM that is
     associated with this edit and a pointer to an associated SGEnv
     object. There are also mutator methods for setting the parameter
     value and resetting to the default value of the given parameter.
@@ -117,7 +117,7 @@ class SGBoolParamBox : public QCheckBox
   Q_OBJECT;
 private:
   //! The boolean parameter associated with the box.
-  SGEnv::BOOL_PARAM param;
+  SG::BOOL_PARAM param;
   //! The associated environment.
   SGEnv * env;
   //! The set method.
@@ -133,7 +133,7 @@ public:
   //! Constructor
   SGBoolParamBox(QWidget * parent,
 		 SGEnv * _env,
-		 SGEnv::BOOL_PARAM _param): 
+		 SG::BOOL_PARAM _param): 
     env(_env),
     param(_param), 
     QCheckBox()
@@ -197,7 +197,7 @@ private slots:
   void restoreDefaults() 
   { 
     env->restoreDefaults();
-    env->setParam(SGEnv::PRINTTOCOUT,false);
+    env->setParam(SG::PRINTTOCOUT,false);
     emit restoreDefaultSignal();
   } // restoreDefaults
   

@@ -23,45 +23,47 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
   QFormLayout * editLayout = new QFormLayout ();
   // Construct and add the double parameter edits
   editLayout->addRow(QString("Error tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::ERRORTOL));
+		     new SGDblParamEdit(this,env,SG::ERRORTOL));
   editLayout->addRow(QString("Direction tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::DIRECTIONTOL));
+		     new SGDblParamEdit(this,env,SG::DIRECTIONTOL));
   editLayout->addRow(QString("Past threat tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::UPDATEPIVOTTOL));
+		     new SGDblParamEdit(this,env,SG::UPDATEPIVOTTOL));
   editLayout->addRow(QString("Update pivot tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::UPDATEPIVOTTOL));
+		     new SGDblParamEdit(this,env,SG::UPDATEPIVOTTOL));
   editLayout->addRow(QString("IC tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::ICTOL));
+		     new SGDblParamEdit(this,env,SG::ICTOL));
   editLayout->addRow(QString("Norm tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::NORMTOL));
+		     new SGDblParamEdit(this,env,SG::NORMTOL));
   editLayout->addRow(QString("Improvement tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::IMPROVETOL));
+		     new SGDblParamEdit(this,env,SG::IMPROVETOL));
   editLayout->addRow(QString("Flat tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::FLATTOL));
+		     new SGDblParamEdit(this,env,SG::FLATTOL));
   editLayout->addRow(QString("Level tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::LEVELTOL));
+		     new SGDblParamEdit(this,env,SG::LEVELTOL));
   editLayout->addRow(QString("Intersection tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::INTERSECTTOL));
+		     new SGDblParamEdit(this,env,SG::INTERSECTTOL));
   editLayout->addRow(QString("Rounding:"),
-		     new SGDblParamEdit(this,env,SGEnv::ROUNDTOL));
+		     new SGDblParamEdit(this,env,SG::ROUNDTOL));
   editLayout->addRow(QString("Back bending tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::BACKBENDINGTOL));
+		     new SGDblParamEdit(this,env,SG::BACKBENDINGTOL));
   editLayout->addRow(QString("Movement tolerance:"),
-		     new SGDblParamEdit(this,env,SGEnv::ROUNDTOL));
+		     new SGDblParamEdit(this,env,SG::ROUNDTOL));
 
   // Construct and add integer parameter edits.
   editLayout->addRow(QString("Max iterations:"),
-		     new SGIntParamEdit(this,env,SGEnv::MAXITERATIONS));
+		     new SGIntParamEdit(this,env,SG::MAXITERATIONS));
   editLayout->addRow(QString("Max update pivot passes:"),
-		     new SGIntParamEdit(this,env,SGEnv::MAXUPDATEPIVOTPASSES));
+		     new SGIntParamEdit(this,env,SG::MAXUPDATEPIVOTPASSES));
   editLayout->addRow(QString("Tuple reserve size:"),
-		     new SGIntParamEdit(this,env,SGEnv::TUPLERESERVESIZE));
+		     new SGIntParamEdit(this,env,SG::TUPLERESERVESIZE));
   editLayout->addRow(QString("Store iterations:"),
-		     new SGIntParamEdit(this,env,SGEnv::STOREITERATIONS));
+		     new SGIntParamEdit(this,env,SG::STOREITERATIONS));
 
   // Construct and add boolean parameter edits.
   editLayout->addRow(QString("Merge tuples:"),
-		     new SGBoolParamBox(this,env,SGEnv::MERGETUPLES));
+		     new SGBoolParamBox(this,env,SG::MERGETUPLES));
+  editLayout->addRow(QString("Store actions:"),
+		     new SGBoolParamBox(this,env,SG::STOREACTIONS));
 
   mainLayout->addLayout(editLayout);
   mainLayout->addWidget(defaultButton);

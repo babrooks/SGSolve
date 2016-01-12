@@ -1590,6 +1590,7 @@ tmp/moc_sgmainwindow.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QMainWindow \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -1663,7 +1664,6 @@ tmp/moc_sgmainwindow.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QMainWindow \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgcustomplot.hpp \
 		hpp/qcustomplot.h \
 		/opt/Qt/5.4/gcc_64/include/QtGui/QPainter \
@@ -3215,6 +3215,7 @@ tmp/moc_sggamehandler.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -4303,6 +4304,7 @@ tmp/moc_sgtablemodel.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -5839,6 +5841,7 @@ tmp/moc_sgprobabilitytablemodel.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidg
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -6925,6 +6928,7 @@ tmp/moc_sgpayofftablemodel.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -7557,6 +7561,7 @@ tmp/moc_sgsolutionhandler.cpp: ../src/hpp/sgsolution.hpp \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -7623,7 +7628,6 @@ tmp/moc_sgsolutionhandler.cpp: ../src/hpp/sgsolution.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgcustomplot.hpp \
 		hpp/qcustomplot.h \
 		/opt/Qt/5.4/gcc_64/include/QtCore/QObject \
@@ -9139,6 +9143,7 @@ tmp/moc_sgsolverworker.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sggame.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
@@ -9207,7 +9212,6 @@ tmp/moc_sgsolverworker.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		../src/hpp/sgiteration.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgsolverworker.hpp
 	/opt/Qt/5.4/gcc_64/bin/moc $(DEFINES) -I/opt/Qt/5.4/gcc_64/mkspecs/linux-g++ -I/home/babrooks/work/code/SGSolve/viewer -I/home/babrooks/work/code/SGSolve/viewer/hpp -I/usr/local/include -I/home/babrooks/work/code/SGSolve/src/hpp -I/usr/local/lib -I/opt/Qt/5.4/gcc_64/include -I/opt/Qt/5.4/gcc_64/include/QtPrintSupport -I/opt/Qt/5.4/gcc_64/include/QtWidgets -I/opt/Qt/5.4/gcc_64/include/QtGui -I/opt/Qt/5.4/gcc_64/include/QtCore hpp/sgsolverworker.hpp -o tmp/moc_sgsolverworker.cpp
 
@@ -10939,6 +10943,7 @@ tmp/moc_sgsimulationhandler.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QWidget \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sggame.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
@@ -11007,7 +11012,6 @@ tmp/moc_sgsimulationhandler.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QWidget \
 		../src/hpp/sgiteration.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgsimulator.hpp \
 		hpp/sgsimulationplot.hpp \
 		hpp/qcustomplot.h \
@@ -12554,6 +12558,7 @@ tmp/moc_sgsettingshandler.cpp: /opt/Qt/5.4/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.4/gcc_64/include/QtWidgets/qcheckbox.h \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgcommon.hpp \
 		/usr/local/include/boost/serialization/list.hpp \
 		/usr/local/include/boost/config.hpp \
@@ -13805,6 +13810,7 @@ tmp/moc_sgplotcontroller.cpp: /opt/Qt/5.4/gcc_64/include/QtCore/QObject \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -13871,7 +13877,6 @@ tmp/moc_sgplotcontroller.cpp: /opt/Qt/5.4/gcc_64/include/QtCore/QObject \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgplotcontroller.hpp
 	/opt/Qt/5.4/gcc_64/bin/moc $(DEFINES) -I/opt/Qt/5.4/gcc_64/mkspecs/linux-g++ -I/home/babrooks/work/code/SGSolve/viewer -I/home/babrooks/work/code/SGSolve/viewer/hpp -I/usr/local/include -I/home/babrooks/work/code/SGSolve/src/hpp -I/usr/local/lib -I/opt/Qt/5.4/gcc_64/include -I/opt/Qt/5.4/gcc_64/include/QtPrintSupport -I/opt/Qt/5.4/gcc_64/include/QtWidgets -I/opt/Qt/5.4/gcc_64/include/QtGui -I/opt/Qt/5.4/gcc_64/include/QtCore hpp/sgplotcontroller.hpp -o tmp/moc_sgplotcontroller.cpp
 
@@ -14562,6 +14567,7 @@ tmp/moc_sgstatecombomodel.cpp: hpp/sgplotcontroller.hpp \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -14628,7 +14634,6 @@ tmp/moc_sgstatecombomodel.cpp: hpp/sgplotcontroller.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		/opt/Qt/5.4/gcc_64/include/QtCore/QAbstractListModel \
 		hpp/sgstatecombomodel.hpp
 	/opt/Qt/5.4/gcc_64/bin/moc $(DEFINES) -I/opt/Qt/5.4/gcc_64/mkspecs/linux-g++ -I/home/babrooks/work/code/SGSolve/viewer -I/home/babrooks/work/code/SGSolve/viewer/hpp -I/usr/local/include -I/home/babrooks/work/code/SGSolve/src/hpp -I/usr/local/lib -I/opt/Qt/5.4/gcc_64/include -I/opt/Qt/5.4/gcc_64/include/QtPrintSupport -I/opt/Qt/5.4/gcc_64/include/QtWidgets -I/opt/Qt/5.4/gcc_64/include/QtGui -I/opt/Qt/5.4/gcc_64/include/QtCore hpp/sgstatecombomodel.hpp -o tmp/moc_sgstatecombomodel.cpp
@@ -15320,6 +15325,7 @@ tmp/moc_sgactioncombomodel.cpp: hpp/sgplotcontroller.hpp \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -15386,7 +15392,6 @@ tmp/moc_sgactioncombomodel.cpp: hpp/sgplotcontroller.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		/opt/Qt/5.4/gcc_64/include/QtCore/QAbstractListModel \
 		hpp/sgactioncombomodel.hpp
 	/opt/Qt/5.4/gcc_64/bin/moc $(DEFINES) -I/opt/Qt/5.4/gcc_64/mkspecs/linux-g++ -I/home/babrooks/work/code/SGSolve/viewer -I/home/babrooks/work/code/SGSolve/viewer/hpp -I/usr/local/include -I/home/babrooks/work/code/SGSolve/src/hpp -I/usr/local/lib -I/opt/Qt/5.4/gcc_64/include -I/opt/Qt/5.4/gcc_64/include/QtPrintSupport -I/opt/Qt/5.4/gcc_64/include/QtWidgets -I/opt/Qt/5.4/gcc_64/include/QtGui -I/opt/Qt/5.4/gcc_64/include/QtCore hpp/sgactioncombomodel.hpp -o tmp/moc_sgactioncombomodel.cpp
@@ -16425,6 +16430,7 @@ tmp/main.o: cpp/main.cpp /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -16498,7 +16504,6 @@ tmp/main.o: cpp/main.cpp /opt/Qt/5.4/gcc_64/include/QtWidgets/QtWidgets \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgcustomplot.hpp \
 		hpp/qcustomplot.h \
 		/opt/Qt/5.4/gcc_64/include/QtGui/QPainter \
@@ -17571,6 +17576,7 @@ tmp/sgmainwindow.o: cpp/sgmainwindow.cpp /opt/Qt/5.4/gcc_64/include/QtWidgets/Qt
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -17644,7 +17650,6 @@ tmp/sgmainwindow.o: cpp/sgmainwindow.cpp /opt/Qt/5.4/gcc_64/include/QtWidgets/Qt
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgcustomplot.hpp \
 		hpp/qcustomplot.h \
 		/opt/Qt/5.4/gcc_64/include/QtGui/QPainter \
@@ -20241,6 +20246,7 @@ tmp/sggamehandler.o: cpp/sggamehandler.cpp /opt/Qt/5.4/gcc_64/include/QtWidgets/
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -21329,6 +21335,7 @@ tmp/sgprobabilitytablemodel.o: cpp/sgprobabilitytablemodel.cpp /opt/Qt/5.4/gcc_6
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -22415,6 +22422,7 @@ tmp/sgpayofftablemodel.o: cpp/sgpayofftablemodel.cpp /opt/Qt/5.4/gcc_64/include/
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -23164,6 +23172,7 @@ tmp/sgsimulationhandler.o: cpp/sgsimulationhandler.cpp hpp/sgsimulationhandler.h
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sggame.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
@@ -23232,7 +23241,6 @@ tmp/sgsimulationhandler.o: cpp/sgsimulationhandler.cpp hpp/sgsimulationhandler.h
 		../src/hpp/sgiteration.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgsimulator.hpp \
 		hpp/sgsimulationplot.hpp \
 		hpp/qcustomplot.h \
@@ -24170,6 +24178,7 @@ tmp/sgsolutionhandler.o: cpp/sgsolutionhandler.cpp hpp/sgsolutionhandler.hpp \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -24236,7 +24245,6 @@ tmp/sgsolutionhandler.o: cpp/sgsolutionhandler.cpp hpp/sgsolutionhandler.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp \
 		hpp/sgcustomplot.hpp \
 		hpp/qcustomplot.h \
 		/opt/Qt/5.4/gcc_64/include/QtCore/QObject \
@@ -25421,6 +25429,7 @@ tmp/sgplotcontroller.o: cpp/sgplotcontroller.cpp hpp/sgplotcontroller.hpp \
 		/usr/local/include/boost/serialization/detail/get_data.hpp \
 		../src/hpp/sgutilities.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgtuple.hpp \
 		../src/hpp/sgpoint.hpp \
 		../src/hpp/sgabstractgame.hpp \
@@ -25486,8 +25495,7 @@ tmp/sgplotcontroller.o: cpp/sgplotcontroller.cpp hpp/sgplotcontroller.hpp \
 		../src/hpp/sgiteration.hpp \
 		../src/hpp/sgaction.hpp \
 		../src/hpp/sgenv.hpp \
-		../src/hpp/sgbaseaction.hpp \
-		../src/hpp/sgnamespace.hpp
+		../src/hpp/sgbaseaction.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/sgplotcontroller.o cpp/sgplotcontroller.cpp
 
 tmp/sgsettingshandler.o: cpp/sgsettingshandler.cpp hpp/sgsettingshandler.hpp \
@@ -25621,6 +25629,7 @@ tmp/sgsettingshandler.o: cpp/sgsettingshandler.cpp hpp/sgsettingshandler.hpp \
 		/opt/Qt/5.4/gcc_64/include/QtWidgets/qcheckbox.h \
 		../src/hpp/sgenv.hpp \
 		../src/hpp/sgexception.hpp \
+		../src/hpp/sgnamespace.hpp \
 		../src/hpp/sgcommon.hpp \
 		/usr/local/include/boost/serialization/list.hpp \
 		/usr/local/include/boost/config.hpp \

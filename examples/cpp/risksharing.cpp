@@ -4,9 +4,10 @@
 int main()
 {
   double delta = 0.85;
-  int numEndowments = 5;
-  int c2e = 20;
-  int numSimIters = 1e7;
+  int numEndowments = 9;
+  int c2e = 25;
+  int numSims = 1e3;
+  int numSimIters = 1e5;
 
   stringstream nashname, lrpname, prename, name, gamename, solnname;
   prename << "_ne="
@@ -102,14 +103,14 @@ int main()
 	  SGSimulator sim(soln);
 	  sim.initialize();
 
-	  sim.simulate(numSimIters,midPoint,bestIter->getIteration());
+	  sim.simulate(numSims,numSimIters,midPoint,bestIter->getIteration());
 	  SGPoint lrp = sim.getLongRunPayoffs();
 	  ofs_lrp << setprecision(6) << lrp[0] << " " << lrp[1] << " ";
 	  cout << "Best long run payoffs: ("
 	       << setprecision(6) << lrp[0] << ","
 	       << lrp[1] << ")" << endl;
 	    
-	  sim.simulate(numSimIters,midPoint,worstIter->getIteration());
+	  sim.simulate(numSims,numSimIters,midPoint,worstIter->getIteration());
 	  lrp = sim.getLongRunPayoffs();
 	  ofs_lrp << setprecision(6) << lrp[0] << " " << lrp[1] << endl;
 	  cout << "Autarky payoffs: ("

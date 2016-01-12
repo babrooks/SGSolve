@@ -220,10 +220,12 @@ void SGSimulator::initialize()
 
 } // initialize
 
-void SGSimulator::simulate(int _numIter, 
+void SGSimulator::simulate(int _numSim,
+			   int _numIter, 
 			   int initialState, 
 			   int initialTuple)
 {
+  numSim = _numSim;
   numIter = _numIter;
   const int numStates = soln.getGame().getNumStates();
   const vector<int> & numActions_total = soln.getGame().getNumActions_total();
@@ -242,79 +244,85 @@ void SGSimulator::simulate(int _numIter,
   for (int state = 0; state < numStates; state++)
     actionDistr[state] = vector<int>(numActions_total[state],0);
 
-  int currentState = initialState;
-  list<SGIteration>::const_iterator currentTuple = soln.getIterations().end();
-
-  assert(initialTuple >= startOfLastRev->getIteration());
-  assert(initialTuple <= soln.getIterations().back().getIteration());
-    
-  currentTuple--;
-  while (currentTuple->getIteration() != initialTuple)
-    currentTuple--;
-
-  assert(currentTuple->getIteration() >= startOfLastRev->getIteration());
-      
-  int currentAction = currentTuple->getActionTuple()[currentState];
 
   if (logFlag)
     ss.str(""); // clear the stringstream
 
+  assert(initialTuple >= startOfLastRev->getIteration());
+  assert(initialTuple <= soln.getIterations().back().getIteration());
+    
+  list<SGIteration>::const_iterator initialTupleIt = soln.getIterations().end();
+
+  initialTupleIt--;
+  while (initialTupleIt->getIteration() != initialTuple)
+    initialTupleIt--;
+
+  assert(initialTupleIt->getIteration() >= startOfLastRev->getIteration());
+      
   // Main simulation loop
-  for (int iter = 0; iter < numIter; iter++)
+  for (int sim = 0; sim < numSim; sim++)
     {
-      if (logFlag && iter<200)
-	ss << "Period: " << iter
-	   << ", state: " << currentState
-	   << ", action: " << currentAction
-	   << ", tuple: " << currentTuple->getIteration()
-	   << endl;
+      int currentState = initialState;
+      list<SGIteration>::const_iterator currentTuple = initialTupleIt;
+      int currentAction = currentTuple->getActionTuple()[currentState];
+
+      for (int iter = 0; iter < numIter; iter++)
+	{
+	  if (logFlag && sim == 0 && iter<200)
+	    ss << "Simulation: " << sim
+	       << ", Period: " << iter
+	       << ", state: " << currentState
+	       << ", action: " << currentAction
+	       << ", tuple: " << currentTuple->getIteration()
+	       << endl;
 	  
 
-      // Increment state/action counters
-      stateDistr[currentState]++;
-      actionDistr[currentState][currentTuple->getActionTuple()[currentState]]++;
-      tupleDistr[currentTuple->getIteration()-startOfLastRev->getIteration()]++;
+	  // Increment state/action counters
+	  stateDistr[currentState]++;
+	  actionDistr[currentState][currentTuple->getActionTuple()[currentState]]++;
+	  tupleDistr[currentTuple->getIteration()-startOfLastRev->getIteration()]++;
 	
-      // Find new tuple/state/action
-      double probSum = 0;
-      double tupleDraw = distribution(generator);
-      list<transitionPair>::const_iterator pairIter
-	= transitionTable[currentTuple->getIteration()
-			  - startOfLastRev->getIteration()]
-	[currentState].begin();
-      list<SGIteration>::const_iterator newTuple;
-      while (pairIter
-	     != transitionTable[currentTuple->getIteration()
-				- startOfLastRev->getIteration()][currentState].end())
-	{
-	  probSum += pairIter->second;
-	  newTuple = pairIter->first;
-	  if (tupleDraw <= probSum)
-	    break;
-	  ++pairIter;
-	}
+	  // Find new tuple/state/action
+	  double probSum = 0;
+	  double tupleDraw = distribution(generator);
+	  list<transitionPair>::const_iterator pairIter
+	    = transitionTable[currentTuple->getIteration()
+			      - startOfLastRev->getIteration()]
+	    [currentState].begin();
+	  list<SGIteration>::const_iterator newTuple;
+	  while (pairIter
+		 != transitionTable[currentTuple->getIteration()
+				    - startOfLastRev->getIteration()][currentState].end())
+	    {
+	      probSum += pairIter->second;
+	      newTuple = pairIter->first;
+	      if (tupleDraw <= probSum)
+		break;
+	      ++pairIter;
+	    }
 
-      // If we have exceeded number of iterations, wrap around to
-      // start of last revolution.
-      if (newTuple == soln.getIterations().end())
-	newTuple = startOfLastRev;
+	  // If we have exceeded number of iterations, wrap around to
+	  // start of last revolution.
+	  if (newTuple == soln.getIterations().end())
+	    newTuple = startOfLastRev;
 
-      // Find the new state
-      probSum = 0;
-      double stateDraw = distribution(generator);
-      int newState=0;
-      while (newState < numStates-1)
-	{
-	  probSum += soln.getGame().getProbabilities()[currentState]
-	    [currentAction][newState];
-	  if (stateDraw < probSum)
-	    break;
-	  newState++;
-	}
+	  // Find the new state
+	  probSum = 0;
+	  double stateDraw = distribution(generator);
+	  int newState=0;
+	  while (newState < numStates-1)
+	    {
+	      probSum += soln.getGame().getProbabilities()[currentState]
+		[currentAction][newState];
+	      if (stateDraw < probSum)
+		break;
+	      newState++;
+	    }
 
-      // Update state variables
-      currentTuple = newTuple;
-      currentState = newState;
-      currentAction = currentTuple->getActionTuple()[currentState];
-    }
+	  // Update state variables
+	  currentTuple = newTuple;
+	  currentState = newState;
+	  currentAction = currentTuple->getActionTuple()[currentState];
+	} // iter
+    } // sim
 } // simulate

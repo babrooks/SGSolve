@@ -6,8 +6,13 @@
 
 //! A customized version of QCustomPlot.
 /*! This class inherits from QCustomPlot and adds functionality for
-  controling ranges to maintain the desired aspect ratio. It also
-  adds functionality for saving graphs.
+  controling ranges to maintain the desired aspect ratio. It also adds
+  functionality for right-clicking on the plot to bring up a context
+  menu. This menu has various options, some of which pertain to the
+  payoffs closest to where the user clicked. In particular, there are
+  signals for saving copys of the plots, for "inspecting" a given
+  payoff vector, and for initializing the SGSimulationHandler to
+  forward simulate the equilibrium that generates the given payoffs.
 
   \ingroup viewer
 */

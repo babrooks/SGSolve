@@ -7,7 +7,7 @@ SGMainWindow::SGMainWindow()
   
   env = new SGEnv();
 
-  env->setParam(SGEnv::PRINTTOCOUT,false);
+  env->setParam(SG::PRINTTOCOUT,false);
 
   path = QString("./");
   

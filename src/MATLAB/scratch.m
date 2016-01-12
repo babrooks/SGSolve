@@ -6,12 +6,15 @@ numStates = sgmex('GetNumStates');
 T=sgmex('GetTuples');
 for s = 1:numStates
 	plot(T(firstIter.numExtremeTuples:end,2*s-1),...
-		T(firstIter.numExtremeTuples:end,2*s),'b-');
+		T(firstIter.numExtremeTuples:end,2*s),'b-',...
+		'linewidth',1.2);
 	hold on;
 end
-
-
+title(sprintf('Equilibrium payoff correspondence with %d states',numStates))
+xlabel('Player 0''s payoff');
+ylabel('Player 1''s payoff');
 hold off;
+axis square
 
 %%
 

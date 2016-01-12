@@ -47,6 +47,12 @@ public:
   SGIteration() {}
   //! Initializes a new SGIteration object with data on the current
   //! iteration
+  /*! By default, the constructor will also copy the data in
+      SGApprox::actions, so that the user can later recover the test
+      directions that were available at the given iteration. If the
+      second argument is false, then these actions will not be
+      stored. For large games, storing the actions can take a large
+      amount of memory. */
   SGIteration(const SGApprox & approx,
 	      bool storeActions = true);
 

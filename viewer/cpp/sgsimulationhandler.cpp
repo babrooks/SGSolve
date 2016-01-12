@@ -29,6 +29,11 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   QHBoxLayout * ewLayout = new QHBoxLayout();
   
   QFormLayout * controlLayout = new QFormLayout();
+  simEdit = new QLineEdit(QString("100"));
+  simEdit->setFixedWidth(100);
+  controlLayout->addRow(new QLabel(tr("Number of simulations:")),
+			simEdit);
+
   iterationEdit = new QLineEdit(QString("100"));
   iterationEdit->setFixedWidth(100);
   controlLayout->addRow(new QLabel(tr("Number of periods:")),
@@ -36,6 +41,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
 
   QPushButton * simulateButton = new QPushButton(tr("Simulate"));
 
+  simEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
   iterationEdit->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Maximum);
   simulateButton->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
 
@@ -243,7 +249,8 @@ void SGSimulationHandler::simulate()
 
   time.start();
 
-  sim.simulate(iterationEdit->text().toInt(),
+  sim.simulate(simEdit->text().toInt(),
+	       iterationEdit->text().toInt(),
 	       state,initialTuple);
   
   SGPoint payoffs = sim.getLongRunPayoffs();

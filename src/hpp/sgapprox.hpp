@@ -92,8 +92,6 @@ private:
 		 westernmost tuple on the current revolution. */
   int oldWest; /*!< Previous value of westPoint. */
 
-  int oldOldWest; 
-
   //! Calculates the minimum IC continuation values
   /*! This method calculates for each SGAction object in
       SGApprox::actions the minimum incentive compatible
@@ -196,18 +194,34 @@ public:
       continuation values on the first pass. */
   void initialize();
 
+  //! Returns the number of iterations thus far
   int getNumIterations() const {return numIterations; }
+  //! Returns the number of revolutions of the pivot thus far
   int getNumRevolutions() const {return numRevolutions; }
+  //! Returns the number of tuples in the extremeTuples array
   int getNumExtremeTuples() const {return extremeTuples.size(); }
+  //! Returns the regime in which the best test direction was
+  //! generated
   SG::Regime getBestRegime() const {return bestRegime; }
+  //! Returns a constant iterator for the SGAction in which the best
+  //! test direction was generated
   list<SGAction>::const_iterator  getBestAction() const { return bestAction; }
+  //! Returns the best test direction
   const SGPoint & getBestDirection() const { return bestDirection; }
+  //! Returns the current action tuple
   const vector<const SGAction*> & getActionTuple() const { return actionTuple; }
+  //! Returns the current regime tuple
   const vector<SG::Regime> & getRegimeTuple() const { return regimeTuple; }
+  //! Returns the current direction
   const SGPoint & getDirection() const { return currentDirection; }
+  //! Returns the current pivot
   const SGTuple & getPivot() const {return pivot; }
+  //! Returns the current threat tuple
   const SGTuple & getThreatTuple() const {return threatTuple; }
+  //! Returns the array of SGAction objects that can currently be
+  //! supported
   const vector< list<SGAction> > & getActions() const { return actions; }
+  //! Returns the array of extreme tuples
   const vector<SGTuple> & getExtremeTuples() const {return extremeTuples; }
 
   //! Returns a string indicating the algorithms progress

@@ -48,6 +48,8 @@ private:
   //! The initial tuple for the simulation.
   int initialTuple;
 
+  //! Displays the number of simulations to run.
+  QLineEdit * simEdit;
   //! Displays the number of periods for which to simulate.
   QLineEdit * iterationEdit;
   //! Displays the average payoffs over the course of the simulation.

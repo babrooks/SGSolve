@@ -96,6 +96,14 @@ public:
     unconstrained(2,false)
   {}
 
+  //! Converts an SGAbstractGame into a SGGame
+  /*! The user can derive their own class from SGAbstractGame, and
+      then pass the derived object to the SGGame constructor. This
+      constructor essentially copies the data from the user defined
+      payoffs and probability methods into arrays. Storing this data
+      in arrays provides for faster access by SGApprox and it allows
+      the game to be serialized. See risksharing.hpp and
+      risksharing.cpp for an example. */
   SGGame(const SGAbstractGame & game);
     
   ~SGGame() {}

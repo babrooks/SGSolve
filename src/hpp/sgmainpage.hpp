@@ -88,7 +88,7 @@
   detailed information about the progress of the algorithm.
 
   For a more detailed description of the solver library and its usage,
-  see \ref sourceoverview.
+  see \subpage sourcepage.
 
   \section viewersec Overview of the graphical interface
 
@@ -130,7 +130,7 @@
   payoff.
     
   For more details about the object model underlying SGViewer, see the
-  \ref vieweroverview.
+  \subpage viewerpage.
 
   \section examplesec Examples
 
@@ -185,13 +185,16 @@
   
   @brief The main solver library.
 
+  For a detailed description of the SGSolve library, see \ref
+  sourcepage.
  */
 
 /*! \defgroup viewer SGViewer graphical interface
 
   @brief The graphical user interface.
 
-  
+  For a detailed description of the SGViewer object model, see \ref
+  viewerpage.
  */
 
 /** \example pd.cpp 
@@ -200,7 +203,7 @@
     \example abs_jyc.cpp
  */
 
-/*! \page sourceoverview The SGSolve library
+/*! \page sourcepage The SGSolve library
 
   \section srcoverviewsec Overview
 
@@ -373,12 +376,175 @@
   through public mutator methods.
   
   This library provides the core functionality underling the SGViewer
-  program which is described in \ref vieweroverview. Please see that
+  program which is described in \ref viewerpage. Please see that
   section of the documentation for a detailed description of the
   SGViewer object model. 
 
  */
 
-/*! \page vieweroverview The SGViewer graphical interface
+/*! \page viewerpage The SGViewer graphical interface
+  
+  \section vieweroverviewsec Introduction
+  
+  The SGViewer module is a graphical interface for specifying,
+  solving, and exploring the solutions of stochastic games. The
+  interface is written in the Qt framework version 5.5 and it makes
+  use of the QCustomPlot library (www.qcustomplot.com). This section
+  of the documentation is primarily devoted to a description of the
+  object model underlying the program. For a brief description of how
+  to use the graphical interface, please see \ref viewersec.
+  
+  The graphical interface is initialized by the SGMainWindow
+  class. This class constructs the rest of the interface and handles
+  the high level functions that have generalized effects on the
+  program: loading and saving games and solutions, solving games, and
+  keyboard commands. The layout has three tabs: these are the "game
+  tab", the "solution tab", and the "log tab". The game tab is for
+  specifying and viewing stochastic games, and the solution tab is for
+  exploring the solution of stochastic games. The log tab's function
+  is primarily for displaying the progress of the algorithm during
+  computation. Each of the game and solution tabs has a separate class
+  associated with handling the functionality of that tab. 
 
+  \section viewergametabsec The game tab
+
+  The game tab is managed by an object of the SGGameHandler class. The
+  game handler contains a copy of a game, and handles the interface
+  between various tables and controls for editing payoffs and
+  transition probabilities. Basically, the game tab displays the
+  payoff matrix and transiiton probabilities for one state at a
+  time. This state is selected using controls at the top of the
+  tab. 
+
+  The editing of payoffs and probabilities is implemented using Qt's
+  model-view framework. The tables themselves are of the type
+  SGTableView derived from QTableView. Each table has a model
+  associated with it. All models are derived from SGTableModel, which
+  is derived from QAbstractTableModel. SGTableModel adds private
+  members: a pointer to an associated SGGame object and an int "state"
+  member, which is the state that is currently being edited. For
+  payoff tables, the model is SGPayoffTableModel, which adds methods
+  for generating header data to indicate action profiles and also
+  defines setData/getData methods for interfacing with the SGGame
+  object. For probability tables, the model is
+  SGProbabilityTableModel, which derives from SGPayoffTableModel. This
+  class adds a new data member, which is the tomorrow's state, and
+  redefines setData and getData to access the relevant probability
+  data in SGGame. When the current state is changed by the user,
+  SGGameHandler simply updates the state parameters of all of the
+  table models and sends out signals to update the displayed
+  data. 
+
+  The game tab also has controls for changing the numbers of actions
+  and states. When these options are selected, SGGameHandler simply
+  invokves the corresponding method in the SGGame class.
+  
+  Finally, the game tab has a "Solve" push button which triggers the
+  solve routine, and a "Cancel" push button for interrupting the
+  computation. More on this in the next subsection.
+
+  \section viewersolvesec Solving a game
+
+  When the user presses the "Solve" button on the game tab, the signal
+  is handled by the SGMainWindow class which begins a computation
+  using the algorithm. This computation is handled via an intermediary
+  class called SGSolverWorker. To start the algorithm, the main window
+  constructs an SGSolverWorker and moves it to a new thread so as not
+  to freeze the program while the computation progresses. The worker
+  constructs an SGApprox object for the given game. The main window
+  and the worker communicate back and forth to manage the progress of
+  the algorithm. The main window invokes the iterate slot in the
+  worker to call SGApprox::generate to run a single iteration of the
+  algorithm. When this iteration finishes, the worker signals back to
+  the main window that the iteration has finished. SGMainWindow then
+  prints a status update to the log tab and depending on the outcome
+  of the iteration and the status of the program either terminates the
+  computation or signals to the worker to begin another iteration. The
+  computation will end if either the algorithm has converged, an error
+  occurred in SGApprox::generate, or if the user pressed cancel (in
+  which case a cancel flag is set that is observed by the main
+  window. The main window and the worker communicate back and forth in
+  this manner until the computation terminates, at which point the
+  SGSolution object generated by the computation is copied to
+  SGSolutionHandler and the worker is destroyed.
+
+  \section viewersolutionsec Interacting with the solution
+
+  When a solution is loaded through SGMainWindow or when one is
+  produced by solving a game, it is passed to SGSolutionHandler, which
+  is the class that controls the solution tab. This tab contains
+  various plots for visualizing the computations performed by the
+  algorithm and the final solution of the game. 
+
+  On the right-hand side are a series of SGCustomPlot objects, which
+  are derived from QCustomPlot, and whose purpose is to simultaneously
+  view payoffs across different states. On the left-hand side is
+  another SGCustomPlot for providing a larger and more detailed view
+  of payoffs in a single state. SGCustomPlot adds several kinds of
+  functionality to QCustomPlot. The most important is adding the
+  ability for the user to right click on a point in the plot to bring
+  up a context menu which has options for inspecting a particular
+  point and for forward simulating the equilibrium that generates a
+  particular payoff vector. See the class page for more details on
+  SGCustomPlot. 
+  
+  The primary function of the SGSolutionHandler is to handle the
+  plotting of the data from its SGSolution member. The way in which
+  the solution is plotted depends on a number of parameters that are
+  controlled by the user through various widgets. These widgets
+  control the plots indirectly through an SGPlotController
+  object. This object aggregates all of the settings in the widgets
+  into one set of parameters that tell SGSolutionHandler how to
+  plot. In particular, when one of the controls is changed, the
+  corresponding signal is connected to a slot in SGPlotController that
+  updates the parameter value, and then signals to SGSolutionHandler
+  to replot.
+  
+  SGPlotController maintains pointers to the controlling
+  widgets. There are two controls that deserve special mention. There
+  are two combo boxes that allow the user to select a particular state
+  and action pair to display. The user can use these combos to plot
+  the test directions that are generated by a particular action pair
+  at a given iteration. Only those action pairs are listed that can
+  still be incentivized at the current iteration. The list of states
+  is controlled by the class SGStateComboModel, and the list of action
+  pairs is controlled by an SGActionComboModel.
+
+  The main method for plotting data from the solution is
+  SGSolutionHandler::plot. Plotting is in fact broken up into two
+  overloaded versions of this method, one of which plots basic
+  features, such as the trajectory of the pivot and the title of the
+  plot, whereas the other plots the detailed features on the left-hand
+  display. These methods' operation depends on a mode which is
+  selected from a combo box at the top of the tab, and whose value is
+  stored in SGPlotController. When the mode is set to "Progress", the
+  tab will plot the sequence of iterations between a user defined
+  "start" and "end". For the current iteration, the program will plot
+  in the left-hand SGCustomPlot the test directions which are
+  generated by a given action pair. By default, the action pair is
+  initialized to the one that generates the next direction. The start
+  and end iterations are controlled through sliders at the bottom of
+  the tab.
+
+  In "Final" mode, only the final revolution of the pivot will be
+  plotted. In this mode, the start slider is disabled, and the end
+  slider can be used to select a particular iteration to decompose. In
+  either mode, the user can select a particular payoff to display in
+  detail by right-clicking on that payoff and selecting "Inspect
+  point" from the context menu.
+  
+  \section viewerotherfeatures Other features of the viewer
+
+  There are two other features of SGViewer which we will mention. The
+  behavior of the algorithm depends on a number of parameters. These
+  parameters can be controlled using the SGSettingsHandler widget,
+  which appears as a pop-up when the user selects Tools->Settings. 
+
+  In addition, the SGSolve library has the ability to forward simulate
+  the equilibrium that generates a particular payoff using the
+  SGSimulator class. Simulations are run using the SGSimulationHandler
+  widget, which can be constructed by the user by right-clicking on
+  the payoffs of interest in any of the plots on the solution tab, and
+  selecting "Simulate equilibrium" from the resulting context menu.
+  
  */

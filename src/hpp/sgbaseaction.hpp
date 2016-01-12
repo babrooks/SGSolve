@@ -100,7 +100,6 @@ public:
   }
 
   friend class boost::serialization::access;
-  friend class SGApprox;
 }; // SGBaseAction
 
 

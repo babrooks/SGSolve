@@ -97,11 +97,10 @@ public:
     return probHelper(e,t,ep)/stateProbSum[e][a];
   } // probability
 
-  virtual bool isEquilibriumAction(int state, int action) const
+  virtual bool isEquilibriumAction(int state, const vector<int> & actions) const
   {
     // Return true iff one of the players' actions is zero.
-    if ( (action<numActions[state][0])
-	 || ( (action%numActions[state][0]) == 0 ) )
+    if ( (actions[0] == 0) || (actions[1] == 0) )
       return true;
     return false;
   } // isEquilibriumAction

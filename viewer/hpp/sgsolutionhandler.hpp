@@ -40,6 +40,8 @@
     are used by SGSolutionHandler::plotSolution() to construct the
     plots.
 
+    See also \ref viewersolutionsec.
+
   \ingroup viewer
 */
 class SGSolutionHandler : public QObject
@@ -51,7 +53,7 @@ private:
   /*! Stores all of the information related to the result of the
       computation. */
   SGSolution soln;
-  //! 
+  //! A pointer to the associated plot controller.
   SGPlotController * controller;
 
   //! The parent widget, which is an SGMainWindow object.

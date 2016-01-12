@@ -61,7 +61,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
       }
     catch (SGException & e)
       {
-	if (e.getType() == SGException::FAILED_OPEN)
+	if (e.getType() == SG::FAILED_OPEN)
 	  mexErrMsgTxt("Could not open file");
       }
     catch (exception & e)
@@ -212,27 +212,27 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		break;
 				
 	      if (!strcmp(paramStr,"errorTol"))
-		env.setParam(SGEnv::ERRORTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::ERRORTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"directionTol"))
-		env.setParam(SGEnv::DIRECTIONTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::DIRECTIONTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"pastThreatTol"))
-		env.setParam(SGEnv::PASTTHREATTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::PASTTHREATTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"updatePivotTol"))
-		env.setParam(SGEnv::UPDATEPIVOTTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::UPDATEPIVOTTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"ICTol"))
-		env.setParam(SGEnv::ICTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::ICTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"normTol"))
-		env.setParam(SGEnv::NORMTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::NORMTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"flatTol"))
-		env.setParam(SGEnv::FLATTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::FLATTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"levelTol"))
-		env.setParam(SGEnv::LEVELTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::LEVELTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"improveTol"))
-		env.setParam(SGEnv::IMPROVETOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::IMPROVETOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"backBendingTol"))
-		env.setParam(SGEnv::BACKBENDINGTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::BACKBENDINGTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"movementTol"))
-		env.setParam(SGEnv::MOVEMENTTOL,mxGetScalar(prhs[k+1]));
+		env.setParam(SG::MOVEMENTTOL,mxGetScalar(prhs[k+1]));
 	      else if (!strcmp(paramStr,"unconstrained"))
 		{
 		  mxLogical *unconstrPtr = mxGetLogicals(prhs[k+1]);
@@ -247,8 +247,8 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		}
 	    }
 
-	  env.setParam(SGEnv::PRINTTOCOUT,true);
-	  env.setParam(SGEnv::STOREITERATIONS,true);
+	  env.setParam(SG::PRINTTOCOUT,true);
+	  env.setParam(SG::STOREITERATIONS,true);
 
 	  soln = SGSolution(game);
 	  SGApprox approx(env,game,soln);
@@ -257,8 +257,8 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
 	  try
 	    {
-	      while (approx.generate() > env.getParam(SGEnv::ERRORTOL)
-		     && approx.getNumIterations() < env.getParam(SGEnv::MAXITERATIONS))
+	      while (approx.generate() > env.getParam(SG::ERRORTOL)
+		     && approx.getNumIterations() < env.getParam(SG::MAXITERATIONS))
 		{
 		  if (approx.passedNorth())
 		    {
@@ -271,7 +271,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    }
 	  catch (SGException & e)
 	    {
-	      if (e.getType() == SGException::NO_ADMISSIBLE_DIRECTION)
+	      if (e.getType() == SG::NO_ADMISSIBLE_DIRECTION)
 		{
 		  mexWarnMsgTxt("No admissible direction found. Algorithm terminating before convergence");
 		}

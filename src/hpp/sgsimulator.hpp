@@ -77,7 +77,9 @@ private:
   //! simulation.
   vector<int> stateDistr;
 
-  //! The number of periods for the current simulation.
+  //! The number of simulations to run
+  int numSim;
+  //! The number of periods for each simulation.
   int numIter;
 
   //! True if saving log information to the stringstreams.
@@ -123,7 +125,7 @@ public:
   void initialize ();
 
   //! Forward simulates the equilibrium.
-  void simulate(int _numIter, int initialState, int initialTuple);
+  void simulate(int _numSim, int _numIter, int initialState, int initialTuple);
 
   //! Returns the long run action distribution
   SGPoint getLongRunPayoffs()
@@ -137,7 +139,7 @@ public:
 	     action < soln.getGame().getNumActions_total()[state];
 	     action++)
 	  {
-	    payoffs += (1.0*actionDistr[state][action])/(1.0*numIter)
+	    payoffs += (1.0*actionDistr[state][action])/(1.0*numIter*numSim)
 	      * soln.getGame().getPayoffs()[state][action];
 	  }
       } // state

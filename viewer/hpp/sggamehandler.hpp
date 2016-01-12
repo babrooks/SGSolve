@@ -18,6 +18,8 @@
   interface with the respective data using the SGGame class's
   interface methods. 
 
+  For a more detailed description, see \ref viewergametabsec.
+
   \ingroup viewer
  */
 class SGGameHandler : public QObject

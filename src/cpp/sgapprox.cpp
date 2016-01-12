@@ -9,7 +9,7 @@ void SGApprox::initialize()
 {
   int state, iter, action;
 
-  oldWest = 0; oldOldWest = 0; westPoint = 0; newWest = 0;
+  oldWest = 0; westPoint = 0; newWest = 0;
 
   logfs.open("sg.log",std::ofstream::out);
 
@@ -68,6 +68,7 @@ void SGApprox::initialize()
   numIterations = -1; 
   numRevolutions = 0;
   bestRegime = SG::Binding;
+  bestAction = actions[0].end();
 
   if (env.getParam(SG::STOREITERATIONS) == 2)
     soln.push_back(SGIteration(*this,
@@ -548,7 +549,6 @@ void SGApprox::updateFlags()
 	    {
 	      passNorth = true;
 	      
-	      oldOldWest = oldWest;
 	      oldWest = westPoint;
 	      westPoint = newWest;
 	      newWest = extremeTuples.size() - 1;

@@ -53,8 +53,8 @@ public:
   }
  
 private:
-  SG::EXCEPTION_TYPE type; /*!< Enumeration indicate the type of error
-			     encountered. */
+  //! Flag that indicates the type of error encountered.
+  SG::EXCEPTION_TYPE type; 
 };
 
 #endif

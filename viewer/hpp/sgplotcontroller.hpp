@@ -11,6 +11,8 @@
     stateCombo, actionCombo) and the plotting methods in the
     SGSSolutionHandler (i.e., plotSolution(...)).
 
+    See also \ref viewersolutionsec.
+
   \ingroup viewer
 */
 class SGPlotController : public QObject
@@ -21,13 +23,21 @@ public:
   /*! Indicates whether to plot all of the test directions
    (Directions) or just plot the way the current pivot is generated
    (Generation). */
-  enum PlotMode {Directions,Generation};
+  enum PlotMode
+    {
+      Directions, /*!< Plot the test directions. */
+      Generation /*!< Plot how the payoffs are generated. */
+    };
   //! Solution mode
   /*! Indicates whether or not to plot all of the iterations from a
       user-defined start point to the current iteration (Progress) or
       just plot all of the iterations on the last revolution
       (Final). */
-  enum SolutionMode {Progress, Final};
+  enum SolutionMode
+    {
+      Progress, /*!< Plot the progress of the algorithm. */
+      Final /*!< Plot the last revolution (the true correspondence) */
+    };
   
 private:
   //! Current state
