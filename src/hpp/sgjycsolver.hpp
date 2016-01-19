@@ -201,6 +201,9 @@ double SGJYCSolver::iterate()
       for (int action = 0; action < numActions_total[state]; action++)
 	{
 	  indexToVector(action,actions,numActions[state]);
+	  if (!game.isEquilibriumAction(state,actions))
+	    continue;
+	  
 	  deviations = actions;
 
 	  // Implement incentive constraints for this action
@@ -288,6 +291,6 @@ double SGJYCSolver::iterate()
   bounds = newBounds;
 
   return dist;
-}
+} // iterate
 
 #endif 

@@ -51,6 +51,9 @@ private:
   bool passNorth; /*!< Flag that is true if the algorithm switched
                      from pointing south to pointing north on the
                      current iteration. */
+  bool sufficiencyFlag; /*!< Flag that indicates if sufficient
+                           conditions have been met while searching
+                           for the best direction. */
   vector<bool> updatedThreatTuple; /*!< updatedThreatTuple[i] = true
                                       if player i's threat tuple was
                                       updated on the current
@@ -182,7 +185,7 @@ public:
 	   SGSolution & _soln):
     env(_env), game(_game), soln(_soln),
     delta(game.getDelta()), numPlayers(game.getNumPlayers()),
-    numStates(game.getNumStates()), errorLevel(1)
+    numStates(game.getNumStates()), errorLevel(1), sufficiencyFlag(true)
   { }
   
   //! Prepares the approximation for generation

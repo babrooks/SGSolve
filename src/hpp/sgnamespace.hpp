@@ -89,6 +89,10 @@ namespace SG
                      cout. */
       STOREACTIONS, /*!< If true, the algorithm will store all
                        actions available at the given iteration. */
+      CHECKSUFFICIENT, /*!< If true, the algorithm will check a
+                          sufficient condition for the pivot to not
+                          cut into the equilibrium payoff
+                          correspondence. */
       NUMBOOLPARAMS /*!< Used internally to indicate the number of
 		      enumerated bool parameters. */
     };

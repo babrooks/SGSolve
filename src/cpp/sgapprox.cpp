@@ -9,6 +9,8 @@ void SGApprox::initialize()
 {
   int state, iter, action;
 
+  sufficiencyFlag = true;
+  
   oldWest = 0; westPoint = 0; newWest = 0;
 
   logfs.open("sg.log",std::ofstream::out);
@@ -146,6 +148,9 @@ std::string SGApprox::progressString() const
      << ", numExtremePoints: " << newWest-westPoint
      << ", numActionsRemaining: " << numActsRemaining;
 
+  if (!sufficiencyFlag)
+    ss << "\nWARNING: Sufficient conditions for containment not met.";
+  
   return ss.str();
 }
 
@@ -162,6 +167,11 @@ void SGApprox::findBestDirection()
   SGPoint currentNormal = currentDirection.getNormal();
   double currentNorm = currentDirection.norm();
 
+  int belowBindingPlayer, belowBindingPoint,
+    bestBindingPoint = 0, bestBindingPlayer = 0;
+
+  sufficiencyFlag = true;
+  
   for (state = 0; state < numStates; state++)
     {
       for (list<SGAction>::const_iterator action = actions[state].begin();
@@ -234,6 +244,8 @@ void SGApprox::findBestDirection()
 			      || improves(nonBindingDirection,belowDirection,
 					  bindingDirections[point]) ) )
 			{
+			  belowBindingPlayer = player;
+			  belowBindingPoint = point;
 			  belowDirection = bindingDirections[point];
 			  if (point==1 && action->corner)
 			    bestBindingRegime = SG::Binding01;
@@ -347,6 +359,8 @@ void SGApprox::findBestDirection()
 	       && improves(currentDirection,bestDirection,belowDirection) )
 	    {
 	      bestDirection = belowDirection;
+	      bestBindingPoint = belowBindingPoint;
+	      bestBindingPlayer = belowBindingPlayer;
 	      bestAction = action;
 	      bestRegime = bestBindingRegime;
 	    }
@@ -354,6 +368,21 @@ void SGApprox::findBestDirection()
 	} // action
     } // state
 
+  // Check sufficient condition for containment if best direction
+  // is binding
+  if (env.getParam(SG::CHECKSUFFICIENT)
+      && bestRegime == SG::Binding)
+    {
+      // Compute the direction along the frontier from the best binding payoff
+      int tupleIndex = bestAction->getTuples()[bestBindingPlayer][bestBindingPoint];
+      SGPoint nextFrontierDirection = extremeTuples[tupleIndex].average() -
+	extremeTuples[tupleIndex-1].average();
+
+      if ( improves(currentDirection,nextFrontierDirection,bestDirection) )
+	sufficiencyFlag = false;
+      
+    } // sufficient condition
+  
   if (bestAction == actions[0].end())
     throw(SGException(SG::NO_ADMISSIBLE_DIRECTION));
 

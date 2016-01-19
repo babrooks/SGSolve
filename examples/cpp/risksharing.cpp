@@ -4,8 +4,8 @@
 int main()
 {
   double delta = 0.85;
-  int numEndowments = 9;
-  int c2e = 25;
+  int numEndowments = 11;
+  int c2e = 5;
   int numSims = 1e3;
   int numSimIters = 1e5;
 
@@ -24,7 +24,7 @@ int main()
 
   SGSolver * solver;
   
-  for (double persistence = 0.0; persistence < 15.0; persistence += 0.25)
+  for (double persistence = 0.0; persistence < 0.125; persistence += 0.25)
     {
       try
 	{

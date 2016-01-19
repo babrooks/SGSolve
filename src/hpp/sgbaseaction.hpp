@@ -80,6 +80,8 @@ public:
 
   //! Returns the action
   int getAction() const { return action; }
+  //! Returns the tuples array
+  const vector< vector<int> > & getTuples() const { return tuples; }
   //! Returns the state
   int getState() const { return state; }
   //! Returns the minimum IC continuation values

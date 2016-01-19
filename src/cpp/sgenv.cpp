@@ -32,6 +32,7 @@ void SGEnv::restoreDefaults()
   boolParams[SG::MERGETUPLES] = false;
   boolParams[SG::BACKBENDINGWARNING] = false;
   boolParams[SG::PRINTTOCOUT] = true;
+  boolParams[SG::CHECKSUFFICIENT] = true;
   boolParams[SG::STOREACTIONS] = true;
 
   setOStream(cout);

@@ -17,7 +17,7 @@
 */
 class SGAction : public SGBaseAction
 {
-protected:
+private:
   const SGEnv & env; /*!< Constant reference to the parent
                         environment. */
 
