@@ -24,7 +24,7 @@ int main()
 
   SGSolver * solver;
   
-  for (double persistence = 0.0; persistence < 0.125; persistence += 0.25)
+  for (double persistence = 15.0; persistence < 30.0; persistence += 0.25)
     {
       try
 	{
@@ -150,9 +150,9 @@ int main()
 	       << endl
 	       << e.what()
 	       << endl;
-	  break;
+	  continue;
 	}
-    }
+    } // for persistence
   ofs_lrp.close();
   ofs_nash.close();
   
