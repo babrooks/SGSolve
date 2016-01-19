@@ -8,6 +8,7 @@ int main()
   int c2e = 5;
   int numSims = 1e3;
   int numSimIters = 1e5;
+  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Endowment;
 
   stringstream nashname, lrpname, prename, name, gamename, solnname;
   prename << "_ne="
@@ -16,6 +17,16 @@ int main()
 	  << c2e
 	  << "_d="
 	  << setprecision(3) << delta;
+  switch (endowmentMode)
+    {
+    case RiskSharingGame::Consumption:
+      prename << "_cmode=C";
+      break;
+    case RiskSharingGame::Endowment:
+      prename << "_cmode=E";
+      break;
+    }
+
   
   lrpname << "rsg_lrp" << prename.str() << ".log";
   nashname << "rsg_nash" << prename.str() << ".log";
@@ -31,7 +42,8 @@ int main()
 	  cout << "Starting computation with p="
 	       << setprecision(3) << persistence << "." << endl;
 	  
-	  RiskSharingGame rsg(delta,numEndowments,c2e,persistence);
+	  RiskSharingGame rsg(delta,numEndowments,
+			      c2e,persistence,endowmentMode);
 	  SGGame game(rsg);
 
 	  name.str(""); gamename.str(""); solnname.str("");
@@ -43,6 +55,16 @@ int main()
 	       << setprecision(3) << delta
 	       << "_p="
 	       << setprecision(3) << persistence;
+	  switch (endowmentMode)
+	    {
+	    case RiskSharingGame::Consumption:
+	      name << "_cmode=C";
+	      break;
+	    case RiskSharingGame::Endowment:
+	      name << "_cmode=E";
+	      break;
+	    }
+
 	  gamename << "./games/rsg"
 		   << name.str()
 		   << ".sgm";

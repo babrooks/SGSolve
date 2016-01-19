@@ -2,6 +2,8 @@
 
 class RiskSharingGame : public SGAbstractGame
 {
+public:
+  enum EndowmentMode { Consumption, Endowment};
 private:
   int numEndowments;
   int c2e;
@@ -12,6 +14,7 @@ private:
   double cIncr;
   vector< vector<double> > stateProbSum;
   vector<int> numActions_total;
+  EndowmentMode endowmentMode;
 
   double consumption(int e, int t) const
   {
@@ -30,17 +33,27 @@ private:
 
   double probHelper(int e, int t, int ep) const
   {
-    double c = consumption(e,t);
+    double mode;
+    switch (endowmentMode)
+      {
+      case Consumption:
+	mode = consumption(e,t);
+	break;
+      case Endowment:
+	mode = E[e];
+	break;
+      }
     
-    return ( cdf(E[ep]-c+eIncr) - cdf(E[ep]-c-eIncr)
-	     + cdf(c-E[ep]+eIncr) - cdf(c-E[ep]-eIncr) );
+    return ( cdf(E[ep]-mode+eIncr) - cdf(E[ep]-mode-eIncr)
+	     + cdf(mode-E[ep]+eIncr) - cdf(mode-E[ep]-eIncr) );
   } // probHelper
   
 public:
   RiskSharingGame(double delta,
 		  int _numEndowments,
 		  int _c2e,
-		  double _persistence):
+		  double _persistence,
+		  EndowmentMode _mode):
     numEndowments(_numEndowments),
     c2e(_c2e),
     persistence(_persistence),
@@ -50,7 +63,8 @@ public:
     numActions_total(_numEndowments,1),
     SGAbstractGame(delta,
 		   _numEndowments,
-		   vector< vector<int> > (_numEndowments,vector<int>(2,1)))
+		   vector< vector<int> > (_numEndowments,vector<int>(2,1))),
+    endowmentMode(_mode)
   {
     // A couple of checks on the number of endowments
     assert( (numEndowments%2) == 1 );

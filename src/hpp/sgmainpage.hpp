@@ -88,7 +88,7 @@
   detailed information about the progress of the algorithm.
 
   For a more detailed description of the solver library and its usage,
-  see \subpage sourcepage.
+  see \ref sourcepage.
 
   \section viewersec Overview of the graphical interface
 
@@ -130,7 +130,7 @@
   payoff.
     
   For more details about the object model underlying SGViewer, see the
-  \subpage viewerpage.
+  \ref viewerpage.
 
   \section examplesec Examples
 
@@ -199,11 +199,14 @@
 
 /** \example pd.cpp 
     \example risksharing.cpp
+    \example risksharing.hpp
     \example abreusannikov.cpp
     \example abs_jyc.cpp
  */
 
 /*! \page sourcepage The SGSolve library
+
+  @brief A detailed description of the SGSolve library.
 
   \section srcoverviewsec Overview
 
@@ -383,7 +386,7 @@
  */
 
 /*! \page viewerpage The SGViewer graphical interface
-  
+  @brief An detailed description of the SGViewer graphical interface.
   \section vieweroverviewsec Introduction
   
   The SGViewer module is a graphical interface for specifying,
