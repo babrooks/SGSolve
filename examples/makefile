@@ -7,7 +7,7 @@ CPPDIR=../src/cpp
 HPPDIR=../src/hpp
 EXAMPLEDIR=./cpp
 LIBDIR=../lib
-# DEBUG=-g
+DEBUG=-g
 DEBUG=-DNDEBUG -O
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o

@@ -4,8 +4,8 @@
 int main()
 {
   double delta = 0.85;
-  int numEndowments = 11;
-  int c2e = 5;
+  int numEndowments = 9;
+  int c2e = 25;
   int numSims = 1e3;
   int numSimIters = 1e5;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Endowment;
@@ -35,7 +35,7 @@ int main()
 
   SGSolver * solver;
   
-  for (double persistence = 15.0; persistence < 30.0; persistence += 0.25)
+  for (double persistence = 0.0; persistence < 28.0; persistence += 0.25)
     {
       try
 	{
@@ -163,6 +163,13 @@ int main()
 	  ofs_nash << endl;
 	  
 	}
+      catch (SGException & e)
+	{
+	  if (e.getType() == SG::NO_ADMISSIBLE_DIRECTION)
+	    continue;
+	  else
+	    throw;
+	}
       catch (std::exception & e)
 	{
 	  SGSolution soln = solver->getSolution();
@@ -172,7 +179,7 @@ int main()
 	       << endl
 	       << e.what()
 	       << endl;
-	  continue;
+	  break;
 	}
     } // for persistence
   ofs_lrp.close();

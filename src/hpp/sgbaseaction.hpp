@@ -77,17 +77,51 @@ public:
 
   //! Returns true if the action is null.
   bool getIsNull() const {return isNull;}
-
   //! Returns the action
   int getAction() const { return action; }
+  //! Returns the points array
+  const vector<SGTuple> & getPoints() const { return points; }
   //! Returns the tuples array
   const vector< vector<int> > & getTuples() const { return tuples; }
   //! Returns the state
   int getState() const { return state; }
+  //! Returns whether or not the action has a corner
+  bool hasCorner() const { return corner; }
   //! Returns the minimum IC continuation values
   const SGPoint & getMinICPayoffs() const {return minIC;}
   //! Returns the array of binding continuation values.
   const vector<SGTuple> & getBindingContinuations() const { return points; }
+
+  //! Sets the minimum IC continuation values
+  void setMinICPayoffs(const SGPoint & newMinIC)
+  {
+    minIC = newMinIC;
+  } // setMinIC
+  //! Sets the tuples array
+  void setTuples(const vector< vector<int> > & newTuples)
+  {
+    assert(newTuples.size()<=2);
+    tuples = newTuples;
+  } // setTuples
+  //! Sets the points array  
+  void setPoints(const vector<SGTuple> & newPoints)
+  {
+    assert(newPoints.size()<=2);
+    points = newPoints;
+  } // setPoints
+  void setPointsAndTuples(const vector<SGTuple> & newPoints,
+			  const vector< vector<int> > & newTuples)
+  {
+    assert(newPoints.size() <= 2);
+    assert(newPoints.size() == newTuples.size());
+    points = newPoints;
+    tuples = newTuples;
+  } // setPointsAndTuples
+  void setCorner(bool tf)
+  {
+    corner=tf;
+  }
+
   //! Serializes the action using the boost::serialization library
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)
@@ -99,7 +133,7 @@ public:
     ar & tuples;
     ar & isNull;
     ar & corner;
-  }
+  } // serialize
 
   friend class boost::serialization::access;
 }; // SGBaseAction

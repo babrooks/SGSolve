@@ -134,3 +134,143 @@ double SGAction::calculateMinIC(int action,int state,int player,
 
   return minIC;
 }
+
+void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
+					     const SGGame & game,
+					     const vector<SGTuple> & extremeTuples,
+					     const SGTuple & threatTuple,
+					     const SGTuple & pivot,
+					     const SGPoint & currentDirection,
+					     int oldWest)
+{
+  // Calculates the IC intersection points. To be used after updating
+  // the threat tuple.
+  int numPlayers = 2;
+  int tupleIndex;
+  SGPoint intersection, point, nextPoint;
+
+  reverse_iterator< vector<SGTuple>::const_iterator > tuple, nextTuple;
+	      
+  vector<SGTuple> newPoints(2);
+  vector< vector<int> > newTuples(2,vector<int>(0,0));
+  for (int player = 0; player < numPlayers; player++)
+    {
+      if (!updatedThreatTuple[player]
+	  || game.getConstrained()[player])
+	continue;
+
+      tuples[player].clear(); 
+      points[player].clear(); 
+	      
+      nextPoint = extremeTuples.back()
+	.expectation(game.getProbabilities()
+		     [state][action]);
+
+      for (tuple = extremeTuples.rbegin(),
+	     nextTuple = tuple+1,
+	     tupleIndex = extremeTuples.size()-1; 
+ 	   tupleIndex > oldWest;
+	   // nextTuple != extremeTuples.rend(); 
+	   ++tuple,++nextTuple, --tupleIndex)
+	{
+	  point = nextPoint;
+	  nextPoint = nextTuple->expectation(game.getProbabilities()
+					     [state][action]);
+
+	  double gap = point[player] - nextPoint[player];
+	  if ( abs(gap) < env.getParam(SG::FLATTOL)
+	       && abs(point[player] - minIC[player]) < env.getParam(SG::FLATTOL) )
+	    {
+	      // A flat.
+	      newTuples[player].push_back(tupleIndex);
+	      newTuples[player].push_back(tupleIndex - 1);
+	      newPoints[player].push_back(point);
+	      newPoints[player].push_back(nextPoint);
+	    }
+	  else if ( (point[player] <= minIC[player]
+		     && minIC[player] < nextPoint[player])
+		    || (point[player] >= minIC[player]
+			&& minIC[player] > nextPoint[player]) )
+	    {
+	      // Points flank the minimum IC payoff
+	      double alpha = (minIC[player] - nextPoint[player] ) / gap;
+	      newTuples[player].push_back(tupleIndex);
+	      newPoints[player].push_back((1-alpha)*nextPoint + alpha*point);
+	    }
+
+	  // Break when the payoff for this player is below
+	  // but within env.getParam(SG::PASTTHREATTOL)/2.0 of the threat
+	  // tuple
+	  if ( tuple->strictlyLessThan(threatTuple,player) 
+	       && !threatTuple
+	       .strictlyLessThan(*tuple
+				 +SGPoint(env.getParam(SG::PASTTHREATTOL)/2.0),
+				 player) )
+	    break;
+	} // for point
+    } // player
+	
+  for (int player = 0; player < numPlayers; player++)
+    {	      
+      if (updatedThreatTuple[player] 
+	  && !game.getConstrained()[player])
+	{
+	  // Remove points that are not IC
+	  int maxIndex, minIndex;
+	  double maxOtherPayoff, minOtherPayoff;
+	  newPoints[player].maxmin(1-player,maxOtherPayoff,maxIndex,
+				   minOtherPayoff,minIndex);
+
+	  if (maxOtherPayoff >= minIC[1-player])
+	    {
+	      points[player].push_back(newPoints[player][maxIndex]);
+	      tuples[player].push_back(newTuples[player][maxIndex]);
+	      if (minOtherPayoff < minIC[1-player])
+		{
+		  points[player].push_back(minIC);
+		  tuples[player].push_back(-1);
+		  corner = true;
+		}
+	      else
+		{
+		  points[player].push_back(newPoints[player][minIndex]);
+		  tuples[player].push_back(newTuples[player][minIndex]);
+		}
+
+	      SGPoint expPivot 
+		= pivot.expectation(game.getProbabilities()[state][getAction()]);
+	      intersectRaySegment(expPivot,currentDirection,player);
+	    }
+	  // Otherwise, not IC.
+	}
+      else if (updatedThreatTuple[1-player]
+	       && points[player].size()>0)
+	{
+	  if (points[player][0][1-player] >= minIC[1-player])
+	    {
+	      if (points[player][1][1-player] < minIC[1-player])
+		{
+		  points[player][1] = minIC;
+		  tuples[player][1] = -1;
+		}
+	    }
+	  else
+	    {
+	      points[player].clear();
+	      tuples[player].clear();
+	    }
+	}
+    } // for player
+
+  for(int player= 0; player < numPlayers; player++)
+    {
+      assert((points[player].size()==0)
+	     || (points[player].size()==2
+		 && (points[player][0][1-player]
+		     >= points[player][1][1-player]
+		     -env.getParam(SG::PASTTHREATTOL))));
+      assert(tuples[player].size() == points[player].size());
+    }
+
+} // calculateIntersections
+

@@ -42,6 +42,9 @@ public:
     trimmedPoints.resize(2);
   }
 
+  //! Get method for trimmed points
+  const vector<SGTuple> & getTrimmedPoints() const { return trimmedPoints; }
+
   //! Trims binding continuation segments
   /*! Intersects the binding continuation segments in SGAction::points
       with the half space that is below pivot in
@@ -80,6 +83,14 @@ public:
       }
   }
   
+  void calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
+				     const SGGame & game,
+				     const vector<SGTuple> & extremeTuples,
+				     const SGTuple & threatTuple,
+				     const SGTuple & pivot,
+				     const SGPoint & currentDirection,
+				     int oldWest);
+
   //! Calculates the IC constraint.
   /*! Calculates the minimum incentive compatible expected
       continuation value for the given action, relative to the given
@@ -88,7 +99,6 @@ public:
 			       const SGGame & game,
 			       const SGTuple & threatTuple);
 
-  friend class SGApprox;
 }; // SGAction
 
 

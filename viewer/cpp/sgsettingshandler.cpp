@@ -58,14 +58,15 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 		     new SGIntParamEdit(this,env,SG::TUPLERESERVESIZE));
   editLayout->addRow(QString("Store iterations:"),
 		     new SGIntParamEdit(this,env,SG::STOREITERATIONS));
-  editLayout->addRow(QString("Check sufficient conditions for containment:"),
-		     new SGIntParamEdit(this,env,SG::CHECKSUFFICIENT));
 
   // Construct and add boolean parameter edits.
   editLayout->addRow(QString("Merge tuples:"),
 		     new SGBoolParamBox(this,env,SG::MERGETUPLES));
   editLayout->addRow(QString("Store actions:"),
 		     new SGBoolParamBox(this,env,SG::STOREACTIONS));
+  editLayout->addRow(QString("Check sufficient conditions for containment:"),
+		     new SGBoolParamBox(this,env,SG::CHECKSUFFICIENT));
+
 
   mainLayout->addLayout(editLayout);
   mainLayout->addWidget(defaultButton);
