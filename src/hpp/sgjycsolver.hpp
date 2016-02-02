@@ -198,11 +198,12 @@ double SGJYCSolver::iterate()
 			     -numeric_limits<double>::max()));
   for (int state = 0; state < numStates; state++)
     {
-      for (int action = 0; action < numActions_total[state]; action++)
+      for (list<int>::const_iterator actionIter = game.getEquilibriumActions()[state].begin(); 
+	   actionIter != game.getEquilibriumActions()[state].end(); 
+	   ++actionIter)
 	{
+	  int action = *actionIter;
 	  indexToVector(action,actions,numActions[state]);
-	  if (!game.isEquilibriumAction(state,actions))
-	    continue;
 	  
 	  deviations = actions;
 
