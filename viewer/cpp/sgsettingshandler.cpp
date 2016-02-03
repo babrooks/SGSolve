@@ -2,7 +2,7 @@
 
 SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 				     SGEnv * _env)
-  : QWidget(parent), env(_env)
+  : QDialog(parent), env(_env)
 {
   setWindowFlags(Qt::Window);
   setWindowTitle(tr("SGViewer: Settings"));
@@ -69,9 +69,13 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 
 
   mainLayout->addLayout(editLayout);
-  mainLayout->addWidget(defaultButton);
-  mainLayout->addWidget(closeButton);
-
+  QHBoxLayout * buttonLayout = new QHBoxLayout();
+  buttonLayout->addWidget(defaultButton);
+  buttonLayout->addWidget(closeButton);
+  defaultButton->setDefault(false);
+  closeButton->setDefault(true);
+  mainLayout->addLayout(buttonLayout);
+    
   setLayout(mainLayout);
   
 } // constructor

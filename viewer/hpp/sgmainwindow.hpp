@@ -7,6 +7,7 @@
 #include "sgsolverworker.hpp"
 #include "sgsettingshandler.hpp"
 #include "sg.hpp"
+#include "risksharing.hpp"
 
 using namespace std;
 
@@ -126,6 +127,12 @@ private slots:
 
   //! Displays an about message
   void displayAbout();
+
+  //! Generate risk sharing game
+  void generateRSG();
+
+  //! Generate prisoner's dilemma game
+  void generatePD();
 };
 
 

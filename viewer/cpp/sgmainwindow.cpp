@@ -44,6 +44,11 @@ SGMainWindow::SGMainWindow()
   QMenu * toolsMenu = menuBar()->addMenu(tr("&Tools"));
   QAction * settingsAction = new QAction(tr("&Settings"),this);
   toolsMenu->addAction(settingsAction);
+  QMenu * gamesMenu = toolsMenu->addMenu(tr("Special &games"));
+  QAction * rsgAction = new QAction(tr("&Risk sharing"),this);
+  QAction * pdAction = new QAction(tr("&Prisoners' Dilemmas"),this);
+  gamesMenu->addAction(rsgAction);
+  gamesMenu->addAction(pdAction);
 
   QMenu * helpMenu = menuBar()->addMenu(tr("&Help"));
   QAction * aboutAction = new QAction(tr("&About"),this);
@@ -83,6 +88,10 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(cancelSolve()));
   connect(settingsAction,SIGNAL(triggered()),
 	  this,SLOT(changeSettings()));
+  connect(rsgAction,SIGNAL(triggered()),
+	  this,SLOT(generateRSG()));
+  connect(pdAction,SIGNAL(triggered()),
+	  this,SLOT(generatePD()));
   
   // Log tab
   QHBoxLayout * logEditLayout = new QHBoxLayout();
@@ -460,3 +469,29 @@ void SGMainWindow::settingsHandlerClosed()
   delete settingsHandler;
 }
 
+void SGMainWindow::generateRSG()
+{
+  double delta = 0.85;
+  int numEndowments = 5;
+  int c2e = 5;
+  double persistence = 0;
+
+  
+  
+  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
+  RiskSharingGame rsg(delta,numEndowments,
+		      c2e,persistence,endowmentMode);
+
+  SGGame game(rsg);
+  gameHandler->setGame(game);
+
+  tabWidget->setCurrentIndex(0);
+
+  QString newWindowTitle(tr("SGViewer - "));
+  setWindowTitle(newWindowTitle);
+} // generateRSG
+
+void SGMainWindow::generatePD()
+{
+
+} // generatePD

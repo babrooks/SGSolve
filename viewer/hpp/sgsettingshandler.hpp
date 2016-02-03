@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QCheckBox>
+#include <QDialog>
 #include "sgenv.hpp"
 
 //! Class for changing double parameters.
@@ -169,7 +170,7 @@ private slots:
 
   \ingroup viewer
  */
-class SGSettingsHandler : public QWidget
+class SGSettingsHandler : public QDialog
 {
   Q_OBJECT;
   
