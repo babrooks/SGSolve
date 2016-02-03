@@ -30,15 +30,16 @@ void SGPlotController::setSolution(SGSolution * newSoln)
   --currentIter;
   iteration=currentIter->getIteration();
   solnLoaded = true;
-  stateCombo->setCurrentIndex(0);
-  actionCombo->setCurrentIndex(0);
 
   // Initialize iter pointer
   startIter = soln->getIterations().begin();
   endIter = soln->getIterations().end();
   --endIter;
-  setIteration(currentIter->getIteration());
-  
+
+  bool iterSliderBlock = iterSlider->blockSignals(true);
+  bool startSliderBlock = startSlider->blockSignals(true);
+  bool solutionModeComboBlock = solutionModeCombo->blockSignals(true);
+
   // Setup sliders
   int numStates = soln->getGame().getNumStates();
   
@@ -51,12 +52,16 @@ void SGPlotController::setSolution(SGSolution * newSoln)
   
   mode = Progress;
   startSlider->setEnabled(mode==Progress);
-  disconnect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
-	     this,SLOT(changeMode(int)));
+
   solutionModeCombo->setCurrentIndex(mode);
-  connect(solutionModeCombo,SIGNAL(currentIndexChanged(int)),
-	  this,SLOT(changeMode(int)));
   
+  iterSlider->blockSignals(iterSliderBlock);
+  startSlider->blockSignals(startSliderBlock);
+  solutionModeCombo->blockSignals(solutionModeComboBlock);
+
+  // Has to be last because this triggers replot
+  setIteration(currentIter->getIteration());
+
   emit solutionChanged();
 } // setSolution
 
@@ -330,3 +335,8 @@ void SGPlotController::changeMode(int newMode)
   iterSlider->setValue(endIter->getIteration());
   iterSliderUpdate(endIter->getIteration());
 } // changeMode
+
+void SGPlotController::changeAction(int newAction)
+{
+  setActionIndex(newAction-1);
+}

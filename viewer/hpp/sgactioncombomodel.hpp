@@ -33,9 +33,9 @@ public:
     controller(_controller)
   {
     connect(controller,SIGNAL(solutionChanged()),
-	    this,SLOT(solutionChanged()));
-    connect(controller,SIGNAL(stateChanged()),
-	    this,SLOT(changeLayout()));
+    	    this,SLOT(changeLayout()));
+    // connect(controller,SIGNAL(stateChanged()),
+    // 	    this,SLOT(changeLayout()));
   }
   
   //! Reimplement rowcount

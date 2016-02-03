@@ -177,6 +177,8 @@ public slots:
   void prevAction();
   //! Increments the action.
   void nextAction();
+  //! Sets the action
+  void changeAction(int newAction);
 
   
 

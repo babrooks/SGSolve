@@ -66,9 +66,9 @@ public:
 		   vector< vector<int> > (_numEndowments,vector<int>(2,1))),
     endowmentMode(_mode)
   {
-    // A couple of checks on the number of endowments
-    assert( (numEndowments%2) == 1 );
-    assert( numEndowments>2 );
+    // // A couple of checks on the number of endowments
+    // assert( (numEndowments%2) == 1 );
+    // assert( numEndowments>2 );
 
     // Set up the endowment grid and the numbers of actions
     for (int e = 0; e < numEndowments; e++)

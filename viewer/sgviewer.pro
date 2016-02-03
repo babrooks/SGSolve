@@ -31,6 +31,7 @@ sgsettingshandler.hpp \
 sgplotcontroller.hpp \
 sgstatecombomodel.hpp \
 sgactioncombomodel.hpp \
+sgrisksharinghandler.hpp \
 Q_DebugStream.h
 
 VPATH += ./cpp ./hpp

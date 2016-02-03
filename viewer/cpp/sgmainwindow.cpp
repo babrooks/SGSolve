@@ -49,6 +49,11 @@ SGMainWindow::SGMainWindow()
   QAction * pdAction = new QAction(tr("&Prisoners' Dilemmas"),this);
   gamesMenu->addAction(rsgAction);
   gamesMenu->addAction(pdAction);
+  toolsMenu->addSeparator();
+  QAction * solveAction = new QAction(tr("&Solve game"),this);
+  QAction * cancelAction = new QAction(tr("&Cancel computation"),this);
+  toolsMenu->addAction(solveAction);
+  toolsMenu->addAction(cancelAction);
 
   QMenu * helpMenu = menuBar()->addMenu(tr("&Help"));
   QAction * aboutAction = new QAction(tr("&About"),this);
@@ -86,6 +91,10 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(solveGame()));
   connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
 	  this,SLOT(cancelSolve()));
+  connect(solveAction,SIGNAL(triggered()),
+	  this,SLOT(solveGame()));
+  connect(cancelAction,SIGNAL(triggered()),
+	  this,SLOT(cancelSolve()));
   connect(settingsAction,SIGNAL(triggered()),
 	  this,SLOT(changeSettings()));
   connect(rsgAction,SIGNAL(triggered()),
@@ -114,6 +123,8 @@ SGMainWindow::SGMainWindow()
   
   setCentralWidget(mainPanel);
   setWindowState(Qt::WindowMaximized);
+
+  generatePD();
   
   setWindowTitle(tr("SGViewer"));
 
@@ -476,22 +487,85 @@ void SGMainWindow::generateRSG()
   int c2e = 5;
   double persistence = 0;
 
-  
-  
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
-  RiskSharingGame rsg(delta,numEndowments,
-		      c2e,persistence,endowmentMode);
 
-  SGGame game(rsg);
-  gameHandler->setGame(game);
+  SGRiskSharingHandler rsh(this,numEndowments,c2e,persistence);
+  if (rsh.exec()==QDialog::Accepted)
+    {
+  
+      RiskSharingGame rsg(delta,numEndowments,
+			  c2e,persistence,endowmentMode);
 
-  tabWidget->setCurrentIndex(0);
+      SGGame game(rsg);
+      gameHandler->setGame(game);
 
-  QString newWindowTitle(tr("SGViewer - "));
-  setWindowTitle(newWindowTitle);
+      tabWidget->setCurrentIndex(0);
+
+      QString newWindowTitle(tr("SGViewer - Risk sharing game"));
+      setWindowTitle(newWindowTitle);
+    }
 } // generateRSG
 
 void SGMainWindow::generatePD()
 {
+  double delta = 0.7;
+  
+  int action, state, player;
+  int numPlayers = 2;
+  int numStates = 2;
+
+  vector< vector< int > > numActions(numStates,vector<int>(numPlayers,2));
+  vector<int> numActions_total(numStates,4);
+
+  // Payoffs
+  vector< vector< vector<double> > > 
+    payoffs(numStates,vector< vector<double> >(4,vector<double>(numPlayers,0.0)));
+  payoffs[0][0][0] = 0;
+  payoffs[0][1][0] = -1;
+  payoffs[0][2][0] = 2;
+  payoffs[0][3][0] = 1;
+  payoffs[0][0][1] = 0;
+  payoffs[0][1][1] = 2;
+  payoffs[0][2][1] = -1;
+  payoffs[0][3][1] = 1;
+
+  payoffs[1][0][0] = 2;
+  payoffs[1][1][0] = 1;
+  payoffs[1][2][0] = 4;
+  payoffs[1][3][0] = 3;
+  payoffs[1][0][1] = 2;
+  payoffs[1][1][1] = 4;
+  payoffs[1][2][1] = 1;
+  payoffs[1][3][1] = 3;
+
+  // Transition probabilities
+  vector< vector< vector<double> > >
+    probabilities(numStates,vector< vector<double> >(4,vector<double>(numStates,1.0)));
+  probabilities[0][0][0] = 1.0/3.0;
+  probabilities[0][1][0] = 0.5;
+  probabilities[0][2][0] = 0.5;
+  probabilities[0][3][0] = 1.0/3.0;
+  probabilities[1][0][0] = 2.0/3.0;
+  probabilities[1][1][0] = 0.5;
+  probabilities[1][2][0] = 0.5;
+  probabilities[1][3][0] = 2.0/3.0;
+  for (int s = 0; s < 2; s ++)
+    {
+      for (int a = 0; a < 4; a ++)
+	probabilities[s][a][1] = 1.0-probabilities[s][a][0];
+    }
+
+  SGGame game(delta,
+	      numStates,
+	      numActions,
+	      payoffs,
+	      probabilities);
+  
+  gameHandler->setGame(game);
+
+  tabWidget->setCurrentIndex(0);
+
+  QString newWindowTitle(tr("SGViewer - Prisoners' di"));
+  setWindowTitle(newWindowTitle);
 
 } // generatePD

@@ -4,9 +4,9 @@
 
 int main()
 {
-  std::vector<int> D   = {100, 200, 400, 100, 200, 400};
-  std::vector<int> NE  = {3, 3, 3, 5, 5, 5};
-  std::vector<int> C2E = {50, 50, 50, 25, 25, 25};
+  std::vector<int> D   = {100, 600};
+  std::vector<int> NE  = {3, 5};
+  std::vector<int> C2E = {15, 25};
   
   for (int k = 0; k < D.size(); k++)
     {

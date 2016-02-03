@@ -133,8 +133,6 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
 void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 {
   soln = newSoln;
-  controller->setSolution(&soln);
-  
   connect(detailPlot,SIGNAL(inspectPoint(SGPoint,int,bool)),
 	  this,SLOT(inspectPoint(SGPoint,int,bool)) );
   connect(detailPlot,SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
@@ -167,7 +165,9 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
       statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
     }
 
-  plotSolution();
+  controller->setSolution(&soln);
+  
+  // plotSolution();
 
   solnLoaded = true;
 } // setSolution
@@ -178,10 +178,12 @@ void SGSolutionHandler::plotSolution()
   const SGIteration & endIter = controller->getEndIter();
   const SGIteration & pivotIter = controller->getCurrentIter();
   int start = controller->getStartSliderPosition();
+
   if (start == -1)
     start = 0;
   else
     start = startIter.getNumExtremeTuples()-1;
+
   int end = endIter.getNumExtremeTuples()-1;
 
   int numStates = soln.getGame().getNumStates();

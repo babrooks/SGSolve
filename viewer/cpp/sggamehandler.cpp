@@ -95,7 +95,7 @@ SGGameHandler::SGGameHandler():
   QVBoxLayout * payoffLayout = new QVBoxLayout();
   QVBoxLayout * probabilityLayout = new QVBoxLayout();
   
-  solveButton = new QPushButton(tr("Solve"));
+  solveButton = new QPushButton(tr("&Solve"));
   solveButton->setSizePolicy(QSizePolicy::Fixed,
 			     QSizePolicy::Preferred);
   solveButton->resize(300,solveButton->height());

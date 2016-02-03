@@ -8,6 +8,7 @@
 #include "sgsettingshandler.hpp"
 #include "sg.hpp"
 #include "risksharing.hpp"
+#include "sgrisksharinghandler.hpp"
 
 using namespace std;
 

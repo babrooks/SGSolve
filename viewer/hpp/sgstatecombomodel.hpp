@@ -65,7 +65,9 @@ public slots:
 
   //! Signals to the GUI to change the layout.
   void changeLayout()
-  { emit layoutChanged(); }
+  { 
+    emit layoutChanged(); 
+  }
 
 }; // SGStateComboModel
 
