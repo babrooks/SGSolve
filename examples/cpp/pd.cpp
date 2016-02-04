@@ -32,34 +32,40 @@ int main ()
   vector< vector< vector<double> > >
     probabilities(numStates,vector< vector<double> >(4,vector<double>(numStates,1.0)));
 
-  cout << "Constructing game object" << endl;
-  SGGame game(delta,
-	      numStates,
-	      numActions,
-	      payoffs,
-	      probabilities,
-	      unconstrained);
+  try
+    {
+      cout << "Constructing game object" << endl;
+      SGGame game(delta,
+		  numStates,
+		  numActions,
+		  payoffs,
+		  probabilities,
+		  unconstrained);
 
-  SGEnv env;
+      SGEnv env;
 
-  env.setParam(SG::DIRECTIONTOL,1e-12); // 1e-13
-  env.setParam(SG::NORMTOL,1e-12); // 1e-12
-  env.setParam(SG::LEVELTOL,1e-12); // 1e-12x
-  env.setParam(SG::IMPROVETOL,1e-13); // 1e-14
+      env.setParam(SG::DIRECTIONTOL,1e-12); 
+      env.setParam(SG::NORMTOL,1e-12); 
+      env.setParam(SG::LEVELTOL,1e-12); 
+      env.setParam(SG::IMPROVETOL,1e-13); 
+
+      cout << "Building solver" << endl;
+      SGSolver solver(env,game);
+
+      cout << "Starting solve routine" << endl;
+      solver.solve();
   
-  
-  cout << "Building solver" << endl;
-  SGSolver solver(env,game);
+      cout << "Saving data... ";
+      SGSolution::save(solver.getSolution(),"sgtest.sln");
+      cout << "Done!" << endl;
 
-  cout << "Starting solve routine" << endl;
-  solver.solve();
-  
-  cout << "Saving data... ";
-  SGSolution::save(solver.getSolution(),"sgtest.sln");
-  cout << "Done!" << endl;
-
-  SGGame::save(game,"pd.sgm");
-
+      SGGame::save(game,"pd.sgm");
+    }
+  catch (SGException e)
+    {
+      cout << "Caught the following exception:" << endl
+	   << e.what() << endl;
+    }
 
   return 0;
 }

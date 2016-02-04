@@ -1,37 +1,10 @@
-
-CSYSFLAGS = -fPIC -std=gnu++11
-CMTFLAGS = 
-LDMTFLAGS = -lpthread -lm
-
-CPPDIR=../src/cpp
-HPPDIR=../src/hpp
-EXAMPLEDIR=./cpp
-LIBDIR=../lib
-DEBUG=-g
-DEBUG=-DNDEBUG -O
+# Makefile for examples
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
-MAINS= as_twostate kocherlakota abreusannikov abreusannikov_2state kocherlakota2 pd guitester risksharing
-
-include ../grb.mk
-
-BOOSTINCLDIR=/usr/local/include/boost/serialization/
-BOOSTDIR=/usr/local/lib/
-
-CFLAGS = $(CSYSFLAGS) $(DEBUG) \
-	-I$(BOOSTDIR) \
-	$(CMTFLAGS) \
-	-I$(HPPDIR) \
-	-I./hpp/ \
-	-I$(BOOSTINCLDIR) \
-	$(OPTIONS) \
-	-m64
-LDFLAGS = -L$(BOOSTDIR) \
-	$(LDMTFLAGS) \
-	-L.
-
-# GRB
+MAINS= as_twostate abreusannikov pd guitester risksharing
 MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc
+
+include ../localsettings.mk
 
 all: libsg.a $(MAINS)
 

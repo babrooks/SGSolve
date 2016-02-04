@@ -59,18 +59,25 @@ int main ()
 	} // for action
     } // for state
 
-  cout << "Constructing game object" << endl;
-  SGGame game(delta,
-	      numStates,
-	      numActions,
-	      payoffs,
-	      probabilities);
+  try
+    {
+      cout << "Constructing game object" << endl;
+      SGGame game(delta,
+		  numStates,
+		  numActions,
+		  payoffs,
+		  probabilities);
 
-  cout << "Building solver" << endl;
-  SGJYCSolver solver(game,100);
+      cout << "Building solver" << endl;
+      SGJYCSolver solver(game,100);
 
-  cout << "Starting solve routine" << endl;
-  solver.solve();
-  
+      cout << "Starting solve routine" << endl;
+      solver.solve();
+    }
+  catch (SGException e)
+    {
+      cout << "Caught the following exception: " << endl
+	   << e.what() << endl;
+    }  
   return 0;
 }

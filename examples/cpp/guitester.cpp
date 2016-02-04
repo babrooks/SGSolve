@@ -10,7 +10,6 @@ int main ()
 
   try
     {
-      // SGGame::load(game,"./games/test2.sgm");
       SGGame::load(game,"./games/rsg_ne=5_c2e=25_d=0.85_p=0.sgm");
 
       SGEnv env;
@@ -28,8 +27,7 @@ int main ()
       cout << "Done!" << endl;
       
       SGSolution soln;
-      // SGSolution::load(soln,"./sgtest.sln");
-      SGSolution::load(soln,"../src/MATLAB/solutions/koch_ne=11_c2e=5_d=0.90_p=0.00.sln");
+      SGGame::load(game,"./solutions/rsg_ne=5_c2e=25_d=0.85_p=0.sln");
 
       SGSimulator sim(soln);
       

@@ -45,8 +45,8 @@ int main()
     }
 
   
-  lrpname << "rsg_lrp" << prename.str() << ".log";
-  nashname << "rsg_nash" << prename.str() << ".log";
+  lrpname << "./logs/rsg_lrp" << prename.str() << ".log";
+  nashname << "./logs/rsg_nash" << prename.str() << ".log";
   ofstream ofs_lrp(lrpname.str().c_str(),std::ofstream::out);
   ofstream ofs_nash(nashname.str().c_str(),std::ofstream::out);
 
@@ -201,7 +201,6 @@ int main()
     } // for persistence
   ofs_lrp.close();
   ofs_nash.close();
-  
 
   return 0;
 }

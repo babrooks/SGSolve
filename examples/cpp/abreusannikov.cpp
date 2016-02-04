@@ -62,7 +62,7 @@ int main ()
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution::save(solver.getSolution(),"sgtest.sln");
+      SGSolution::save(solver.getSolution(),"./solutions/sgtest.sln");
       cout << "Done!" << endl;
     }
   catch (SGException e)

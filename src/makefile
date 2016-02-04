@@ -1,34 +1,6 @@
-CXX=g++
-CPPDIR=../src/cpp
-HPPDIR=../src/hpp
-LIBDIR=../lib
-EXAMPLEDIR=./cpp
-DEBUG=-g
-DEBUG=-DNDEBUG -O
+include ../localsettings.mk
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgapprox.o sgpoint.o sgtuple.o sgaction.o sgenv.o sgsimulator.o sgiteration.o
-
-# CPLEX
-SYSTEM = x86-64_sles10_4.1
-LIBFORMAT = static_pic
-CSYSFLAGS  = -fPIC -std=gnu++11
-# Compilation and linking flags enabling Multi-threading
-CMTFLAGS = -DILOUSEMT -D_REENTRANT
-LDMTFLAGS = -lpthread
-# Code optimization/debugging options
-
-BOOSTINCLDIR=/usr/local/include/boost/serialization/
-BOOSTDIR=/usr/local/lib/
-
-CFLAGS = $(CSYSFLAGS) $(DEBUG) \
-	-I$(BOOSTDIR) \
-	$(CMTFLAGS) \
-	-I$(HPPDIR) \
-	-I$(BOOSTINCLDIR) \
-	$(OPTIONS)  
-LDFLAGS = -L$(BOOSTDIR) \
-	$(LDMTFLAGS) \
-	-L.
 
 all: libsg.a 
 
