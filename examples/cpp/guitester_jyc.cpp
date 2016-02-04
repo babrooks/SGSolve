@@ -1,9 +1,8 @@
-// One state prisoner's dilemma
+// Same as guitester but uses the jyc algorithm
+//! @example
 #include "sg.hpp"
 #include "sgjycsolver.hpp"
 #include <ctime>
-
-//! @example
 
 int main ()
 {
@@ -21,10 +20,6 @@ int main ()
   
   double duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
   cout << duration << " seconds elapsed" << endl;
-  // cout << "Saving data... ";
-  // SGSolution::save(solver.getSolution(),"sgtest.sln");
-  // cout << "Done!" << endl;
-
 
   return 0;
 }

@@ -1,12 +1,15 @@
+//! This example compares the runtimes of the pencil sharpening
+//! algorithm and generalized JYC.
+//! @example
 #include "sg.hpp"
 #include "sgjycsolver.hpp"
 #include "risksharing.hpp"
 
 int main()
 {
-  std::vector<int> D   = {100, 600};
-  std::vector<int> NE  = {3, 5};
-  std::vector<int> C2E = {15, 25};
+  std::vector<int> D   = {100, 100, 200, 100, 200, 400, 100, 200, 400, 600};
+  std::vector<int> NE  = {3,   3,   3,   3,   3,   3,   5,   5,   5,   5};
+  std::vector<int> C2E = {15,  25,  25,  50,  50,  50,  25,  25,  25,  25};
   
   for (int k = 0; k < D.size(); k++)
     {
@@ -30,11 +33,6 @@ int main()
 			  c2e,persistence,endowmentMode);
       SGGame game(rsg);
 
-      // SGGame game;
-      // // SGGame::load(game,"../src/MATLAB/games/koch_ne=5_c2e=25_d=0.90_p=4.00.sgm");
-      // SGGame::load(game,"rsgtest.sgm");
-      // game.setDiscountFactor(0.85);
-  
       std::clock_t start = std::clock();
 
       SGJYCSolver solver_jyc(game,numDirections);
@@ -75,7 +73,6 @@ int main()
       double duration_abs = (std::clock() - start) / (double) CLOCKS_PER_SEC;
   
       SGSolution soln = solver_abs.getSolution();
-      // SGSolution::save(soln,"abs_jyc.sln");
 
       int lastIterOutsideJYC;
       int lastRevOutsideJYC;

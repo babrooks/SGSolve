@@ -1,4 +1,5 @@
-// Example from Abreu-Sannikov. Game with only one state.
+//! Example from Abreu-Sannikov. Game with only one state.
+//! @example
 #include "sg.hpp"
 
 int main ()
@@ -45,24 +46,30 @@ int main ()
   for (action = 0; action<9; action++)
     actionsPerState.push_back(action);
 
-  cout << "Constructing game object" << endl;
-  SGGame game(delta,
-	      numStates,
-	      numActions,
-	      payoffs,
-	      probabilities);
+  try
+    {  cout << "Constructing game object" << endl;
+      SGGame game(delta,
+		  numStates,
+		  numActions,
+		  payoffs,
+		  probabilities);
 
-  cout << "Building solver" << endl;
-  SGEnv env;
-  SGSolver solver(env,game);
+      cout << "Building solver" << endl;
+      SGEnv env;
+      SGSolver solver(env,game);
 
-  cout << "Starting solve routine" << endl;
-  solver.solve();
+      cout << "Starting solve routine" << endl;
+      solver.solve();
   
-  cout << "Saving data... ";
-  SGSolution::save(solver.getSolution(),"sgtest.sln");
-  cout << "Done!" << endl;
-
+      cout << "Saving data... ";
+      SGSolution::save(solver.getSolution(),"sgtest.sln");
+      cout << "Done!" << endl;
+    }
+  catch (SGException e)
+    {
+      cout << "Caught the following exception: " << endl
+	   << e.what() << endl;
+    }
 
   return 0;
 }

@@ -1,8 +1,7 @@
-// Example from Abreu-Sannikov. Game with only one state.
+//! Example from Abreu-Sannikov. Game with only one state.
+//! @example
 #include "sg.hpp"
 #include "sgjycsolver.hpp"
-
-//! @example
 
 int main ()
 {
@@ -13,8 +12,6 @@ int main ()
   vector<int> actions(2,0), endowments(2,0);
 
   int numStates = 2;
-
-  vector<bool> unconstrained(2,false);
 
   vector< vector< int > > numActions(numStates,vector<int>(numPlayers,3));
   vector<int> numActions_total(numStates,9);
@@ -52,7 +49,7 @@ int main ()
   // Transition probabilities
   vector< vector< vector<double> > >
     probabilities(numStates,vector< vector<double> >(9,vector<double>(numStates,0.0)));
-  double persistence = 0.3;
+  double persistence = 0.5;
   for (state=0; state<numStates; state++)
     {
       for (action=0; action<9; action++)
@@ -67,8 +64,7 @@ int main ()
 	      numStates,
 	      numActions,
 	      payoffs,
-	      probabilities,
-	      unconstrained);
+	      probabilities);
 
   cout << "Building solver" << endl;
   SGJYCSolver solver(game,100);

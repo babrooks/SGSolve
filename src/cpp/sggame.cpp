@@ -152,6 +152,15 @@ SGGame::SGGame(double _delta,
 	    }
 	} // for state
     }
+  else if (eqActions.size() == 0)
+    {
+      for (int state = 0; state < numStates; state++)
+	{
+	  eqActions.push_back(list<int>(0));
+	  for (int a = 0; a < numActions_total[state]; a++)
+	    eqActions[state].push_back(a);
+	} // for
+    } 
 
   if(unconstrained.size()!=2)
     throw(SGException(SG::OUT_OF_BOUNDS));

@@ -5,7 +5,7 @@
 
 int main ()
 {
-  double delta = 0.9;
+  double delta = 0.5;
   
   int action, state, player;
   int numPlayers = 2;
@@ -49,7 +49,7 @@ int main ()
   // Transition probabilities
   vector< vector< vector<double> > >
     probabilities(numStates,vector< vector<double> >(9,vector<double>(numStates,0.0)));
-  double persistence = 0.3;
+  double persistence = 0.7;
   for (state=0; state<numStates; state++)
     {
       for (action=0; action<9; action++)

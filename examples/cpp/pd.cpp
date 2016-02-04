@@ -1,7 +1,7 @@
-// One state prisoner's dilemma
-#include "sg.hpp"
-
+//! One state prisoner's dilemma
 //! @example
+
+#include "sg.hpp"
 
 int main ()
 {

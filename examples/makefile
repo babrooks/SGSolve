@@ -11,7 +11,7 @@ DEBUG=-g
 DEBUG=-DNDEBUG -O
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
-MAINS= as_twostate kocherlakota abreusannikov kocherlakota2 pd guitester risksharing
+MAINS= as_twostate kocherlakota abreusannikov abreusannikov_2state kocherlakota2 pd guitester risksharing
 
 include ../grb.mk
 
@@ -40,7 +40,7 @@ all: libsg.a $(MAINS)
 $(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
-$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp
+$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp libsg.a
 	$(CXX) -I$(GRBINCLDIR) $(CFLAGS) $< -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
 	-lboost_serialization $(DYNAMIC) $(LDFLAGS) -o $@

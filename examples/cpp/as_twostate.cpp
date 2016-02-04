@@ -1,8 +1,8 @@
-// Example from Abreu-Sannikov. Game with only one state.
+//! Two state version of the example from Abreu and Sannikov.
+//! @example
 #include "sg.hpp"
 #include "sgsimulator.hpp"
 
-//! @example
 
 int main ()
 {
@@ -71,8 +71,8 @@ int main ()
 	      unconstrained);
 
   SGEnv env;
-  env.setParam(SGEnv::STOREITERATIONS,1);
-  env.setParam(SGEnv::LEVELTOL,1e-12);
+  env.setParam(SG::STOREITERATIONS,1);
+  env.setParam(SG::LEVELTOL,1e-12);
   
   cout << "Building solver" << endl;
   SGSolver solver(env,game);
@@ -96,7 +96,7 @@ int main ()
 
   sim.initialize();
 
-  sim.simulate(10000,0,soln2.getIterations().back().getIteration()-4);
+  sim.simulate(100,1000,0,soln2.getIterations().back().getIteration()-4);
 
   vector<int> stateDistr = sim.getStateDistr();
   vector< vector<int> > actionDistr = sim.getActionDistr();
