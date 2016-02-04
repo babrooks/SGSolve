@@ -129,6 +129,10 @@ bool SGPlotController::setActionIndex(int newActionIndex)
 	}
       else
 	action = -1;
+
+      bool actionComboBlock = actionCombo->blockSignals(true);
+      actionCombo->setCurrentIndex(newActionIndex+1);
+      actionCombo->blockSignals(actionComboBlock);
       return true;
     }
   return false;
@@ -270,26 +274,26 @@ void SGPlotController::prevAction()
     return;
     
   if ( (state == -1
-	|| (state == 0 && action <= 0))
+	|| (state == 0 && actionIndex <= 0))
        && (iterSlider->minimum() < iterSlider->value()) )
     {
       iterSlider->setSliderPosition(std::max(iterSlider->minimum(),
 					     iterSlider->value()-1));
       synchronizeSliders();
       setState(soln->getGame().getNumStates()-1);
-      setAction(currentIter->getActions()[state].size()-1);
+      setActionIndex(currentIter->getActions()[state].size()-1);
       emit iterationChanged();
     }
   else if (state > 0
-	   && action <= 0)
+	   && actionIndex <= 0)
     {
       setState(state-1);
-      setAction(currentIter->getActions()[state].size()-1);
+      setActionIndex(currentIter->getActions()[state].size()-1);
       emit iterationChanged();
     }
   else 
     {
-      setAction(action-1);
+      setActionIndex(actionIndex-1);
       emit iterationChanged();
     }
 } // prevAction
@@ -303,16 +307,16 @@ void SGPlotController::nextAction()
     {
       setState(0);
     }
-  else if (state>-1 && action+1 < currentIter->getActions()[state].size())
+  else if (state>-1 && actionIndex+1 < currentIter->getActions()[state].size())
     {
-      setAction(action+1);
+      setActionIndex(actionIndex+1);
       emit iterationChanged();
     }
   else if (state>-1 && state+1 < soln->getGame().getNumStates()
-	   && action+1==currentIter->getActions()[state].size())
+	   && actionIndex+1==currentIter->getActions()[state].size())
     {
       setState(state+1);
-      setAction(0);
+      setActionIndex(0);
       emit iterationChanged();
     }	
   else if (iterSlider->value() < iterSlider->maximum())
@@ -321,7 +325,7 @@ void SGPlotController::nextAction()
 					     iterSlider->value()+1));
       synchronizeSliders();
       setState(0);
-      setAction(0);
+      setActionIndex(0);
       emit iterationChanged();
     }
 } // nextAction
