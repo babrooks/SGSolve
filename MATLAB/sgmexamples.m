@@ -34,8 +34,6 @@ sgmex('Solve',delta,G1,G2,P,...
 toc
 
 % sgmex('SaveSolution',sprintf('twostate_delta=%1.2f.dat',delta));
-% 
-% % sgviewer();
 
 %% 2 state Kocherlakota style risk sharing example, with sgmex
 G1 = [10; 9; 7; 4; 0];
@@ -49,7 +47,6 @@ delta=0.7;
 
 sgmex('Solve',delta,{G1; G2'},{G2,G1'},P,'errorTol',1e-10,'unconstrained',true(1,2));
 
-% sgviewer();
 
 %% n state kocherlakota style risk sharing example
 delete(findobj('parent',0));
@@ -95,7 +92,6 @@ tic;
 sgmex('Solve',delta,G1,G2,P,'unconstrained',false(1,2));
 toc
 
-% sgviewer();
 
 %% Positively correlated endowments with risk sharing
 % Independent distribution over size of the pie
@@ -156,7 +152,6 @@ tic;
 sgmex('Solve',delta,G1,G2,P,'unconstrained',false(1,2));
 toc
 
-% sgviewer();
 
 
 %% Duopoly with capacity constraints
@@ -298,8 +293,6 @@ tic;
 toc
 
 sgmex('SaveSolution',sprintf('cournot_delta=%1.2f.dat',delta));
-
-% sgviewer();
 
 
 
