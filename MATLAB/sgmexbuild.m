@@ -1,3 +1,4 @@
+% File for building the sgmex executable
 function sgmexbuild
 
 if strcmp(computer,'PCWIN')
