@@ -30,6 +30,8 @@ ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/c
 
  CXX=clang++ -O0
 
+ RMCMD=rm -rf 
+
 endif
 ifneq "$(wildcard /opt/ibm/ILOG/CPLEX_Studio1251/cplex/bin/x86-64_sles10_4.1/cplex )" "" 
  $(info Compiling on Bens desktop)
@@ -45,6 +47,23 @@ ifneq "$(wildcard /opt/ibm/ILOG/CPLEX_Studio1251/cplex/bin/x86-64_sles10_4.1/cpl
  BOOSTDIR=/usr/local/lib/
 
  CXX=g++
+
+ RMCMD=rm -rf 
+
+endif
+ifneq "$(wildcard C:\Users\babrooks\ )" "" 
+ $(info Compiling on Bens windows laptop)
+
+ STATIC=-Wl,-Bstatic
+ DYNAMIC=-Wl,-Bdynamic
+
+ BOOSTINCLDIR="C:/Program Files/boost/boost_1_60_0/boost/serialization/"
+ BOOSTDIR="C:/Program Files/boost/boost_1_60_0/"
+
+ CXX=g++
+
+ RMCMD=del 
+
 endif
 
 # General settings
@@ -66,8 +85,8 @@ CFLAGS = $(CSYSFLAGS) $(DEBUG) \
 	-I$(HPPDIR) \
 	-I./hpp/ \
 	-I$(BOOSTINCLDIR) \
-	$(OPTIONS) \
-	-m64
+	$(OPTIONS) 
+
 LDFLAGS = -L$(BOOSTDIR) \
 	$(LDMTFLAGS) \
 	-L.

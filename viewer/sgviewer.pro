@@ -32,6 +32,7 @@ INCLUDEPATH += ./hpp/
 INCLUDEPATH += /usr/local/include
 INCLUDEPATH += ../src/hpp
 INCLUDEPATH += /usr/local/lib/ 
+INCLUDEPATH += "C:/Program Files/boost/boost_1_60_0"
 HEADERS = sgmainwindow.hpp \
 qcustomplot.h \
 sggamehandler.hpp \
@@ -71,6 +72,10 @@ LIBS += -Bstatic -lsg -Wl,-Bstatic -lboost_serialization -Wl,-Bdynamic #-lqxcb
 }
 macx {
 LIBS += -lc++ -lsg /usr/local/lib/libboost_serialization.a 
+}
+win32 {
+LIBS += -L"C:\Program Files\boost\boost_1_60_0\bin.v2\libs\serialization\build\gcc-mingw-4.9.2\debug\link-static\threading-multi" \
+ -lboost_serialization-mgw49-mt-d-1_60 -L../lib/ -lsg
 }
 
 PRE_TARGETDEPS=../lib/libsg.a

@@ -31,4 +31,4 @@ libsg.a: $(OBJFILES)
 	ranlib $(LIBDIR)/libsg.a
 
 clean:
-	rm -rf *.o ../lib/*.a
+	$(RMCMD) *.o ../lib/*.a
