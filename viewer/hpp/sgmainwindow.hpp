@@ -14,11 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 #ifndef SGMAINWINDOW_HPP
 #define SGMAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <QtWidgets>
 #include "sggamehandler.hpp"
 #include "sgsolutionhandler.hpp"
 #include "sgsolverworker.hpp"
@@ -26,6 +31,7 @@
 #include "sg.hpp"
 #include "risksharing.hpp"
 #include "sgrisksharinghandler.hpp"
+#include "sglegend.hpp"
 
 using namespace std;
 
@@ -145,6 +151,9 @@ private slots:
 
   //! Displays an about message
   void displayAbout();
+
+  //! Displays a legend
+  void displayLegend();
 
   //! Generate risk sharing game
   void generateRSG();

@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 #include <QtWidgets>
 #include "sggamehandler.hpp"
@@ -24,7 +28,7 @@ SGGameHandler::SGGameHandler():
   deltaEdit = new QLineEdit("0.9");
   deltaEdit->setSizePolicy(QSizePolicy::Preferred,
 			   QSizePolicy::Preferred);
-
+  
   numStatesEdit = new QLineEdit("1");
   numStatesEdit->setSizePolicy(QSizePolicy::Preferred,
 			       QSizePolicy::Preferred);
@@ -33,6 +37,11 @@ SGGameHandler::SGGameHandler():
   QPushButton * removeStateButton = new QPushButton(" -");
   QPushButton * nextStateButton = new QPushButton("->");
   QPushButton * prevStateButton = new QPushButton("<-");
+
+  addStateButton->setToolTip(tr("Add state"));
+  removeStateButton->setToolTip(tr("Delete state"));
+  nextStateButton->setToolTip(tr("Next state"));
+  prevStateButton->setToolTip(tr("Previous state"));
 
   QSize buttonSize(50,addStateButton->height());
   addStateButton->resize(buttonSize);
@@ -70,6 +79,11 @@ SGGameHandler::SGGameHandler():
       addActionButtons[player]->resize(buttonSize);
       removeActionButtons[player]->resize(buttonSize);
 
+      addActionButtons[player]->setToolTip(QString("Add action\nfor player ")
+					   + QString::number(player));
+      removeActionButtons[player]->setToolTip(QString("Delete action\nfor player ")
+					   + QString::number(player));
+
       addActionButtons[player]->setMinimumWidth(buttonSize.width());
       removeActionButtons[player]->setMinimumWidth(buttonSize.width());
 
@@ -82,6 +96,7 @@ SGGameHandler::SGGameHandler():
   errorTolEdit = new QLineEdit(QString("%1").arg(errorTol,0,'E',3));
   errorTolEdit->setSizePolicy(QSizePolicy::Preferred,
 			      QSizePolicy::Preferred);
+  errorTolEdit->setToolTip(tr("The convergence threshhold"));
 
   payoffTableView = new SGTableView();
   payoffTableView->setSelectionMode(QAbstractItemView::ContiguousSelection);

@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 #ifndef SGRISKSHARINGHANDLER_HPP
 #define SGRISKSHARINGHANDLER_HPP
@@ -27,7 +31,6 @@
 #include <QCheckBox>
 #include <QDialog>
 #include <QValidator>
-#include "sgsettingshandler.hpp"
 
 //! A widget for editing integer attributes
 /*!

@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see
 # <http://www.gnu.org/licenses/>.
+# 
+# Benjamin A. Brooks
+# ben@benjaminbrooks.net
+# Chicago, IL
 
 ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/cplex/bin/x86-64_osx/cplex )" "" 
  $(info Compiling on Bens macbook pro)

@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 //! This example compares the runtimes of the pencil sharpening
 //! algorithm and generalized JYC.

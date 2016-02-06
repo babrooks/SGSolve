@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 #include "sgcustomplot.hpp"
 
@@ -27,7 +31,7 @@ SGCustomPlot::SGCustomPlot(int _state, bool _isDetailPlot) :
   QSizePolicy qsp(QSizePolicy::Preferred,
 		  QSizePolicy::Minimum);
   qsp.setHeightForWidth(true);
-
+  
   setSizePolicy(qsp);
 
   QFont font = xAxis->labelFont();
@@ -42,7 +46,7 @@ SGCustomPlot::SGCustomPlot(int _state, bool _isDetailPlot) :
   
   plotLayout()->insertRow(0);
   plotLayout()->addElement(0,0,title);
-
+  
   setContextMenuPolicy(Qt::CustomContextMenu);
 
   inspectPointAction = new QAction(tr("&Inspect point"),this);
@@ -83,7 +87,7 @@ void SGCustomPlot::equalizeAxesScales()
   double yAvg = (nominalYRange.upper + nominalYRange.lower)/2.0;
   nominalXRange = QCPRange(xAvg - dist/2.0, xAvg + dist/2.0);
   nominalYRange = QCPRange(yAvg - dist/2.0, yAvg + dist/2.0);
-
+  
   adjustRanges();
 }
 

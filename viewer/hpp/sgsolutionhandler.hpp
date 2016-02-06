@@ -14,10 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 #ifndef SGSOLUTIONHANDLER_HPP
 #define SGSOLUTIONHANDLER_HPP
 
+#include "sgplotsettings.hpp"
 #include "sgsolution.hpp"
 #include "sgcustomplot.hpp"
 #include "sgsimulationhandler.hpp"
@@ -81,7 +86,7 @@ private:
 
   //! True if a solution has been loaded.
   bool solnLoaded;
-  
+
   // Plots
   //! Left hand plot that shows construction of a point
   SGCustomPlot * detailPlot;
@@ -89,6 +94,9 @@ private:
   /*! One plot for each state, shows the trajectory of the pivot for
       that state. */
   vector<SGCustomPlot *> statePlots;
+
+  //! Plot settings
+  SGPlotSettings plotSettings;
 
   //! Master layout for the solution handler. 
   QVBoxLayout * layout;

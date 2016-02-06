@@ -14,6 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 /*!
   \mainpage SGSolve Documentation
@@ -189,13 +193,27 @@
   were not compiled with the -fPIC compiler flag. Thus, you may need
   to build the Boost serialization library from the source code.)
 
-  It should go without saying that this program is a work in
-  progress. Feedback and bug reports are much appreciated, and can be
-  sent to babrooks@uchicago.edu.
+  This program would not have been possible without the support of
+  numerous groups and the contributions of others, and it is entirely
+  fitting and appropriate that their contributions should be
+  acknowledged. In particular, this program was developed with and
+  incorporates elements of a number of other open source projects,
+  including the Qt application framework (www.qt.io), Emmanuel
+  Eichhammer's QCustomPlot (www.qcustomplot.com), the Boost libraries
+  (www.boost.org), and the GNU project (www.gnu.org). I would also
+  like to gratefully acknowledge support from the Becker Friedman
+  Institute, the University of Chicago, and the National Science
+  Foundation.
+
+  Finally, it should go without saying that this program is a work in
+  progress. Feedback, bug reports, and contributions are much
+  appreciated.
 
   Enjoy!
 
-  Ben Brooks, Chicago, IL
+  Ben Brooks
+  Chicago, IL
+  ben@benjaminbrooks.net
 */
 
 /*! \defgroup src SGSolve library

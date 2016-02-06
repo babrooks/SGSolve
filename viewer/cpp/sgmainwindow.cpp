@@ -14,8 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
-#include <QtWidgets>
 #include "sgmainwindow.hpp"
 
 SGMainWindow::SGMainWindow()
@@ -73,6 +76,8 @@ SGMainWindow::SGMainWindow()
   toolsMenu->addAction(cancelAction);
 
   QMenu * helpMenu = menuBar()->addMenu(tr("&Help"));
+  QAction * legendAction = new QAction(tr("&Legend"),this);
+  helpMenu->addAction(legendAction);
   QAction * aboutAction = new QAction(tr("&About"),this);
   helpMenu->addAction(aboutAction);
 
@@ -102,6 +107,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(quitProgram()));
   connect(screenShotAction,SIGNAL(triggered()),
 	  this,SLOT(screenShot()));
+  connect(legendAction,SIGNAL(triggered()),
+	  this,SLOT(displayLegend()));
   connect(aboutAction,SIGNAL(triggered()),
 	  this,SLOT(displayAbout()));
   connect(gameHandler->getSolveButton(),SIGNAL(clicked()),
@@ -473,9 +480,16 @@ void SGMainWindow::displayAbout()
 
   aboutBox.setWindowTitle("About");
   aboutBox.setText("About SGViewer");
-  aboutBox.setInformativeText("SGViewer was designed by Dilip Abreu, Ben Brooks, and Yuliy Sannikov. It implements the algorithm for solving stochastic games described in Abreu, Brooks, and Sannikov (2015). Inquiries can be directed to:\n\nBen Brooks\nChicago, IL\nbabrooks@uchicago.edu\n3/23/2014");
+  aboutBox.setInformativeText("\n\nSGViewer is part of the SGSolve library for stochastic games\n\nCopyright (C) 2016 Benjamin A. Brooks\n\nSGSolve implements the algorithm for solving stochastic games developed by in Abreu, Brooks, and Sannikov (2016). Inquiries can be directed to:\n\nBen Brooks\nChicago, IL\nben@benjaminbrooks.net\nFebruary 5, 2016");
 
   aboutBox.exec();
+} // displayAbout
+
+void SGMainWindow::displayLegend()
+{
+  SGLegend legend(this);
+  
+  legend.exec();
 }
 
 void SGMainWindow::changeSettings()

@@ -14,11 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
+// 
+// Benjamin A. Brooks
+// ben@benjaminbrooks.net
+// Chicago, IL
 
 #include "sgsolutionhandler.hpp"
 
 SGSolutionHandler::SGSolutionHandler(QWidget * _parent): 
-  parent(_parent)
+  parent(_parent),
+  plotSettings()
 {
   // Set up the menu items. Added by SGMainWindow to the menubar.
   detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
@@ -35,6 +40,7 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   QComboBox * solutionModeCombo = new QComboBox();
   solutionModeCombo->addItem("Progress");
   solutionModeCombo->addItem("Final");
+  
   solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
 				   QSizePolicy::Preferred);
   leftControlLayout->addRow(new QLabel(tr("Display mode:")),
@@ -44,8 +50,10 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   // Sliders at the bottom
   QScrollBar * iterSlider = new QScrollBar();
   iterSlider->setOrientation(Qt::Horizontal);
+  iterSlider->setToolTip(tr("The final iteration"));
   QScrollBar * startSlider = new QScrollBar();
   startSlider->setOrientation(Qt::Horizontal);
+  startSlider->setToolTip(tr("The first iteration"));
 
   // Set up the detail plot
   detailPlot = new SGCustomPlot(0,true);
@@ -60,7 +68,9 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
 
   // Layout the controls for the detail plot
   QComboBox * stateCombo = new QComboBox();
+  stateCombo->setToolTip(tr("Current state"));
   QComboBox * actionCombo = new QComboBox();
+  actionCombo->setToolTip(tr("Current action pair"));
 
   controller = new SGPlotController(stateCombo,actionCombo,
 				    iterSlider,startSlider,
@@ -78,7 +88,9 @@ SGSolutionHandler::SGSolutionHandler(QWidget * _parent):
   stateCombo->setModel(stateComboModel);
   actionCombo->setModel(actionComboModel);
   QPushButton * nextActionButton = new QPushButton("->");
+  nextActionButton->setToolTip(tr("Next action"));
   QPushButton * prevActionButton = new QPushButton("<-");
+  prevActionButton->setToolTip(tr("Previous action"));
   
   QHBoxLayout * detailPlotControlLayout = new QHBoxLayout();
   QLabel * stateComboLabel = new QLabel(tr("State:"));
@@ -184,8 +196,6 @@ void SGSolutionHandler::setSolution(const SGSolution & newSoln)
 
   controller->setSolution(&soln);
   
-  // plotSolution();
-
   solnLoaded = true;
 } // setSolution
 
@@ -252,8 +262,9 @@ void SGSolutionHandler::plotSolution()
       QCPCurve * expCurve = new QCPCurve(detailPlot->xAxis,
 					 detailPlot->yAxis);
       expCurve->setData(expSetT,expSetX,expSetY);
-      expCurve->setPen(QPen(Qt::red));
+      expCurve->setPen(plotSettings.expPen);
       detailPlot->addPlottable(expCurve);
+      expCurve->setName(tr("Expected continuation values"));
 
       QCPRange xrange = getBounds(expSetX),
 	yrange = getBounds(expSetY);
@@ -271,12 +282,10 @@ void SGSolutionHandler::plotSolution()
 	  QCPItemLine * nonBindingGenLine
 	    = sgToQCPItemLine(detailPlot,stagePayoffs,
 			      expPivot-stagePayoffs);
-	  nonBindingGenLine->setPen(QPen(Qt::DashLine));
+	  nonBindingGenLine->setPen(plotSettings.genLinePen);
 	  detailPlot->addItem(nonBindingGenLine);
 
-	  addPoint(nonBindingPayoff,detailPlot,
-		   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::black),
-				   QBrush(Qt::black),6));
+	  addPoint(nonBindingPayoff,detailPlot,plotSettings.payoffStyle);
 
 	  QCPItemLine * nonBindingDirection
 	    = sgToQCPItemLine(detailPlot,pivotIter.getPivot()[state],
@@ -298,7 +307,7 @@ void SGSolutionHandler::plotSolution()
 		  QCPItemLine * bindingGenCurve
 		    = sgToQCPItemLine(detailPlot,stagePayoffs,
 				      continuationValue - stagePayoffs);
-		  bindingGenCurve->setPen(QPen(Qt::DashLine));
+		  bindingGenCurve->setPen(plotSettings.genLinePen);
 		  detailPlot->addItem(bindingGenCurve);
 
 		  QCPItemLine * bindingDirection
@@ -307,19 +316,14 @@ void SGSolutionHandler::plotSolution()
 		  bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
 		  detailPlot->addItem(bindingDirection);
 				   
-		  addPoint(bindingPayoff,detailPlot,
-			   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::black),
-					   QBrush(Qt::black),6));
+		  addPoint(bindingPayoff,detailPlot,plotSettings.payoffStyle);
 		  addPoint(continuationValue,detailPlot,
-			   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::magenta),
-					   QBrush(Qt::magenta),6));
+			   plotSettings.bindingPayoffStyle);
 		} // for 
 	    } // for tuple
 
 	  // Add expected pivot
-	  addPoint(expPivot,detailPlot,
-		   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::red),
-				   QBrush(Qt::red),6));
+	  addPoint(expPivot,detailPlot,plotSettings.expPivotStyle);
 	}
       else
 	{
@@ -330,17 +334,12 @@ void SGSolutionHandler::plotSolution()
 	  detailPlot->addItem(genLine);
 
 	  // Add continuation value
-	  addPoint(continuationValue,detailPlot,
-		   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::black),
-				   QBrush(Qt::black),6));
+	  addPoint(continuationValue,detailPlot,plotSettings.payoffStyle);
 	  
 	}
 
       // Add action
-      addPoint(stagePayoffs,detailPlot,
-	       QCPScatterStyle(QCPScatterStyle::ssStar,QPen(Qt::black),
-			       QBrush(Qt::black),6));
-
+      addPoint(stagePayoffs,detailPlot,plotSettings.stageStyle);
 
       xrange.expand(QCPRange(stagePayoffs[0],stagePayoffs[0]));
       yrange.expand(QCPRange(stagePayoffs[1],stagePayoffs[1]));
@@ -354,8 +353,8 @@ void SGSolutionHandler::plotSolution()
 					     SGPoint(0,yrange.upper-minIC[1]));
       QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
 					     SGPoint(xrange.upper-minIC[0],0));
-      ICCurveH->setPen(QPen(Qt::magenta));
-      ICCurveV->setPen(QPen(Qt::magenta));
+      ICCurveH->setPen(plotSettings.ICPen);
+      ICCurveV->setPen(plotSettings.ICPen);
       detailPlot->addPlottable(ICCurveH);
       detailPlot->addPlottable(ICCurveV);
 
@@ -446,24 +445,17 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   QCPCurve * directionCurve = vectorToQCPCurve(plot,
 					       pivotIter.getPivot()[state],
 					       pivotIter.getDirection()*1.5*payoffBound/pivotIter.getDirection().norm());
-  QPen pen (Qt::darkGreen);
-  pen.setStyle(Qt::DashLine);
-  directionCurve->setPen(pen);
+  directionCurve->setPen(plotSettings.directionPen);
   plot->addPlottable(directionCurve);
 
-  addPoint(pivotIter.getPivot()[state],plot,
-	   QCPScatterStyle(QCPScatterStyle::ssCircle,QPen(Qt::blue),
-			   QBrush(Qt::blue),8));
+  addPoint(pivotIter.getPivot()[state],plot,plotSettings.pivotStyle);
 
   if (addSquares)
     {
       plot->addGraph();
       plot->graph(1)->setData(x,y);
       plot->graph(1)->setLineStyle(QCPGraph::lsNone);
-      plot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssSquare,
-						      QPen(Qt::blue),
-						      QBrush(Qt::blue),
-						      2));
+      plot->graph(1)->setScatterStyle(plotSettings.tupleStyle);
     }
   
   plot->setRanges(xrange,yrange);

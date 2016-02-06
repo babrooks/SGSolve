@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see
 # <http://www.gnu.org/licenses/>.
+# 
+# Benjamin A. Brooks
+# ben@benjaminbrooks.net
+# Chicago, IL
 
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.11
 QMAKE_MAC_SDK = macosx10.11
@@ -50,6 +54,8 @@ sgplotcontroller.hpp \
 sgstatecombomodel.hpp \
 sgactioncombomodel.hpp \
 sgrisksharinghandler.hpp \
+sglegend.hpp \
+sgplotsettings.hpp \
 Q_DebugStream.h
 
 VPATH += ./cpp ./hpp
@@ -64,7 +70,8 @@ sgpayofftablemodel.cpp \
 sgsimulationhandler.cpp \
 sgsolutionhandler.cpp \
 sgplotcontroller.cpp \
-sgsettingshandler.cpp
+sgsettingshandler.cpp \
+sglegend.cpp
 
 LIBS += -L../lib/ -L/usr/local/lib/ # -L/opt/Qt/lib/ -L/opt/Qt/plugins/platforms/
 linux-g++ {
