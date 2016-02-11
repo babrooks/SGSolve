@@ -113,7 +113,7 @@ ne = 5; c2e = 50;
 colors={'b','r','m',[0 0.8 0]};
 handles = zeros(ne,1);
 
-fname=sprintf('../../examples/solutions/rsg_ne=%d_c2e=%d_d=%s_p=%s_cmode=%s.sln',ne,c2e,num2str(delta),num2str(p,3),cmode);
+fname=sprintf('../examples/solutions/rsg_ne=%d_c2e=%d_d=%s_p=%s_cmode=%s.sln',ne,c2e,num2str(delta),num2str(p,3),cmode);
 sgmex('LoadSolution',fname)
 
 sgmex('IterToBeginning');
@@ -151,9 +151,10 @@ K=[K(2:end-1); K(1:2)];
 X = allPoints(K(k:end),:);
 
 plot(X(:,1),X(:,2),'b-','linewidth',1.5);
-handles(end+1:end+2)=plot(autarkyPoints(:,1),autarkyPoints(:,2),'b.',...
-	efficientPoints(:,1),efficientPoints(:,2),'r.',...
+handles(end+1)=plot(autarkyPoints(:,1),autarkyPoints(:,2),'b.',...
 	'markersize',13);
+handles(end+1)=plot(efficientPoints(:,1),efficientPoints(:,2),'r*',...
+	'markersize',8);
 l = legend(handles(end-2:end),'$${\bf V}$$','$$\underline{\bf v}$$','$${\bf v}^*$$');
 set(l,'interpreter','latex')
 
@@ -177,13 +178,13 @@ print(gcf,'-dpdf',sprintf('~/Dropbox/abreubrookssannikov/figures/rsg_singlecorre
 cmode='C';
 p = 0;
 delta=0.7;
-set(gcf,'position',[7.12222222222222          10.3888888888889                       9.8          3.07777777777778]);
+set(gcf,'units','inches','position',[7.12222222222222          10.3888888888889                       9.8          3.07777777777778]);
 
 ne = 5; c2e = 50;
 colors={'b','r','m',[0 0.8 0]};
 handles = zeros(ne,1);
 
-fname=sprintf('../../examples/solutions/rsg_ne=%d_c2e=%d_d=%s_p=%s_cmode=%s.sln',ne,c2e,num2str(delta),num2str(p,3),cmode);
+fname=sprintf('../examples/solutions/rsg_ne=%d_c2e=%d_d=%s_p=%s_cmode=%s.sln',ne,c2e,num2str(delta),num2str(p,3),cmode);
 sgmex('LoadSolution',fname)
 
 sgmex('IterToBeginning');
@@ -210,7 +211,6 @@ box3=J(xlim3,ylim3);
 
 subplot(1,3,1);
 plot(T(1:lastTuple,1),T(1:lastTuple,2),'b-',...
-	box2(:,1),box2(:,2),'k-',...
 	0,1,'b.');
 set(gca,'xlim',xlim1,'ylim',ylim1);
 xlabel('Player 1''s payoff');
@@ -220,7 +220,6 @@ axis square
 
 subplot(1,3,2);
 plot(T(1:lastTuple,1),T(1:lastTuple,2),'b-',...
-	box3(:,1),box3(:,2),'k-',...
 	0,1,'b.');
 set(gca,'xlim',xlim2,'ylim',ylim2);
 xlabel('Player 1''s payoff');
@@ -269,3 +268,5 @@ set(gcf,'paperunits','inches','units','inches');
 fpos = get(gcf,'position');
 set(gcf,'papersize',fpos(3:4),'paperposition',[0 0 fpos(3:4)]);
 print(gcf,'-dpdf',sprintf('~/Dropbox/abreubrookssannikov/figures/rsg_densities.pdf',cmode));
+
+%%
