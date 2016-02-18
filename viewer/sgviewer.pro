@@ -22,10 +22,10 @@
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.11
 QMAKE_MAC_SDK = macosx10.11
   
-QT += widgets printsupport
+QT += widgets printsupport dbus
 
-CONFIG += release
-CONFIG += static
+# CONFIG += release
+# CONFIG += static
 CONFIG += -std=gnu++11
 CONFIG += WARN_OFF
 # CONFIG += debug
@@ -75,7 +75,7 @@ sglegend.cpp
 
 LIBS += -L../lib/ -L/usr/local/lib/ # -L/opt/Qt/lib/ -L/opt/Qt/plugins/platforms/
 linux-g++ {
-LIBS += -Bstatic -lsg /usr/local/lib/libboost_serialization.a -L/opt/Qt/lib #-lqxcb
+LIBS += -Bstatic -lsg /usr/local/lib/libboost_serialization.a # -L/opt/Qt/lib -lQt5DBus -L/opt/Qt/plugins/platforms -lqxcb -lQt5Gui
 }
 macx {
 LIBS += -lc++ -lsg /usr/local/lib/libboost_serialization.a 
