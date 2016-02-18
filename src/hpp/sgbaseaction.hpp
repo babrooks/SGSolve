@@ -76,7 +76,9 @@ public:
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
   SGBaseAction():
-    isNull(true)
+    isNull(true),
+    action(-1),
+    state(-1)
   {}
 
   //! Constructor

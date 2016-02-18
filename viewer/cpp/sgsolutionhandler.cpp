@@ -486,34 +486,39 @@ QString SGSolutionHandler::generatePlotTitle(int state, int action,
       titleString += QString::number(state);
 
       vector<int> actions;
-      indexToVector(action,actions,
-		    soln.getGame().getNumActions()[state]);
-      titleString += QString(", (R");
-      titleString += QString::number(actions[0]);
-      titleString += QString(",C");
-      titleString += QString::number(actions[1]);
-      titleString += QString(")");
+      if (action>-1)
+	{
+	  indexToVector(action,actions,
+			soln.getGame().getNumActions()[state]);
+	  titleString += QString(", (R");
+	  titleString += QString::number(actions[0]);
+	  titleString += QString(",C");
+	  titleString += QString::number(actions[1]);
+	  titleString += QString(")");
+	}
+      else
+	titleString += QString(", Null action");
 
-      switch (pivotIter.getRegime())
+      switch (pivotIter.getRegimeTuple()[state])
 	{
 	case SG::NonBinding:
-	  titleString += "\n(Non-binding direction)";
+	  titleString += "\n(Non-binding)";
 	  break;
 
 	case SG::Binding:
-	  titleString += "\n(Binding direction)";
+	  titleString += "\n(Binding)";
 	  break;
 
 	case SG::Binding0:
-	  titleString += "\n(Binding 0 direction)";
+	  titleString += "\n(Binding 0)";
 	  break;
 
 	case SG::Binding1:
-	  titleString += "\n(Binding 1 direction)";
+	  titleString += "\n(Binding 1)";
 	  break;
 
 	case SG::Binding01:
-	  titleString += "\n(Binding 0 and 1 direction)";
+	  titleString += "\n(Binding 0 and 1)";
 	  break;
 	}
     }

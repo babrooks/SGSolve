@@ -109,6 +109,8 @@ private:
                                       constraints were binding for the
                                       best direction. */
 
+  SGAction nullAction;
+
   int westPoint; /*!< Index within SGApprox::extremeTuples of
                     the westernmost tuple on the previous
                     revolution. */
@@ -206,7 +208,8 @@ public:
 	   SGSolution & _soln):
     env(_env), game(_game), soln(_soln),
     delta(game.getDelta()), numPlayers(game.getNumPlayers()),
-    numStates(game.getNumStates()), errorLevel(1), sufficiencyFlag(true)
+    numStates(game.getNumStates()), errorLevel(1), sufficiencyFlag(true),
+    nullAction(env)
   { }
   
   //! Prepares the approximation for generation

@@ -58,7 +58,6 @@ void SGApprox::initialize()
     } // state
 
   pivot = SGTuple(numStates);
-  SGAction nullAction(env);
   actionTuple = vector< const SGAction* >(numStates,&nullAction);
   regimeTuple = vector<SG::Regime>(numStates,SG::Binding);
   threatTuple = SGTuple(numStates,payoffLB);

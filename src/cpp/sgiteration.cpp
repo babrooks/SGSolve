@@ -49,6 +49,8 @@ SGIteration::SGIteration(const SGApprox & approx,
     {
       if (!(approx.getActionTuple()[state]->getIsNull()))
 	actionTuple[state] = approx.getActionTuple()[state]->getAction();
+      else
+	actionTuple[state] = -1;
     }
 
   if (storeActions)
