@@ -22,7 +22,7 @@
 QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.11
 QMAKE_MAC_SDK = macosx10.11
   
-QT += widgets printsupport dbus
+QT += widgets printsupport
 
 # CONFIG += release
 # CONFIG += static
