@@ -71,8 +71,8 @@ ifneq "$(wildcard C:\Users\babrooks\ )" ""
 endif
 
 # General settings
-# DEBUG=-g
-DEBUG=-DNDEBUG -O
+DEBUG=-g
+# DEBUG=-DNDEBUG -O
 
 CSYSFLAGS = -fPIC -std=gnu++11
 CMTFLAGS = 

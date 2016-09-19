@@ -22,8 +22,8 @@
 # Makefile for examples
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
-MAINS= as_twostate abreusannikov pd guitester risksharing
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc
+MAINS= as_twostate abreusannikov pd guitester risksharing finiteresource
+MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer
 
 include ../localsettings.mk
 
