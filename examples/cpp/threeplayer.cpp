@@ -6,7 +6,7 @@
 int main ()
 {
   int numPlayers = 3;
-  int approxNumGradients = 1000;
+  int approxNumGradients = 200;
   
   // Convergence threshold
   double convTol = 1e-6;
@@ -204,9 +204,15 @@ int main ()
       int iter = 0;
       std::chrono::time_point<std::chrono::system_clock> start, end;
       start = std::chrono::system_clock::now();
-      
+
+      bool keepIterating = true;
+      vector<vector<double> > optPayoffs(numGradients,vector<double>(numPlayers,0));
+      vector<double> bestCV(numPlayers,0);
       do
 	{
+	  // Iterate one round past convergence
+	  keepIterating = (rhsDistance > convTol);
+	  
 	  // Print status update
 	  end = std::chrono::system_clock::now();
 	  std::chrono::duration<double> elapsed_seconds = end-start;
@@ -261,20 +267,72 @@ int main ()
 		      obj += (*it)[p] * vars[a][p];
 		    }
 		  models[a]->setObjective(obj,GRB_MAXIMIZE);
-		  models[a]->optimize();
 
-		  if (models[a]->get(GRB_IntAttr_Status) == GRB_INFEASIBLE)
+		  double bestCVLevel = -std::numeric_limits<double>::max();
+		  
+		  bool thisActionFeasible = false;
+		  for (int p = 0; p < numPlayers; p++)
+		    {
+		      constrs[a][numGradients+p].set(GRB_CharAttr_Sense,'=');
+		      models[a]->update();
+		      models[a]->optimize();
+		      
+		      if (models[a]->get(GRB_IntAttr_Status) == GRB_OPTIMAL)
+		  	{
+			  double currentCVLevel = models[a]->get(GRB_DoubleAttr_ObjVal);
+		  	  if (currentCVLevel > bestCVLevel)
+			    {
+			      bestCVLevel = currentCVLevel;
+
+			      if (!keepIterating)
+				{
+				  for (int pp = 0; pp < numPlayers; pp++)
+				    bestCV[pp] = vars[a][pp].get(GRB_DoubleAttr_X);
+				}
+			    }
+		  	  thisActionFeasible = true;
+		  	}
+		      constrs[a][numGradients+p].set(GRB_CharAttr_Sense,'>');
+		      models[a]->update();
+		    }
+
+		  if (!thisActionFeasible)
 		    {
 		      isAvailable[a]=false;
 		      numAvailableActions --;
 		      continue;
 		    }
-		  
 		  double tmpLevel
-		    = min(gLevel,(1-delta)*gLevel
-			  + delta * models[a]->get(GRB_DoubleAttr_ObjVal));
+		    = min(gLevel,(1-delta)*gLevel + delta * bestCVLevel);
+		  
+		  // models[a]->optimize();
+
+		  // if (models[a]->get(GRB_IntAttr_Status) == GRB_INFEASIBLE)
+		  //   {
+		  //     isAvailable[a]=false;
+		  //     numAvailableActions --;
+		  //     continue;
+		  //   }
+		  
+		  // double tmpLevel
+		  //   = min(gLevel,(1-delta)*gLevel
+		  // 	  + delta * models[a]->get(GRB_DoubleAttr_ObjVal));
+
 		  if (tmpLevel > tmpRHS[g])
-		    tmpRHS[g] = tmpLevel;
+		    {
+		      if (!keepIterating)
+			{
+			  if (gLevel < bestCVLevel)
+			    optPayoffs[g] = G[a];
+			  else
+			    {
+			      for (int p = 0; p < numPlayers; p++)
+				optPayoffs[g][p] = (1-delta)*G[a][p]
+				  + delta * bestCV[p];
+			    }
+			}
+		      tmpRHS[g] = tmpLevel;
+		    }
 
 		  // // use primal simplex for remaining directions
 		  // env.set(GRB_IntParam_Method,0); 
@@ -291,31 +349,15 @@ int main ()
 	      rhs[g] = tmpRHS[g];
 	    } // for gradient
 	  iter ++;
-	} while (rhsDistance > convTol);
+	} while (keepIterating);
 
       
-      // Calculate optimal payoffs
+      // Print the optimal payoffs
       for (int g = 0; g < numGradients; g ++)
-	feasConstrs[g].set(GRB_DoubleAttr_RHS,rhs[g]);
-      list<vector<double> > optPayoffs;
-
-      for (list<vector<double> >::const_iterator it
-	     = gradients.begin();
-	   it != gradients.end();
-	   ++it)
 	{
-	  GRBLinExpr obj = 0;
 	  for (int p = 0; p < numPlayers; p++)
-	    obj += (*it)[p] * feasVars[p];
-	  feasModel.setObjective(obj,GRB_MAXIMIZE);
-	  feasModel.optimize();
+	    ofs << optPayoffs[g][p] << " ";
 
-	  optPayoffs.push_back(vector<double>(numPlayers,0));
-	  for (int p = 0; p < numPlayers; p++)
-	    {
-	      optPayoffs.back()[p] = feasVars[p].get(GRB_DoubleAttr_X);
-	      ofs << optPayoffs.back()[p] << " ";
-	    }
 	  ofs << endl;
 	} // gradient
 
