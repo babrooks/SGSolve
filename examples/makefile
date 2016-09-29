@@ -24,6 +24,10 @@
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
 MAINS= as_twostate abreusannikov pd guitester risksharing finiteresource
 MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer
+QHULLMAINS=qhulltest
+QHULLGRBMAINS=threeplayer2
+
+QHULLDIR=../../qhull
 
 include ../localsettings.mk
 
@@ -35,9 +39,20 @@ $(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
 $(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp libsg.a
-	$(CXX) -I$(GRBINCLDIR) $(CFLAGS) $< -L$(GRBLIBDIR)	\
+	$(CXX) $(CFLAGS) $< \
+	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
 	-lboost_serialization $(DYNAMIC) $(LDFLAGS) -o $@
+
+$(QHULLMAINS): % : $(EXAMPLEDIR)/%.cpp
+	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullstatic_r -lqhullcpp \
+	 $(LDFLAGS) -o $@
+
+$(QHULLGRBMAINS): % : $(EXAMPLEDIR)/%.cpp
+	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullstatic_r -lqhullcpp \
+	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
+	-lgurobi_c++ -l$(GRBNAME)  \
+	 $(LDFLAGS) -o $@
 
 libsg.a: 
 	make -C ../src

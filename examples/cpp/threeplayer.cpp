@@ -6,7 +6,7 @@
 int main ()
 {
   int numPlayers = 3;
-  int approxNumGradients = 200;
+  int approxNumGradients = 2000;
   
   // Convergence threshold
   double convTol = 1e-6;
@@ -18,7 +18,7 @@ int main ()
     numActions_total *= numActions[p];
 
   // Discount factor
-  double delta = 0.8;
+  double delta = 0.3;
   
   // Flow payoffs
   vector< vector<double> > G(numActions_total,
@@ -87,6 +87,12 @@ int main ()
   list< vector<double> > gradients;
   
   int numLevels = PI/dist;
+  // Add in threat directions
+  for (int p = 0; p < numPlayers; p++)
+    {
+      gradients.push_back(vector<double>(numPlayers,0));
+      gradients.back()[p] = -1;
+    }
   for (double phi=0; phi<PI; phi+=PI/(numLevels-1.0))
     {
       int numPointsInLevel = 2*PI*sin(phi)/dist;
@@ -98,13 +104,40 @@ int main ()
 	  gradients.back()[2] = cos(phi);
 	} // psi
     } // phi
+
+
   int numGradients = gradients.size();
   cout << numGradients << " gradients selected." << endl;
 
   stringstream ss;
-  ss << "threeplayer_" << numGradients << ".dat";
+  ss << "threeplayer_" << numGradients << "_"
+     << setprecision(3) << delta << ".dat";
   ofstream ofs (ss.str().c_str());
-      
+
+  // Print numbers of actions
+  ofs << numActions_total << " "
+      << numGradients << " "
+      << delta << endl;
+
+  for (int p = 0; p < numPlayers; p++)
+    ofs << numActions[p] << " ";
+  ofs << endl;
+
+  // Print payoffs and gains from deviating
+  for (int a = 0; a < numActions_total; a++)
+    {
+      for (int p = 0; p < numPlayers; p++)
+	ofs << G[a][p] << " ";
+      ofs << endl;
+    }
+  for (int a = 0; a < numActions_total; a++)
+    {
+      for (int p = 0; p < numPlayers; p++)
+	ofs << gains[a][p] << " ";
+      ofs << endl;
+    }
+  
+  // Print  gradients
   for (list<vector<double> >::const_iterator it
 	 = gradients.begin();
        it != gradients.end();
@@ -162,7 +195,7 @@ int main ()
 	    for (int p = 0; p < numPlayers; p ++)
 	      lhs += feasVars[p] * (*it)[p];
 	    feasModel.addConstr(lhs <= feasibleRHS[g]);
-	      
+	    
 	    g++;
 	  } // gradient
       }
@@ -207,6 +240,9 @@ int main ()
 
       bool keepIterating = true;
       vector<vector<double> > optPayoffs(numGradients,vector<double>(numPlayers,0));
+      vector<int> optActions(numGradients,0);
+      vector<int> optRegimes(numGradients,0);
+      vector<double> optLevels(numGradients,0);
       vector<double> bestCV(numPlayers,0);
       do
 	{
@@ -244,101 +280,134 @@ int main ()
 	      for (int g = 0; g < numGradients; g ++)
 		constrs[a][g].set(GRB_DoubleAttr_RHS,rhs[g]);
 
+	      vector<double> minCV(numPlayers,0);
+	      bool gIsIC = true;
 	      for (int p = 0; p < numPlayers; p++)
 		{
-		  double minCV = threats[p] + (1.0-delta)/delta*gains[a][p];
-		  constrs[a][numGradients+p].set(GRB_DoubleAttr_RHS,minCV);
+		  minCV[p] = threats[p] + (1.0-delta)/delta*gains[a][p];
+		  constrs[a][numGradients+p].set(GRB_DoubleAttr_RHS,minCV[p]);
+		  gIsIC = gIsIC && (G[a][p]>=minCV[p]);
 		}
 
-	      // env.set(GRB_IntParam_Crossover,-1); // Crossover on
-	      // env.set(GRB_IntParam_Method,2); // Barrier alg
-	      // Now iterate through directions
-	      int g = 0;
-	      for (list<vector<double> >::const_iterator it
-		     = gradients.begin();
-		   it != gradients.end();
-		   ++it)
+	      if (gIsIC)
 		{
-		  double gLevel = 0;
-		  GRBLinExpr obj = 0;
-		  for (int p = 0; p < numPlayers; p++)
+		  int g = 0;
+		  // cout << "actions " << a << " are IC." << endl;
+		  for (list<vector<double> >::const_iterator it
+			 = gradients.begin();
+		       it != gradients.end();
+		       ++it)
 		    {
-		      gLevel += (*it)[p] * G[a][p];
-		      obj += (*it)[p] * vars[a][p];
-		    }
-		  models[a]->setObjective(obj,GRB_MAXIMIZE);
+		      double gLevel = 0;
+		      GRBLinExpr obj = 0;
+		      for (int pp = 0; pp < numPlayers; pp++)
+			gLevel += (*it)[pp] * G[a][pp];
 
-		  double bestCVLevel = -std::numeric_limits<double>::max();
+		      if (gLevel > tmpRHS[g])
+			{
+			  tmpRHS[g] = gLevel;
+			  if (!keepIterating)
+			    {
+			      optActions[g] = a;
+			      optLevels[g] = gLevel;
+			      optPayoffs[g] = G[a];
+			      optRegimes[g] = -1;
+			    } // Last iteration---save payoffs
+			} // New best level
+		      g++;
+		    }
+		  continue;
+		}
+	      
+	      bool thisActionFeasible = false;
+
+	      // Iterate over binding constraints
+	      for (int p = 0; p < numPlayers; p++)
+		{
+		  if (G[a][p] > minCV[p])
+		    continue;
 		  
-		  bool thisActionFeasible = false;
-		  for (int p = 0; p < numPlayers; p++)
+		  // Fix binding constraint
+		  constrs[a][numGradients+p].set(GRB_CharAttr_Sense,'=');
+
+		  // Now iterate through directions
+		  int g = 0;
+		  for (list<vector<double> >::const_iterator it
+			 = gradients.begin();
+		       it != gradients.end();
+		       ++it)
 		    {
-		      constrs[a][numGradients+p].set(GRB_CharAttr_Sense,'=');
-		      models[a]->update();
+		      double gLevel = 0;
+		      GRBLinExpr obj = 0;
+		      for (int pp = 0; pp < numPlayers; pp++)
+			{
+			  gLevel += (*it)[pp] * G[a][pp];
+			  obj += (*it)[pp] * vars[a][pp];
+			}
+		      models[a]->setObjective(obj,GRB_MAXIMIZE);
 		      models[a]->optimize();
 		      
 		      if (models[a]->get(GRB_IntAttr_Status) == GRB_OPTIMAL)
-		  	{
-			  double currentCVLevel = models[a]->get(GRB_DoubleAttr_ObjVal);
-		  	  if (currentCVLevel > bestCVLevel)
-			    {
-			      bestCVLevel = currentCVLevel;
+			{
+			  thisActionFeasible = true;
 
+			  double cvLevel = models[a]->get(GRB_DoubleAttr_ObjVal);
+			  double tmpLevel
+			    = min(gLevel,(1-delta) * gLevel + delta * cvLevel);
+		  
+			  if (tmpLevel > tmpRHS[g])
+			    {
+			      tmpRHS[g] = tmpLevel;
+			      // if (a==18 && gLevel < cvLevel)
+			      // 	{
+			      // 	  for (int pp = 0; pp < numPlayers; pp++)
+			      // 	    cout << vars[a][pp].get(GRB_DoubleAttr_X) << " ";
+			      // 	  cout << endl;
+			      // 	  for (int pp = 0; pp < numPlayers; pp++)
+			      // 	    cout << G[a][pp] << " ";
+			      // 	  cout << endl;
+			      // 	  for (int pp = 0; pp < numPlayers; pp++)
+			      // 	    cout << (*it)[pp] << " ";
+			      // 	  cout << endl;
+				  
+			      // 	  cout << constrs[a][numGradients].get(GRB_DoubleAttr_RHS) << " "
+			      // 	       << vars[a][0].get(GRB_DoubleAttr_X) << " "
+			      // 	       << g << " " << p << " "
+			      // 	       << cvLevel << " " << gLevel << endl;
+			      // 	}
 			      if (!keepIterating)
 				{
-				  for (int pp = 0; pp < numPlayers; pp++)
-				    bestCV[pp] = vars[a][pp].get(GRB_DoubleAttr_X);
-				}
-			    }
-		  	  thisActionFeasible = true;
-		  	}
-		      constrs[a][numGradients+p].set(GRB_CharAttr_Sense,'>');
-		      models[a]->update();
-		    }
+				  optActions[g] = a;
+				  optLevels[g] = tmpLevel;
+				  if (gLevel < cvLevel)
+				    {
+				      optPayoffs[g] = G[a];
+				      optRegimes[g] = -1;
+				    }
+				  else
+				    {
+				      for (int pp = 0; pp < numPlayers; pp++)
+					optPayoffs[g][pp] = (1-delta)*G[a][pp]
+					  + delta * vars[a][pp].get(GRB_DoubleAttr_X);
+				      optRegimes[g] = p;
+				    }
+				} // Last iteration---save payoffs
+			    } // New best level
+			  
+			} // Optimization succeded
 
-		  if (!thisActionFeasible)
-		    {
-		      isAvailable[a]=false;
-		      numAvailableActions --;
-		      continue;
-		    }
-		  double tmpLevel
-		    = min(gLevel,(1-delta)*gLevel + delta * bestCVLevel);
-		  
-		  // models[a]->optimize();
+		      g ++;
+		    } // for gradient
 
-		  // if (models[a]->get(GRB_IntAttr_Status) == GRB_INFEASIBLE)
-		  //   {
-		  //     isAvailable[a]=false;
-		  //     numAvailableActions --;
-		  //     continue;
-		  //   }
-		  
-		  // double tmpLevel
-		  //   = min(gLevel,(1-delta)*gLevel
-		  // 	  + delta * models[a]->get(GRB_DoubleAttr_ObjVal));
-
-		  if (tmpLevel > tmpRHS[g])
-		    {
-		      if (!keepIterating)
-			{
-			  if (gLevel < bestCVLevel)
-			    optPayoffs[g] = G[a];
-			  else
-			    {
-			      for (int p = 0; p < numPlayers; p++)
-				optPayoffs[g][p] = (1-delta)*G[a][p]
-				  + delta * bestCV[p];
-			    }
-			}
-		      tmpRHS[g] = tmpLevel;
-		    }
-
-		  // // use primal simplex for remaining directions
-		  // env.set(GRB_IntParam_Method,0); 
-		  g ++;
-		} // for gradient
-	    } // for a
+		  // Reset contraint
+		  constrs[a][numGradients+p].set(GRB_CharAttr_Sense,'>');
+		} // for player
+	      if (!thisActionFeasible)
+		{
+		  isAvailable[a]=false;
+		  numAvailableActions --;
+		}
+	    } // for actions
 
 	  // Calculate new distance and replace rhs
 	  rhsDistance = 0;
@@ -351,15 +420,47 @@ int main ()
 	  iter ++;
 	} while (keepIterating);
 
+
+      // Compute and print feasible payoffs
+      vector<vector<double> > feasiblePayoffs(numGradients,vector<double>(3,0));
+      {
+	int g = 0;
+	for (list<vector<double> >::const_iterator it = gradients.begin();
+	     it != gradients.end();
+	     ++it)
+	  {
+	    GRBLinExpr obj = 0;
+	    for (int p = 0; p < numPlayers; p ++)
+	      obj += (*it)[p] * feasVars[p];
+	    feasModel.setObjective(obj,GRB_MAXIMIZE);
+	    feasModel.optimize();
+	    for (int p = 0; p < numPlayers; p++)
+	      {
+		feasiblePayoffs[g][p] = feasVars[p].get(GRB_DoubleAttr_X);
+		ofs << feasiblePayoffs[g][p] << " ";
+	      }
+	    ofs << endl;
+	    g++;
+	  }
+      }
       
       // Print the optimal payoffs
       for (int g = 0; g < numGradients; g ++)
 	{
 	  for (int p = 0; p < numPlayers; p++)
 	    ofs << optPayoffs[g][p] << " ";
-
 	  ofs << endl;
 	} // gradient
+      // Print optimal actions, regimes, levels
+      for (int g = 0; g < numGradients; g ++)
+	{
+	  ofs << optActions[g] << " "
+	      << optRegimes[g] << " "
+	      << optLevels[g] << endl;
+	} // gradient
+      // Print the feasible payoffs
+      
+      
 
       // Clean up
       ofs.close();
