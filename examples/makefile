@@ -49,7 +49,7 @@ $(QHULLMAINS): % : $(EXAMPLEDIR)/%.cpp
 	 $(LDFLAGS) -o $@
 
 $(QHULLGRBMAINS): % : $(EXAMPLEDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullstatic_r -lqhullcpp \
+	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullcpp -lqhullstatic_r \
 	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME)  \
 	 $(LDFLAGS) -o $@
