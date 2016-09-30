@@ -58,16 +58,19 @@ int main ()
   ofstream surveylog("threeplayer2.log");
 
   int maxExtPnt = 0;
-  int avgExtPnt = 0;
-  int numConverged = 0;
-  int numTrials = 1e3;
-  int numSetCollapsed = 0;
+  int avgExtPnt;
+  int numTrials = 5e3;
+  int numConverged;
+  int numSetCollapsed;
   int numAvailableActions;
 
   int k = 0;
 
   for (numActions_total = 10; numActions_total <= 50; numActions_total += 5)
     {
+      numConverged = 0;
+      numSetCollapsed = 0;
+      avgExtPnt = 0;
       for (k = 0; k < numTrials; k++)
 	{
 	  for (int a = 0; a < numActions_total; a++)
@@ -492,7 +495,7 @@ int main ()
 
 
 	  maxExtPnt = max(maxExtPnt,numExtPnts);
-	  if (numAvailableActions>0)
+	  if ((iter<=maxIter)&&(numAvailableActions>0)&&(!notEnoughPoints))
 	    {
 	      avgExtPnt += numExtPnts;
 	      numConverged += (iter <= maxIter);
@@ -513,7 +516,7 @@ int main ()
 		<< "Number of trials that converged: " << numConverged << endl
 		<< "Percent converged: " << static_cast<double>(numConverged)/numTrials << endl
 		<< "Average number of extreme points: " << static_cast<double>(avgExtPnt)/numTrials << endl
-		<< "Max number of extreme points: " << maxExtPnt << endl;
+		<< "Max number of extreme points: " << maxExtPnt << endl << endl;
 
     } // for numActions_total
 
