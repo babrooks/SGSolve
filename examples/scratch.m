@@ -33,11 +33,11 @@ threats=min(extPnts);
 % size(hullPoints)
 
 %%
-k=11;
+a=16;
 
 [az,el] = view;
 
-scatter3(payoffs(:,1),payoffs(:,2),payoffs(:,3));
+scatter3(payoffs(:,1),payoffs(:,2),payoffs(:,3),'b','filled');
 hold on
 for f=1:size(faces,1)
     p = patch(payoffs(faces(f,:),1),payoffs(faces(f,:),2),...
@@ -45,18 +45,19 @@ for f=1:size(faces,1)
     set(p,'facealpha',0.75);
 end % for face
 
-
-v=extPntIndex(k)+1;
-a=rawActs(v,1)+1;
+actionPnts = rawActs==(a-1);
 minCV = threats+(1-delta)/delta*gains(a,:);
-scatter3(minCV(1),minCV(2),minCV(3));
-scatter3(G(a,1),G(a,2),G(a,3));
-cv = (extPnts(k,:)-(1-delta)*G(a,:))/delta;
-scatter3(cv(1),cv(2),cv(3));
-genline=[G(a,:);cv];
-line(genline(:,1),genline(:,2),genline(:,3));
-
-scatter3(rawPnts(rawActs==a,1),rawPnts(rawActs==a,2),rawPnts(rawActs==a,3));
+g=G(a,:);
+scatter3(minCV(1),minCV(2),minCV(3),'k','filled');
+scatter3(G(a,1),G(a,2),G(a,3),'g','filled');
+cv = bsxfun(@plus,rawPnts(actionPnts,:),-(1-delta)*G(a,:))./delta;
+scatter3(cv(:,1),cv(:,2),cv(:,3),'r','filled');
+for k=1:size(cv,1)
+    genline=[G(a,:);cv(k,:)];
+    line(genline(:,1),genline(:,2),genline(:,3));
+end
+pnts = rawPnts(rawActs==(a-1),:);
+scatter3(pnts(:,1),rawPnts(rawActs==a,2),rawPnts(rawActs==a,3),'y','filled');
 
 side1 = [minCV;...
     minCV+[30 - minCV(1),0,0];...
@@ -84,7 +85,6 @@ set(p,'facealpha',0.75);
 display(G(a,:))
 display(cv)
 display(minCV)
-display((1-delta)*G(a,:)+delta*cv)
 
 view(az,el);
 

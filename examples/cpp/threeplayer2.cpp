@@ -51,7 +51,7 @@ private:
   void setDefaultParameters()
   {
     maxIter = 200;
-    convTol = 1e-9;
+    convTol = 1e-6;
     ItLimDefault = 2100000000;
     minAngleIncrement = 1e-6;
     printOn = true;
@@ -422,6 +422,11 @@ int ASSolver::solve()
       GRBEnv env;
       env.set(GRB_IntParam_OutputFlag,0);
       env.set(GRB_IntParam_Method,0);
+      env.set(GRB_DoubleParam_MarkowitzTol,1e-4);
+      // env.set(GRB_IntParam_Quad,1);
+      //env.set(GRB_IntParam_NormAdjust,3);
+      // env.set(GRB_IntParam_SimplexPricing,3);
+      
 
       // Main loop
       if (printOn)
@@ -467,7 +472,6 @@ int ASSolver::solve()
 	    }
 	  
 	  RboxPoints rbox;
-	  Qhull qhull;
 	  for (int a = 0; a < numActions_total; a++)
 	    {
 	      if (!isAvailable[a])
@@ -515,10 +519,10 @@ int ASSolver::solve()
 		  c_payoffs[p] = (1-delta)*G[a][p] + delta*minCV[p];
 
 		  // Now map out the convex hull
-		  double w0 = 1.0, w1 = 0.0;
-		  vector<double> rc0(numVars), rc1(numVars);
+		  vector<double> dir(2,0);
+		  dir[0] = 1.0;
 		  int pp1 = (p+1)%numPlayers, pp2 = (p+2)%numPlayers;
-		  model.setObjective(w0 * vars[pp1]+ w1 * vars[pp2],
+		  model.setObjective(dir[0] * vars[pp1]+ dir[1] * vars[pp2],
 				     GRB_MAXIMIZE);
 		  model.optimize();
 		  if (model.get(GRB_IntAttr_Status) != GRB_OPTIMAL)
@@ -528,11 +532,12 @@ int ASSolver::solve()
 		  newThreats[p] = min(newThreats[p],c_payoffs[p]);
 
 		  bool passedWest = false;
-		  
+
+		  int revol = 0;
 		  int bndryMapIter = 0;
 		  while (bndryMapIter < 1e6)
 		    {
-		      model.setObjective(w0 * vars[pp1]+ w1 * vars[pp2],
+		      model.setObjective(dir[0] * vars[pp1]+ dir[1] * vars[pp2],
 					 GRB_MAXIMIZE);
 		      model.optimize();
 
@@ -553,80 +558,73 @@ int ASSolver::solve()
 			  rawConstrs.push_back(p);
 			}
 
-		      if (iter==1)
-		      	cout << a << " " << p <<  " "  << w0 << " " << w1 << " " 
+		      if (!keepIterating)
+		      	cout << a << " " << p <<  " "  << dir[0] << " " << dir[1] << " " 
 		      	     << passedWest << " " 
 		      	     << vars[pp1].get(GRB_DoubleAttr_X) << " " 
 		      	     << vars[pp2].get(GRB_DoubleAttr_X) << endl;
+
+		      // Calculate new candidate directions and normalize.
+		      vector< vector<double> > newDirs(4,dir);
+		      vector<double> norms(4);
+		      newDirs[0][0] = vars[pp1].get(GRB_DoubleAttr_SAObjUp);
+		      newDirs[1][0] = vars[pp1].get(GRB_DoubleAttr_SAObjLow);
+		      newDirs[2][1] = vars[pp2].get(GRB_DoubleAttr_SAObjUp);
+		      newDirs[3][1] = vars[pp2].get(GRB_DoubleAttr_SAObjLow);
+		      // newDirs[0][0] = vars[pp1].get(GRB_DoubleAttr_SAUBUp);
+		      // newDirs[1][0] = vars[pp1].get(GRB_DoubleAttr_SAUBLow);
+		      // newDirs[2][1] = vars[pp2].get(GRB_DoubleAttr_SAUBUp);
+		      // newDirs[3][1] = vars[pp2].get(GRB_DoubleAttr_SAUBLow);
+
+		      double maxAngleIncr = -PI/2.0;
+		      vector<double> bestDir(2,0);
+		      bestDir[0] = (dir[0] * cos(maxAngleIncr)
+				    - dir[1] * sin(maxAngleIncr));
+		      bestDir[1] = (dir[0] * sin(maxAngleIncr)
+				    + dir[1] * cos(maxAngleIncr));
+
+		      vector<double> minDir(2,0);
+		      minDir[0] = (dir[0] * cos(-minAngleIncrement)
+			    - dir[1] * sin(-minAngleIncrement));
+		      minDir[1] = (dir[0]* sin(-minAngleIncrement) 
+			    + dir[1] * cos(-minAngleIncrement));
+		      for (int k = 0; k < newDirs.size(); k++)
+			{
+			  double d = sqrt(newDirs[k][0]*newDirs[k][0]
+					  +newDirs[k][1]*newDirs[k][1]);
+			  newDirs[k][0]/=d;
+			  newDirs[k][1]/=d;
+
+			  if ( (newDirs[k][0]*bestDir[1]
+				- newDirs[k][1]*bestDir[0] < 0)
+			       && ((newDirs[k][0]*minDir[1]
+				    - newDirs[k][1]*minDir[0] >= 0)) )
+			    bestDir = newDirs[k];
+			}
 		      
-		      model.getEnv().set(GRB_DoubleParam_IterationLimit, 0);
-		      model.setObjective(1.0*vars[pp1],GRB_MAXIMIZE);
-		      model.optimize();
-		      for (int vc = 0; vc < numVars; vc++)
-		      	rc0[vc] = vars[vc].get(GRB_DoubleAttr_RC);
-		      
-		      model.setObjective(1.0*vars[pp2],GRB_MAXIMIZE);
-		      model.optimize();
-		      for (int vc = 0; vc < numVars; vc++)
-		      	rc1[vc] = vars[vc].get(GRB_DoubleAttr_RC);
-		      
-		      model.getEnv().set(GRB_DoubleParam_IterationLimit, ItLimDefault);
-
-		      double maxAngleIncr = -PI/8.0;
-		      double nw0 = w0 * cos(maxAngleIncr) - w1 * sin(maxAngleIncr),
-		      	nw1 = w0* sin(maxAngleIncr) + w1 * cos(maxAngleIncr);
-		      double t0, t1;
-
-		      for (int vc = 0; vc < numVars; vc++)
-		      	{
-		      	  // Only look at variables with negative reduced costs under
-		      	  // the current weights
-		      	  // if (vc==p)
-		      	  //   continue;
-
-		      	  if (w0*rc0[vc]+w1*rc1[vc]<0)
-		      	    {
-		      	      // Find unit clockwise normal from the
-		      	      // reduced cost. This is the shallowest
-		      	      // direction such that we would want to
-		      	      // introduce this variable into the
-		      	      // basis.
-		      	      double d = sqrt(rc0[vc]*rc0[vc] + rc1[vc]*rc1[vc]);
-		      	      if (d<1e-12)
-		      		continue;
-		      	      double t0 = -rc1[vc]/d,
-		      		t1 = rc0[vc]/d;
-	      
-		      	      // If this direction is shallower than the current new
-		      	      // direction, make it the new direction.
-		      	      if (t0*nw1 - t1*nw0<0)
-		      		{
-		      		  nw0 = t0;
-		      		  nw1 = t1;
-		      		} // better direction
-		      	    } // rc<0
-		      	} // for vc
-
-		      double md0 = (w0 * cos(-minAngleIncrement)
-		      		    - w1 * sin(-minAngleIncrement)),
-		      	md1 = (w0* sin(-minAngleIncrement) 
-		      	       + w1 * cos(-minAngleIncrement));
-		      if (nw0*md1 - nw1*md0<0)
-		      	{
-		      	  w0 = md0; 
-		      	  w1 = md1;
-		      	}
-		      else
-		      	{
-		      	  w0 = nw0; 
-		      	  w1 = nw1;
-		      	}
-
 		      // Check if we have passed west or gone all the way around.
-		      if (!passedWest && w1 > 0)
-		      	passedWest = true;
-		      if (passedWest && w1 < 0)
-		      	break;
+		      if (!passedWest
+			  && bestDir[1] > minAngleIncrement
+			  && dir[1] <= minAngleIncrement)
+			{
+			  passedWest = true;
+			}
+		      else if (passedWest
+			       && bestDir[1] < -minAngleIncrement
+			       && dir[1] >= -minAngleIncrement)
+			{
+			  break;
+			  
+			  revol++;
+			  if (revol>1)
+			    break;
+			  passedWest = false;
+			}
+
+		      dir[0] = (bestDir[0] * cos(-minAngleIncrement)
+			    - bestDir[1] * sin(-minAngleIncrement));
+		      dir[1] = (bestDir[0]* sin(-minAngleIncrement) 
+			    + bestDir[1] * cos(-minAngleIncrement));
 
 		      bndryMapIter++;
 		    } // Search for best directions
@@ -645,6 +643,7 @@ int ASSolver::solve()
 
 	  delete[] vars;
 	  
+	  Qhull qhull;
 
 	  if (!numAvailableActions)
 	    {
