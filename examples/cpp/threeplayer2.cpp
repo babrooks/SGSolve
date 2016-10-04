@@ -12,6 +12,37 @@
 
 using namespace orgQhull;
 
+// Return true if b is clockwise relative to a.
+bool secondIsBelow(const vector<int> & indices,
+		   const vector<double> & a, const vector<double> & b)
+{ return (-a[indices[1]]*b[indices[0]]+a[indices[0]]*b[indices[1]]<=0); }
+
+// Compute the intersection between hyperplanes a and b and return the
+// level of the intersection in the clockwise tangent direction for a.
+double intersect(int p, const vector<double> & minCV,
+		 const vector<double> & a,const vector<double> & b,
+		 vector<double> & intsctn)
+{
+  int numPlayers = a.size()-1;
+  int p0 = (p+1)%numPlayers, p1 = (p+2)%numPlayers;
+
+  double aRHS = -(a.back()+a[p]*minCV[p]);
+  double bRHS = -(b.back()+b[p]*minCV[p]);
+  double det = a[p0]*b[p1] - b[p0]*a[p1];
+  if (abs(det) < 1e-12)
+    return numeric_limits<double>::max(); // Close to singular
+  
+  // Apply Cramer's rule
+  intsctn.resize(2);
+  intsctn[0] = -(bRHS*a[p1]-b[p1]*aRHS)/det;
+  intsctn[1] = (bRHS*a[p0]-b[p0]*aRHS)/det;
+
+  // cout << "intsctn: " << intsctn[0] << " " << intsctn[1] << endl;
+  // Now compute the level
+  
+  return (intsctn[0] * a[p1] - intsctn[1] * a[p0]);
+}
+
 class ASSolver
 {
 private:
@@ -31,7 +62,7 @@ private:
   double minAngleIncrement;
 
   // Algorithm data
-  list< vector<double> > hyperplanes;
+  vector< vector<double> > hyperplanes;
   double volumeChange;
   double volume;
   int iter;
@@ -50,7 +81,7 @@ private:
 
   void setDefaultParameters()
   {
-    maxIter = 200;
+    maxIter = 150;
     convTol = 1e-6;
     ItLimDefault = 2100000000;
     minAngleIncrement = 1e-6;
@@ -109,8 +140,8 @@ void randomSurvey(int numActions_total,
 
 int main ()
 {
-  // randomSurvey(50,1e4,0.6);
-  // return 0;
+  randomSurvey(25,1e2,0.6);
+  return 0;
 
   int numPlayers = 3;
   
@@ -197,6 +228,7 @@ void randomSurvey(int numActions_total,
 
   int numConverged = 0;
   int numSetCollapsed = 0;
+  int globalMaxExt = 0;
   
   vector<double> avgExtPnts(numActions_total+1,0);
   vector<double> avgRawPnts(numActions_total+1,0);
@@ -220,6 +252,13 @@ void randomSurvey(int numActions_total,
 			      (int) solver.getExtPnts().size());
 	  maxRawPnts[a] = max((int) maxExtPnts[a],
 			      (int) solver.getRawPnts().size());
+	  if (solver.getExtPnts().size() > globalMaxExt)
+	    {
+	      globalMaxExt = solver.getExtPnts().size();
+	      ofstream ofs ("threeplayer_largeextpnts.dat");
+	      solver.save(ofs);
+	      ofs.close();
+	    }
 	  count[a] ++;
 	}
       
@@ -257,7 +296,6 @@ void randomSurvey(int numActions_total,
   double globalAvgRaw = 0;
   double globalAvgExt = 0;
   int globalCount = 0;
-  int globalMaxExt = 0;
   int globalMaxRaw = 0;
   int globalAvgActions = 0;
 
@@ -269,7 +307,6 @@ void randomSurvey(int numActions_total,
 	  globalCount += count[a];
 	  globalAvgRaw += avgRawPnts[a];
 	  globalAvgExt += avgExtPnts[a];
-	  globalMaxExt = max(globalMaxExt,maxExtPnts[a]);
 	  globalMaxRaw = max(globalMaxRaw,maxRawPnts[a]);
 	}
       avgRawPnts[a] /= count[a];
@@ -328,7 +365,7 @@ void ASSolver::computeGains()
 void ASSolver::save(ofstream & ofs) const
 {
   // Print numbers of actions
-  ofs << numActions_total << " "
+  ofs << setprecision(15) << numActions_total << " "
       << delta << " " << extPnts.size() << " "
       <<  0 << " " << 0 << endl;
 
@@ -401,7 +438,13 @@ int ASSolver::solve()
   QhullFacetList fl = feasQhull.facetList();
 
   hyperplanes.clear();
+  hyperplanes.reserve(fl.size()+numPlayers);
   vector<double> hyperplane(numPlayers+1,0);
+  for (int p = 0; p < numPlayers; p++)
+    {
+      hyperplanes.push_back(vector<double>(numPlayers+1,0));
+      hyperplanes.back()[p]=-1;
+    }
   for (auto it = fl.begin(); it != fl.end(); ++it)
     {
       if (it->hyperplane().dimension() != 3)
@@ -454,11 +497,12 @@ int ASSolver::solve()
 	  std::chrono::duration<double> elapsed_seconds = end-start;
 	  
 	  GRBModel model(env);
-	  int numVars = numPlayers+hyperplanes.size();
+	  int numVars = numPlayers;
 	  GRBVar * vars = model.addVars(numVars);
 	  model.update();
+	  for (int p = 0; p < numPlayers; p++)
+	    vars[p].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
 	  
-	  int slackVC = numPlayers;
 	  for (auto it = hyperplanes.begin();
 	       it != hyperplanes.end();
 	       ++it)
@@ -467,9 +511,10 @@ int ASSolver::solve()
 	      for (int p = 0; p < numPlayers; p ++)
 		lhs += vars[p] * (*it)[p];
 
-	      model.addConstr(lhs + vars[slackVC] == -(*it).back());
-	      slackVC++;
+	      model.addConstr(lhs <= -(*it).back());
 	    }
+	  model.update();
+	  GRBConstr * constrs = model.getConstrs();
 	  
 	  RboxPoints rbox;
 	  for (int a = 0; a < numActions_total; a++)
@@ -483,7 +528,8 @@ int ASSolver::solve()
 		{
 		  minCV[p] = threats[p] + (1.0-delta)/delta*gains[a][p];
 		  gIsIC = gIsIC && (G[a][p]>=minCV[p]);
-		  vars[p].set(GRB_DoubleAttr_LB,minCV[p]);
+		  constrs[p].set(GRB_DoubleAttr_RHS,-minCV[p]);
+		  hyperplanes[p].back() = minCV[p];
 		}
 
 	      if (gIsIC)
@@ -514,14 +560,14 @@ int ASSolver::solve()
 		    continue;
 
 		  // Fix binding constraint
-		  vars[p].set(GRB_DoubleAttr_UB,minCV[p]);
-
-		  c_payoffs[p] = (1-delta)*G[a][p] + delta*minCV[p];
+		  constrs[p].set(GRB_CharAttr_Sense,'=');
 
 		  // Now map out the convex hull
-		  vector<double> dir(2,0);
-		  dir[0] = 1.0;
+		  vector<double> dir(2,1.0);
+		  // dir[0] = 1.0;
 		  int pp1 = (p+1)%numPlayers, pp2 = (p+2)%numPlayers;
+		  vector<int> indices(2);
+		  indices[0] = pp1; indices[1] = pp2;
 		  model.setObjective(dir[0] * vars[pp1]+ dir[1] * vars[pp2],
 				     GRB_MAXIMIZE);
 		  model.optimize();
@@ -529,109 +575,119 @@ int ASSolver::solve()
 		    continue;
 
 		  thisActionFeasible = true;
-		  newThreats[p] = min(newThreats[p],c_payoffs[p]);
 
-		  bool passedWest = false;
-
-		  int revol = 0;
-		  int bndryMapIter = 0;
-		  while (bndryMapIter < 1e6)
+		  for (int pp = 0; pp < numPlayers; pp++)
 		    {
-		      model.setObjective(dir[0] * vars[pp1]+ dir[1] * vars[pp2],
-					 GRB_MAXIMIZE);
-		      model.optimize();
+		      c_payoffs[pp] = (1-delta)*G[a][pp]
+			+ delta*vars[pp].get(GRB_DoubleAttr_X);
 
-		      c_payoffs[pp1] = (1-delta)*G[a][pp1]
-			+ delta*vars[pp1].get(GRB_DoubleAttr_X);
-		      c_payoffs[pp2] = (1-delta)*G[a][pp2]
-			+ delta*vars[pp2].get(GRB_DoubleAttr_X);
+		      newThreats[pp] = min(newThreats[pp],c_payoffs[pp]);
+		    }
+		  rbox.append(QhullPoint(numPlayers,c_payoffs));
+
+		  if (!keepIterating)
+		    {
+		      rawPnts.push_back(vector<double>(c_payoffs,
+						       c_payoffs+sizeof(c_payoffs)/sizeof(double)));
+		      rawActions.push_back(a);
+		      rawConstrs.push_back(p);
+		    }
+		  
+
+		  // Identify the active constraints
+		  vector< vector<vector<double> >::const_iterator > activeConstr(0);
+
+		  int c = 0;
+		  for (auto it = hyperplanes.begin();
+		       it != hyperplanes.end();
+		       ++it)
+		    {
+		      if (c==p)
+			{
+			  c++;
+			  continue;
+			}
+
+		      double level = 0;
+		      for (int pp = 0; pp < numPlayers; pp++)
+			level += (*it)[pp]*vars[pp].get(GRB_DoubleAttr_X);
+		      if (abs(level + it->back()) < 1e-12)
+			activeConstr.push_back(it);
+		      
+		      c++;
+		    }
+		  assert(activeConstr.size() >= numPlayers-1);
+
+		  // Determine which of the active constraints is CW and
+		  // which is CCW.
+		  vector<vector<double> >::const_iterator cwDir(activeConstr[0]),
+		    ccwDir(activeConstr[0]);
+		    
+		  for (int k = 1;
+		       k < activeConstr.size();
+		       k++)
+		    {
+		      if (secondIsBelow(indices,*cwDir,*(activeConstr[k])))
+			cwDir = activeConstr[k];
+		      if (secondIsBelow(indices,*(activeConstr[k]),*ccwDir))
+			ccwDir = activeConstr[k];
+		    }
+
+		  vector<double> intsctn(2);
+		  double initialLevel = intersect(p,minCV,*cwDir,*ccwDir,intsctn);
+		  
+		  int numCHSteps = 0;
+		  while (cwDir != ccwDir && numCHSteps < 2*hyperplanes.size())
+		    {
+		      // Determine how far we can go in the new direction
+		      // by intersecting with every half plane.
+		      double bestLevel = numeric_limits<double>::max();
+		      vector< vector<double> >::const_iterator bestDir = hyperplanes.end();
+		      vector<double> bestIntsctn(2,0);
+		      
+		      for (auto it = hyperplanes.begin();
+			   it != hyperplanes.end();
+			   ++it)
+			{
+			  if ((*cwDir)[pp2]*(*it)[pp1] - (*cwDir)[pp1]*(*it)[pp2] < 0)
+			    continue;
+
+			  double newLevel = intersect(p,minCV,*cwDir,*it,intsctn);
+			  if (newLevel < bestLevel)
+			    {
+			      bestLevel = newLevel;
+			      bestDir = it;
+			      bestIntsctn = intsctn;
+			    }
+			}
+		      c_payoffs[pp1] = (1-delta)*G[a][pp1] + delta*bestIntsctn[0];
+		      c_payoffs[pp2] = (1-delta)*G[a][pp2] + delta*bestIntsctn[1];
 
 		      newThreats[pp1] = min(newThreats[pp1],c_payoffs[pp1]);
 		      newThreats[pp2] = min(newThreats[pp2],c_payoffs[pp2]);
 		      
 		      rbox.append(QhullPoint(numPlayers,c_payoffs));
 		      if (!keepIterating)
-			{
-			  rawPnts.push_back(vector<double>(c_payoffs,
-							   c_payoffs+sizeof(c_payoffs)/sizeof(double)));
-			  rawActions.push_back(a);
-			  rawConstrs.push_back(p);
-			}
+		  	{
+		  	  rawPnts.push_back(vector<double>(c_payoffs,
+		  					   c_payoffs+sizeof(c_payoffs)/sizeof(double)));
+		  	  rawActions.push_back(a);
+		  	  rawConstrs.push_back(p);
+		  	}
 
-		      if (!keepIterating)
-		      	cout << a << " " << p <<  " "  << dir[0] << " " << dir[1] << " " 
-		      	     << passedWest << " " 
-		      	     << vars[pp1].get(GRB_DoubleAttr_X) << " " 
-		      	     << vars[pp2].get(GRB_DoubleAttr_X) << endl;
 
-		      // Calculate new candidate directions and normalize.
-		      vector< vector<double> > newDirs(4,dir);
-		      vector<double> norms(4);
-		      newDirs[0][0] = vars[pp1].get(GRB_DoubleAttr_SAObjUp);
-		      newDirs[1][0] = vars[pp1].get(GRB_DoubleAttr_SAObjLow);
-		      newDirs[2][1] = vars[pp2].get(GRB_DoubleAttr_SAObjUp);
-		      newDirs[3][1] = vars[pp2].get(GRB_DoubleAttr_SAObjLow);
-		      // newDirs[0][0] = vars[pp1].get(GRB_DoubleAttr_SAUBUp);
-		      // newDirs[1][0] = vars[pp1].get(GRB_DoubleAttr_SAUBLow);
-		      // newDirs[2][1] = vars[pp2].get(GRB_DoubleAttr_SAUBUp);
-		      // newDirs[3][1] = vars[pp2].get(GRB_DoubleAttr_SAUBLow);
+		      cwDir = bestDir;
 
-		      double maxAngleIncr = -PI/2.0;
-		      vector<double> bestDir(2,0);
-		      bestDir[0] = (dir[0] * cos(maxAngleIncr)
-				    - dir[1] * sin(maxAngleIncr));
-		      bestDir[1] = (dir[0] * sin(maxAngleIncr)
-				    + dir[1] * cos(maxAngleIncr));
-
-		      vector<double> minDir(2,0);
-		      minDir[0] = (dir[0] * cos(-minAngleIncrement)
-			    - dir[1] * sin(-minAngleIncrement));
-		      minDir[1] = (dir[0]* sin(-minAngleIncrement) 
-			    + dir[1] * cos(-minAngleIncrement));
-		      for (int k = 0; k < newDirs.size(); k++)
-			{
-			  double d = sqrt(newDirs[k][0]*newDirs[k][0]
-					  +newDirs[k][1]*newDirs[k][1]);
-			  newDirs[k][0]/=d;
-			  newDirs[k][1]/=d;
-
-			  if ( (newDirs[k][0]*bestDir[1]
-				- newDirs[k][1]*bestDir[0] < 0)
-			       && ((newDirs[k][0]*minDir[1]
-				    - newDirs[k][1]*minDir[0] >= 0)) )
-			    bestDir = newDirs[k];
-			}
-		      
-		      // Check if we have passed west or gone all the way around.
-		      if (!passedWest
-			  && bestDir[1] > minAngleIncrement
-			  && dir[1] <= minAngleIncrement)
-			{
-			  passedWest = true;
-			}
-		      else if (passedWest
-			       && bestDir[1] < -minAngleIncrement
-			       && dir[1] >= -minAngleIncrement)
-			{
-			  break;
-			  
-			  revol++;
-			  if (revol>1)
-			    break;
-			  passedWest = false;
-			}
-
-		      dir[0] = (bestDir[0] * cos(-minAngleIncrement)
-			    - bestDir[1] * sin(-minAngleIncrement));
-		      dir[1] = (bestDir[0]* sin(-minAngleIncrement) 
-			    + bestDir[1] * cos(-minAngleIncrement));
-
-		      bndryMapIter++;
-		    } // Search for best directions
-		    
+		      // cout << "cwDir: ";
+		      // for (int pp = 0; pp < numPlayers+1; pp++)
+		      // 	cout << (*cwDir)[pp] << " ";
+		      // cout << endl;
+		      numCHSteps++;
+		    } 
 		  
 		  // Reset contraint
-		  vars[p].set(GRB_DoubleAttr_UB,GRB_INFINITY);
+		  // vars[p].set(GRB_DoubleAttr_UB,GRB_INFINITY);
+		  constrs[p].set(GRB_CharAttr_Sense,'<');
 		  // constrs[p].set(GRB_CharAttr_Sense,'>');
 		} // for player
 	      if (!thisActionFeasible)
@@ -642,6 +698,7 @@ int ASSolver::solve()
 	    } // for actions
 
 	  delete[] vars;
+	  delete[] constrs;
 	  
 	  Qhull qhull;
 
@@ -656,6 +713,12 @@ int ASSolver::solve()
 	      qhull.runQhull(rbox,"");
 	      fl = qhull.facetList();
 	      hyperplanes.clear();
+	      hyperplanes.reserve(numPlayers+fl.size());
+	      for (int p = 0; p < numPlayers; p++)
+		{
+		  hyperplanes.push_back(vector<double>(numPlayers+1,0));
+		  hyperplanes.back()[p]=-1;
+		}
 	      for (auto it = fl.begin();
 		   it != fl.end();
 		   ++it)
@@ -719,6 +782,8 @@ int ASSolver::solve()
 	  // cout << "Not enough points for convex hull." << endl;
 	  notEnoughPoints = true;
 	}
+      else
+	cout << e.what() << endl;
     }
   catch (...)
     {
@@ -734,6 +799,7 @@ void ASSolver::random(int _numPlayers,
   delta = _delta;
   numPlayers = _numPlayers;
   numActions_total = _numActions_total;
+  numActions=vector<int>(numPlayers,0);
 
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   default_random_engine generator(seed);
