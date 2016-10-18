@@ -45,7 +45,8 @@ double intersect(int p, const vector<double> & minCV,
 
 class ASSolver
 {
-private:
+  // private:
+public:
   // Game data
   int numPlayers;
   vector<int> numActions;
@@ -82,7 +83,7 @@ private:
   void setDefaultParameters()
   {
     maxIter = 150;
-    convTol = 1e-6;
+    convTol = 1e-7;
     ItLimDefault = 2100000000;
     minAngleIncrement = 1e-6;
     printOn = true;
@@ -138,8 +139,57 @@ void randomSurvey(int numActions_total,
 		  int numTrials,
 		  double delta);
 
+void example()
+{
+  double delta = 0.6;
+  
+  stringstream ss;
+  ss << "threeplayer2_fouraction"
+     << setprecision(3)  << ".dat";
+  ofstream saveOFS(ss.str().c_str());
+
+  vector<int> numActions = {1,1,1};
+  int numActions_total = 4;
+
+  vector< vector<double> > G={{1.5,-0.5,-1},
+  			     {-1,1.5,-0.5},
+  			      {-0.5,-1,1.5},
+  			      {1,1,0}};
+  vector< vector<double> > gains={{0,0.5,0.5},
+  				  {0.5,0,0.5},
+  				  {0.5,0.5,0},
+  				  {0,0,1.3}};
+
+  // vector< vector<double> > G={{1,-1,-1},
+  // 			     {-1,1,-1},
+  // 			      {-1,-1,1},
+  // 			      {0.5,0.5,0.5}};
+  // vector< vector<double> > gains={{0,0.25,0.25},
+  // 				  {0.25,0,0.25},
+  // 				  {0.25,0.25,-2},
+  // 				  {0,0,0}};
+
+  ASSolver solver;
+  solver.numPlayers=3;
+  solver.delta=delta;
+  solver.numActions = numActions;
+  solver.numActions_total = numActions_total;
+  solver.G = G;
+  solver.gains = gains;
+  
+  solver.solve();
+  solver.save(saveOFS);
+
+  saveOFS.close();
+}
+
 int main ()
 {
+  example();
+
+  return 0;
+
+  
   randomSurvey(25,1e2,0.6);
   return 0;
 
@@ -710,6 +760,7 @@ int ASSolver::solve()
 	    }
 	  else
 	    {
+	      qhull.setFactorEpsilon(1e-2);
 	      qhull.runQhull(rbox,"");
 	      fl = qhull.facetList();
 	      hyperplanes.clear();

@@ -29,7 +29,7 @@ ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/c
  STATIC=
  DYNAMIC=
 
- BOOSTINCLDIR=/usr/local/include/boost/serialization/
+ BOOSTINCLDIR=/usr/local/include/
  BOOSTDIR=/usr/local/lib/
 
  CXX=clang++ -O0
