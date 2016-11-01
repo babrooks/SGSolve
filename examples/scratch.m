@@ -29,6 +29,7 @@ plot(x(tf)',y(tf)','r.');
 % x=importdata('threeplayer2_0.5.dat');
 % x=importdata('threeplayer2_largeextpnts.dat');
 x = importdata('threeplayer2_fouraction.dat');
+x = importdata('threeplayer2_tenaction.dat');
 numActions = x(2,1:3);
 delta=x(1,2);
 numExtPnts = x(1,3);
@@ -62,7 +63,11 @@ threats=min(extPnts);
 % size(hullPoints)
 
 %%
-a=4;
+feasfaces = convhulln(G);
+
+
+%%
+a=3;
 
 [az,el] = view;
 
@@ -88,7 +93,7 @@ end
 pnts = rawPnts(rawActs==(a-1),:);
 scatter3(pnts(:,1),pnts(:,2),pnts(:,3),'y','filled');
 
-maxPayoff = 2;
+maxPayoff = 10;
 side1 = [minCV;...
     minCV+[maxPayoff - minCV(1),0,0];...
     minCV+[maxPayoff-minCV(1),maxPayoff-minCV(2),0];...

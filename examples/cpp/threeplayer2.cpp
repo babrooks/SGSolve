@@ -155,10 +155,14 @@ void example()
   			     {-1,1.5,-0.5},
   			      {-0.5,-1,1.5},
   			      {1,1,0}};
-  vector< vector<double> > gains={{0,0.5,0.5},
-  				  {0.5,0,0.5},
-  				  {0.5,0.5,0},
-  				  {0,0,1.3}};
+  // vector< vector<double> > gains={{0,0.5,0.5},
+  // 				  {0.5,0,0.5},
+  // 				  {0.5,0.5,0},
+  // 				  {0,0,1.1}};
+  vector< vector<double> > gains={{0.1,0.5,0.5},
+  				  {0.5,0.1,0.5},
+  				  {0.5,0.5,0.1},
+  				  {0.1,0.1,1.1}};
 
   // vector< vector<double> > G={{1,-1,-1},
   // 			     {-1,1,-1},
@@ -185,6 +189,26 @@ void example()
 
 int main ()
 {
+  int numPlayers = 3;
+  double delta = 0.8;
+  
+  stringstream ss;
+  ss << "threeplayer2_tenaction"
+     << setprecision(3)  << ".dat";
+  ofstream saveOFS(ss.str().c_str());
+
+  vector<int> numActions = {1,1,1};
+  int numActions_total = 10;
+
+  ASSolver solver;
+  solver.random(numPlayers,numActions_total,delta);
+  solver.solve();
+
+  solver.save(saveOFS);
+  saveOFS.close();
+
+  return 0;
+
   example();
 
   return 0;
@@ -193,80 +217,80 @@ int main ()
   randomSurvey(25,1e2,0.6);
   return 0;
 
-  int numPlayers = 3;
+  // int numPlayers = 3;
   
-  // Game specification
-  vector<int> numActions(numPlayers,3);
-  int numActions_total = 1;
-  for (int p = 0; p < numPlayers; p++)
-    numActions_total *= numActions[p];
+  // // Game specification
+  // vector<int> numActions(numPlayers,3);
+  // int numActions_total = 1;
+  // for (int p = 0; p < numPlayers; p++)
+  //   numActions_total *= numActions[p];
 
-  // Discount factor
-  double delta = 0.8;
+  // // Discount factor
+  // double delta = 0.8;
   
-  // Flow payoffs
-  vector< vector<double> > G(numActions_total,
-			     vector<double>(numPlayers,0));
+  // // Flow payoffs
+  // vector< vector<double> > G(numActions_total,
+  // 			     vector<double>(numPlayers,0));
 
-  int iter = 0;
+  // int iter = 0;
 
-  stringstream ss;
-  ss << "threeplayer2_"
-     << setprecision(3) << delta << ".dat";
-  ofstream saveOFS(ss.str().c_str());
+  // stringstream ss;
+  // ss << "threeplayer2_"
+  //    << setprecision(3) << delta << ".dat";
+  // ofstream saveOFS(ss.str().c_str());
 
-  stringstream logss;
-  char buffer[10];
-  time_t rawtime; time(&rawtime); 
-  struct tm* timeinfo; timeinfo = localtime(&rawtime);
-  strftime(buffer,10,"%m-%d-%y",timeinfo);
-  logss << "threeplayer2_" << buffer << ".log";
-  ofstream logOFS(logss.str().c_str());
+  // stringstream logss;
+  // char buffer[10];
+  // time_t rawtime; time(&rawtime); 
+  // struct tm* timeinfo; timeinfo = localtime(&rawtime);
+  // strftime(buffer,10,"%m-%d-%y",timeinfo);
+  // logss << "threeplayer2_" << buffer << ".log";
+  // ofstream logOFS(logss.str().c_str());
 
-  int maxExtPnt = 0;
-  int avgExtPnt;
-  int numTrials = 1;
-  int numConverged;
-  int numSetCollapsed;
+  // int maxExtPnt = 0;
+  // int avgExtPnt;
+  // int numTrials = 1;
+  // int numConverged;
+  // int numSetCollapsed;
 
-  // Row of G is a1 + a2*n1 + a3*n2*n1;
-  G[0] = {20, 20, 20}; // (0,0,0)
-  G[1] = {30, 10, 10}; // (1,0,0);
-  G[2] = {25, 5, 5}; // (2,0,0);
-  G[3] = {10, 30, 10}; // (0,1,0);
-  G[4] = {15, 15, 7}; // (1,1,0);
-  G[5] = {12, 10, 5}; // (2,1,0);
-  G[6] = {5, 25, 5}; // (0,2,0);
-  G[7] = {10, 12, 5}; // (1,2,0);
-  G[8] = {7, 7, 3}; // (2,2,0);
-  G[9] = {10, 10, 30}; // (0,0,1);
-  G[10] = {15, 7, 15}; // (1,0,1);
-  G[11] = {12, 5, 10}; // (2,0,1);
-  G[12] = {7, 15, 15}; // (0,1,1);
-  G[13] = {12, 12, 12}; // (1,1,1);
-  G[14] = {9, 8, 8}; // (2,1,1);
-  G[15] = {5, 12, 10}; // (0,2,1);
-  G[16] = {8, 9, 8}; // (1,2,1);
-  G[17] = {7, 7, 6}; // (2,2,1);
-  G[18] = {5, 5, 25}; // (0,0,2);
-  G[19] = {10, 5, 12}; // (1,0,2);
-  G[20] = {7, 3, 7}; // (2,0,2);
-  G[21] = {5, 10, 12}; // (0,1,2);
-  G[22] = {8, 8, 9}; // (1,1,2);
-  G[23] = {7, 6, 7}; // (2,1,2);
-  G[24] = {3, 7, 7}; // (0,2,2);
-  G[25] = {6, 7, 7}; // (1,2,2);
-  G[26] = {5, 5, 5}; // (2,2,2);
+  // // Row of G is a1 + a2*n1 + a3*n2*n1;
+  // G[0] = {20, 20, 20}; // (0,0,0)
+  // G[1] = {30, 10, 10}; // (1,0,0);
+  // G[2] = {25, 5, 5}; // (2,0,0);
+  // G[3] = {10, 30, 10}; // (0,1,0);
+  // G[4] = {15, 15, 7}; // (1,1,0);
+  // G[5] = {12, 10, 5}; // (2,1,0);
+  // G[6] = {5, 25, 5}; // (0,2,0);
+  // G[7] = {10, 12, 5}; // (1,2,0);
+  // G[8] = {7, 7, 3}; // (2,2,0);
+  // G[9] = {10, 10, 30}; // (0,0,1);
+  // G[10] = {15, 7, 15}; // (1,0,1);
+  // G[11] = {12, 5, 10}; // (2,0,1);
+  // G[12] = {7, 15, 15}; // (0,1,1);
+  // G[13] = {12, 12, 12}; // (1,1,1);
+  // G[14] = {9, 8, 8}; // (2,1,1);
+  // G[15] = {5, 12, 10}; // (0,2,1);
+  // G[16] = {8, 9, 8}; // (1,2,1);
+  // G[17] = {7, 7, 6}; // (2,2,1);
+  // G[18] = {5, 5, 25}; // (0,0,2);
+  // G[19] = {10, 5, 12}; // (1,0,2);
+  // G[20] = {7, 3, 7}; // (2,0,2);
+  // G[21] = {5, 10, 12}; // (0,1,2);
+  // G[22] = {8, 8, 9}; // (1,1,2);
+  // G[23] = {7, 6, 7}; // (2,1,2);
+  // G[24] = {3, 7, 7}; // (0,2,2);
+  // G[25] = {6, 7, 7}; // (1,2,2);
+  // G[26] = {5, 5, 5}; // (2,2,2);
 
-  ASSolver solver(numActions,G,delta);
-  solver.solve();
-  solver.save(saveOFS);
+  // ASSolver solver(numActions,G,delta);
+  // solver.solve();
+  // solver.save(saveOFS);
 
-  // Clean up
-  saveOFS.close();
-  logOFS.close();
+  // // Clean up
+  // saveOFS.close();
+  // logOFS.close();
 
-  return 0;
+  // return 0;
 
 }
 
