@@ -75,6 +75,8 @@ SGPoint& SGTuple::operator[](int state)
   if(state < 0 || 
      state >= points.size())
     throw(SGException(SG::OUT_OF_BOUNDS));
+  if (points.size() == 0)
+    throw(SGException(SG::EMPTY_TUPLE));
 
   return points[state];
 }
@@ -175,9 +177,13 @@ SGTuple operator/(const SGTuple & tuple,double d)
 ostream& operator<<(ostream& out, const SGTuple& rhs)
 {
   out << "{ ";
-  for (int state=0; state<rhs.points.size()-1; state++)
-    out << rhs.points[state] << ", ";
-  out << rhs.points.back() << "}";
+  if (rhs.points.size() > 0)
+    {
+      for (int state=0; state<rhs.points.size()-1; state++)
+	out << rhs.points[state] << ", ";
+      out << rhs.points.back();
+    }
+  out << "}";
   return out;
 }
 

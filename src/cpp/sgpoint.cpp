@@ -188,11 +188,18 @@ bool SGPoint::operator<(double rhs) const
 ostream& operator<<(ostream& out, const SGPoint& rhs)
 {
   // out << rhs.xy[0] << " " << rhs.xy[1];
-  out.setf(std::ios::fixed,std::ios::floatfield);
-  out.precision(3);
-  out << "(" << std::setw(8) << rhs.xy[0] 
-      << ", " << std::setw(8) << rhs.xy[1] << ")";
-  out.width(2);
+  if (rhs.xy.size() > 0)
+    {
+      out.setf(std::ios::fixed,std::ios::floatfield);
+      out.precision(3);
+      out << "(" << std::setw(8) << rhs.xy[0] 
+	  << ", " << std::setw(8) << rhs.xy[1] << ")";
+      out.width(2);
+    }
+  else
+    {
+      out << "()";
+    }
   return out;
 }
 

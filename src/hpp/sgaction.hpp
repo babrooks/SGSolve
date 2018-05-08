@@ -28,6 +28,7 @@
 #include "sgenv.hpp"
 #include "sggame.hpp"
 #include "sgbaseaction.hpp"
+#include "sghyperplane.hpp"
 
 //! Enhanced version of SGBaseAction
 /*! Same functionality as SGBaseAction, but includes additional
@@ -44,8 +45,12 @@ private:
 
 
   vector< SGTuple > trimmedPoints; /*!< Stores the "trimmed" points
-                                      before updating. */ 
+                                      before updating. */
 
+  SGPoint highestPoint; /*!< Stores the
+				  counter-clockwise-maximal point in
+				  the direction (0,1) */
+  
 public:
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
@@ -66,6 +71,9 @@ public:
   //! Get method for trimmed points
   const vector<SGTuple> & getTrimmedPoints() const { return trimmedPoints; }
 
+  //! Get method for highestPoint
+  const SGPoint & getHighestPoint() const { return highestPoint; }
+  
   //! Trims binding continuation segments
   /*! Intersects the binding continuation segments in SGAction::points
       with the half space that is below pivot in
@@ -88,6 +96,28 @@ public:
   void trim(const SGPoint & pivot,
 	    const SGPoint & direction);
 
+  //! Trims binding continuation segments
+  /*! Intersects the binding continuation segments in SGAction::points
+      with the half space that is below pivot in
+      direction.getNormal(). */
+  void intersectRay(const SGPoint & normal, 
+  		    double level);
+  //! Static method to carry out trimming operations
+  /*! Intersects the action with the ray emanating from pivot in the
+      given direction. */
+  void intersectRaySegment(const SGPoint & normal,
+			   double level,
+			   int player);
+
+  //! Intersects the segment with the ray emanating from the pivot
+  void intersectRaySegment(const SGPoint & normal,
+			   double level,
+			   SGTuple & segment);
+
+  //! Trims the trimmedPoints using intersectRaySegment.
+  void trim(const SGPoint & normal,
+	    double level);
+
   //! Calculates the minimum incentive compatible continuation payoff
   void calculateMinIC(const SGGame & game,
 		      const vector<bool> & update,
@@ -103,6 +133,10 @@ public:
 	  tuples[player] = vector<int>(0);
       }
   }
+
+  //! Calculates binding continuation values from hyperplane constraints
+  void calculateBindingContinuations(const SGGame & game,
+				     const vector<SGHyperplane> & W);
   
   void calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
 				     const SGGame & game,
@@ -119,6 +153,8 @@ public:
   static double calculateMinIC(int action,int state, int player,
 			       const SGGame & game,
 			       const SGTuple & threatTuple);
+
+  
 
 }; // SGAction
 

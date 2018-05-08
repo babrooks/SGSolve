@@ -1,4 +1,15 @@
 %%
+x = importdata('sg_v2.log');
+k=size(x,1);
+k=5
+
+numStates = 2;
+for state=1:numStates
+    subplot(1,numStates,state);
+    plot(x(1:k,2*state-1),x(1:k,2*state),'b.-',...
+        x(k,2*state-1),x(k,2*state),'r.');
+end
+%%
 
 H=[-1, 0, 0, 3.75;...
 	0, -1, 0, 3.75;...

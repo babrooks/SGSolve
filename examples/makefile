@@ -22,8 +22,10 @@
 # Makefile for examples
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
-MAINS= as_twostate abreusannikov pd guitester risksharing finiteresource
+MAINS= as_twostate abreusannikov pd guitester risksharing finiteresource \
+	as_twostate_v2
 MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer
+GRBTEST=gurobibasistest
 QHULLMAINS=qhulltest
 QHULLGRBMAINS=threeplayer2
 
@@ -43,6 +45,12 @@ $(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp libsg.a
 	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
 	-lboost_serialization $(DYNAMIC) $(LDFLAGS) -o $@
+
+$(GRBTEST): % : $(EXAMPLEDIR)/%.cpp
+	$(CXX) $(CFLAGS) $< \
+	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
+	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) $(STATIC)	\
+	$(DYNAMIC) $(LDFLAGS) -o $@
 
 $(QHULLMAINS): % : $(EXAMPLEDIR)/%.cpp
 	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullstatic_r -lqhullcpp \

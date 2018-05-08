@@ -47,6 +47,20 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
     tuples[player] = vector<int>(0);
 }
 
+void SGAction::intersectRay(const SGPoint& normal,
+			    double level)
+{
+  for (int player=0; player < points.size(); player++)
+    intersectRaySegment(normal,level,points[player]);
+}
+
+void SGAction::trim(const SGPoint& normal,
+		    double level)
+{
+  for (int player=0; player < points.size(); player++)
+    intersectRaySegment(normal,level,trimmedPoints[player]);
+}
+
 void SGAction::intersectRaySegment(const SGPoint& pivot, 
 				   const SGPoint& direction,
 				   SGTuple & segment)
@@ -54,7 +68,14 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
 
   SGPoint normal = direction.getNormal();
   double level = pivot * normal;
+  intersectRaySegment(normal,level,segment);
+}
 
+
+void SGAction::intersectRaySegment(const SGPoint& normal,
+				   double level,
+				   SGTuple & segment)
+{
   // First north south.
   if (segment.size() == 2)
     {
@@ -155,6 +176,42 @@ double SGAction::calculateMinIC(int action,int state,int player,
 
   return minIC;
 }
+
+void SGAction::calculateBindingContinuations(const SGGame & game,
+					     const vector<SGHyperplane> & W)
+{
+  // Reset the binding continuations and then iteratively trim.
+  SGPoint point = minIC;
+  points[0].clear();
+  points[0].push_back(point);
+  point[1] = numeric_limits<double>::max();
+  points[0].push_back(point);
+  point[1] =  minIC[1];
+  points[1].push_back(point);
+  point[0] = numeric_limits<double>::max();
+  points[1].push_back(point);
+
+  // cout << points.size() << endl;
+  // cout << points[0].size() << endl;
+  // cout << points[0] << " " << points[1] << endl;
+  
+  for (auto it = W.begin(); it != W.end(); ++it)
+    {
+      for (int p = 0; p < game.getNumPlayers(); p++)
+	intersectRaySegment(it->getNormal(),
+			    it->expectation(game.getProbabilities()
+					    [state][action]),
+			    points[p]);
+    }
+
+  if (points[0].size()>0)
+    highestPoint = points[0][1];
+  else if (points[1].size()>0)
+    highestPoint = points[1][0];
+  else
+    highestPoint = -numeric_limits<double>::max();
+  
+} // calculateBindingContinuations
 
 void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
 					     const SGGame & game,

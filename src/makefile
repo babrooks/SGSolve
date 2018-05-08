@@ -21,7 +21,7 @@
 
 include ../localsettings.mk
 
-OBJFILES=sggame.o sgsolver.o sgutilities.o sgapprox.o sgpoint.o sgtuple.o sgaction.o sgenv.o sgsimulator.o sgiteration.o
+OBJFILES=sggame.o sgsolver.o sgutilities.o sgapprox.o sgpoint.o sgtuple.o sgaction.o sgenv.o sgsimulator.o sgiteration.o sghyperplane.o sgapprox_v2.o sgsolver_v2.o
 
 all: libsg.a 
 
