@@ -43,15 +43,8 @@ private:
   //! Minimum rotation
   double minRotation = -3.14159*1e-4;
 
-  // //! The Gurobi environment.
-  // GRBEnv env;
-  // //! The Gurobi model.
-  // GRBModel model;
-
-  // GRBVar * valueFun;
-
-  // vector<GRBVar *> ICMult;
-  // vector<GRBVar *> FeasMult;
+  //! Feasible actions
+  vector<bool> feasibleActions;
 
   //! Payoff bounds.
   list< vector<double> > bounds;
@@ -128,13 +121,20 @@ public:
 void SGSolver_V3::solve()
 {
   double convTol = 1e-6;
-  int maxIter = 100;
+  int maxIter = 1e3;
   double movement = 1.0;
   int numIter = 0;
 
   SGSolverMode mode = SG_MAXMINMAX;
   // mode = SG_FEASIBLE;
   // mode = SG_APS;
+
+  int numActions_grandTotal = 0;
+  for (int s = 0; s < game.getNumStates(); s++)
+    numActions_grandTotal += game.getNumActions_total()[s];
+  feasibleActions = vector<bool>(numActions_grandTotal,true);
+
+  threatTuple = SGTuple (game.getNumStates(),-GRB_INFINITY);
   
   initialize();
 
@@ -181,7 +181,8 @@ void SGSolver_V3::initialize()
 double SGSolver_V3::iterate(const SGSolverMode mode)
 {
   double regimeChangeTol = 1e-6;
-
+  double pseudoConstrTol = 1e-6;
+  
   GRBEnv env;
   // env.set(GRB_IntParam_Method,0); // primal simplex
   env.set(GRB_IntParam_Method,1); // dual simplex
@@ -212,11 +213,16 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
   const int numDirections = directions.size();
 
   GRBVar * valueFn = model.addVars(numStates);
-  GRBVar * regimeVals = model.addVars(numActions_grandTotal);
+  GRBVar * contVals = model.addVars(numActions_grandTotal);
+  GRBVar * pseudoContVals = model.addVars(numActions_grandTotal);
   GRBVar * recursiveContValSlacks = model.addVars(numActions_grandTotal);
-  GRBVar * APSContValSlacks = model.addVars(numActions_grandTotal);
-  GRBVar * feasMult = model.addVars(numActions_grandTotal*numStates*numDirections);
-  GRBVar * ICMult = model.addVars(numActions_grandTotal*numPlayers);
+  GRBVar * APSContValSlacks = model.addVars(numPlayers*numActions_grandTotal);
+  GRBVar * feasMult = model.addVars(numPlayers*numActions_grandTotal
+				    *numStates*numDirections);
+  GRBVar * ICMult = model.addVars(numPlayers*numActions_grandTotal*numPlayers);
+  // GRBVar * APSContValSlacks = model.addVars(numActions_grandTotal);
+  // GRBVar * feasMult = model.addVars(numActions_grandTotal*numStates*numDirections);
+  // GRBVar * ICMult = model.addVars(numActions_grandTotal*numPlayers);
   GRBVar * currDirVar = model.addVars(2);
 
   model.update();
@@ -229,7 +235,11 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
   vector<SGRegimeStatus> regimeStatus(numActions_grandTotal,SG_RECURSIVE);
 
   for (int ga = 0; ga < numActions_grandTotal; ga++)
-    regimeVals[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
+    {
+      contVals[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
+      pseudoContVals[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
+      // model.addConstr(APSContVal[ga] >= -1e4);
+    }
   for (int s = 0; s < numStates; s++)
     valueFn[s].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
   
@@ -259,24 +269,21 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
 		for (int sp = 0; sp < numStates; sp++)
 		  {
 		    {
-		      list<SGPoint>::const_iterator dir;
 		      list< vector<double> >::const_iterator bnd;
 		      int dirCtr;
-		      for (dir = directions.begin(),
-			     bnd = bounds.begin(),
+		      for (bnd = bounds.begin(),
 			     dirCtr = 0;
-			   dir != directions.end();
-			   ++dir,++bnd,++dirCtr)
+			   bnd != bounds.end();
+			   ++bnd,++dirCtr)
 			{
 			  APSContVal[ga] += ( feasMult[ga+dirCtr*numActions_grandTotal
 						       + sp * numDirections * numActions_grandTotal]
 					      * (*bnd)[sp]);
-			} // for dir
+			} // for bnd
 		    }
 
 		    {
 		      list<SGPoint>::const_iterator dir;
-		      list< vector<double> >::const_iterator bnd;
 		      int dirCtr;
 		      for (int p = 0; p < numPlayers; p++)
 			{
@@ -285,10 +292,9 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
 			  dualConstrLHS += prob[s][a][sp]*currDirVar[p]
 			    +ICMult[p+2*ga]*prob[s][a][sp];
 			  for (dir = directions.begin(),
-				 bnd = bounds.begin(),
 				 dirCtr = 0;
 			       dir != directions.end();
-			       ++dir,++bnd,++dirCtr)
+			       ++dir,++dirCtr)
 			    {
 			      dualConstrLHS -= (*dir)[p] * feasMult[ga+dirCtr*numActions_grandTotal
 								    + sp * numDirections * numActions_grandTotal];
@@ -299,18 +305,18 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
 		    }
 		  } // for sp
 	    
-		model.addConstr(regimeVals[ga] == APSContVal[ga]+APSContValSlacks[ga]);
+		model.addConstr(pseudoContVals[ga] >= APSContVal[ga]);
+		model.addConstr(contVals[ga] == APSContVal[ga]+APSContValSlacks[ga]);
 	      } // if calculating subgame perfect
-	    model.addConstr(regimeVals[ga] == recursiveContVal[ga]+recursiveContValSlacks[ga]);
+	    model.addConstr(pseudoContVals[ga]
+			    >= recursiveContVal[ga]*(1.0+pseudoConstrTol));
+	    model.addConstr(contVals[ga] == recursiveContVal[ga]+recursiveContValSlacks[ga]);
 
 	    GRBLinExpr valueFnConstrRHS = 0;
 	    for (int p = 0; p < numPlayers; p++)
 	      valueFnConstrRHS += (1-delta)*payoffs[s][a][p]*currDirVar[p];
 
-	    if (mode==SG_APS)
-	      valueFnConstrRHS += delta*APSContVal[ga];
-	    else
-	      valueFnConstrRHS += delta*regimeVals[ga];
+	    valueFnConstrRHS += delta*contVals[ga];
 	    
 	    model.addConstr(valueFn[s] >= valueFnConstrRHS);
 	    
@@ -319,17 +325,28 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
       } // for s
   } // ga
 
-  // Start with recursive constraints
   for (int ga = 0; ga < numActions_grandTotal; ga++)
     {
-      APSContValSlacks[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
-      recursiveContValSlacks[ga].set(GRB_DoubleAttr_LB,0);
+      if (mode == SG_APS)
+	{
+	  // Start with fixed constraints
+	  regimeStatus[ga] = SG_FIXED;
+	  APSContValSlacks[ga].set(GRB_DoubleAttr_LB,0);
+	  recursiveContValSlacks[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
+	}
+      else
+	{
+	  // Start with recursive constraints
+	  APSContValSlacks[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
+	  recursiveContValSlacks[ga].set(GRB_DoubleAttr_LB,0);
+	}
     } // for ga
 
   // Finish setting up objective
   for (int ga = 0; ga < numActions_grandTotal; ga++)
     {
-      objective += regimeVals[ga];
+      objective += pseudoContVals[ga];
+      // objective += contVals[ga];
       objective += APSContVal[ga];
     } // for ga
 
@@ -348,48 +365,86 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
   // Main loop to find new directions/bounds
   do
     {
-      // cout << "Current direction = " << currDir
-      // 	   << ", feasible flag = " << (mode==SG_FEASIBLE) << endl;
-  
       // On each iteration, need to accomplish two main tasks.
 
       // (i) optimize the objective in the current direction. This
       // includes changing any regimes as needed.
       bool regimesSubOptimal = true;
       int regimeChangeIters = 0;
-      while (regimesSubOptimal && regimeChangeIters < numActions_grandTotal)
+      while (regimesSubOptimal
+	     && regimeChangeIters < 10*numActions_grandTotal)
 	{
 	  model.optimize();
 
-	  // If just computing the feasible set, skip this next step
+	  if (model.get(GRB_IntAttr_Status)!=GRB_OPTIMAL)
+	    {
+	      cout << "Warning: model not optimal. Code is: "
+		   << model.get(GRB_IntAttr_Status) << endl;
+	    }
+	  if (model.get(GRB_IntAttr_Status)==GRB_UNBOUNDED)
+	    {
+	      cout << "Warning: Unbounded model" << endl;
+	    }
+	  if (model.get(GRB_IntAttr_Status)==GRB_INFEASIBLE)
+	    {
+	      cout << "Warning: Infeasible model" << endl;
+	    }
+	  
+	  // If just computing the feasible set, skip the next step of
+	  // updating regimes
 	  if (mode!=SG_MAXMINMAX)
 	    break;
 
-	  regimesSubOptimal = false;
+	  // Calculate the maximum slack in the continuation values
+	  double maxSlack = 0.0;
+	  for (int ga = 0; ga < numActions_grandTotal; ga++)
+	    {
+	      double tmp = 0;
+	      tmp = recursiveContVal[ga].getValue()
+		    -APSContVal[ga].getValue();
+	      if (regimeStatus[ga]==SG_FIXED)
+		{
+		  tmp = -tmp;
+		}
+	      
+	      if (tmp > maxSlack)
+		maxSlack = tmp;
+	    } // for ga
+
+	  // If no slack found, skip the regime changes
+	  regimesSubOptimal = (maxSlack > regimeChangeTol);
+	  if (!regimesSubOptimal)
+	    break;
+
+	  // Switch regimes where the slack is greater than
+	  // delta*maxSlack (since for these actions, changing all of
+	  // the other regimes is insufficient to take up all the slack).
 	  for (int ga = 0; ga < numActions_grandTotal; ga++)
 	    {
 	      switch (regimeStatus[ga])
 		{
 		case SG_RECURSIVE:
-		  if (APSContValSlacks[ga].get(GRB_DoubleAttr_X)
-		      >regimeChangeTol)
+		  if (recursiveContVal[ga].getValue()
+		      -APSContVal[ga].getValue()
+		      >delta*maxSlack)
 		    {
 		      regimeStatus[ga] = SG_FIXED;
-		      APSContValSlacks[ga].set(GRB_DoubleAttr_LB,0);
+		      APSContValSlacks[ga].set(GRB_DoubleAttr_LB,0.0);
 		      recursiveContValSlacks[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
-		      regimesSubOptimal = true;
 		    }
 		  
 		  break;
 		  
 		case SG_FIXED:
-		  if (recursiveContValSlacks[ga].get(GRB_DoubleAttr_X)
+		  // If we are in the fixed regime, have to change
+		  // regime if there's any slack
+		  if (-recursiveContVal[ga].getValue()
+		      +APSContVal[ga].getValue()
 		      > regimeChangeTol)
 		    {
 		      regimeStatus[ga] = SG_RECURSIVE;
 		      APSContValSlacks[ga].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
-		      recursiveContValSlacks[ga].set(GRB_DoubleAttr_LB,0);
-		      regimesSubOptimal = true;
+		      recursiveContValSlacks[ga].set(GRB_DoubleAttr_LB,0.0);
 		    }
 		  break;
 		} // switch
@@ -397,7 +452,9 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
 	  regimeChangeIters++;
 	} // while
       if (regimeChangeIters >= numActions_grandTotal)
-	cout << "Warning: Too many regime changes..." << endl;
+	cout << "Warning: Too many regime changes. " << regimeChangeIters
+	     << " changes but only " << numActions_grandTotal
+	     << " action profiles." << endl;
 
       // (ii) Find how far we can rotate clockwise without violating
       // optimality. Add a new hyperplane for this face. Rotate the
@@ -489,10 +546,11 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
   
 
   // cout << "Done with iteration!" << endl;
-  cout << "New threat tuple: " << newThreatTuple << endl;
+  // cout << "New threat tuple: " << newThreatTuple << endl;
   
   delete[] valueFn;
-  delete[] regimeVals;
+  delete[] contVals;
+  delete[] pseudoContVals;
   delete[] feasMult;
   delete[] ICMult;
   delete[] currDirVar;
@@ -520,6 +578,9 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
     } // if 
   bounds = newBounds;
   directions = newDirections;
+
+  // for (int s = 0; s < numStates; s++)
+  //   threatTuple[s].max(newThreatTuple[s]);
   threatTuple = newThreatTuple;
   
   return dist;

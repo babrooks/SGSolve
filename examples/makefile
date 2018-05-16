@@ -40,7 +40,7 @@ all: libsg.a $(MAINS)
 $(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
-$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp libsg.a
+$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp $(HPPDIR)/sgsolver_v3.hpp $(LIBDIR)/libsg.a
 	$(CXX) $(CFLAGS) $< \
 	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
@@ -63,7 +63,7 @@ $(QHULLGRBMAINS): % : $(EXAMPLEDIR)/%.cpp
 	 $(LDFLAGS) -o $@
 
 libsg.a: 
-	make -C ../src
+	make -C ../lib
 
 $(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/sg.hpp $(HPPDIR)/sgsolution.hpp
 	$(CXX) $(CFLAGS) $< -L$(LIBDIR) -lsg \

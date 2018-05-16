@@ -28,6 +28,7 @@
 int main ()
 {
   double delta = 0.7;
+  // delta = 0.4;
   
   int action, state, player;
   int numPlayers = 2;
@@ -103,43 +104,6 @@ int main ()
 
       solver.solve();
       
-      // SGSolver solver(env,game);
-
-      // cout << "Starting solve routine" << endl;
-      // solver.solve();
-  
-      // cout << "Saving data... ";
-      // SGSolution soln = solver.getSolution();
-      // stringstream ss;
-      // ss << "./solutions/sgtest.sln";
-      // SGSolution::save(soln,ss.str().c_str());
-      // cout << "Done!" << endl;
-
-      // SGGame::save(game,"./games/as_twostate.sgm");
-
-      // SGSolution soln2;
-      // SGSolution::load(soln2,ss.str().c_str());
-  
-      // SGSimulator sim(soln2);
-
-      // sim.initialize();
-
-      // sim.simulate(100,1000,0,soln2.getIterations().back().getIteration()-4);
-
-      // vector<int> stateDistr = sim.getStateDistr();
-      // vector< vector<int> > actionDistr = sim.getActionDistr();
-
-      // for (int state = 0; state < stateDistr.size(); state++)
-      // 	cout << "state: " << state 
-      // 	     << ", count: " << stateDistr[state] << endl;
-
-      // for (int state = 0; state < stateDistr.size(); state++)
-      // 	{
-      // 	  cout << "state: " << state << endl; 
-      // 	  for (int action = 0; action < actionDistr[state].size(); action++)
-      // 	    cout << "action: " << action
-      // 		 << ", count: " << actionDistr[state][action] << endl;
-      // 	}
     }
   catch (SGException e)
     {

@@ -32,7 +32,7 @@ ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/c
  BOOSTINCLDIR=/usr/local/include/
  BOOSTDIR=/usr/local/lib/
 
- CXX=clang++ -O0
+ CXX=clang++ -O0 -w
 
  RMCMD=rm -rf 
 
