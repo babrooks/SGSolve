@@ -25,14 +25,15 @@ OBJFILES=sggame.o sgsolver.o sgutilities.o sgapprox.o sgpoint.o sgtuple.o sgacti
 
 all: libsg.a 
 
-# Next correspondsp to targets for each of the object files. We compile
+# Next corresponds to targets for each of the object files. We compile
 # them into object code and then package them into a static library.
 $(OBJFILES): %.o : $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
-libsg.a: $(OBJFILES) 
-	ar r $(LIBDIR)/libsg.a $(OBJFILES)
+libsg.a: $(OBJFILES)
+	ar ru $(LIBDIR)/libsg.a $(OBJFILES)
 	ranlib $(LIBDIR)/libsg.a
+	touch $(LIBDIR)/libsg.a
 
 clean:
 	$(RMCMD) *.o ../lib/*.a

@@ -23,8 +23,8 @@
 
 OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
 MAINS= as_twostate abreusannikov pd guitester risksharing finiteresource \
-	as_twostate_v2
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer
+	as_twostate_v2 
+MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_v3 risksharing_v3
 GRBTEST=gurobibasistest
 QHULLMAINS=qhulltest
 QHULLGRBMAINS=threeplayer2

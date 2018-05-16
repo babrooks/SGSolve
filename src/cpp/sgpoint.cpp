@@ -58,6 +58,24 @@ double SGPoint::angle(const SGPoint& base) const
   return radians;
 }
 
+bool SGPoint::rotateCW(double pi)
+{
+  double tmp = cos(pi)*xy[0]-sin(pi)*xy[1];
+  xy[1] = sin(pi)*xy[0]+cos(pi)*xy[1];
+  xy[0] = tmp;
+  return true;
+}
+
+bool SGPoint::normalize()
+{
+  double tmp = sqrt(xy[0]*xy[0]+xy[1]*xy[1]);
+  if (tmp < 1e-15)
+    return false;
+  xy[0] /= tmp;
+  xy[1] /= tmp;
+  return true;
+}
+
 double SGPoint::distance(const SGPoint & p0,
 			 const SGPoint& p1)
 { return std::max(abs(p0.xy[0]-p1.xy[0]),abs(p0.xy[1]-p1.xy[1])); }

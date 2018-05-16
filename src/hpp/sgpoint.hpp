@@ -63,7 +63,11 @@ public:
   //! Calculates distance between p0 and p1 in the sup-norm.
   static double distance(const SGPoint& p0,
 			 const SGPoint& p1);
-
+  //! Rotates the point clockwise by pi radians
+  bool rotateCW(double pi);
+  //! Normalizes so that the norm is one
+  bool normalize();
+  
   //! Rounds off significant digits smaller than tol.
   void roundPoint(double tol);
 

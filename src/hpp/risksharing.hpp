@@ -39,9 +39,14 @@ private:
 
   double consumption(int e, int t) const
   {
-    assert(E[e]+t*cIncr>=0);
-    assert(E[e]+t*cIncr<=1);
-    return E[e]+t*cIncr;
+    assert(E[e]+t*cIncr>=-1e-6);
+    assert(E[e]+t*cIncr<=1+1e-6);
+    double cons = E[e]+t*cIncr;
+    if (cons < 0)
+      return 0;
+    if (cons > 1)
+      return 1;
+    return cons;
   }
 
   double cdf(double x) const
@@ -102,7 +107,7 @@ public:
       } // for e
 
     eIncr = (E[1]-E[0])/2.0;
-    cIncr = 1.0/( (numEndowments-1)*c2e + 1 );
+    cIncr = 1.0/( (numEndowments-1)*c2e );
 
     // Sum the pseudo probabilities for each state and action
     for (int e = 0; e < numEndowments; e++)
