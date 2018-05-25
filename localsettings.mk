@@ -21,10 +21,10 @@
 
 ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/cplex/bin/x86-64_osx/cplex )" "" 
  $(info Compiling on Bens macbook pro)
- GRBDIR=/Library/gurobi650/mac64
+ GRBDIR=/Library/gurobi800/mac64
  GRBINCLDIR=$(GRBDIR)/include
  GRBLIBDIR=$(GRBDIR)/lib
- GRBNAME=gurobi65
+ GRBNAME=gurobi80
 
  STATIC=
  DYNAMIC=

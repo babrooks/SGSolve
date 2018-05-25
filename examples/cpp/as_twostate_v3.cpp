@@ -28,7 +28,7 @@
 int main ()
 {
   double delta = 0.7;
-  // delta = 0.4;
+  delta = 0.3;
   
   int action, state, player;
   int numPlayers = 2;
@@ -63,12 +63,15 @@ int main ()
   payoffs[0][7][1] = 0;
   payoffs[0][8][1] = -10;
 
+
+  double offset = 5;
+  offset = 0;
   for (action=0; action<9; action++)
     {
-      payoffs[1][action][0] = payoffs[0][action][0]-5;
-      payoffs[0][action][0] += 5;
-      payoffs[1][action][1] = payoffs[0][action][1]+5;
-      payoffs[0][action][1] -= 5;
+      payoffs[1][action][0] = payoffs[0][action][0]-offset;
+      payoffs[0][action][0] += offset;
+      payoffs[1][action][1] = payoffs[0][action][1]+offset;
+      payoffs[0][action][1] -= offset;
     } // for action
 
   // Transition probabilities
