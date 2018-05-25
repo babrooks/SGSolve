@@ -28,7 +28,7 @@
 int main ()
 {
   double delta = 0.7;
-  delta = 0.3;
+  delta = 0.45;
   
   int action, state, player;
   int numPlayers = 2;

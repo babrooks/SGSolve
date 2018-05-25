@@ -246,7 +246,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
   // GRBVar * ICMult = model.addVars(numPlayers*numActions_grandTotal*numPlayers);
   GRBVar * APSContValSlacks = model.addVars(numActions_grandTotal);
   GRBVar * APSContValVar = model.addVars(numActions_grandTotal);
-  GRBVar * feasMult = model.addVars(numActions_grandTotal*numStates*numDirections);
+  GRBVar * feasMult = model.addVars(numActions_grandTotal*numDirections);
   GRBVar * ICMult = model.addVars(numActions_grandTotal*numPlayers);
   GRBVar * currDirVar = model.addVars(2);
   
@@ -304,44 +304,42 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
 		    APSContVal -= ICMult[p+2*ga]*minIC;
 		  }
 
-		for (int sp = 0; sp < numStates; sp++)
-		  {
+		{
+		  list< vector<double> >::const_iterator bnd;
+		  int dirCtr;
+		  for (bnd = bounds.begin(),
+			 dirCtr = 0;
+		       bnd != bounds.end();
+		       ++bnd,++dirCtr)
 		    {
-		      list< vector<double> >::const_iterator bnd;
-		      int dirCtr;
-		      for (bnd = bounds.begin(),
+		      double expBnd = 0;
+		      for (int sp = 0; sp < numStates; sp++)
+			expBnd += (*bnd)[sp] * prob[s][a][sp];
+		      
+		      APSContVal += expBnd * feasMult[ga+dirCtr*numActions_grandTotal];
+		    } // for bnd
+		}
+
+		{
+		  list<SGPoint>::const_iterator dir;
+		  int dirCtr;
+		  for (int p = 0; p < numPlayers; p++)
+		    {
+		      GRBLinExpr dualConstrLHS = 0;
+
+		      dualConstrLHS += ICMult[p+2*ga];
+		      dualConstrLHS += currDirVar[p];
+		      for (dir = directions.begin(),
 			     dirCtr = 0;
-			   bnd != bounds.end();
-			   ++bnd,++dirCtr)
+			   dir != directions.end();
+			   ++dir,++dirCtr)
 			{
-			  APSContVal += ( feasMult[ga+dirCtr*numActions_grandTotal
-						       + sp * numDirections * numActions_grandTotal]
-					      * (*bnd)[sp]);
-			} // for bnd
-		    }
-
-		    {
-		      list<SGPoint>::const_iterator dir;
-		      int dirCtr;
-		      for (int p = 0; p < numPlayers; p++)
-			{
-			  GRBLinExpr dualConstrLHS = 0;
-
-			  dualConstrLHS += prob[s][a][sp]*currDirVar[p]
-			    +ICMult[p+2*ga]*prob[s][a][sp];
-			  for (dir = directions.begin(),
-				 dirCtr = 0;
-			       dir != directions.end();
-			       ++dir,++dirCtr)
-			    {
-			      dualConstrLHS -= (*dir)[p] * feasMult[ga+dirCtr*numActions_grandTotal
-								    + sp * numDirections * numActions_grandTotal];
-			    } // for dir
-
-			  model.addConstr(dualConstrLHS==0);
-			} // for p
-		    }
-		  } // for sp
+			  dualConstrLHS -= (*dir)[p] * feasMult[ga+dirCtr*numActions_grandTotal];
+			} // for dir
+		      
+		      model.addConstr(dualConstrLHS==0);
+		    } // for p
+		}
 	    
 		model.addConstr(pseudoContVals[ga] >= APSContVal);
 		model.addConstr(contVals[ga] == APSContVal+APSContValSlacks[ga]);
@@ -536,7 +534,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode)
 		    optAction[s]=a;
 		    if (optAction[s] != oldOptAction[s]
 			|| regimeStatus[ga] != oldRegimeStatus[ga]
-			|| oldRegimeStatus[ga] == SG_FIXED)
+			|| oldRegimeStatus[ga] == SG_RECURSIVE)
 		      addDirection = true;
 		  } // if
 		++ga;
