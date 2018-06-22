@@ -27,9 +27,9 @@
 
 int main()
 {
-  double delta = 0.85;
-  int numEndowments = 3;
-  int c2e = 5;
+  double delta = 0.6;
+  int numEndowments = 5;
+  int c2e = 3;
   int numSims = 1e3;
   int numSimIters = 1e5;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
