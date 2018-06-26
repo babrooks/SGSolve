@@ -52,7 +52,6 @@ private:
   int numFeasibleActions;
 
   int numActions_grandTotal;
-  vector< vector<int> > stateGlobalActionMap;
   vector<int> gaToS;
   vector<int> gaToA;
 
@@ -67,6 +66,22 @@ private:
   //! Number of gradients
   int numDirections;
 
+  //! Game elements
+  const vector< vector< SGPoint> > & payoffs;
+  const vector< vector< vector<double> > > & prob;
+  const vector< vector<int> > & numActions;
+  const vector< int > & numActions_total;
+  const int numStates;
+  const double delta;
+  const int numPlayers;
+
+  // Parameters
+  const double regimeChangeTol = 1e-9;
+  const double pseudoConstrTol = 1e-3;
+  const double convTol = 1e-6;
+  const int maxIter = 1e3;
+  
+  
 public:
   enum SGRegimeStatus
     {
@@ -98,6 +113,13 @@ public:
   //! Constructor
   SGSolver_V3(const SGGame & _game):
     game(_game),
+    payoffs(_game.getPayoffs()),
+    prob(_game.getProbabilities()),
+    numActions(_game.getNumActions()),
+    numActions_total(_game.getNumActions_total()),
+    numStates(_game.getNumStates()),
+    delta(_game.getDelta()),
+    numPlayers(2),
     bounds(),
     directions(),
     numDirections()
@@ -138,10 +160,9 @@ public:
 
 };
 
+
 void SGSolver_V3::solve()
 {
-  double convTol = 1e-6;
-  int maxIter = 1e3;
   double movement = 1.0;
   int numIter = 0;
   int steps = 0;
@@ -152,42 +173,9 @@ void SGSolver_V3::solve()
 
   initialize();
 
-  numActions_grandTotal = 0;
-  for (int s = 0; s < game.getNumStates(); s++)
-    numActions_grandTotal += game.getNumActions_total()[s];
-  feasibleActions = vector<bool>(numActions_grandTotal,true);
-  numFeasibleActions = numActions_grandTotal;
-
   threatTuple = SGTuple (game.getNumStates(),-GRB_INFINITY);
 
   eqActions = game.getEquilibriumActions();
-  stateGlobalActionMap = vector< vector<int> > (numStates);
-  {
-    int ga = 0;
-    for (int s = 0; s < numStates; s++)
-      {
-	stageGlobalActionMap[s] = vector<int>(numActions_total[s],0);
-	for (int a = 0; a < numActions_total[s]; a++)
-	  {
-	    stageGlobalActionMap[s][a] = ga;
-	  } // for a
-      } // for s 
-  } // int ga
-
-  gaToS = vector<int>  (numActions_grandTotal,0);
-  gaToA = vector<int>  (numActions_grandTotal,0);
-  {
-    int ga = 0;
-    for (int s = 0; s < numStates; s++)
-      {
-	for (int a = 0; a < numActions_total[s]; a++)
-	  {
-	    gaToS[ga] = s;
-	    gaToA[ga] = a;
-	    ++ga;
-	  } // for a
-      } // for s
-  }
   
   ofstream ofs;
   ofs.open("sgsolver_v3.log");
@@ -228,11 +216,6 @@ void SGSolver_V3::solve()
 
 void SGSolver_V3::initialize()
 {
-  const vector< vector< SGPoint> > & payoffs = game.getPayoffs();
-  const vector< int > & numActions_total = game.getNumActions_total();
-  const int numStates = game.getNumStates();
-  const int numPlayers = 2;
-
   payoffBound = 0;
   for (int s = 0; s < numStates; s++)
     {
@@ -250,9 +233,6 @@ void SGSolver_V3::initialize()
 
 double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 {
-  double regimeChangeTol = 1e-9;
-  double pseudoConstrTol = 1e-3;
-  
   GRBEnv env;
   // env.set(GRB_IntParam_Method,0); // primal simplex
   // env.set(GRB_IntParam_Method,1); // dual simplex
@@ -269,25 +249,37 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
   vector<int> actions, deviations;
   int deviation;
 
-  const vector< vector< SGPoint> > & payoffs = game.getPayoffs();
-  const vector< vector< vector<double> > > & prob = game.getProbabilities();
-  const vector< vector<int> > & numActions = game.getNumActions();
-  const vector< int > & numActions_total = game.getNumActions_total();
-  const int numStates = game.getNumStates();
-  const double delta = game.getDelta();
-  const int numPlayers = 2;
+  numActions_grandTotal = 0;
+  for (int s = 0; s < game.getNumStates(); s++)
+    numActions_grandTotal += eqActions[s].size();
+  feasibleActions = vector<bool>(numActions_grandTotal,true);
+  numFeasibleActions = numActions_grandTotal;
 
+  gaToS = vector<int>  (numActions_grandTotal,0);
+  gaToA = vector<int>  (numActions_grandTotal,0);
+  {
+    int ga = 0;
+    for (int s = 0; s < numStates; s++)
+      {
+	for (list<int>::const_iterator a = eqActions[s].begin();
+	     a != eqActions[s].end(); a++)
+	  {
+	    gaToS[ga] = s;
+	    gaToA[ga] = *a;
+	    ++ga;
+	  } // for a
+      } // for s
+  }
+  
   const int numDirections = directions.size();
+  if (mode != SG_FEASIBLE)
+    assert(numDirections>0);
 
   GRBVar * valueFn = model.addVars(numStates);
   GRBVar * contVals = model.addVars(numActions_grandTotal);
   GRBVar * valueFunSlacks = model.addVars(numActions_grandTotal);
   GRBVar * pseudoContVals = model.addVars(numActions_grandTotal);
   GRBVar * recursiveContValSlacks = model.addVars(numActions_grandTotal);
-  // GRBVar * APSContValSlacks = model.addVars(numPlayers*numActions_grandTotal);
-  // GRBVar * feasMult = model.addVars(numPlayers*numActions_grandTotal
-  // 				    *numStates*numDirections);
-  // GRBVar * ICMult = model.addVars(numPlayers*numActions_grandTotal*numPlayers);
   GRBVar * APSContValSlacks = model.addVars(numActions_grandTotal);
   GRBVar * APSContValVar = model.addVars(numActions_grandTotal);
   GRBVar * feasMult = model.addVars(numActions_grandTotal*numDirections);
@@ -305,7 +297,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
   vector< vector<GRBConstr> > valueFnConstr (numStates);
   for (int s = 0; s < numStates; s++)
     {
-      valueFnConstr[s] = vector<GRBConstr> (numActions_total[s]);
+      valueFnConstr[s] = vector<GRBConstr> (eqActions[s].size());
     }
 
   vector<GRBLinExpr> recursiveContVal(numActions_grandTotal,0);
@@ -332,11 +324,13 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
       {
 	objective += 1e10*valueFn[s];
 
+	int actr = 0;
 	// Add feasibility constraints
-	for (int a = 0; a < numActions_total[s]; a++)
+	for (list<int>::const_iterator a = eqActions[s].begin();
+	     a != eqActions[s].end(); a++)
 	  {
 	    for (int sp = 0; sp < numStates; sp++)
-	      recursiveContVal[ga] += prob[s][a][sp]*valueFn[sp];
+	      recursiveContVal[ga] += prob[s][*a][sp]*valueFn[sp];
 
 	    GRBLinExpr APSContVal = 0;
 	    if (mode==SG_MAXMINMAX || mode==SG_APS)
@@ -344,7 +338,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 		// Calculate minIC for each player.
 		for (int p = 0; p < numPlayers; p++)
 		  {
-		    double minIC = SGAction::calculateMinIC(a,s,p,
+		    double minIC = SGAction::calculateMinIC(*a,s,p,
 							    game,threatTuple);
 		    APSContVal -= ICMult[p+2*ga]*minIC;
 		  }
@@ -359,7 +353,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 		    {
 		      double expBnd = 0;
 		      for (int sp = 0; sp < numStates; sp++)
-			expBnd += (*bnd)[sp] * prob[s][a][sp];
+			expBnd += (*bnd)[sp] * prob[s][*a][sp];
 		      
 		      APSContVal += expBnd * feasMult[ga+dirCtr*numActions_grandTotal];
 		    } // for bnd
@@ -396,12 +390,14 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 
 	    GRBLinExpr valueFnConstrRHS = 0;
 	    for (int p = 0; p < numPlayers; p++)
-	      valueFnConstrRHS += (1-delta)*payoffs[s][a][p]*currDirVar[p];
+	      valueFnConstrRHS += (1-delta)*payoffs[s][*a][p]*currDirVar[p];
 
 	    valueFnConstrRHS += delta*contVals[ga];
 	    
-	    valueFnConstr[s][a] = model.addConstr(valueFn[s] == valueFnConstrRHS
-						  +valueFunSlacks[ga]);
+	    valueFnConstr[s][actr] = model.addConstr(valueFn[s] == valueFnConstrRHS
+						     +valueFunSlacks[ga]);
+
+	    actr++;
 	    
 	    ++ga;
 	  } // for a
@@ -438,7 +434,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
   list< vector<double> > newBounds(0);
   list<SGPoint> newDirections(0);
   SGTuple newThreatTuple(numStates);
-  vector<list<int> > newEqActions (eqActions);  
+  // vector<list<int> > newEqActions (eqActions);  
     
   bool passNorth = false;
   bool newQuadrant = true;
@@ -479,29 +475,6 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 	      cout << "Warning: Infeasible model" << endl;
 	    }
 	  
-	  {
-	    int ga = 0;
-	    for (int s = 0; s < numStates; s++)
-	      {
-	    	for (int a = 0; a < numActions_total[s]; a++)
-	    	  {
-	    	    if (feasibleActions[ga]
-			&& mode!=SG_FEASIBLE 
-	    		&& (APSContValVar[ga].get(GRB_DoubleAttr_X)==-2*payoffBound
-			    || APSContValVar[ga].get(GRB_IntAttr_VBasis)==-1) )
-	    	      {
-	    		feasibleActions[ga] = false;
-			numFeasibleActions--;
-	    		cout << "Here I am at action ga="
-	    		     << ga << ". " << numFeasibleActions
-			     << " feasible actions remaining. " << endl;
-	    	      }
-	    	    ++ga;
-	    	  } // for a
-	      } // for s
-	  } // int ga 
-
-
 	  // If just computing the feasible set, skip the next step of
 	  // updating regimes
 	  if (mode!=SG_MAXMINMAX)
@@ -535,7 +508,8 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 		{
 		  int numOptA = 0;
 		  // cout << endl << "s = " << s;
-		  for (int a = 0; a < numStates; a++)
+		  for (list<int>::const_iterator a = eqActions[s].begin();
+		       a != eqActions[s].end(); a++)
 		    {
 		      // cout << " (a,vbasis)=(" << a
 		      // 	   << "," << valueFunSlacks[ga].get(GRB_IntAttr_VBasis) << ")";
@@ -740,19 +714,42 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
 	  
 	} // switch
 
+
       ++ steps;
     } while (!passNorth);
   
+  // {
+  //   int ga = 0;
+  //   for (int s = 0; s < numStates; s++)
+  //     {
+  // 	list<int>::const_iterator a = eqActions[s].begin();
+  // 	while (a != eqActions[s].end())
+  // 	  {
+  // 	    if (mode!=SG_FEASIBLE 
+  // 		&& (APSContValVar[ga].get(GRB_DoubleAttr_X)==-2*payoffBound) )
+  // 	      {
+  // 		eqActions[s].erase(a++);
+  // 	      }
+  // 	    else
+  // 	      ++a;
+  // 	    ++ga;
+  // 	  }
+  //     } // for s
+  // } // int ga 
 
   // cout << "Done with iteration!" << endl;
   // cout << "New threat tuple: " << newThreatTuple << endl;
   
-  delete[] valueFn;
-  delete[] contVals;
-  delete[] pseudoContVals;
-  delete[] feasMult;
-  delete[] ICMult;
-  delete[] currDirVar;
+  delete [] valueFn;
+  delete [] contVals;
+  delete [] valueFunSlacks;
+  delete [] pseudoContVals;
+  delete [] recursiveContValSlacks;
+  delete [] APSContValSlacks;
+  delete [] APSContValVar;
+  delete [] feasMult;
+  delete [] ICMult;
+  delete [] currDirVar;
 
   double dist = 1.0;
   if (directions.size() == newDirections.size())
@@ -837,7 +834,7 @@ void SGSolver_V3::addBoundingHyperplane(SGPoint & currDir,
 	    distSum += abs(a*(*h0)[s]+b*(*h1)[s] - valueFn[s].get(GRB_DoubleAttr_X));
 	  // cout << "Checking for colinearity" << endl;
 	  // cout << distSum << endl;
-	  if (distSum < 1e-12)
+	  if (distSum < 1e-14)
 	    {
 	      // If colinear, drop the previous hyperplane/bound.
 	      newBounds.pop_back();

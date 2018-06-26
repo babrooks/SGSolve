@@ -24,12 +24,13 @@
 #include "risksharing.hpp"
 #include "sgsimulator.hpp"
 #include "sgsolver_v3.hpp"
+#include <ctime>
 
 int main()
 {
-  double delta = 0.6;
-  int numEndowments = 5;
-  int c2e = 3;
+  double delta = 0.85;
+  int numEndowments = 3;
+  int c2e = 5;
   int numSims = 1e3;
   int numSimIters = 1e5;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
@@ -42,9 +43,28 @@ int main()
     env.setParam(SG::STOREITERATIONS,1);
     env.setParam(SG::STOREACTIONS,false);
     SGGame game(rsg);
-    SGSolver_V3 solver(game);
-    solver.solve();
 
+    clock_t start;
+    double duration;
+
+    start = clock();
+    
+    // SGSolver solver1(env,game);
+    // solver1.solve();
+
+    // SGSolution soln = solver1.getSolution();
+    // SGSolution::save(soln,"risksharing_v3.sln");
+
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "time elapsed: "<< duration << " seconds" << endl;
+    // start = clock();
+    
+    SGSolver_V3 solver3(game);
+    solver3.solve();
+
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << "time elapsed: "<< duration << " seconds" << endl;
+    start = clock();
   }
 
   return 0;
