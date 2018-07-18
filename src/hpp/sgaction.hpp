@@ -44,13 +44,13 @@ private:
                         environment. */
 
 
+  vector<SGPoint> bndryNormals; /*!< Stores the slope of the
+                                         frontier at the extreme
+                                         payoffs. */
+  
   vector< SGTuple > trimmedPoints; /*!< Stores the "trimmed" points
                                       before updating. */
 
-  SGPoint highestPoint; /*!< Stores the
-				  counter-clockwise-maximal point in
-				  the direction (0,1) */
-  
 public:
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
@@ -66,14 +66,12 @@ public:
     env(_env), SGBaseAction(_state,_action)
   {
     trimmedPoints.resize(2);
+    bndryNormals.resize(2);
   }
 
   //! Get method for trimmed points
   const vector<SGTuple> & getTrimmedPoints() const { return trimmedPoints; }
 
-  //! Get method for highestPoint
-  const SGPoint & getHighestPoint() const { return highestPoint; }
-  
   //! Trims binding continuation segments
   /*! Intersects the binding continuation segments in SGAction::points
       with the half space that is below pivot in

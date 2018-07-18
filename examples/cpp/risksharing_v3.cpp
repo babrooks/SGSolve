@@ -49,22 +49,21 @@ int main()
 
     start = clock();
     
-    // SGSolver solver1(env,game);
-    // solver1.solve();
+    SGSolver solver1(env,game);
+    solver1.solve();
 
-    // SGSolution soln = solver1.getSolution();
-    // SGSolution::save(soln,"risksharing_v3.sln");
-
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "time elapsed: "<< duration << " seconds" << endl;
-    // start = clock();
-    
-    SGSolver_V3 solver3(game);
-    solver3.solve();
+    SGSolution soln = solver1.getSolution();
+    SGSolution::save(soln,"risksharing_v3.sln");
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << "time elapsed: "<< duration << " seconds" << endl;
     start = clock();
+    
+    // SGSolver_V3 solver3(game);
+    // solver3.solve();
+
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "time elapsed: "<< duration << " seconds" << endl;
   }
 
   return 0;

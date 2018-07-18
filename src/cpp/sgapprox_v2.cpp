@@ -76,10 +76,10 @@ void SGApprox_V2::initialize()
 	logAppend(logfs,0,0,W[point],0,0);
     }
 
-  // Initialize the currentDirection and pivot.
-  currentDirection = SGPoint(payoffUB[0]-payoffLB[0],0.0);
+  // Initialize the currDir and pivot.
+  currDir = SGPoint(payoffUB[0]-payoffLB[0],0.0);
   pivot = SGTuple(numStates,SGPoint(payoffLB[0],payoffUB[1]));
-  currentLevels = vector<double> (numStates,payoffUB[1]);
+  currLevels = vector<double> (numStates,payoffUB[1]);
 
   numIterations = 0; 
   numSteps = -1;
@@ -117,7 +117,7 @@ double SGApprox_V2::generate(bool storeIterations)
 	   ait != actions[state].end();
 	   ++ait)
 	{
-	  cout << "(s,a)=("<< ait->getState() << "," << ait->getAction() << "): "
+	  cout << "(s,a)=(" << ait->getState() << "," << ait->getAction() << "): "
 	       << ait->getPoints()[0] << ","
 	       << ait->getPoints()[1] << ", minIC="
 	       << ait->getMinICPayoffs() << endl;
@@ -127,28 +127,27 @@ double SGApprox_V2::generate(bool storeIterations)
   cout << endl << "Finding initial pivot..." << endl;
   // Find initial pivot
   findInitialPivot();
-  currentDirection = SGPoint (1,0);
-  currentNormal = currentDirection.getNormal();
+  
+  // Start minimizing player 1's payoff
+  currDir = SGPoint (-1,0);
+  currNrml = currDir.getNrml();
   for (int state = 0; state < numStates; state++)
-    currentLevels[state] = pivot[state][1];
-
+    currLevels[state] = pivot[state][1];
+  
   Wp.clear();
-  // Wp.push_back(SGHyperplane(currentNormal,currentLevels));
-
+  // Wp.push_back(SGHyperplane(currNrml,currLevels));
+  
   cout << "Pivot: " << pivot << endl
        << "Actions: (" << actionTuple[0]->getAction() << ", "
        << actionTuple[1]->getAction() << ")" << endl;
-
-  
   
   cout << endl << "Computing W'..." << endl;
   // Find the new direction
   double minDist = numeric_limits<double>::max();
   do
     {
-
       cout << "Finding the best direction..." << endl;
-      findBestDirection();
+      findBestDir();
       assert(bestAction->getState() < game.getNumStates());
       assert(bestAction->getAction() < game.getNumActions_total()[bestAction->getState()]);
 
@@ -157,8 +156,8 @@ double SGApprox_V2::generate(bool storeIterations)
       calculateNewPivot();
 
       for (int state = 0; state < numStates; state++)
-	currentLevels[state] = pivot[state]*currentNormal;
-      Wp.push_back(SGHyperplane(currentNormal,currentLevels));
+	currLevels[state] = pivot[state]*currNrml;
+      Wp.push_back(SGHyperplane(currNrml,currLevels));
 
       for (int state = 0; state < numStates; state++)
       	logfs << pivot[state][0] << " " << pivot[state][1] << " ";
@@ -213,6 +212,9 @@ double SGApprox_V2::generate(bool storeIterations)
 
 void SGApprox_V2::findInitialPivot()
 {
+  // Do policy iteration to find a first pivot. Minimize player 1's
+  // payoff.
+  
   // Start with upper bounds on the highest payoff for all states.
   SGPoint normal (0,1);
   vector<double> levels(numStates,payoffUB[1]+1.0); 
@@ -227,7 +229,7 @@ void SGApprox_V2::findInitialPivot()
       for (int state = 0; state < numStates; state++)
 	{
 	  // Iterate over all actions to find the one that generates
-	  // the highest payoff for player 2.
+	  // the lowest payoff for player 1.
 	  
 	  double bestLevel = -numeric_limits<double>::max();
 	  
@@ -235,35 +237,55 @@ void SGApprox_V2::findInitialPivot()
 	       ait != actions[state].end();
 	       ++ait)
 	    {
-	      // Take the lower of the binding and non-binding
-	      // levels. If the lower of these two is greater than the
-	      // best level found so far, switch the pivot.
-
-	      // The binding level
-	      SGPoint bindingPayoff = (1-delta)*game.getPayoffs()[state]
-		[ait->getAction()]
-		+ delta * ait->getHighestPoint();
-
+	      // Procedure to find an improvement to the policy
+	      // function
+	      
 	      SGPoint nonBindingPayoff = (1-delta)*game.getPayoffs()[state]
 		[ait->getAction()]
 		+ delta * pivot.expectation(game.getProbabilities()[state][ait->getAction()]);
-	      
-	      if (min(bindingPayoff[1],nonBindingPayoff[1]) > bestLevel)
+
+	      bool bestAPSNotBinding = false;
+	      SGPoint bestAPSPayoff;
+	      // Make this code valid for an arbitrary direction
+
+	      // Find which payoff is highest in current normal and
+	      // break ties in favor of the clockwise 90 degree.
+	      bestBindingPlayer = 0;
+	      bestBindingPoint = 0;
+	      for (int p = 0; p < numPlayers; p++)
 		{
-		  actionTuple[state] = &(*ait);
-		  if (bindingPayoff[1] < nonBindingPayoff[1])
+		  for (int k = 0; k < ait->getPoints()[p].size(); k++)
 		    {
-		      bestLevel = bindingPayoff[1];
-		      regimeTuple[state] = SG::Binding;
-		      newPivot[state] = bindingPayoff;
-		    }
-		  else
+		      double tmpLvl = ait->getPoints()[p][k]*currDir;
+		      if (tmpLvl > bestBindLvl)
+			{
+			  bestBindingPlayer = p;
+			  bestBindingPayoff = k;
+			}
+		    } // point
+		} // player
+	      if (bndryNormals[p][k]*currDir > 0)
+		bestAPSNotBinding = true;
+
+	      if (bestAPSNotBinding
+		  || bestAPSPayoff*currDir > nonBindingPayoff*currDir)
+		{
+		  if (nonBindingPayoff*currDir > bestLevel)
 		    {
-		      bestLevel = nonBindingPayoff[1];
-		      regimeTuple[state] = SG::NonBinding;
-		      newPivot[state] = nonBindingPayoff;
+	      	      bestLevel = nonBindingPayoff*currDir;
+	      	      regimeTuple[state] = SG::NonBinding;
+	      	      newPivot[state] = nonBindingPayoff;
 		    }
-		} // New best action
+		}
+	      else
+		{
+		  if (bestAPSPayoff*currDir > bestLevel)
+		    {
+	      	      bestLevel = bestAPSPayoff*currDir;
+	      	      regimeTuple[state] = SG::Binding;
+	      	      newPivot[state] = bestAPSPayoff;
+		    }
+		}
 	    } // ait
 	} // state
 
@@ -285,8 +307,6 @@ void SGApprox_V2::findInitialPivot()
 	} while (SGTuple::distance(newPivot,pivot) > env.getParam(SG::UPDATEPIVOTTOL)
 		 && (++updatePivotPasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
 
-      // pivot = newPivot;
-      // cout << "Initial pivot: " << newPivot << ", pivotError: " << pivotError <<  endl;
     } // policy iteration
   
 } // findInitialPivot
@@ -307,7 +327,7 @@ std::string SGApprox_V2::progressString() const
   return ss.str();
 }
 
-void SGApprox_V2::findBestDirection()
+void SGApprox_V2::findBestDir()
 {
   // Search for the next best direction.
   int state;
@@ -318,12 +338,12 @@ void SGApprox_V2::findBestDirection()
   bestAction = actions[0].end(); // use end as the default value for bestAction
   bestRegime = SG::Binding;
 
-  double currentNorm = currentDirection.norm();
+  double currNorm = currDir.norm();
 
-  bestDirection = -1.0*currentDirection;
-  bestNormal = -1.0*currentNormal;
+  bestDir = -1.0*currDir;
+  bestNrml = -1.0*currNrml;
   // Search over all actions to find the one that generates the
-  // shallowest normal that is clockwise relative to the current
+  // shallowest normal that is clockwise relative to the curr
   // normal. 
   for (state = 0; state < numStates; state++)
     {
@@ -332,37 +352,37 @@ void SGApprox_V2::findBestDirection()
 	   ++ait)
 	{
 	  // Find the best direction for this action, i.e., the
-	  // smallest clockwise rotation from the current normal. 
-
+	  // smallest clockwise rotation from the curr normal. 
+	  
 	  // Non-binding payoff
 	  const SGPoint & stagePayoff  = game.getPayoffs()[state][ait->getAction()];
 	  const vector<double> & prob = game.getProbabilities()[state][ait->getAction()];
 	  SGPoint nonBindingPayoff = ( (1-delta)*stagePayoff
 				       + delta*pivot.expectation(prob) );
-	  SGPoint nonBindingDirection = nonBindingPayoff - pivot[state];
-	  SGPoint nonBindingNormal = nonBindingDirection.getNormal();
+	  SGPoint nonBindingDir = nonBindingPayoff - pivot[state];
+	  SGPoint nonBindingNrml = nonBindingDir.getNrml();
 
 	  bool nonBindingReverseDirFlag = false;
-
+	  
 	  // Flip the direction of the norm if we have bended backwards
-	  if (nonBindingDirection * currentNormal > reverseDirTol
-	      || (abs(nonBindingDirection*currentNormal) < reverseDirTol
-		  && nonBindingDirection * currentNormal.getNormal() > reverseDirTol) )
+	  if (nonBindingDir * currNrml > reverseDirTol
+	      || (abs(nonBindingDir*currNrml) < reverseDirTol
+		  && nonBindingDir * currNrml.getNrml() > reverseDirTol) )
 	    {
-	      nonBindingNormal *= -1.0;
+	      nonBindingNrml *= -1.0;
 	      nonBindingReverseDirFlag = true;
 	    }
 
 	  // We can only use the non-binding direction if the
 	  // non-binding payoff is "below" the best binding direction.
-
+	  
 	  bool nonBindingIsMinimal = false;
 	  bool bindingAbovePivotFlag = false;
 	  bool dropActionFlag = false;
 	  
 	  SGPoint bestBindingPayoff;
-	  SGPoint bestBindingDirection;
-	  SGPoint bestBindingNormal = -1.0*currentNormal;
+	  SGPoint bestBindingDir;
+	  SGPoint bestBindingNrml = -1.0*currNrml;
 	  // Binding payoffs
 	  for (int p = 0; p < numPlayers; p++)
 	    {
@@ -370,14 +390,14 @@ void SGApprox_V2::findBestDirection()
 		{
 		  SGPoint bindingPayoff = ( (1-delta)*stagePayoff
 					    + delta*ait->getPoints()[p][c] );
-		  SGPoint bindingDirection = bindingPayoff - pivot[state];
-		  SGPoint bindingNormal = bindingDirection.getNormal();
-		  if (bindingDirection*currentNormal > reverseDirTol
-		      || (abs(bindingDirection*currentNormal) < reverseDirTol
-			  && bindingDirection * currentNormal.getNormal() > reverseDirTol) )
-		    bindingNormal *= -1.0;
+		  SGPoint bindingDir = bindingPayoff - pivot[state];
+		  SGPoint bindingNrml = bindingDir.getNrml();
+		  if (bindingDir*currNrml > reverseDirTol
+		      || (abs(bindingDir*currNrml) < reverseDirTol
+			  && bindingDir * currNrml.getNrml() > reverseDirTol) )
+		    bindingNrml *= -1.0;
 
-		  if (bindingDirection * currentNormal > env.getParam(SG::IMPROVETOL))
+		  if (bindingDir * currNrml > env.getParam(SG::IMPROVETOL))
 		    {
 		      // Either pivot is contained in feasible set or
 		      // else action is infeasible. If we have
@@ -385,11 +405,11 @@ void SGApprox_V2::findBestDirection()
 		      // payoff is below the pivot. 
 		      bindingAbovePivotFlag = true;
 		    }
-		  else if (bindingPayoff * bestBindingNormal > env.getParam(SG::IMPROVETOL))
+		  else if (bindingPayoff * bestBindingNrml > env.getParam(SG::IMPROVETOL))
 		    {
-		      bestBindingNormal = bindingNormal;
+		      bestBindingNrml = bindingNrml;
 		      bestBindingPayoff = bindingPayoff;
-		      bestBindingDirection = bindingDirection;
+		      bestBindingDir = bindingDir;
 		    }
 		} // continuation value
 	    } // player
@@ -398,51 +418,51 @@ void SGApprox_V2::findBestDirection()
 	    {
 	      // Must be that non-binding payoff is (weakly) below the
 	      // pivot, or else action is infeasible.
-	      if (isBelow(nonBindingDirection,currentNormal)
-		  && improves(currentNormal,bestNormal,nonBindingNormal))
+	      if (isBelow(nonBindingDir,currNrml)
+		  && improves(currNrml,bestNrml,nonBindingNrml))
 		{
-		  bestNormal = nonBindingNormal;
+		  bestNrml = nonBindingNrml;
 		  bestAction = ait;
-		  bestDirection = nonBindingDirection;
+		  bestDir = nonBindingDir;
 		  bestRegime = SG::NonBinding;
 		}
 	    }
 	  else
 	    {
-	      // Binding payoffs are all below the current normal
-	      if ( isBelow(nonBindingDirection,bestBindingNormal)
-		   && improves(currentNormal,bestNormal,nonBindingNormal))
+	      // Binding payoffs are all below the curr normal
+	      if ( isBelow(nonBindingDir,bestBindingNrml)
+		   && improves(currNrml,bestNrml,nonBindingNrml))
 		{
-		  bestNormal = nonBindingNormal;
+		  bestNrml = nonBindingNrml;
 		  bestAction = ait;
-		  bestDirection = nonBindingDirection;
+		  bestDir = nonBindingDir;
 		  bestRegime = SG::NonBinding;
 		}
-	      else if (improves(currentNormal,bestNormal,bestBindingNormal))
+	      else if (improves(currNrml,bestNrml,bestBindingNrml))
 		{
-		  bestNormal = bestBindingNormal;
+		  bestNrml = bestBindingNrml;
 		  bestAction = ait;
-		  bestDirection = bestBindingDirection;
+		  bestDir = bestBindingDir;
 		  bestRegime = SG::Binding;
 		}
 	    }
 	  
 	  // if (!bindingAbovePivotFlag
-	  //     && bestBindingDirection * nonBindingNormal < -reverseDirTol
-	  //     && improves(currentNormal,bestNormal,bestBindingNormal))
+	  //     && bestBindingDir * nonBindingNrml < -reverseDirTol
+	  //     && improves(currNrml,bestNrml,bestBindingNrml))
 	  //   {
-	  //     bestNormal = bestBindingNormal;
+	  //     bestNrml = bestBindingNrml;
 	  //     bestAction = ait;
-	  //     bestDirection = bestBindingDirection;
+	  //     bestDir = bestBindingDir;
 	  //     bestRegime = SG::Binding;
 	  //   }
 	  // else if ( (nonBindingIsMinimal
-	  // 	    || bestBindingDirection * nonBindingNormal > reverseDirTol)
-	  // 	    && improves(currentNormal,bestNormal,nonBindingNormal) )
+	  // 	    || bestBindingDir * nonBindingNrml > reverseDirTol)
+	  // 	    && improves(currNrml,bestNrml,nonBindingNrml) )
 	  //   {
-	  //     bestNormal = nonBindingNormal;
+	  //     bestNrml = nonBindingNrml;
 	  //     bestAction = ait;
-	  //     bestDirection = nonBindingDirection;
+	  //     bestDir = nonBindingDir;
 	  //     bestRegime = SG::NonBinding;
 	  //   }
 	} // action
@@ -451,29 +471,29 @@ void SGApprox_V2::findBestDirection()
   if (bestAction == actions[0].end())
     throw(SGException(SG::NO_ADMISSIBLE_DIRECTION));
   
-} // findBestDirection
+} // findBestDir
 
 bool SGApprox_V2::isBelow(const SGPoint & dir,
 			  const SGPoint & norm) const
 {
   return (dir*norm < -env.getParam(SG::IMPROVETOL)
 	  || ( abs(dir*norm) < env.getParam(SG::IMPROVETOL)
-	       && dir*norm.getNormal() < -env.getParam(SG::IMPROVETOL) ) );
+	       && dir*norm.getNrml() < -env.getParam(SG::IMPROVETOL) ) );
 }
 
-bool SGApprox_V2::improves(const SGPoint & current, 
+bool SGApprox_V2::improves(const SGPoint & curr, 
 			const SGPoint & best, 
-			const SGPoint & newDirection) const
+			const SGPoint & newDir) const
 {
-  SGPoint newNormal = newDirection.getNormal();
-  double currentNorm = current.norm();
-  double newNorm = newDirection.norm();
-  double level  =  newNormal * current/sqrt(newNorm)/sqrt(currentNorm);
+  SGPoint newNrml = newDir.getNrml();
+  double currNorm = curr.norm();
+  double newNorm = newDir.norm();
+  double level  =  newNrml * curr/sqrt(newNorm)/sqrt(currNorm);
 
   return ( level > env.getParam(SG::IMPROVETOL)
 	   || ( level > -env.getParam(SG::IMPROVETOL)
-		&& newDirection*current > 0.0 ) )
-    && (newNormal * best/sqrt(newNorm)/sqrt(best.norm()) 
+		&& newDir*curr > 0.0 ) )
+    && (newNrml * best/sqrt(newNorm)/sqrt(best.norm()) 
 	< env.getParam(SG::IMPROVETOL)); // This broke the kocherlakota example, but
   // made the PD example and others work
   // beautifully (used to be -env.getParam(SG::IMPROVETOL))
@@ -488,8 +508,8 @@ void SGApprox_V2::calculateNewPivot()
   regimeTuple[bestAction->getState()] = bestRegime;
   actionTuple[bestAction->getState()] = &(*bestAction);
 
-  currentDirection = bestDirection;
-  currentNormal = bestNormal/bestNormal.norm();
+  currDir = bestDir;
+  currNrml = bestNrml/bestNrml.norm();
 
   // First construct maxMovement array.
   vector<double> movements(numStates,0.0);
@@ -510,7 +530,7 @@ void SGApprox_V2::calculateNewPivot()
   for (state=0; state < numStates; state++)
     {
       maxDistance = std::max(maxDistance,movements[state]);
-      pivot[state] += movements[state]*currentDirection;
+      pivot[state] += movements[state]*currDir;
     }
 
   // Add check here that pivot is self-generated (in the
@@ -581,7 +601,7 @@ double SGApprox_V2::distance() const
 
   for (auto hp_old = W.begin(); hp_old != W.end() ; hp_old++)
     {
-      double distToCurrentIter = numeric_limits<double>::max();
+      double distToCurrIter = numeric_limits<double>::max();
       double tempDist;
       for (auto hp_new = Wp.begin(); hp_new != Wp.end() ; hp_new++)
 	{
@@ -590,15 +610,15 @@ double SGApprox_V2::distance() const
 
 	  tempDist = SGHyperplane::distance(*hp_old,*hp_new);
 
-	  if (tempDist <= distToCurrentIter)
-	    distToCurrentIter = tempDist;
+	  if (tempDist <= distToCurrIter)
+	    distToCurrIter = tempDist;
 	} // for new hp
 
-      if (tempDist <= distToCurrentIter)
-	distToCurrentIter = tempDist;
+      if (tempDist <= distToCurrIter)
+	distToCurrIter = tempDist;
 
-      if (distToCurrentIter >= newError)
-	newError = distToCurrentIter;
+      if (distToCurrIter >= newError)
+	newError = distToCurrIter;
     } // for old hp
 
   return newError;

@@ -78,9 +78,9 @@ private:
   SGTuple threatTuple; /*!< Current threat tuple. */
 
   SGTuple pivot; /*!< Current pivot. */
-  SGPoint currentDirection; /*!< The current direction. */
-  SGPoint currentNormal; /*!< The current direction. */
-  vector<double> currentLevels; /*!< The levels attained by the pivot
+  SGPoint currDir; /*!< The current direction. */
+  SGPoint currNormal; /*!< The current direction. */
+  vector<double> currLevels; /*!< The levels attained by the pivot
                                    in the current normal direction. */
   vector< const SGAction* > actionTuple; /*!< actionTuple[state] is a
                                             pointer to the SGAction
@@ -95,7 +95,7 @@ private:
 					       generates the
 					       shallowest
 					       direction. */
-  SGPoint bestDirection; /*!< The shallowest direction at the current
+  SGPoint bestDir; /*!< The shallowest direction at the current
                             iteration. */
   SGPoint bestNormal; /*!< The normal to the shallwest direction. */
   SG::Regime bestRegime; /*!< Indicates which incentive
@@ -129,7 +129,7 @@ private:
   /*! Iteraties over the SGAction objects in SGApprox_V2::actions
       to find the shallowest admissible direction, and stores it in
       bestDirection. */
-  void findBestDirection();
+  void findBestDir();
 
   //! Calculates the new pivot
   /*! After the best direction has been found, this method updates the
@@ -170,15 +170,15 @@ private:
 		    const SGPoint & qA, 
 		    const SGPoint & qB) const;
 
-  //! Checks whether or not newDirection is shallower than best, relative to current
-  /*! Returns true if the cosine between newDirection and best is
-      greater than SGEnv::improveTol, or if best and newDirection
+  //! Checks whether or not newDir is shallower than best, relative to current
+  /*! Returns true if the cosine between newDir and best is
+      greater than SGEnv::improveTol, or if best and newDir
       are colinear, whether or not best has a larger norm. Non-static
       so it can read the parameter values in
       SGApprox_V2::env. */
   bool improves(const SGPoint & current, 
 		const SGPoint & best, 
-		const SGPoint & newDirection) const;
+		const SGPoint & newDir) const;
 
   bool isBelow (const SGPoint & dir,
 		const SGPoint & norm) const;
@@ -221,13 +221,13 @@ public:
   //! test direction was generated
   list<SGAction>::const_iterator  getBestAction() const { return bestAction; }
   //! Returns the best test direction
-  const SGPoint & getBestDirection() const { return bestDirection; }
+  const SGPoint & getBestDirection() const { return bestDir; }
   //! Returns the current action tuple
   const vector<const SGAction*> & getActionTuple() const { return actionTuple; }
   //! Returns the current regime tuple
   const vector<SG::Regime> & getRegimeTuple() const { return regimeTuple; }
   //! Returns the current direction
-  const SGPoint & getDirection() const { return currentDirection; }
+  const SGPoint & getDirection() const { return currDir; }
   //! Returns the current pivot
   const SGTuple & getPivot() const {return pivot; }
   //! Returns the current threat tuple

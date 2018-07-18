@@ -79,18 +79,19 @@ void SGAction::intersectRaySegment(const SGPoint& normal,
   // First north south.
   if (segment.size() == 2)
     {
-      // Two points of intersection for the ns IC constraint.
+      // Two points of intersection for this IC constraint.
 	      
       // Determine which of the two points is on the far side
       // of the clockwise ray.
       double l0 = normal * segment[0];
       double l1 = normal * segment[1];
-
+      
       if (l0 > level + env.getParam(SG::ICTOL)
 	  && l1 > level + env.getParam(SG::ICTOL))
 	{
 	  // Both lie above the ray.
 	  segment.clear();
+	  bndryNormals.clear();
 	}
       else if (l0 < level
 	       && l1 < level)
@@ -102,18 +103,23 @@ void SGAction::intersectRaySegment(const SGPoint& normal,
 	  // Can take intersection.
 	  double weightOn1 = (level - l0)/(l1 - l0);
 
+	  // In first two cases, must be very close to being coplanar
+	  // with the normal. Just make both points the same. (Is this
+	  // necessary? Seems like it might screw things up.)
 	  if (weightOn1 > 1)
 	    segment[0] = segment[1];
 	  else if (weightOn1 < 0)
 	    segment[1] = segment[0];
 	  else
 	    {
+	      // Intersection is interior.
 	      SGPoint intersection 
 		= weightOn1 * segment[1] +
 		(1.0 - weightOn1) * segment[0];
 	      int replace1 = (l0 < l1);
 	  
 	      segment[replace1] = intersection;
+	      bndryNormals[replace1] = normal;
 	    }
 	}
     }
@@ -180,6 +186,8 @@ double SGAction::calculateMinIC(int action,int state,int player,
 void SGAction::calculateBindingContinuations(const SGGame & game,
 					     const vector<SGHyperplane> & W)
 {
+  // Version used with SGSolver_V2
+  
   // Reset the binding continuations and then iteratively trim.
   SGPoint point = minIC;
   points[0].clear();
@@ -190,7 +198,7 @@ void SGAction::calculateBindingContinuations(const SGGame & game,
   points[1].push_back(point);
   point[0] = numeric_limits<double>::max();
   points[1].push_back(point);
-
+  
   // cout << points.size() << endl;
   // cout << points[0].size() << endl;
   // cout << points[0] << " " << points[1] << endl;
@@ -238,7 +246,8 @@ void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatT
 	continue;
 
       tuples[player].clear(); 
-      points[player].clear(); 
+      points[player].clear();
+      bndryNormals[player].clear();
 	      
       nextPoint = extremeTuples.back()
 	.expectation(game.getProbabilities()
