@@ -28,7 +28,7 @@
 #include "sgexception.hpp"
 #include "gurobi_c++.h"
 
-//! Class that implements the JYC algorithm using Gurobi
+//! Class that implements the ABS algorithm using Gurobi
 /*! This file has no associated cpp file, so that libsg does not have
   to link to Gurobi.
 

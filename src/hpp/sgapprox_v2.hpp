@@ -123,7 +123,7 @@ private:
   void calculateBindingContinuations();
 
   //! Finds an initial pivot, which maximizes player 2's payoff.
-  void findInitialPivot();
+  void optimizePolicy();
   
   //! Calculates the best direction
   /*! Iteraties over the SGAction objects in SGApprox_V2::actions

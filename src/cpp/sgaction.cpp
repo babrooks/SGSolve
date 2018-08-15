@@ -73,7 +73,8 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
 
 
 void SGAction::intersectRaySegment(const SGPoint& normal,
-				   double level,
+				   const double level,
+				   const int player,
 				   SGTuple & segment)
 {
   // First north south.
@@ -91,7 +92,7 @@ void SGAction::intersectRaySegment(const SGPoint& normal,
 	{
 	  // Both lie above the ray.
 	  segment.clear();
-	  bndryNormals.clear();
+	  bndryDirs[player].clear();
 	}
       else if (l0 < level
 	       && l1 < level)
@@ -116,10 +117,14 @@ void SGAction::intersectRaySegment(const SGPoint& normal,
 	      SGPoint intersection 
 		= weightOn1 * segment[1] +
 		(1.0 - weightOn1) * segment[0];
-	      int replace1 = (l0 < l1);
+	      int replace = (l0 < l1);
 	  
-	      segment[replace1] = intersection;
-	      bndryNormals[replace1] = normal;
+	      segment[replace] = intersection;
+	      if (player==0 && replace == 1
+		  || player==1 && replace == 0)
+		bndryDirs[player][replace] = normal.getNormal();
+	      else
+		bndryDirs[player][replace] = (-1)*normal.getNormal();
 	    }
 	}
     }
@@ -209,16 +214,10 @@ void SGAction::calculateBindingContinuations(const SGGame & game,
 	intersectRaySegment(it->getNormal(),
 			    it->expectation(game.getProbabilities()
 					    [state][action]),
+			    p,
 			    points[p]);
     }
 
-  if (points[0].size()>0)
-    highestPoint = points[0][1];
-  else if (points[1].size()>0)
-    highestPoint = points[1][0];
-  else
-    highestPoint = -numeric_limits<double>::max();
-  
 } // calculateBindingContinuations
 
 void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
@@ -247,7 +246,7 @@ void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatT
 
       tuples[player].clear(); 
       points[player].clear();
-      bndryNormals[player].clear();
+      bndryDirs[player].clear();
 	      
       nextPoint = extremeTuples.back()
 	.expectation(game.getProbabilities()

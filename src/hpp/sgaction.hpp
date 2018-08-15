@@ -44,7 +44,7 @@ private:
                         environment. */
 
 
-  vector<SGPoint> bndryNormals; /*!< Stores the slope of the
+  vector<SGTuple> bndryDirs; /*!< Stores the slope of the
                                          frontier at the extreme
                                          payoffs. */
   
@@ -66,11 +66,14 @@ public:
     env(_env), SGBaseAction(_state,_action)
   {
     trimmedPoints.resize(2);
-    bndryNormals.resize(2);
+    bndryDirs.resize(2);
   }
 
   //! Get method for trimmed points
   const vector<SGTuple> & getTrimmedPoints() const { return trimmedPoints; }
+
+  //! Get method for bndryDirs
+  const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
 
   //! Trims binding continuation segments
   /*! Intersects the binding continuation segments in SGAction::points
@@ -109,7 +112,8 @@ public:
 
   //! Intersects the segment with the ray emanating from the pivot
   void intersectRaySegment(const SGPoint & normal,
-			   double level,
+			   const double level,
+			   int player,
 			   SGTuple & segment);
 
   //! Trims the trimmedPoints using intersectRaySegment.

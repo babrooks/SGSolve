@@ -35,9 +35,9 @@ void SGApprox_V2::initialize()
   // testOFS.open("test.log",std::ofstream::out);
 
   game.getPayoffBounds(payoffUB,payoffLB);
-
+  
   actions = vector< list<SGAction> > (numStates);
-
+  
   const vector< list<int> > & eqActions = game.getEquilibriumActions();
   // Create the intersection arrays.
   for (state = 0; state < numStates; state++)
@@ -126,7 +126,7 @@ double SGApprox_V2::generate(bool storeIterations)
 
   cout << endl << "Finding initial pivot..." << endl;
   // Find initial pivot
-  findInitialPivot();
+  optimizePolicy();
   
   // Start minimizing player 1's payoff
   currDir = SGPoint (-1,0);
@@ -210,10 +210,9 @@ double SGApprox_V2::generate(bool storeIterations)
   
 } // generate
 
-void SGApprox_V2::findInitialPivot()
+void SGApprox_V2::optimizePolicy()
 {
-  // Do policy iteration to find a first pivot. Minimize player 1's
-  // payoff.
+  // Do policy iteration to find a first pivot. 
   
   // Start with upper bounds on the highest payoff for all states.
   SGPoint normal (0,1);
@@ -264,7 +263,7 @@ void SGApprox_V2::findInitialPivot()
 			}
 		    } // point
 		} // player
-	      if (bndryNormals[p][k]*currDir > 0)
+	      if (ait-getBndryDirs()[p][k]*currDir > 0)
 		bestAPSNotBinding = true;
 
 	      if (bestAPSNotBinding
@@ -309,7 +308,7 @@ void SGApprox_V2::findInitialPivot()
 
     } // policy iteration
   
-} // findInitialPivot
+} // optimizePolicy
 
 std::string SGApprox_V2::progressString() const
 {
@@ -598,7 +597,7 @@ double SGApprox_V2::distance() const
     return 1.0;
 
   double newError = 0.0;
-
+  
   for (auto hp_old = W.begin(); hp_old != W.end() ; hp_old++)
     {
       double distToCurrIter = numeric_limits<double>::max();

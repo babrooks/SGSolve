@@ -19,14 +19,14 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGSOLVER_V2_HPP
-#define _SGSOLVER_V2_HPP
+#ifndef _SGSOLVER_V4_HPP
+#define _SGSOLVER_V4_HPP
 
 #include "sgcommon.hpp"
 #include "sgutilities.hpp"
 #include "sgenv.hpp"
 #include "sggame.hpp"
-#include "sgapprox_v2.hpp"
+#include "sgaction_v2.hpp"
 #include "sgexception.hpp"
 #include "sgsolution.hpp"
 
@@ -40,7 +40,7 @@
 
   \ingroup src
  */
-class SGSolver_V2
+class SGSolver_V4
 {
 private:
   // Data
@@ -52,24 +52,40 @@ private:
   //! SGSolution object used by SGApprox to store data.
   SGSolution soln;
 
+  // References to objects in the game
+  const double delta; /*!< The discount factor, copied from
+                         SGApprox_V2::game. */
+  const int numPlayers; /*!< The number of players, always 2. */
+  const int numStates; /*!< The number of states, copied from
+                          SGApprox_V2::game. */
+
+  const vector< list<int> > & eqActions;
+  const vector< vector<SGPoint> > & payoffs;
+  const vector< vector< vector<double> > > & probabilities;
+  const vector< vector<int> > numActions;
+  const vector< int > numActions_totalByState;
+  
 public:
   //! Default constructor
-  SGSolver_V2(); 
+  SGSolver_V4(); 
 
   //! Constructor
-  /*! Creates a new SGSolver_V2 object and initializes it with the given
+  /*! Creates a new SGSolver_V4 object and initializes it with the given
       game. */
-  SGSolver_V2(const SGEnv & _env, 
+  SGSolver_V4(const SGEnv & _env, 
 	   const SGGame & _game);
 
   //! Destructor
-  ~SGSolver_V2() {}
+  ~SGSolver_V4() {}
 
   //! Solve routine
   /*! Initializes a new SGApproximation object and iteratively
       generates it until one of the stopping criteria have been
       met. Stores progress in the data member. */
   void solve();
+
+  //! Optimizes the policy for the given direction
+  void optimizePolicy();
 
   //! Returns a constant reference to the SGSolution object storing the
   //! output of the computation.
