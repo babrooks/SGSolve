@@ -129,6 +129,9 @@ public:
   //! Get method for trimmed points
   const vector<SGTuple> & getTrimmedPoints() const { return trimmedPoints; }
 
+  //! Get method for bndry dirs
+  const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
+  
   // Returns whether the action can be supported
   bool supportable() const
   {

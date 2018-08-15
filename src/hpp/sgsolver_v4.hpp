@@ -85,7 +85,11 @@ public:
   void solve();
 
   //! Optimizes the policy for the given direction
-  void optimizePolicy();
+  void optimizePolicy(SGTuple & pivot,
+		      vector<list<SGAction_V2>::const_iterator> & actionTuple,
+		      vector<SG::Regime> & regimeTuple,
+		      const SGPoint currDir,
+		      const vector<list<SGAction_V2> > & actions);
 
   //! Returns a constant reference to the SGSolution object storing the
   //! output of the computation.

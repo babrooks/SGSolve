@@ -41,7 +41,9 @@ SGSolver_V4::SGSolver_V4(const SGEnv & _env,
 void SGSolver_V4::solve()
 {
   // Initialize directions
-  int numDirections = 100;
+  int numDirections = 100; // make an even multiple of 4
+
+  assert(100%4==0);
 
   vector<SGPoint> directions(numDirections);
   vector< vector<double> > levels(numDirections,
@@ -73,25 +75,15 @@ void SGSolver_V4::solve()
 	  actions[state].push_back(SGAction_V2(env,state,action));
 	  actions[state].back().calculateMinIC(game,updateICFlags,threatTuple);
 	  
-	  // cout << "Starting trim operation..." << endl;
-
 	  for (int dir = 0; dir < 4; dir ++)
 	    {
 	      double theta = 2.0*PI*static_cast<double>(dir)/4.0;
-	      SGPoint currentDir = SGPoint(cos(theta),sin(theta));
+	      SGPoint currDir = SGPoint(cos(theta),sin(theta));
 
-	      actions[state].back().trim(currentDir,
-					 max(currentDir*payoffUB,currentDir*payoffLB));
+	      actions[state].back().trim(currDir,
+					 max(currDir*payoffUB,currDir*payoffLB));
 	    } // for dir
 
-	  // cout << "Trimmed points: " << endl
-	  //      << actions[state].back().getTrimmedPoints()[0] << endl 
-	  //      << actions[state].back().getTrimmedPoints()[1] << endl;
-	  // cout << "Finished trimming. Now do update!" << endl;
-	  // actions[state].back().updateTrim();
-	  // cout << "Points: " << endl
-	  //      << actions[state].back().getPoints()[0] << endl 
-	  //      << actions[state].back().getPoints()[1] << endl;
 	}
     } // for state
 
@@ -100,9 +92,18 @@ void SGSolver_V4::solve()
   // Main loop
   double errorLevel = 1;
   int numIter = 0;
+
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
+      SGTuple pivot(numStates);
+      vector<list<SGAction_V2>::const_iterator> actionTuple(numStates);
+      // Pick the initial actions arbitrarily
+      for (int state = 0; state < numStates; state++)
+	actionTuple[state] = actions[state].begin();
+      
+      vector<SG::Regime> regimeTuple(numStates,SG::Binding);
+
       // Reset the trimmed points for the actions
       for (int state = 0; state < numStates; state++)
 	{
@@ -112,7 +113,7 @@ void SGSolver_V4::solve()
 	    {
 	      ait->updateTrim();
 	      // Delete the action if not supportable
-	      if (~ait->supportable())
+	      if (!(ait->supportable()))
 		{
 		  actions[state].erase(ait++);
 		  continue;
@@ -131,11 +132,17 @@ void SGSolver_V4::solve()
 	{
 	  // Compute optimal level in this direction
 	  vector<double> newLevels(numStates,0);
-	  SGPoint currentDir = directions[dir];
-	  
+	  SGPoint currDir = directions[dir];
 
-	  // Calculate new threat tuples
-	  
+	  cout << "Optimizing policy..." << endl;
+	  optimizePolicy(pivot,actionTuple,regimeTuple,currDir,actions);
+	  for (int state = 0; state < numStates; state++)
+	    {
+	      // Update the levels and the error level with the
+	      // movement in this direction
+	      newLevels[state] = pivot[state]*currDir;
+	      errorLevel = max(errorLevel,abs(newLevels[state]-levels[dir][state]));
+	    } // for state
 	  
 	  // Trim the actions
 	  for (int state = 0; state < numStates; state++)
@@ -151,118 +158,133 @@ void SGSolver_V4::solve()
 		      * newLevels[state];
 
 		  // Trim the action
-		  ait->trim(currentDir,expLevel);
-		}
-
-	      // Update the errorlevel with the movement in this direction
-	      errorLevel = max(errorLevel,abs(newLevels[state]-levels[dir][state]));
-	    }
+		  ait->trim(currDir,expLevel);
+		} // for ait
+	    } // for state
 
 	  levels[dir] = newLevels;
 	} // for dir
 
+      for (int state = 0; state < numStates; state++)
+	{
+	  threatTuple[state][0] = levels[numDirections/2][state];
+	  threatTuple[state][1] = levels[numDirections/4][state];
+	}
+
+      cout << "Iter: " << numIter
+	   << ", errorLvl: " << errorLevel
+	   << endl;
+      
       numIter++;
     } // while
 
 } // solve
 
 
-// void SGSolver_V4::optimizePolicy()
-// {
-//   // Do policy iteration to find a first pivot. 
+void SGSolver_V4::optimizePolicy(SGTuple & pivot,
+				 vector<list<SGAction_V2>::const_iterator> & actionTuple,
+				 vector<SG::Regime> & regimeTuple,
+				 const SGPoint currDir,
+				 const vector<list<SGAction_V2> > & actions)
+{
+  // Do policy iteration to find the optimal pivot.
   
-//   // Start with upper bounds on the highest payoff for all states.
-//   SGPoint normal (0,1);
-//   vector<double> levels(numStates,payoffUB[1]+1.0); 
-//   pivot = SGTuple(numStates,SGPoint(payoffLB[0],payoffLB[1]-1.0));
+  double pivotError = 1.0;
+  // Iterate until convergence
+  while (pivotError > env.getParam(SG::UPDATEPIVOTTOL))
+    {
+      // Now do Bellman iteration to find new fixed point
+      SGTuple newPivot(numStates);
+      int updatePivotPasses = 0;
+      double bellmanPivotGap = 0;
+      do
+	{
+	  for (int state = 0; state < numStates; state++)
+	    {
+	      if (regimeTuple[state] == SG::NonBinding)
+		newPivot[state] = (1-delta)*payoffs[state]
+		  [actionTuple[state]->getAction()]
+		  + delta*pivot.expectation(probabilities[state]
+					    [actionTuple[state]->getAction()]);
+	    }
+	  bellmanPivotGap = SGTuple::distance(newPivot,pivot);
+	  pivot = newPivot;
+	  
+	} while (bellmanPivotGap > env.getParam(SG::UPDATEPIVOTTOL)
+		 && (++updatePivotPasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
 
-//   double pivotError = 1.0;
-//   // Iterate until convergence
-//   while (pivotError > env.getParam(SG::UPDATEPIVOTTOL))
-//     {
-//       SGTuple newPivot = pivot;
-      
-//       for (int state = 0; state < numStates; state++)
-// 	{
-// 	  // Iterate over all actions to find the one that generates
-// 	  // the lowest payoff for player 1.
+      for (int state = 0; state < numStates; state++)
+	{
+	  // Iterate over all actions to find the one that generates
+	  // the lowest payoff for player 1.
 	  
-// 	  double bestLevel = -numeric_limits<double>::max();
+	  double bestLevel = -numeric_limits<double>::max();
 	  
-// 	  for (auto ait = actions[state].begin();
-// 	       ait != actions[state].end();
-// 	       ++ait)
-// 	    {
-// 	      // Procedure to find an improvement to the policy
-// 	      // function
+	  for (auto ait = actions[state].begin();
+	       ait != actions[state].end();
+	       ++ait)
+	    {
+	      // Procedure to find an improvement to the policy
+	      // function
 	      
-// 	      SGPoint nonBindingPayoff = (1-delta)*game.getPayoffs()[state]
-// 		[ait->getAction()]
-// 		+ delta * pivot.expectation(game.getProbabilities()[state][ait->getAction()]);
+	      SGPoint nonBindingPayoff = (1-delta)*payoffs[state]
+		[ait->getAction()]
+		+ delta * pivot.expectation(probabilities[state][ait->getAction()]);
 
-// 	      bool bestAPSNotBinding = false;
-// 	      SGPoint bestAPSPayoff;
-// 	      // Make this code valid for an arbitrary direction
+	      bool bestAPSNotBinding = false;
+	      SGPoint bestAPSPayoff;
+	      // Make this code valid for an arbitrary direction
 
-// 	      // Find which payoff is highest in current normal and
-// 	      // break ties in favor of the clockwise 90 degree.
-// 	      bestBindingPlayer = 0;
-// 	      bestBindingPoint = 0;
-// 	      for (int p = 0; p < numPlayers; p++)
-// 		{
-// 		  for (int k = 0; k < ait->getPoints()[p].size(); k++)
-// 		    {
-// 		      double tmpLvl = ait->getPoints()[p][k]*currDir;
-// 		      if (tmpLvl > bestBindLvl)
-// 			{
-// 			  bestBindingPlayer = p;
-// 			  bestBindingPayoff = k;
-// 			}
-// 		    } // point
-// 		} // player
-// 	      if (ait-getBndryDirs()[p][k]*currDir > 0)
-// 		bestAPSNotBinding = true;
+	      // Find which payoff is highest in current normal and
+	      // break ties in favor of the clockwise 90 degree.
+	      int bestBindingPlayer = -1;
+	      int bestBindingPoint = -1;
+	      double bestBindLvl = -numeric_limits<double>::max();
+	      for (int p = 0; p < numPlayers; p++)
+		{
+		  for (int k = 0; k < ait->getPoints()[p].size(); k++)
+		    {
+		      double tmpLvl = ait->getPoints()[p][k]*currDir;
+		      if (tmpLvl > bestBindLvl)
+			{
+			  bestBindLvl = tmpLvl;
+			  bestBindingPlayer = p;
+			  bestBindingPoint = k;
+			}
+		    } // point
+		} // player
+	      assert(bestBindingPlayer >= 0);
+	      assert(bestBindingPoint >= 0);
+	      bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
+		+ delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
 
-// 	      if (bestAPSNotBinding
-// 		  || bestAPSPayoff*currDir > nonBindingPayoff*currDir)
-// 		{
-// 		  if (nonBindingPayoff*currDir > bestLevel)
-// 		    {
-// 	      	      bestLevel = nonBindingPayoff*currDir;
-// 	      	      regimeTuple[state] = SG::NonBinding;
-// 	      	      newPivot[state] = nonBindingPayoff;
-// 		    }
-// 		}
-// 	      else
-// 		{
-// 		  if (bestAPSPayoff*currDir > bestLevel)
-// 		    {
-// 	      	      bestLevel = bestAPSPayoff*currDir;
-// 	      	      regimeTuple[state] = SG::Binding;
-// 	      	      newPivot[state] = bestAPSPayoff;
-// 		    }
-// 		}
-// 	    } // ait
-// 	} // state
+	      if (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]*currDir > 0)
+		bestAPSNotBinding = true;
 
-//       pivotError = SGTuple::distance(newPivot,pivot);
+	      if (bestAPSNotBinding
+		  || bestAPSPayoff*currDir > nonBindingPayoff*currDir)
+		{
+		  if (nonBindingPayoff*currDir > bestLevel)
+		    {
+	      	      bestLevel = nonBindingPayoff*currDir;
+	      	      regimeTuple[state] = SG::NonBinding;
+	      	      newPivot[state] = nonBindingPayoff;
+		    }
+		}
+	      else
+		{
+		  if (bestAPSPayoff*currDir > bestLevel)
+		    {
+	      	      bestLevel = bestAPSPayoff*currDir;
+	      	      regimeTuple[state] = SG::Binding;
+	      	      newPivot[state] = bestAPSPayoff;
+		    }
+		}
+	    } // ait
+	} // state
 
-//       // Now do Bellman iteration to find new fixed point
-//       int updatePivotPasses = 0;
-//       do
-// 	{
-// 	  pivot = newPivot;
-// 	  for (int state = 0; state < numStates; state++)
-// 	    {
-// 	      if (regimeTuple[state] == SG::NonBinding)
-// 		newPivot[state] = (1-delta)*game.getPayoffs()[state]
-// 		  [actionTuple[state]->getAction()]
-// 		  + delta*pivot.expectation(game.getProbabilities()[state]
-// 					    [actionTuple[state]->getAction()]);
-// 	    }
-// 	} while (SGTuple::distance(newPivot,pivot) > env.getParam(SG::UPDATEPIVOTTOL)
-// 		 && (++updatePivotPasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
+      pivotError = SGTuple::distance(newPivot,pivot);
 
-//     } // policy iteration
-  
-// } // optimizePolicy
+    } // policy iteration
+
+} // optimizePolicy
