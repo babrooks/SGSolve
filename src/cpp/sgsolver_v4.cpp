@@ -93,10 +93,10 @@ void SGSolver_V4::solve()
   double errorLevel = 1;
   int numIter = 0;
 
+  SGTuple pivot = threatTuple;
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
-      SGTuple pivot(numStates);
       vector<list<SGAction_V2>::const_iterator> actionTuple(numStates);
       // Pick the initial actions arbitrarily
       for (int state = 0; state < numStates; state++)
@@ -113,13 +113,12 @@ void SGSolver_V4::solve()
 	    {
 	      ait->updateTrim();
 	      // Delete the action if not supportable
-	      if (!(ait->supportable()))
+	      if (!(ait->supportable(pivot.expectation(probabilities[ait->getState()][ait->getAction()]))))
 		{
 		  actions[state].erase(ait++);
 		  continue;
 		}
 	      ait->resetTrimmedPoints();
-
 	      
 	    } // for ait
 	} // for state
@@ -253,12 +252,10 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 			}
 		    } // point
 		} // player
-	      assert(bestBindingPlayer >= 0);
-	      assert(bestBindingPoint >= 0);
-	      bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
-		+ delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
 
-	      if (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]*currDir > 0)
+	      if (bestBindingPlayer < 0
+		  || (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
+		      *currDir > 0) )
 		bestAPSNotBinding = true;
 
 	      if (bestAPSNotBinding
@@ -273,6 +270,8 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 		}
 	      else
 		{
+		  bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
+		    + delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
 		  if (bestAPSPayoff*currDir > bestLevel)
 		    {
 	      	      bestLevel = bestAPSPayoff*currDir;

@@ -133,13 +133,16 @@ public:
   const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
   
   // Returns whether the action can be supported
-  bool supportable() const
+  bool supportable(const SGPoint & feasiblePoint ) const
   {
     bool tf = false;
     for (int player = 0; player < points.size(); player++)
       if (points[player].size()>0)
 	tf = true;
 
+    if (feasiblePoint >= minIC)
+      tf = true;
+    
     return tf;
   }
   
