@@ -24,6 +24,7 @@
 #include "risksharing.hpp"
 #include "sgsimulator.hpp"
 #include "sgsolver_v3.hpp"
+#include "sgsolver_v4.hpp"
 #include <ctime>
 
 int main()
@@ -42,6 +43,7 @@ int main()
     SGEnv env;
     env.setParam(SG::STOREITERATIONS,1);
     env.setParam(SG::STOREACTIONS,false);
+    env.setParam(SG::ERRORTOL,1e-6);
     SGGame game(rsg);
 
     clock_t start;
@@ -49,21 +51,33 @@ int main()
 
     start = clock();
     
-    SGSolver solver1(env,game);
-    solver1.solve();
+    // SGSolver solver1(env,game);
+    // solver1.solve();
 
-    SGSolution soln = solver1.getSolution();
-    SGSolution::save(soln,"risksharing_v3.sln");
+    // SGSolution soln = solver1.getSolution();
+    // SGSolution::save(soln,"risksharing_v3.sln");
 
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << "time elapsed: "<< duration << " seconds" << endl;
-    start = clock();
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "time elapsed: "<< duration << " seconds" << endl;
+    // start = clock();
     
     // SGSolver_V3 solver3(game);
     // solver3.solve();
 
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     // cout << "time elapsed: "<< duration << " seconds" << endl;
+    // start = clock();
+
+    SGSolver_V4 solver4(env,game);
+    solver4.solve();
+
+    SGSolution_V2 soln2 = solver4.getSolution();
+    SGSolution_V2::save(soln2,"risksharing_v3.sln2");
+    
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << "time elapsed: "<< duration << " seconds" << endl;
+    
+    
   }
 
   return 0;

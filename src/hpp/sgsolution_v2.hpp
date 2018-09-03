@@ -42,7 +42,7 @@ private:
   list<SGIteration_V2> iterations; /*!< A list of SGIteration_V2 objects
                                    tracking the progress of
                                    SGSolver::solve(). */
-
+  
 public:
   //! Default constructor
   SGSolution_V2() {}

@@ -1,3 +1,47 @@
+
+%%
+x=importdata('sgsolver_v4_test.log');
+
+numStates = 2;
+numDir = size(x,2);
+dirs = x(1:2,:)';
+
+lvls = x(3:3:end,:);
+pivots0 = x(4:3:end,:);
+pivots1 = x(5:3:end,:);
+numIter = size(lvls,1)/numStates;
+
+for iter=numIter
+    for s=1:numStates
+        subplot(1,numStates,s);
+%         points = zeros(numDir+1,2);
+%         for k=1:numDir
+%             rows = [k mod(k,numDir)+1];
+%             points(k,:) = dirs(rows,:)\(lvls(numStates*(iter-1)+s,rows)');
+%         end
+%         points(end,:)=points(1,:);
+%        plot(points(:,1),points(:,2),'b.-');
+ 
+        % currentLvls = bsxfun(@times,dirs,lvls(numStates*(iter-1)+s,:)');
+        % plot(currentLvls(:,1),currentLvls(:,2),'b.-');
+        row = (iter-1)*numStates+s;
+        plot(pivots0(row,:)',pivots1(row,:)','b.');
+        xlim = get(gca,'xlim');
+        ylim = get(gca,'ylim');
+        hold on
+        for d=1:numDir
+            shift = 10*(dirs(d,[2 1]).*[1,-1]);
+            segment = bsxfun(@plus,[pivots0(row,d),pivots1(row,d)],[shift;-shift]);
+            plot(segment(:,1),segment(:,2),'r--');
+        end
+%         set(gca,'xlim',xlim,'ylim',ylim);
+        hold off
+        axis square
+    end % for
+    hold on;
+end % iter
+hold off
+
 %%
 x = importdata('sg_v2.log');
 k=size(x,1);
@@ -251,11 +295,11 @@ end % for face
 
 hold off
 
-%% Exact set
-V=[20,20,20;...
-    30,10,10;...
-    10,30,10;...
-    10,10,30;...
+% %% Exact set
+% V=[20,20,20;...
+%     30,10,10;...
+%     10,30,10;...
+%     10,10,30;...
     
 
 %% Plots the final JYC set

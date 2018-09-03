@@ -34,15 +34,18 @@ SGMainWindow::SGMainWindow()
   gameHandler = new SGGameHandler();
 
   solutionHandler = new SGSolutionHandler(this);
+  solutionHandler_V2 = new SGSolutionHandler_V2(this);
 
   // Menu bar
   QMenu * fileMenu = menuBar()->addMenu(tr("&File"));
   QAction * loadSolutionAction = new QAction(tr("&Load solution"),this);
+  QAction * loadSolutionAction_V2 = new QAction(tr("&Load solution V2"),this);
   QAction * loadGameAction = new QAction(tr("Load &game"),this);
-  QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
   QAction * saveGameAction = new QAction(tr("Save game"),this);
+  QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
   QAction * quitAction = new QAction(tr("&Quit"),this);
   fileMenu->addAction(loadSolutionAction);
+  fileMenu->addAction(loadSolutionAction_V2);
   fileMenu->addAction(loadGameAction);
   fileMenu->addSeparator();
   fileMenu->addAction(saveSolutionAction);
@@ -50,9 +53,11 @@ SGMainWindow::SGMainWindow()
   fileMenu->addSeparator();
   fileMenu->addAction(quitAction);
   loadSolutionAction->setShortcut(tr("Ctrl+L"));
+  loadSolutionAction_V2->setShortcut(tr("Ctrl+Shift+L"));
   saveSolutionAction->setShortcut(tr("Ctrl+S"));
   loadGameAction->setShortcut(tr("Ctrl+G"));
   quitAction->setShortcut(tr("Alt+W"));
+
 
   QMenu * viewMenu = menuBar()->addMenu(tr("&View"));
   QAction * screenShotAction = new QAction(tr("&Save a screen shot"),this);
@@ -86,9 +91,11 @@ SGMainWindow::SGMainWindow()
   
   QWidget * gameTab = new QWidget();
   QWidget * solutionTab = new QWidget();
+  QWidget * solutionTab2 = new QWidget();
   QWidget * logTab = new QWidget();
   
   solutionTab->setLayout(solutionHandler->getLayout());
+  solutionTab2->setLayout(solutionHandler_V2->getLayout());
 
 
   // Game tab
@@ -126,6 +133,9 @@ SGMainWindow::SGMainWindow()
   connect(pdAction,SIGNAL(triggered()),
 	  this,SLOT(generatePD()));
   
+  connect(loadSolutionAction_V2,SIGNAL(triggered()),
+	  this,SLOT(loadSolution_V2()));
+
   // Log tab
   QHBoxLayout * logEditLayout = new QHBoxLayout();
   logTextEdit = new QTextEdit();
@@ -140,6 +150,7 @@ SGMainWindow::SGMainWindow()
   tabWidget = new QTabWidget();
   tabWidget->addTab(gameTab,"Game");
   tabWidget->addTab(solutionTab,"Solution");
+  tabWidget->addTab(solutionTab2,"Solution V2");
   tabWidget->addTab(logTab,"Log");
   mainLayout->addWidget(tabWidget);
 
@@ -160,11 +171,9 @@ void SGMainWindow::loadSolution()
 						 "./",
 						 tr("SGViewer solution files (*.sln)"));
 
-  qDebug() << "did I get to here? " << endl; 
   if (newPath.isEmpty())
     return;
 
-  qDebug() << "did I get to here? " << endl; 
   path = newPath;
 
   try
@@ -195,6 +204,46 @@ void SGMainWindow::loadSolution()
       em.showMessage(QString("Load solution didnt work :("));
     }
 } // loadSolution
+
+void SGMainWindow::loadSolution_V2()
+{
+  QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
+						 QCoreApplication::applicationDirPath(),
+						 tr("SGViewer solution files (*.sln2)"));
+
+  if (newPath.isEmpty())
+    return;
+
+  path = newPath;
+
+  try
+    {
+      QByteArray ba = newPath.toLocal8Bit();
+      const char * newPath_c = ba.data();
+
+      SGSolution_V2 soln;
+      
+      SGSolution_V2::load(soln,newPath_c);
+
+      gameHandler->setGame(soln.getGame());
+      solutionHandler_V2->setSolution(soln);
+      
+      tabWidget->setCurrentIndex(2);
+
+      QFileInfo info(path);
+      
+      QString newWindowTitle(tr("SGViewer - "));
+      newWindowTitle += info.fileName();
+      setWindowTitle(newWindowTitle);
+      
+    }
+  catch (...)
+    {
+      qDebug() << "Load solution didnt work :(" << endl;
+      QErrorMessage em(this);
+      em.showMessage(QString("Load solution didnt work :("));
+    }
+} // loadSolution_V2
 
 void SGMainWindow::saveSolution()
 {
@@ -293,7 +342,7 @@ void SGMainWindow::quitProgram()
 
 void SGMainWindow::solveGame()
 {
-  tabWidget->setCurrentIndex(2);
+  tabWidget->setCurrentIndex(3);
   
   try
     {
@@ -348,7 +397,7 @@ void SGMainWindow::iterationFinished(bool tf)
 	  logTextEdit->append(QString(""));
 	  logTextEdit->append(QString("Computation canceled."));
 
-	  tabWidget->setCurrentIndex(2);
+      tabWidget->setCurrentIndex(3);
 	  
 	  break;
 	}

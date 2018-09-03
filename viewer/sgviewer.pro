@@ -19,8 +19,8 @@
 # ben@benjaminbrooks.net
 # Chicago, IL
 
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.11
-QMAKE_MAC_SDK = macosx10.11
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
+QMAKE_MAC_SDK = macosx10.13
   
 QT += widgets printsupport
 
@@ -28,7 +28,7 @@ QT += widgets printsupport
 # CONFIG += static
 CONFIG += -std=gnu++11
 CONFIG += WARN_OFF
-# CONFIG += debug
+CONFIG += debug
 
 QMAKE_CXXFLAGS += -std=c++11
 
@@ -45,14 +45,18 @@ sgtableview.hpp \
 sgprobabilitytablemodel.hpp \
 sgpayofftablemodel.hpp \
 sgsolutionhandler.hpp \
+sgsolutionhandler_v2.hpp \
 sgsolverworker.hpp \
 sgcustomplot.hpp \
 sgsimulationhandler.hpp \
 sgsimulationplot.hpp \
 sgsettingshandler.hpp \
 sgplotcontroller.hpp \
+sgplotcontroller_v2.hpp \
 sgstatecombomodel.hpp \
+sgstatecombomodel_v2.hpp \
 sgactioncombomodel.hpp \
+sgactioncombomodel_v2.hpp \
 sgrisksharinghandler.hpp \
 sglegend.hpp \
 sgplotsettings.hpp \
@@ -69,7 +73,9 @@ sgprobabilitytablemodel.cpp \
 sgpayofftablemodel.cpp \
 sgsimulationhandler.cpp \
 sgsolutionhandler.cpp \
+sgsolutionhandler_v2.cpp \
 sgplotcontroller.cpp \
+sgplotcontroller_v2.cpp \
 sgsettingshandler.cpp \
 sglegend.cpp
 

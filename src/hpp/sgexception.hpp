@@ -36,7 +36,7 @@ class SGException : public std::exception
 {
 public:
   //! Constructor for new SGException.
-  SGException(SG::EXCEPTION_TYPE _type):type(_type) {}
+  SGException(SG::EXCEPTION_TYPE _type = SG::DEFAULT):type(_type) {}
 
   //! Returns the message corresponding to the ExceptionType
   virtual const char* what() const throw()
@@ -62,6 +62,8 @@ public:
 
       case SG::SIMERROR:
 	return "An error occurred within SGSimuator.";
+      case SG::NOFEASIBLETUPLE:
+	return "Could not find a feasible tuple for APS. Equilibrium payoff correspondence is possibly empty";
       default:
 	return "No message specified.";
       }

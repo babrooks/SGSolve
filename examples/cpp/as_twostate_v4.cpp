@@ -27,8 +27,8 @@
 
 int main ()
 {
-  double delta = 0.7;
-  delta = 0.45;
+  double delta = 0.9;
+  delta = 0.35;
   
   int action, state, player;
   int numPlayers = 2;
@@ -65,7 +65,6 @@ int main ()
 
 
   double offset = 5;
-  offset = 0;
   for (action=0; action<9; action++)
     {
       payoffs[1][action][0] = payoffs[0][action][0]-offset;
@@ -99,15 +98,51 @@ int main ()
 
       SGEnv env;
       env.setParam(SG::STOREITERATIONS,1);
-      env.setParam(SG::MAXITERATIONS,10);
+      env.setParam(SG::MAXITERATIONS,100);
       env.setParam(SG::LEVELTOL,1e-12);
   
       cout << "Building solver" << endl;
 
       SGSolver_V4 solver(env,game);
 
-      solver.solve();
-      
+      try
+	{
+	  solver.solve();
+	}
+      catch(SGException e)
+	{
+	  cout << "Solve failed. Caught the following exception:" << endl
+	       << e.what() << endl;
+	}
+
+      SGSolution_V2 soln = solver.getSolution();
+
+      SGSolution_V2::save(soln,"as_twostate_v2.sln2");
+
+      SGSolution_V2 soln2;
+      SGSolution_V2::load(soln2,"as_twostate_v2.sln2");
+      // const list<SGStep> & steps = soln2.getIterations().cbegin()->getSteps();
+      // for (auto step = steps.cbegin(); step != steps.cend(); step++)
+      // 	cout << step->getPivot() << endl;
+      list<SGIteration_V2>::const_iterator iter = soln2.getIterations().cend();
+      iter--;
+
+      cout << endl << "Actions from saved solution: " << endl;
+      for (int state = 0; state < numStates; state++)
+	{
+	  for (auto ait = iter->getActions()[state].cbegin();
+	       ait != iter->getActions()[state].cend();
+	       ait++)
+	    {
+	      cout << "(state,action)=(" << state << "," << ait->getAction() << "), "
+		   << "numPoints = (" << ait->getPoints()[0].size()
+		   << "," << ait->getPoints()[1].size() << ")"
+		   << ", minIC: " << ait->getMinICPayoffs()
+		   << ", points[0]: " << ait->getPoints()[0]
+		   << endl;
+	    }
+	}
+
     }
   catch (SGException e)
     {

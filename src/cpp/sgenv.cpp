@@ -56,7 +56,7 @@ void SGEnv::restoreDefaults()
   boolParams[SG::CHECKSUFFICIENT] = true;
   boolParams[SG::STOREACTIONS] = true;
 
-  setOStream(cout);
+  // setOStream(cout);
 }
 
 void SGEnv::setParam(SG::DBL_PARAM param, double value)

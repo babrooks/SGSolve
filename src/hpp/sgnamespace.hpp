@@ -27,7 +27,8 @@ namespace SG
 {
   //! Code for the type of error.
   enum EXCEPTION_TYPE 
-    { 
+    {
+      DEFAULT, /*!< No specific error */
       FAILED_OPEN, /*!< SGData was not able to open the given file. */
       TOO_MANY_PIVOT_UPDATES, /*!< Pivot did not converge within the
                                  allowed number of updates. */
@@ -48,7 +49,8 @@ namespace SG
       INCONSISTENT_INPUTS, /*!< Inputs are incompatible or inconsistent
 			    with one another, e.g., arrays that should
 			    be the same size are not. */
-      SIMERROR /*!< Simulator error. */
+      SIMERROR, /*!< Simulator error. */
+      NOFEASIBLETUPLE /*!< Could not find a feasible tuple for APS. */
     };
 
   //! Double parameters
@@ -140,6 +142,7 @@ namespace SG
 
   //! Indicates which incentive constraints are binding
   enum Regime {NonBinding, Binding, Binding0, Binding1, Binding01};
+
 }
 
 

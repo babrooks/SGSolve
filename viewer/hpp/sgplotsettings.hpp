@@ -33,8 +33,10 @@ public:
   QCPScatterStyle expPivotStyle;
   //! Stage payoff scatter style
   QCPScatterStyle stageStyle;
-  //! Binding payoff scatter style
+  //! Binding continuation value scatter style
   QCPScatterStyle bindingPayoffStyle;
+  //! Binding IC payoff scatter style
+  QCPScatterStyle ICPayoffStyle;
   //! Payoff style
   QCPScatterStyle payoffStyle;
   //! Tuple style
@@ -47,6 +49,8 @@ public:
   QPen expPivotPen;
   //! Expected payoff pen
   QPen expPen;
+  //! Previous expected payoff pen
+  QPen prevExpPen;
   //! Value set pen
   QPen valuePen;
   //! Incentive constraint pen
@@ -70,8 +74,11 @@ public:
 	       QPen(Qt::black),
 	       QBrush(Qt::black),6),
     bindingPayoffStyle(QCPScatterStyle::ssCircle,
-		       QPen(Qt::magenta),
-		       QBrush(Qt::magenta),6),
+               QPen(Qt::magenta),
+               QBrush(Qt::magenta),6),
+    ICPayoffStyle(QCPScatterStyle::ssSquare,
+               QPen(Qt::magenta),
+               QBrush(Qt::magenta),2),
     payoffStyle(QCPScatterStyle::ssCircle,
 		QPen(Qt::black),
 		QBrush(Qt::black),6),
@@ -82,13 +89,15 @@ public:
     pivotPen(Qt::NoPen),
     expPivotPen(Qt::NoPen),
     expPen(Qt::red),
+    prevExpPen(Qt::red),
     valuePen(Qt::blue),
     ICPen(Qt::magenta),
     bindingPayoffPen(Qt::NoPen),
     directionPen (Qt::darkGreen),
     genLinePen(Qt::DashLine)
   {
-    directionPen.setStyle(Qt::DashLine);
+      directionPen.setStyle(Qt::DashLine);
+      prevExpPen.setStyle(Qt::DashLine);
   }
 
 }; // SGPlotSettings

@@ -48,10 +48,18 @@ private:
                                          frontier at the extreme
                                          payoffs. */
   
-  vector< SGTuple > trimmedPoints; /*!< Stores the "trimmed" points
+  vector<SGTuple> trimmedPoints; /*!< Stores the "trimmed" points
                                       before updating. */
+  vector<SGTuple> trimmedBndryDirs; /*!< Stores the boundary
+                                         directions for the trimmed
+                                         points. */
 
 public:
+  //! Default constructor
+  SGAction_V2():
+    env{SGEnv()}
+  {}
+  
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
   SGAction_V2(const SGEnv & _env):
@@ -64,7 +72,8 @@ public:
       given environment. */
   SGAction_V2(const SGEnv & _env, int _state, int _action):
     env(_env), SGBaseAction(_state,_action),
-    bndryDirs(2,SGTuple(2))
+    bndryDirs(2,SGTuple(2)),
+    trimmedBndryDirs(2,SGTuple(2))
   {
     trimmedPoints.resize(2);
   }
@@ -76,17 +85,15 @@ public:
     trimmedPoints[0].push_back(point);
     point[1] = numeric_limits<double>::max();
     trimmedPoints[0].push_back(point);
+
     point[1] =  minIC[1];
+    trimmedPoints[1].clear();
     trimmedPoints[1].push_back(point);
     point[0] = numeric_limits<double>::max();
     trimmedPoints[1].push_back(point);
-  } // resetTrimmedPoints
 
-  void resetPoints()
-  {
-    resetTrimmedPoints();
-    points = trimmedPoints;
-  } // resetPoints
+    trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2));
+  } // resetTrimmedPoints
 
   //! Sets points equal to the trimmed points
   void updateTrim() 
@@ -97,13 +104,15 @@ public:
 	if (points[player].size() == 0)
 	  tuples[player] = vector<int>(0);
       }
+    bndryDirs = trimmedBndryDirs;
   }
     
   //! Intersects the segment with the ray emanating from the pivot
   void intersectHalfSpace(const SGPoint & normal,
 			  const double level,
 			  int player,
-			  SGTuple & segment);
+			  SGTuple & segment,
+			  SGTuple & segmentDirs);
 
 
   
@@ -145,86 +154,17 @@ public:
     
     return tf;
   }
-  
-  ////////////////////////////// old methods
-  
-  // //! Static method to carry out trimming operations
-  // /*! Intersects the action with the ray emanating from pivot in the
-  //     given direction. */
-  // void intersectRaySegment(const SGPoint & normal,
-  // 			   double level,
-  // 			   int player);
 
-  // //! Trims binding continuation segments
-  // /*! Intersects the binding continuation segments in SGAction_V2::points
-  //     with the half space that is below pivot in
-  //     direction.getNormal(). */
-  // void intersectRay(const SGPoint & normal, 
-  // 		    double level);
-
-  // //! Get method for bndryDirs
-  // const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
-
-  // //! Trims binding continuation segments
-  // /*! Intersects the binding continuation segments in SGAction_V2::points
-  //     with the half space that is below pivot in
-  //     direction.getNormal(). */
-  // void intersectRay(const SGPoint & pivot, 
-  // 		    const SGPoint & direction);
-  // //! Static method to carry out trimming operations
-  // /*! Intersects the action with the ray emanating from pivot in the
-  //     given direction. */
-  // void intersectRaySegment(const SGPoint & pivot,
-  // 			   const SGPoint & direction,
-  // 			   int player);
-
-  // //! Intersects the segment with the ray emanating from the pivot
-  // void intersectRaySegment(const SGPoint & pivot,
-  // 			   const SGPoint & direction,
-  // 			   SGTuple & segment);
-
-  // //! Trims the trimmedPoints using intersectRaySegment.
-  // void trim(const SGPoint & pivot,
-  // 	    const SGPoint & direction);
-
-  // //! Trims binding continuation segments
-  // /*! Intersects the binding continuation segments in SGAction_V2::points
-  //     with the half space that is below pivot in
-  //     direction.getNormal(). */
-  // void intersectRay(const SGPoint & normal, 
-  // 		    double level);
-  // //! Static method to carry out trimming operations
-  // /*! Intersects the action with the ray emanating from pivot in the
-  //     given direction. */
-  // void intersectRaySegment(const SGPoint & normal,
-  // 			   double level,
-  // 			   int player);
-
-  // //! Intersects the segment with the ray emanating from the pivot
-  // void intersectRaySegment(const SGPoint & normal,
-  // 			   const double level,
-  // 			   int player,
-  // 			   SGTuple & segment);
-
-
-  
-  // //! Trims the trimmedPoints using intersectRaySegment.
-  // void trim(const SGPoint & normal,
-  // 	    double level);
-
-  // //! Calculates binding continuation values from hyperplane constraints
-  // void calculateBindingContinuations(const SGGame & game,
-  // 				     const vector<SGHyperplane> & W);
-  
-  // void calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
-  // 				     const SGGame & game,
-  // 				     const vector<SGTuple> & extremeTuples,
-  // 				     const SGTuple & threatTuple,
-  // 				     const SGTuple & pivot,
-  // 				     const SGPoint & currentDirection,
-  // 				     int oldWest);
-
-  
+  //! Serializes the action using the boost::serialization library
+  template<class Archive>
+  void serialize(Archive &ar, const unsigned int version)
+  {
+    ar & boost::serialization::base_object<SGBaseAction>(*this);
+    ar & env;
+    ar & bndryDirs;
+    ar & trimmedPoints;
+    ar & trimmedBndryDirs;
+  } // serialize
 
 }; // SGAction_V2
 

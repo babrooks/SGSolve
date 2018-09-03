@@ -28,7 +28,7 @@
 #include "sggame.hpp"
 #include "sgaction_v2.hpp"
 #include "sgexception.hpp"
-#include "sgsolution.hpp"
+#include "sgsolution_v2.hpp"
 
 //! Class for solving stochastic games
 /*! This class contains parameters for the algorithm, the solve
@@ -42,6 +42,8 @@
  */
 class SGSolver_V4
 {
+  typedef list<SGAction_V2>::const_iterator SGActionIter;
+
 private:
   // Data
 
@@ -50,7 +52,7 @@ private:
   //! Constant reference to the game to be solved.
   const SGGame & game; 
   //! SGSolution object used by SGApprox to store data.
-  SGSolution soln;
+  SGSolution_V2 soln;
 
   // References to objects in the game
   const double delta; /*!< The discount factor, copied from
@@ -81,19 +83,48 @@ public:
   //! Solve routine
   /*! Initializes a new SGApproximation object and iteratively
       generates it until one of the stopping criteria have been
-      met. Stores progress in the data member. */
+      met. Stores progress in the data member. 
+
+      Fixed directions. */
   void solve();
 
+  //! Solve routine
+  /*! Initializes a new SGApproximation object and iteratively
+      generates it until one of the stopping criteria have been
+      met. Stores progress in the data member. 
+
+      Generates directions endogenously. */
+  void solve_endogenous();
+  
   //! Optimizes the policy for the given direction
   void optimizePolicy(SGTuple & pivot,
-		      vector<list<SGAction_V2>::const_iterator> & actionTuple,
+		      vector<SGActionIter> & actionTuple,
 		      vector<SG::Regime> & regimeTuple,
 		      const SGPoint currDir,
-		      const vector<list<SGAction_V2> > & actions);
+		      const vector<list<SGAction_V2> > & actions,
+		      const SGTuple & feasibleTuple) const;
 
-  //! Returns a constant reference to the SGSolution object storing the
+  //! Find the next clockwise direction at which the optimal tuple
+  //! changes
+  void sensitivity(SGPoint & nextDir,
+		   const SGTuple & pivot,
+		   const vector<SGActionIter> & actionTuple,
+		   const vector<SG::Regime> & regimeTuple,
+		   const SGPoint currDir,
+		   const vector<list<SGAction_V2> > & actions) const;
+
+  //! Find a payoff tuple that is feasible for APS
+  void findFeasibleTuple(SGTuple & feasibleTuple,
+			 const vector<list<SGAction_V2> > & actions) const;
+
+  //! Converts a policy function to a payoff function using bellman iteration
+  void policyToPayoffs(SGTuple & pivot,
+		       const vector<SGActionIter>  & actionTuple,
+		       const vector<SG::Regime> & regimeTuple) const;
+
+  //! Returns a constant reference to the SGSolution_V2 object storing the
   //! output of the computation.
-  const SGSolution& getSolution() const {return soln;}
+  const SGSolution_V2& getSolution() const {return soln;}
 };
 
 

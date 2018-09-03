@@ -45,8 +45,8 @@ private:
   //! Int parameters
   vector<int> intParams;
   
-  //! Output stream. Not currently used.
-  ofstream os; 
+  // //! Output stream. Not currently used.
+  // ofstream os; 
   
 public:
 
@@ -75,18 +75,28 @@ public:
   //! Method for getting integer parameters.
   int getParam(SG::INT_PARAM param) const;
 
-  //! Method for redirecting output
-  void setOStream(ostream & newOS)
-  {
-    os.basic_ios<char>::rdbuf(newOS.rdbuf());
-  }
+  // //! Method for redirecting output
+  // void setOStream(ostream & newOS)
+  // {
+  //   os.basic_ios<char>::rdbuf(newOS.rdbuf());
+  // }
 
-  //! Return reference to the output stream.
-  ofstream & getOS() { return os; }
+  // //! Return reference to the output stream.
+  // ofstream & getOS() { return os; }
   
   //! Method for restoring default values for all parameters.
   void restoreDefaults();
 
+
+  //! Serializes the action using the boost::serialization library
+  template<class Archive>
+  void serialize(Archive &ar, const unsigned int version)
+  {
+    ar & doubleParams;
+    ar & boolParams;
+    ar & intParams;
+  } // serialize
+  
 };
 
 #endif

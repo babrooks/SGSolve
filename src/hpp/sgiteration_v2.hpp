@@ -23,14 +23,10 @@
 #define _SGITERATION_V2_HPP
 
 #include "sggame.hpp"
-#include "sgaction.hpp"
-#include "sghyperplane.hpp"
+#include "sgstep.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
-
-// Forward declaration of SGApprox_V2
-class SGApprox_V2;
 
 //! Stores data on the behavior of SGApprox_V2::generate()
 /*! This class records information on each cut made by the twist
@@ -42,16 +38,7 @@ class SGIteration_V2
 {
 private:
   int iteration; /*!< The value of SGApprox_V2::numIterations. */
-  list<SGTuple> payoffTuples; /*!< The trajectory of the pivot tuple. */
-  list<SGHyperplane> hyperplanes; /*!< The hyperplanes that define the
-                                     approximation. */
-  list<vector<int> > actionTuples; /*!< The indices of the actions
-				     that are optimal in each
-				     direction. */
-  list< vector<SG::Regime> > regimeTuples; /*!< The regimes that are
-                                           optimal in each
-                                           direction. */
-  
+
   vector< vector<SGBaseAction> > actions; /*!< The actions that can be
                                            supported at the current
                                            iteration */
@@ -59,6 +46,8 @@ private:
   //! The current threat tuple.
   SGTuple threatTuple;
 
+  list<SGStep> steps; /*!< The steps in the iteration */
+  
 public:
   //! Default constructor
   SGIteration_V2() {}
@@ -71,19 +60,34 @@ public:
   //     second argument is false, then these actions will not be
   //     stored. For large games, storing the actions can take a large
   //     amount of memory. */
-  // SGIteration_V2(const SGApprox & approx,
-  // 	      bool storeActions = true);
 
+  SGIteration_V2 (int _iteration,
+		  const vector<list<SGAction_V2> > & _actions,
+		  const SGTuple & _threatTuple):
+    iteration{_iteration},
+    threatTuple{_threatTuple}
+  {
+    // Copy the actions and recast them as SGBaseActions
+    actions.resize(_actions.size());
+    for (int state = 0; state < _actions.size(); state++)
+      {
+	actions[state].reserve(_actions[state].size());
+	for (auto ait = _actions[state].begin();
+	     ait != _actions[state].end();
+	     ait++)
+	  actions[state].push_back(static_cast<SGBaseAction>(*ait));
+      }
+  }
+
+  void push_back(const SGStep & step)
+  {
+    steps.push_back(step);
+  }
+  
   //! Get method for the iteration.
   int getIteration() const { return iteration; } 
-  //! Get method for the payoff tuples
-  const list<SGTuple> & getPayoffTuples() const { return payoffTuples; }
-  //! Get method for the hyperplanes
-  const list<SGHyperplane> & getHyperplanes() const { return hyperplanes; }
-  //! Get method for the action tuples
-  const list<vector<int> > & getActionTuples() const { return actionTuples; }
-  //! Get method for the regime tuples
-  const list<vector<SG::Regime> > & getRegimeTuples() const { return regimeTuples; }
+  //! Get method for the steps
+  const list<SGStep> & getSteps() const { return steps; }
   //! Get method for the actions available at the current iteration.
   const vector< vector<SGBaseAction> > & getActions() const { return actions; }
   //! Get method for the current threat tuple.
@@ -97,10 +101,7 @@ public:
   void serialize(Archive &ar, const unsigned int version)
   {
     ar & iteration;
-    ar & payoffTuples;
-    ar & hyperplanes;
-    ar & actionTuples;
-    ar & regimeTuples;
+    ar & steps;
     ar & actions;
     ar & threatTuple;
   }

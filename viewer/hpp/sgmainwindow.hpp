@@ -26,6 +26,7 @@
 #include <QtWidgets>
 #include "sggamehandler.hpp"
 #include "sgsolutionhandler.hpp"
+#include "sgsolutionhandler_v2.hpp"
 #include "sgsolverworker.hpp"
 #include "sgsettingshandler.hpp"
 #include "sg.hpp"
@@ -70,6 +71,10 @@ private:
 
   //! The object for interfacing with the solution.
   SGSolutionHandler * solutionHandler;
+
+  //! The object for interfacing with SGSolution_V2.
+  SGSolutionHandler_V2 * solutionHandler_V2;
+
   //! The object for interfacing with the game.
   SGGameHandler * gameHandler;
 
@@ -113,6 +118,8 @@ signals:
 private slots:
   //! Triggers a solution load
   void loadSolution();
+  //! Triggers a SGSolution_V2 load
+  void loadSolution_V2();
   //! Triggers a solution save.
   void saveSolution();
   //! Triggers a game load.

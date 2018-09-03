@@ -86,6 +86,8 @@ const SGPoint& SGTuple::operator[](int state) const
   if(state < 0 || 
      state >= points.size())
     throw(SGException(SG::OUT_OF_BOUNDS));
+  if (points.size() == 0)
+    throw(SGException(SG::EMPTY_TUPLE));
 
   return points[state];
 }
