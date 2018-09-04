@@ -24,6 +24,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include <QSettings>
 #include "sggamehandler.hpp"
 #include "sgsolutionhandler.hpp"
 #include "sgsolutionhandler_v2.hpp"
@@ -93,6 +94,15 @@ private:
   //! Most recent path for saves/loads.
   QString path;
 
+  //! Program settings
+  QSettings *settings;
+
+  //! Loads saved settings
+  void settingsLoader();
+
+  //! Saves settings
+  void settingsSaver();
+
 public:
   //! Constructor
   /*! Initializes member objects and connects signals and slots. */
@@ -105,6 +115,7 @@ public:
   {
     solverThread.quit();
     solverThread.wait();
+    settingsSaver();
   }
   
 protected:

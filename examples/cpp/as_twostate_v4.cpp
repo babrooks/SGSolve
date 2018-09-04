@@ -97,8 +97,9 @@ int main ()
 		  unconstrained);
 
       SGEnv env;
+      env.setParam(SG::ERRORTOL,1e-8);
       env.setParam(SG::STOREITERATIONS,1);
-      env.setParam(SG::MAXITERATIONS,100);
+      env.setParam(SG::MAXITERATIONS,1e3);
       env.setParam(SG::LEVELTOL,1e-12);
   
       cout << "Building solver" << endl;
@@ -106,8 +107,23 @@ int main ()
       SGSolver_V4 solver(env,game);
 
       try
+      	{
+      	  solver.solve();
+      	}
+      catch(SGException e)
+      	{
+      	  cout << "Solve failed. Caught the following exception:" << endl
+      	       << e.what() << endl;
+      	}
+
+      SGSolution_V2 soln = solver.getSolution();
+
+      SGSolution_V2::save(soln,"as_twostate_v2.sln2");
+
+      SGSolver_V4 solver2(env,game);
+      try
 	{
-	  solver.solve();
+	  solver2.solve_endogenous();
 	}
       catch(SGException e)
 	{
@@ -115,33 +131,61 @@ int main ()
 	       << e.what() << endl;
 	}
 
-      SGSolution_V2 soln = solver.getSolution();
+      SGSolution_V2 soln2 = solver2.getSolution();
+      SGSolution_V2::save(soln2,"as_twostate_v2_endogenous.sln2");
 
-      SGSolution_V2::save(soln,"as_twostate_v2.sln2");
+      ifstream ifs("as_twostate_v2_endogenous.sln2",std::fstream::in);
+      string str;
+      if (ifs >> str)
+      	{
+      	  cout << "Here I am " << endl;
+      	}
+      ifs.close();
+      
+      SGSolution_V2 soln3;
+      SGSolution_V2::load(soln3,"as_twostate_v2_endogenous.sln2");
+      // soln3 = soln2;
 
-      SGSolution_V2 soln2;
-      SGSolution_V2::load(soln2,"as_twostate_v2.sln2");
-      // const list<SGStep> & steps = soln2.getIterations().cbegin()->getSteps();
-      // for (auto step = steps.cbegin(); step != steps.cend(); step++)
-      // 	cout << step->getPivot() << endl;
-      list<SGIteration_V2>::const_iterator iter = soln2.getIterations().cend();
-      iter--;
+      // cout << soln3.getIterations().size() << endl;
 
-      cout << endl << "Actions from saved solution: " << endl;
-      for (int state = 0; state < numStates; state++)
-	{
-	  for (auto ait = iter->getActions()[state].cbegin();
-	       ait != iter->getActions()[state].cend();
-	       ait++)
-	    {
-	      cout << "(state,action)=(" << state << "," << ait->getAction() << "), "
-		   << "numPoints = (" << ait->getPoints()[0].size()
-		   << "," << ait->getPoints()[1].size() << ")"
-		   << ", minIC: " << ait->getMinICPayoffs()
-		   << ", points[0]: " << ait->getPoints()[0]
-		   << endl;
-	    }
-	}
+      // for (auto iter = soln3.getIterations().cbegin();
+      // 	   iter != soln3.getIterations().cend();
+      // 	   iter++)
+      // 	{
+      // 	  cout << endl << iter->getIteration() << endl;
+      // 	  cout << "Threat tuple: " << iter->getThreatTuple() << endl;
+      // 	  // const list<SGStep> & steps = iter->getSteps();
+      // 	  // for (auto step = steps.cbegin(); step != steps.cend(); step++)
+      // 	  //   {
+      // 	  //     cout << step->getPivot()
+      // 	  // 	   << " " << step->getHyperplane().getNormal()
+      // 	  // 	   << endl;
+      // 	  //     for (int state = 0; state < numStates; state++)
+      // 	  // 	{
+      // 	  // 	  cout << step->getHyperplane().getLevels()[state] << " ";
+      // 	  // 	}
+      // 	  //     cout << endl;
+
+      // 	  //   }
+
+
+      // 	  cout << endl << "Actions from saved solution: " << endl;
+      // 	  for (int state = 0; state < numStates; state++)
+      // 	    {
+      // 	      for (auto ait = iter->getActions()[state].cbegin();
+      // 		   ait != iter->getActions()[state].cend();
+      // 		   ait++)
+      // 		{
+      // 		  cout << "(state,action)=(" << state << "," << ait->getAction() << "), "
+      // 		       << "numPoints = (" << ait->getPoints()[0].size()
+      // 		       << "," << ait->getPoints()[1].size() << ")"
+      // 		       << ", minIC: " << ait->getMinICPayoffs()
+      // 		       << ", points[0]: " << ait->getPoints()[0]
+      // 		       << endl;
+      // 		}
+      // 	    }
+      // 	}
+
 
     }
   catch (SGException e)

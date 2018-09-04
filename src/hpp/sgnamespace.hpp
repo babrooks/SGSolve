@@ -127,6 +127,7 @@ namespace SG
     {
       MAXITERATIONS,/*!< The algorithm terminates after this number of
 		      iterations has been reached. */
+      MAXPOLICYITERATIONS,/*!< Maximum number of policy iterations.*/
       MAXUPDATEPIVOTPASSES, /*!< The algorithm stops updating the
 			      pivot after this many updates. */
       STOREITERATIONS, /*!< Controlls whether or not the algorithm

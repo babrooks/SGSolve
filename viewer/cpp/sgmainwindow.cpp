@@ -25,12 +25,15 @@ SGMainWindow::SGMainWindow()
 {
   timer.start();
   
+  settings = new QSettings("Benjamin Brooks", "SGViewer", this);
+  settingsLoader();
+
+  path = QDir::currentPath();
+
   env = new SGEnv();
 
   env->setParam(SG::PRINTTOCOUT,false);
 
-  path = QString("./");
-  
   gameHandler = new SGGameHandler();
 
   solutionHandler = new SGSolutionHandler(this);
@@ -165,6 +168,16 @@ SGMainWindow::SGMainWindow()
 
 } // constructor
 
+void SGMainWindow::settingsLoader()
+{
+    path = settings->value("LastDir", QDir::homePath()).toString();
+}
+
+void SGMainWindow::settingsSaver()
+{
+    settings->setValue("LastDir", path);
+}
+
 void SGMainWindow::loadSolution()
 {
   QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
@@ -208,13 +221,14 @@ void SGMainWindow::loadSolution()
 void SGMainWindow::loadSolution_V2()
 {
   QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
-						 QCoreApplication::applicationDirPath(),
+                         path,
 						 tr("SGViewer solution files (*.sln2)"));
 
   if (newPath.isEmpty())
     return;
 
   path = newPath;
+  QFileInfo info(path);
 
   try
     {
@@ -230,18 +244,18 @@ void SGMainWindow::loadSolution_V2()
       
       tabWidget->setCurrentIndex(2);
 
-      QFileInfo info(path);
-      
       QString newWindowTitle(tr("SGViewer - "));
       newWindowTitle += info.fileName();
       setWindowTitle(newWindowTitle);
       
     }
-  catch (...)
+  catch (std::exception & e)
     {
       qDebug() << "Load solution didnt work :(" << endl;
       QErrorMessage em(this);
       em.showMessage(QString("Load solution didnt work :("));
+
+      qDebug() << "Error message:" << e.what() << endl;
     }
 } // loadSolution_V2
 

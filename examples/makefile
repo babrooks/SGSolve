@@ -40,7 +40,7 @@ all: libsg.a $(MAINS)
 $(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
-$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp $(HPPDIR)/sgsolver_v3.hpp $(LIBDIR)/libsg.a
+$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp $(HPPDIR)/sgsolver_v3.hpp libsg.a
 	$(CXX) $(CFLAGS) $< \
 	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
@@ -73,3 +73,4 @@ $(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/sg.hpp $(HPPDIR)/sgsolution.
 clean:
 	rm -rf *.o *.a $(MAINS) $(LIBDIR)/libsg.a $(MAINSGRB)
 	make clean -C ../src
+	make clean -C ../lib

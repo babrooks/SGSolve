@@ -73,7 +73,7 @@ public:
   SGAction_V2(const SGEnv & _env, int _state, int _action):
     env(_env), SGBaseAction(_state,_action),
     bndryDirs(2,SGTuple(2)),
-    trimmedBndryDirs(2,SGTuple(2))
+    trimmedBndryDirs(2,SGTuple(2,SGPoint(0,0)))
   {
     trimmedPoints.resize(2);
   }
@@ -92,7 +92,7 @@ public:
     point[0] = numeric_limits<double>::max();
     trimmedPoints[1].push_back(point);
 
-    trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2));
+    trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2,SGPoint(0,0)));
   } // resetTrimmedPoints
 
   //! Sets points equal to the trimmed points

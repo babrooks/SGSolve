@@ -190,9 +190,13 @@ void SGPlotController_V2::setCurrentDirection(SGPoint point, int state)
 
 void SGPlotController_V2::synchronizeSliders()
 {
-    int iter = iterSlider->sliderPosition();
-    int dir = stepSlider->sliderPosition();
+    synchronizeIterSlider();
+    synchronizeStepSlider();
+} // synchronizeSliders
 
+void SGPlotController_V2::synchronizeIterSlider()
+{
+    int iter = iterSlider->sliderPosition();
     while (currentIter->getIteration() < iter
            && currentIter!=soln->getIterations().cend())
         ++currentIter;
@@ -202,6 +206,16 @@ void SGPlotController_V2::synchronizeSliders()
     if (currentIter == soln->getIterations().cend())
         --currentIter;
 
+    stepSlider->setRange(0,currentIter->getSteps().size()-1);
+
+} // synchronizeIterSlider
+
+void SGPlotController_V2::synchronizeStepSlider()
+{
+    int dir = stepSlider->sliderPosition();
+    if (dir > currentIter->getSteps().size()-1)
+        dir = currentIter->getSteps().size()-1;
+    stepSlider->setValue(dir);
     currentStep = currentIter->getSteps().cbegin();
     for (int d = 0; d < dir; d++)
     {
@@ -211,8 +225,7 @@ void SGPlotController_V2::synchronizeSliders()
             break;
         }
     }
-
-} // synchronizeSliders
+} // synchronizeStepSlider
 
 void SGPlotController_V2::iterSliderUpdate(int value)
 {
@@ -237,12 +250,25 @@ void SGPlotController_V2::prevAction()
     return;
     
   if ( (state == -1
-	|| (state == 0 && actionIndex <= 0))
+    || (state == 0 && actionIndex <= 0))
+       && (stepSlider->minimum() < stepSlider->value()) )
+    {
+      stepSlider->setSliderPosition(std::max(stepSlider->minimum(),
+                         stepSlider->value()-1));
+      synchronizeStepSlider();
+      setState(soln->getGame().getNumStates()-1);
+      setActionIndex(currentIter->getActions()[state].size()-1);
+      emit iterationChanged();
+    }
+  else if ( (state == -1
+    || (state == 0 && actionIndex <= 0))
        && (iterSlider->minimum() < iterSlider->value()) )
     {
       iterSlider->setSliderPosition(std::max(iterSlider->minimum(),
-					     iterSlider->value()-1));
-      synchronizeSliders();
+                         iterSlider->value()-1));
+      synchronizeIterSlider();
+      stepSlider->setSliderPosition(stepSlider->maximum());
+      synchronizeStepSlider();
       setState(soln->getGame().getNumStates()-1);
       setActionIndex(currentIter->getActions()[state].size()-1);
       emit iterationChanged();
@@ -282,11 +308,22 @@ void SGPlotController_V2::nextAction()
       setActionIndex(0);
       emit iterationChanged();
     }	
+  else if (stepSlider->value() < stepSlider->maximum())
+    {
+      stepSlider->setSliderPosition(std::min(stepSlider->maximum(),
+                         stepSlider->value()+1));
+      synchronizeStepSlider();
+      setState(0);
+      setActionIndex(0);
+      emit iterationChanged();
+    }
   else if (iterSlider->value() < iterSlider->maximum())
     {
       iterSlider->setSliderPosition(std::min(iterSlider->maximum(),
-					     iterSlider->value()+1));
-      synchronizeSliders();
+                         iterSlider->value()+1));
+      synchronizeIterSlider();
+      stepSlider->setSliderPosition(0);
+      synchronizeStepSlider();
       setState(0);
       setActionIndex(0);
       emit iterationChanged();

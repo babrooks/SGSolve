@@ -34,6 +34,7 @@ void SGEnv::restoreDefaults()
   intParams[SG::MAXITERATIONS] = 1e6;
   intParams[SG::MAXUPDATEPIVOTPASSES] = 1e8;
   intParams[SG::TUPLERESERVESIZE] = 1e4;
+  intParams[SG::MAXPOLICYITERATIONS] = 1e3;
   intParams[SG::STOREITERATIONS] = 2;
 
   doubleParams[SG::ERRORTOL] = 1e-8;

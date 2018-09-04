@@ -51,7 +51,7 @@ public:
   {}
 
   //! Default constructor for empty tuple.
-  SGHyperplane() {}
+  SGHyperplane(): normal(0,0), levels(1,0) {}
   ~SGHyperplane() {}
 
   //! Mathematical expectation
@@ -77,6 +77,9 @@ public:
   //! Get the normal
   const SGPoint & getNormal() const
   { return normal; }
+  //! Get the levels
+  const vector<double> & getLevels() const
+  { return levels; }
   
   // Operators
   //! Random access the elements of the tuple.

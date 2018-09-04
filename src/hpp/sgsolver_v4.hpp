@@ -106,12 +106,11 @@ public:
 
   //! Find the next clockwise direction at which the optimal tuple
   //! changes
-  void sensitivity(SGPoint & nextDir,
-		   const SGTuple & pivot,
-		   const vector<SGActionIter> & actionTuple,
-		   const vector<SG::Regime> & regimeTuple,
-		   const SGPoint currDir,
-		   const vector<list<SGAction_V2> > & actions) const;
+  double sensitivity(const SGTuple & pivot,
+		     const vector<SGActionIter> & actionTuple,
+		     const vector<SG::Regime> & regimeTuple,
+		     const SGPoint currDir,
+		     const vector<list<SGAction_V2> > & actions) const;
 
   //! Find a payoff tuple that is feasible for APS
   void findFeasibleTuple(SGTuple & feasibleTuple,

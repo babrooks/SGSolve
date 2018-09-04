@@ -42,6 +42,7 @@ int main()
 			c2e,persistence,endowmentMode);
     SGEnv env;
     env.setParam(SG::STOREITERATIONS,1);
+    env.setParam(SG::MAXITERATIONS,1);
     env.setParam(SG::STOREACTIONS,false);
     env.setParam(SG::ERRORTOL,1e-6);
     SGGame game(rsg);
@@ -49,7 +50,7 @@ int main()
     clock_t start;
     double duration;
 
-    start = clock();
+    // start = clock();
     
     // SGSolver solver1(env,game);
     // solver1.solve();
@@ -66,16 +67,32 @@ int main()
 
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     // cout << "time elapsed: "<< duration << " seconds" << endl;
+
+
+
     // start = clock();
 
-    SGSolver_V4 solver4(env,game);
-    solver4.solve();
+    // SGSolver_V4 solver4(env,game);
+    // solver4.solve();
 
-    SGSolution_V2 soln2 = solver4.getSolution();
-    SGSolution_V2::save(soln2,"risksharing_v3.sln2");
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "time elapsed: "<< duration << " seconds" << endl;
+
+    // SGSolution_V2 soln2 = solver4.getSolution();
+    // SGSolution_V2::save(soln2,"risksharing_v3.sln2");
     
+    
+    start = clock();
+
+    SGSolver_V4 solver5(env,game);
+    solver5.solve_endogenous();
+
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << "time elapsed: "<< duration << " seconds" << endl;
+
+    SGSolution_V2 soln3 = solver5.getSolution();
+    SGSolution_V2::save(soln3,"risksharing_v3_endogenous.sln2");
+    
     
     
   }

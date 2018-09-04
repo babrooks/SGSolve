@@ -84,7 +84,7 @@ public:
 	  + QString(",C")
 	  + QString::number(action/numActions[0])
 	  + QString(")");
-     if (index.row() == controller->getCurrentStep().getActionTuple()[state]-1)
+     if (index.row() == controller->getCurrentStep().getActionTuple()[state]+1)
        dataString += QString("*");
 	return dataString;
       }

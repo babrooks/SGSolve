@@ -171,6 +171,11 @@ public:
       indicated in the respective sliders. */
   void synchronizeSliders();
 
+  //! Synchronizes iterSlider.
+  void synchronizeIterSlider();
+  //! Synchronizes stepSlider.
+  void synchronizeStepSlider();
+
 signals:
   //! Signal to the state and action models that the solution changed.
   void solutionChanged();

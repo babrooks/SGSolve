@@ -81,9 +81,9 @@ public:
 
     //! Serializes the SGStep object using boost.
   friend class boost::serialization::access;
-  template<class Archive>
-
+  
   //! Serialize the iteration using Boost.
+  template<class Archive>
   void serialize(Archive &ar, const unsigned int version)
   {
     ar & pivot;

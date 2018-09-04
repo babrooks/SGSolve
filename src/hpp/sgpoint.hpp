@@ -65,6 +65,8 @@ public:
 			 const SGPoint& p1);
   //! Rotates the point clockwise by pi radians
   bool rotateCW(double pi);
+  //! Rotates the point clockwise by pi radians
+  bool rotateCCW(double pi) {return rotateCW(-pi);}
   //! Normalizes so that the norm is one
   bool normalize();
   

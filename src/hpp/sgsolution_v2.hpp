@@ -26,6 +26,8 @@
 #include "sgiteration_v2.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
 
 //! Records the progress of SGSolver::solve().
@@ -77,11 +79,13 @@ public:
 
     if (ofs.good())
       {
-	boost::archive::text_oarchive oa(ofs);
+	boost::archive::binary_oarchive oa(ofs);
 	oa << soln;
       }
     else
       throw(SGException(SG::FAILED_OPEN));
+
+    ofs.close();
   }
 
   //! Static method for loading an SGSolution_V2 object from the file filename.
@@ -90,11 +94,13 @@ public:
     std::ifstream ifs(filename,std::fstream::in);
     if (ifs.good() && ifs.is_open())
       {
-	boost::archive::text_iarchive ia(ifs);
+	boost::archive::binary_iarchive ia(ifs);
 	ia >> soln;
       }
     else
       throw(SGException(SG::FAILED_OPEN));
+
+    ifs.close();
   }
 
   friend class boost::serialization::access;
