@@ -47,6 +47,7 @@ class SGActionComboModel_V2 : public QAbstractListModel
 private:
   //! Pointer to the associated SGPlotController_V2 object.
   SGPlotController_V2 * controller;
+  int state = -1;
 
 public:
   //! Constructor
@@ -55,52 +56,61 @@ public:
   {
     connect(controller,SIGNAL(solutionChanged()),
     	    this,SLOT(changeLayout()));
-    // connect(controller,SIGNAL(stateChanged()),
-    // 	    this,SLOT(changeLayout()));
+     connect(controller,SIGNAL(stateChanged()),
+            this,SLOT(changeLayout()));
   }
   
   //! Reimplement rowcount
   int rowCount(const QModelIndex & parent) const
   {
     if (controller->hasSolution()
-	&& controller->getState()>-1)
-      return controller->getCurrentIter().getActions()[controller->getState()].size()+1;
+            && state>-1)
+    {
+        qDebug() << "In row count: " << controller->getState() << " " << controller->getAction()
+                 <<  " " << controller->getCurrentIter().getActions()[controller->getState()].size()+1
+                 << endl;
+        return controller->getCurrentIter().getActions()[state].size()+1;
+    }
     else
-      return 1;
+        return 1;
   } // rowCount
 
   //! Reimplement data
   QVariant data(const QModelIndex & index, int role) const
   {
-    if (index.row()>0)
+      if (index.row()>0 && state > -1)
       {
-	int state = controller->getState();
-	int action = controller->getCurrentIter().getActions()[state][index.row()-1].getAction();
-	const vector< int >& numActions = controller->getSolution()->getGame().getNumActions()[state];
-	QString dataString = QString("A")
-	  + QString::number(action)
-	  + QString(": (R")
-	  + QString::number(action%numActions[0])
-	  + QString(",C")
-	  + QString::number(action/numActions[0])
-	  + QString(")");
-     if (index.row() == controller->getCurrentStep().getActionTuple()[state]+1)
-       dataString += QString("*");
-	return dataString;
+          int action = controller->getCurrentIter().getActions()[state][index.row()-1].getAction();
+          qDebug() << "In data: " << controller->getState() << " " << controller->getAction() << endl;
+          const vector< int >& numActions = controller->getSolution()->getGame().getNumActions()[state];
+          QString dataString = QString("A")
+                  + QString::number(action)
+                  + QString(": (R")
+                  + QString::number(action%numActions[0])
+                  + QString(",C")
+                  + QString::number(action/numActions[0])
+                  + QString(")");
+          if (index.row() == controller->getCurrentStep().getActionTuple()[state]+1)
+              dataString += QString("*");
+          return dataString;
       }
-    else if (index.row()==0)
-      return QString("-");
+      else if (index.row()==0)
+          return QString("-");
   }
 
 public slots:
   //! Signals to the associated actionController to change the action
   void actionChanged(int index)
   {
-    controller->setActionIndex(index-1);
+      controller->setActionIndex(index-1);
   }
   //! Signals to gui to change the layout
   void changeLayout()
-  { emit layoutChanged(); }
+  {
+      emit layoutAboutToBeChanged();
+      state=controller->getState();
+      emit layoutChanged();
+  }
 
 }; // SGActionComboModel_V2
 

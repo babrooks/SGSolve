@@ -58,7 +58,7 @@ double SGPoint::angle(const SGPoint& base) const
   return radians;
 }
 
-bool SGPoint::rotateCW(double pi)
+bool SGPoint::rotateCCW(double pi)
 {
   double tmp = cos(pi)*xy[0]-sin(pi)*xy[1];
   xy[1] = sin(pi)*xy[0]+cos(pi)*xy[1];

@@ -29,6 +29,7 @@ int main ()
 {
   double delta = 0.9;
   delta = 0.35;
+  delta=0.5;
   
   int action, state, player;
   int numPlayers = 2;
@@ -134,14 +135,6 @@ int main ()
       SGSolution_V2 soln2 = solver2.getSolution();
       SGSolution_V2::save(soln2,"as_twostate_v2_endogenous.sln2");
 
-      ifstream ifs("as_twostate_v2_endogenous.sln2",std::fstream::in);
-      string str;
-      if (ifs >> str)
-      	{
-      	  cout << "Here I am " << endl;
-      	}
-      ifs.close();
-      
       SGSolution_V2 soln3;
       SGSolution_V2::load(soln3,"as_twostate_v2_endogenous.sln2");
       // soln3 = soln2;

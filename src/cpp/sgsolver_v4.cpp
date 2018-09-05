@@ -121,6 +121,8 @@ void SGSolver_V4::solve()
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
+  SGIteration_V2 iter;
+  
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
@@ -150,8 +152,9 @@ void SGSolver_V4::solve()
 	      
 	    } // for ait
 	} // for state
-      
-      SGIteration_V2 iter (numIter,actions,threatTuple);
+
+      if (env.getParam(SG::STOREITERATIONS))
+	iter = SGIteration_V2(numIter,actions,threatTuple);
       
       // Reset the error level
       errorLevel = 0;
@@ -175,8 +178,9 @@ void SGSolver_V4::solve()
 	      errorLevel = max(errorLevel,abs(newLevels[state]-levels[dir][state]));
 	    } // for state
 
-	  iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
-				SGHyperplane(currDir,newLevels),actions));
+	  if (env.getParam(SG::STOREITERATIONS))
+	    iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
+				  SGHyperplane(currDir,newLevels),actions));
 	  
 	  levels[dir] = newLevels;
 	} // for dir
@@ -189,7 +193,8 @@ void SGSolver_V4::solve()
 	cout << actions[state].size() << " ";
       cout << ")" << endl;
       
-      soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
+      if (env.getParam(SG::STOREITERATIONS))
+	soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
 
       findFeasibleTuple(feasibleTuple,actions);
       
@@ -303,6 +308,8 @@ void SGSolver_V4::solve_endogenous()
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
+  SGIteration_V2 iter;
+  
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
@@ -317,7 +324,8 @@ void SGSolver_V4::solve_endogenous()
       
       vector<SG::Regime> regimeTuple(numStates,SG::Binding);
 
-      SGIteration_V2 iter (numIter,actions,threatTuple);
+      if (env.getParam(SG::STOREITERATIONS))
+	iter = SGIteration_V2 (numIter,actions,threatTuple);
       
       // Iterate through directions
       SGPoint currDir = SGPoint(1,0); // Start pointing due east
@@ -332,29 +340,23 @@ void SGSolver_V4::solve_endogenous()
 	  SGPoint normDir = currDir.getNormal();
 	  double bestLevel = sensitivity(pivot,actionTuple,regimeTuple,
 				       currDir,actions);
-	  // if (bestLevel <1e-10)
-	  //   cout << "WARNING: Best level from sensitivity analysis is close to zero." << endl;
 
-
-	  newLevels.push_back(vector<double>(numStates,0));
-	  newDirections.push_back(currDir);
-	  for (int state = 0; state < numStates; state++)
-	    {
-	      newLevels.back()[state] = pivot[state]*currDir;
-	    } // for state
-	  iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
-				SGHyperplane(currDir,newLevels.back()),actions));
-
-	  
 	  SGPoint newDir = 1.0/(bestLevel+1.0)*currDir
 	    + bestLevel/(bestLevel+1.0)*normDir;
 	  newDir /= newDir.norm();
-	  cout << currDir << " " << newDir << " "
-	       << currDir*dueNorth << " " << newDir*dueNorth
-	       << endl;
+	  
+	  newLevels.push_back(vector<double>(numStates,0));
+	  newDirections.push_back(newDir);
+	  for (int state = 0; state < numStates; state++)
+	    {
+	      newLevels.back()[state] = pivot[state]*newDir;
+	    } // for state
+	  if (env.getParam(SG::STOREITERATIONS))
+	    iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
+				  SGHyperplane(newDir,newLevels.back()),actions));
 
-	  if (bestLevel < 1e-3)
-	    newDir.rotateCW(PI*1e-2);
+	  // Move the direction slightly to break ties
+	  newDir.rotateCCW(PI*1e-3);
 
 	  // If new direction passes due west or due south, update the
 	  // corresponding threat tuple using the current pivot
@@ -377,7 +379,8 @@ void SGSolver_V4::solve_endogenous()
 	  currDir = newDir;
 	} // while !passEast
 
-      soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
+      if (env.getParam(SG::STOREITERATIONS))
+	soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
 
       // Recompute the error level
       errorLevel = 0;
@@ -458,7 +461,6 @@ void SGSolver_V4::solve_endogenous()
 	      ait->updateTrim();
 
 	      // Delete the action if not supportable
-	      // WARNING: NO GUARANTEE THAT THIS POINT IS FEASIBLE
 	      if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
 							       [ait->getAction()]))))
 		{
@@ -492,13 +494,16 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
   // Iterate until convergence
   SGTuple newPivot(numStates);
 
+  vector<SGActionIter> newActionTuple(actionTuple);
+  vector<SG::Regime> newRegimeTuple(regimeTuple);
+
+  vector<bool> bestAPSNotBinding(numStates,false);
+  vector<SGPoint> bestBindingPayoffs(numStates);
+  
   // policy iteration
   do
     {
       pivotError = 0;
-
-      // // Now do Bellman iteration to find new fixed point
-      // policyToPayoffs(pivot,actionTuple,regimeTuple);
 
       // Look in each state for improvements
       for (int state = 0; state < numStates; state++)
@@ -516,7 +521,7 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 		[ait->getAction()]
 		+ delta * pivot.expectation(probabilities[state][ait->getAction()]);
 
-	      bool bestAPSNotBinding = false;
+	      bool APSNotBinding = false;
 	      SGPoint bestAPSPayoff;
 
 	      // Find which payoff is highest in current normal and
@@ -538,59 +543,45 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 		    } // point
 		} // player
 
-	      // WARNING: ACTION MAY STILL BE SUPPORTABLE IF
-	      // bestBindingPlayer<0, BUT STILL CANNOT USE NON-BINDING
-	      // PAYOFF, BECAUSE NOT FEASIBLE
-	      
-	      if (!ait->supportable(feasibleTuple
-				    .expectation(probabilities[state]
-						 [ait->getAction()])) )
-		{
-		  // TODO delete action and move on
-		}
-	      
 	      if (bestBindingPlayer < 0 // didn't find a binding payoff
 		  || (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
-		      *currDir > 1e-3) // Can improve on the best
+		      *currDir > 1e-8) // Can improve on the best
 				       // binding payoff by moving in
 				       // along the frontier
 		  )
 		{
-		  bestAPSNotBinding = true;
-		  // if (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
-		  //     *currDir > 1e-3)
-		  //   cout << "Current dir: " << currDir
-		  // 	 << ", Best APS not binding: " << ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
-		  //     *currDir << endl;
+		  APSNotBinding = true;
 		}
 	      else // Found a binding payoff
 		bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
 		  + delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
 
-
-	      if ( bestAPSNotBinding // NB bestAPSPayoff has only been
+	      if ( APSNotBinding // NB bestAPSPayoff has only been
 				    // set if bestAPSNotBinding ==
 				    // false
-		   || (bestAPSPayoff*currDir > nonBindingPayoff*currDir) ) 
+		   || (bestAPSPayoff*currDir > nonBindingPayoff*currDir -1e-7) ) 
 		{
 		  // ok to use non-binding payoff
 		  if (nonBindingPayoff*currDir > bestLevel)
 		    {
 	      	      bestLevel = nonBindingPayoff*currDir;
-		      actionTuple[state] = ait;
-	      	      regimeTuple[state] = SG::NonBinding;
+
+		      bestAPSNotBinding[state] = APSNotBinding;
+		      if (!APSNotBinding)
+			bestBindingPayoffs[state] = bestAPSPayoff;
+		      
+		      newActionTuple[state] = ait;
+	      	      newRegimeTuple[state] = SG::NonBinding;
 	      	      newPivot[state] = nonBindingPayoff;
 		    }
 		}
-	      else if (bestAPSPayoff*currDir <= nonBindingPayoff*currDir
-		       && (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
-			   *currDir <= 1e-3) )
+	      else if (bestAPSPayoff*currDir < nonBindingPayoff*currDir +1e-7)
 		{
 		  if (bestAPSPayoff*currDir > bestLevel)
 		    {
 	      	      bestLevel = bestAPSPayoff*currDir;
-		      actionTuple[state] = ait;
-	      	      regimeTuple[state] = SG::Binding;
+		      newActionTuple[state] = ait;
+	      	      newRegimeTuple[state] = SG::Binding;
 	      	      newPivot[state] = bestAPSPayoff;
 		    }
 		}
@@ -599,22 +590,54 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 	  pivotError = max(pivotError,abs(bestLevel-pivot[state]*currDir));
 	} // state
 
-      // pivotError = max(pivotError,SGTuple::distance(pivot,newPivot));
-      
       pivot = newPivot;
+      actionTuple = newActionTuple;
+      regimeTuple = newRegimeTuple;
 
-      // Now do Bellman iteration to find new fixed point
-      policyToPayoffs(pivot,actionTuple,regimeTuple);
+      // Inner loop to fix regimes
+      bool anyViolation = false;
+      do
+	{
+	  // Do Bellman iteration to find new fixed point
+	  policyToPayoffs(pivot,actionTuple,regimeTuple);
+
+	  anyViolation = false;
+
+	  // Check if any reversals between best binding and non-binding
+
+	  // First determine the maximum gap
+	  vector<double> gaps(numStates,0);
+	  double maxGap = 0;
+	  for (int state = 0; state < numStates; state++)
+	    {
+	      if (!bestAPSNotBinding[state]
+		  && regimeTuple[state] == SG::NonBinding) 
+		{
+		  gaps[state] = pivot[state]*currDir - bestBindingPayoffs[state]*currDir;
+		  if (gaps[state] > maxGap)
+		    {
+		      anyViolation = true;
+		      maxGap = gaps[state];
+		    }
+		}
+	    }
+	  
+	  for (int state = 0; state < numStates; state++)
+	    {
+	      if (!bestAPSNotBinding[state]
+		  && regimeTuple[state] == SG::NonBinding
+		  && gaps[state] >= delta*maxGap) 
+		{
+		  pivot[state] = bestBindingPayoffs[state];
+		  regimeTuple[state] = SG::Binding;
+		}
+	    }
+	} while (anyViolation);
 
       // numPolicyIters++;
-    } while (pivotError > env.getParam(SG::UPDATEPIVOTTOL)
+    } while (pivotError > env.getParam(SG::POLICYITERTOL)
 	     && ++numPolicyIters < env.getParam(SG::MAXPOLICYITERATIONS));
 
-  // cout << "Current dir: " << currDir
-  //      << ", policy Fn: " << actionTuple[0]->getAction()
-  //      << " " << actionTuple[1]->getAction()
-  //      << ", regimes: " << regimeTuple[0] << " " << regimeTuple[1] << endl;
-  
   if (numPolicyIters >= env.getParam(SG::MAXPOLICYITERATIONS))
     cout << "WARNING: Maximum policy iterations reached." << endl;
 
@@ -658,7 +681,7 @@ double SGSolver_V4::sensitivity(const SGTuple & pivot,
 	      nonBindingIndiffLvl = numer/denom;
 
 	      if (nonBindingIndiffLvl < bestLevel
-		  && nonBindingIndiffLvl >= 0)
+		  && nonBindingIndiffLvl > -1e-6)
 		{
 		  SGPoint indiffDir = currDir + normDir * nonBindingIndiffLvl;
 
@@ -672,7 +695,9 @@ double SGSolver_V4::sensitivity(const SGTuple & pivot,
 		      for (int k = 0; k < ait->getPoints()[p].size(); k++)
 			{
 			  double tmpLvl = ait->getPoints()[p][k]*indiffDir;
-			  if (tmpLvl > bestBindLvl)
+			  if (tmpLvl > bestBindLvl
+			      || (tmpLvl > bestBindLvl-1e-8
+				  && ait->getPoints()[p][k]*normDir >= 0))
 			    {
 			      bestBindLvl = tmpLvl;
 			      bestBindingPlayer = p;
@@ -704,9 +729,9 @@ double SGSolver_V4::sensitivity(const SGTuple & pivot,
 		      // this direction is smaller than the best level
 		      // found so far.
 
-		      if ( (ait != actionTuple[state] && denom>=0 && numer >= 0)
+		      if ( (ait != actionTuple[state] && denom> 1e-6)
 			   || (ait == actionTuple[state]
-			       && denom <= 0 && numer <= 0
+			       && denom < -1e-6
 			       && regimeTuple[state] == SG::Binding) )
 			bestLevel = nonBindingIndiffLvl;
 		    }
@@ -730,7 +755,7 @@ double SGSolver_V4::sensitivity(const SGTuple & pivot,
 		      bindingIndiffLvl = numer/denom;
 
 		      if (bindingIndiffLvl < bestLevel
-			  && bindingIndiffLvl >= 0)
+			  && bindingIndiffLvl > -1e-6)
 			{
 			  SGPoint indiffDir = currDir + normDir * bindingIndiffLvl;
 
@@ -738,7 +763,7 @@ double SGSolver_V4::sensitivity(const SGTuple & pivot,
 			      >= bindingPayoff*indiffDir-1e-6)
 			    {
 			      if ( (ait != actionTuple[state]
-				    && denom >= 0 )
+				    && denom > 1e-6 )
 				   || (ait == actionTuple[state]
 				       && (regimeTuple[state]==SG::NonBinding
 					   && denom < -1e-6 )

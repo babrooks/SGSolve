@@ -64,9 +64,9 @@ public:
   static double distance(const SGPoint& p0,
 			 const SGPoint& p1);
   //! Rotates the point clockwise by pi radians
-  bool rotateCW(double pi);
+  bool rotateCCW(double pi);
   //! Rotates the point clockwise by pi radians
-  bool rotateCCW(double pi) {return rotateCW(-pi);}
+  bool rotateCW(double pi) {return rotateCCW(-pi);}
   //! Normalizes so that the norm is one
   bool normalize();
   

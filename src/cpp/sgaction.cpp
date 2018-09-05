@@ -47,20 +47,6 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
     tuples[player] = vector<int>(0);
 }
 
-void SGAction::intersectRay(const SGPoint& normal,
-			    double level)
-{
-  for (int player=0; player < points.size(); player++)
-    intersectRaySegment(normal,level,points[player]);
-}
-
-void SGAction::trim(const SGPoint& normal,
-		    double level)
-{
-  for (int player=0; player < points.size(); player++)
-    intersectRaySegment(normal,level,trimmedPoints[player]);
-}
-
 void SGAction::intersectRaySegment(const SGPoint& pivot, 
 				   const SGPoint& direction,
 				   SGTuple & segment)
@@ -68,31 +54,22 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
 
   SGPoint normal = direction.getNormal();
   double level = pivot * normal;
-  intersectRaySegment(normal,level,segment);
-}
 
-
-void SGAction::intersectRaySegment(const SGPoint& normal,
-				   const double level,
-				   const int player,
-				   SGTuple & segment)
-{
   // First north south.
   if (segment.size() == 2)
     {
-      // Two points of intersection for this IC constraint.
+      // Two points of intersection for the ns IC constraint.
 	      
       // Determine which of the two points is on the far side
       // of the clockwise ray.
       double l0 = normal * segment[0];
       double l1 = normal * segment[1];
-      
+
       if (l0 > level + env.getParam(SG::ICTOL)
 	  && l1 > level + env.getParam(SG::ICTOL))
 	{
 	  // Both lie above the ray.
 	  segment.clear();
-	  bndryDirs[player].clear();
 	}
       else if (l0 < level
 	       && l1 < level)
@@ -104,27 +81,18 @@ void SGAction::intersectRaySegment(const SGPoint& normal,
 	  // Can take intersection.
 	  double weightOn1 = (level - l0)/(l1 - l0);
 
-	  // In first two cases, must be very close to being coplanar
-	  // with the normal. Just make both points the same. (Is this
-	  // necessary? Seems like it might screw things up.)
 	  if (weightOn1 > 1)
 	    segment[0] = segment[1];
 	  else if (weightOn1 < 0)
 	    segment[1] = segment[0];
 	  else
 	    {
-	      // Intersection is interior.
 	      SGPoint intersection 
 		= weightOn1 * segment[1] +
 		(1.0 - weightOn1) * segment[0];
-	      int replace = (l0 < l1);
+	      int replace1 = (l0 < l1);
 	  
-	      segment[replace] = intersection;
-	      if (player==0 && replace == 1
-		  || player==1 && replace == 0)
-		bndryDirs[player][replace] = normal.getNormal();
-	      else
-		bndryDirs[player][replace] = (-1)*normal.getNormal();
+	      segment[replace1] = intersection;
 	    }
 	}
     }
@@ -188,38 +156,6 @@ double SGAction::calculateMinIC(int action,int state,int player,
   return minIC;
 }
 
-void SGAction::calculateBindingContinuations(const SGGame & game,
-					     const vector<SGHyperplane> & W)
-{
-  // Version used with SGSolver_V2
-  
-  // Reset the binding continuations and then iteratively trim.
-  SGPoint point = minIC;
-  points[0].clear();
-  points[0].push_back(point);
-  point[1] = numeric_limits<double>::max();
-  points[0].push_back(point);
-  point[1] =  minIC[1];
-  points[1].push_back(point);
-  point[0] = numeric_limits<double>::max();
-  points[1].push_back(point);
-  
-  // cout << points.size() << endl;
-  // cout << points[0].size() << endl;
-  // cout << points[0] << " " << points[1] << endl;
-  
-  for (auto it = W.begin(); it != W.end(); ++it)
-    {
-      for (int p = 0; p < game.getNumPlayers(); p++)
-	intersectRaySegment(it->getNormal(),
-			    it->expectation(game.getProbabilities()
-					    [state][action]),
-			    p,
-			    points[p]);
-    }
-
-} // calculateBindingContinuations
-
 void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
 					     const SGGame & game,
 					     const vector<SGTuple> & extremeTuples,
@@ -245,8 +181,7 @@ void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatT
 	continue;
 
       tuples[player].clear(); 
-      points[player].clear();
-      bndryDirs[player].clear();
+      points[player].clear(); 
 	      
       nextPoint = extremeTuples.back()
 	.expectation(game.getProbabilities()

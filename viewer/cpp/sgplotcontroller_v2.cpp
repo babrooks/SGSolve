@@ -96,6 +96,7 @@ bool SGPlotController_V2::setState(int newState)
       stateCombo->setCurrentIndex(state+1);
       action = -1;
       actionCombo->setCurrentIndex(0);
+      emit stateChanged();
       return true;
     }
   return false;

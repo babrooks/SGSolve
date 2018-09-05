@@ -67,6 +67,7 @@ namespace SG
 		      rebuilt. */
       UPDATEPIVOTTOL,/*!< The algorithm stops updating the pivot when
 		       successive updates are below this level. */
+      POLICYITERTOL, /*! Tolerance for convergence in policy function iteration */
       ICTOL, /*!< Maximum allowable violation of IC constraints. */
       NORMTOL, /*!< Vectors with a Euclidean norm below this level are
 		 considered zero. */

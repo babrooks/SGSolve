@@ -855,7 +855,7 @@ void SGSolver_V3::addBoundingHyperplane(SGPoint & currDir,
     }
 
   // SGPoint oldDir = currDir;
-  currDir.rotateCW(minRotation);
+  currDir.rotateCW(-minRotation);
   // cout << "Distance from rotation: " << setprecision(15) << SGPoint::distance(oldDir,currDir) << endl;
   xConstr.set(GRB_DoubleAttr_RHS,currDir[0]);
   yConstr.set(GRB_DoubleAttr_RHS,currDir[1]);

@@ -34,13 +34,14 @@ void SGEnv::restoreDefaults()
   intParams[SG::MAXITERATIONS] = 1e6;
   intParams[SG::MAXUPDATEPIVOTPASSES] = 1e8;
   intParams[SG::TUPLERESERVESIZE] = 1e4;
-  intParams[SG::MAXPOLICYITERATIONS] = 1e3;
+  intParams[SG::MAXPOLICYITERATIONS] = 1e2;
   intParams[SG::STOREITERATIONS] = 2;
 
   doubleParams[SG::ERRORTOL] = 1e-8;
   doubleParams[SG::DIRECTIONTOL] = 1e-11;
   doubleParams[SG::PASTTHREATTOL] = 1e-10;
   doubleParams[SG::UPDATEPIVOTTOL] = 1e-13;
+  doubleParams[SG::POLICYITERTOL] = 1e-9;
   doubleParams[SG::ICTOL] = 1e-12;
   doubleParams[SG::NORMTOL] = 1e-12;
   doubleParams[SG::FLATTOL] = 1e-10;

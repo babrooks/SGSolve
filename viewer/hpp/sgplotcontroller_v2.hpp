@@ -181,6 +181,8 @@ signals:
   void solutionChanged();
   //! Signal to the solutionHandler that the action changed.
   void actionChanged();
+  //! Signal to the actionCombo that the state changed.
+  void stateChanged();
   //! Signal to solutionHandler that the iteration changed.
   void iterationChanged();
 

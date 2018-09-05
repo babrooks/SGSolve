@@ -41,8 +41,9 @@ int main()
     RiskSharingGame rsg(delta,numEndowments,
 			c2e,persistence,endowmentMode);
     SGEnv env;
-    env.setParam(SG::STOREITERATIONS,1);
-    env.setParam(SG::MAXITERATIONS,1);
+    env.setParam(SG::STOREITERATIONS,2);
+    env.setParam(SG::MAXITERATIONS,1e5);
+    env.setParam(SG::MAXPOLICYITERATIONS,1e3);
     env.setParam(SG::STOREACTIONS,false);
     env.setParam(SG::ERRORTOL,1e-6);
     SGGame game(rsg);
@@ -52,21 +53,18 @@ int main()
 
     // start = clock();
     
-    // SGSolver solver1(env,game);
-    // solver1.solve();
-
-    // SGSolution soln = solver1.getSolution();
-    // SGSolution::save(soln,"risksharing_v3.sln");
-
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "time elapsed: "<< duration << " seconds" << endl;
-    // start = clock();
+    SGSolver solver1(env,game);
+    solver1.solve();
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << "Twist time elapsed: "<< duration << " seconds" << endl;
+    SGSolution soln = solver1.getSolution();
+    SGSolution::save(soln,"risksharing_v1.sln");
     
+    // start = clock();
     // SGSolver_V3 solver3(game);
     // solver3.solve();
-
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "time elapsed: "<< duration << " seconds" << endl;
+    // cout << "Gurobi implementation time elapsed: "<< duration << " seconds" << endl;
 
 
 
@@ -76,11 +74,11 @@ int main()
     // solver4.solve();
 
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "time elapsed: "<< duration << " seconds" << endl;
+    // cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
 
     // SGSolution_V2 soln2 = solver4.getSolution();
     // SGSolution_V2::save(soln2,"risksharing_v3.sln2");
-    
+
     
     start = clock();
 
@@ -88,7 +86,7 @@ int main()
     solver5.solve_endogenous();
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << "time elapsed: "<< duration << " seconds" << endl;
+    cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
 
     SGSolution_V2 soln3 = solver5.getSolution();
     SGSolution_V2::save(soln3,"risksharing_v3_endogenous.sln2");
