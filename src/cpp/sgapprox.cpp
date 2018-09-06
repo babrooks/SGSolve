@@ -166,7 +166,10 @@ std::string SGApprox::progressString() const
   ss << "Error level: " << errorLevel
      << ", rev/iter: " << numRevolutions << "/" << numIterations
      << ", numExtremePoints: " << newWest-westPoint
-     << ", numActionsRemaining: " << numActsRemaining;
+     << ", numActionsRemaining: " << "( ";
+  for (int state = 0; state < numStates; state++)
+    ss << actions[state].size() << " ";
+  ss << ")";
 
   if (!sufficiencyFlag)
     ss << "\nWARNING: Sufficient conditions for containment not met.";

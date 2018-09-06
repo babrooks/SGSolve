@@ -30,7 +30,7 @@
 int main()
 {
   double delta = 0.85;
-  int numEndowments = 3;
+  int numEndowments = 7;
   int c2e = 5;
   int numSims = 1e3;
   int numSimIters = 1e5;
@@ -42,24 +42,25 @@ int main()
 			c2e,persistence,endowmentMode);
     SGEnv env;
     env.setParam(SG::STOREITERATIONS,2);
-    env.setParam(SG::MAXITERATIONS,1e5);
-    env.setParam(SG::MAXPOLICYITERATIONS,1e3);
-    env.setParam(SG::STOREACTIONS,false);
+    env.setParam(SG::MAXITERATIONS,1e6);
+    env.setParam(SG::MAXPOLICYITERATIONS,1e2);
+    env.setParam(SG::STOREACTIONS,true);
     env.setParam(SG::ERRORTOL,1e-6);
     SGGame game(rsg);
 
     clock_t start;
     double duration;
 
-    // start = clock();
     
+    start = clock();
     SGSolver solver1(env,game);
     solver1.solve();
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << "Twist time elapsed: "<< duration << " seconds" << endl;
-    SGSolution soln = solver1.getSolution();
-    SGSolution::save(soln,"risksharing_v1.sln");
+    // SGSolution soln = solver1.getSolution();
+    // SGSolution::save(soln,"risksharing_v1.sln");
     
+
     // start = clock();
     // SGSolver_V3 solver3(game);
     // solver3.solve();

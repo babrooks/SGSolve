@@ -87,9 +87,11 @@ void SGSolver_V4::solve()
   
   for (int state = 0; state < numStates; state++)
     {
-      for (int action = 0; action < numActions_totalByState[state]; action++)
+      for (auto ait = eqActions[state].cbegin();
+	   ait != eqActions[state].cend();
+	   ait++)
 	{
-	  actions[state].push_back(SGAction_V2(env,state,action));
+	  actions[state].push_back(SGAction_V2(env,state,*ait));
 	  actions[state].back().calculateMinIC(game,updateICFlags,threatTuple);
 	  actions[state].back().resetTrimmedPoints();
 	  
@@ -106,11 +108,6 @@ void SGSolver_V4::solve()
 	    } // for dir
 
 	  actions[state].back().updateTrim();
-	  
-	  // cout << "(state,action)=(" << state << "," << action << "), "
-	  //      << "numPoints = (" << actions[state].back().getPoints()[0].size()
-	  //      << "," << actions[state].back().getPoints()[1].size() << ")"
-	  //      << ", minIC: " << actions[state].back().getMinICPayoffs() << endl;
 	}
     } // for state
 
@@ -281,9 +278,11 @@ void SGSolver_V4::solve_endogenous()
   
   for (int state = 0; state < numStates; state++)
     {
-      for (int action = 0; action < numActions_totalByState[state]; action++)
+      for (auto ait = eqActions[state].cbegin();
+	   ait != eqActions[state].cend();
+	   ait++)
 	{
-	  actions[state].push_back(SGAction_V2(env,state,action));
+	  actions[state].push_back(SGAction_V2(env,state,*ait));
 	  actions[state].back().calculateMinIC(game,updateICFlags,threatTuple);
 	  actions[state].back().resetTrimmedPoints();
 	  
@@ -356,7 +355,7 @@ void SGSolver_V4::solve_endogenous()
 				  SGHyperplane(newDir,newLevels.back()),actions));
 
 	  // Move the direction slightly to break ties
-	  newDir.rotateCCW(PI*1e-3);
+	  newDir.rotateCCW(PI*1e-4);
 
 	  // If new direction passes due west or due south, update the
 	  // corresponding threat tuple using the current pivot
@@ -498,7 +497,8 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
   vector<SG::Regime> newRegimeTuple(regimeTuple);
 
   vector<bool> bestAPSNotBinding(numStates,false);
-  vector<SGPoint> bestBindingPayoffs(numStates);
+  SGTuple bestBindingPayoffs(numStates);
+
   
   // policy iteration
   do
@@ -509,6 +509,9 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
       for (int state = 0; state < numStates; state++)
 	{
 	  double bestLevel = -numeric_limits<double>::max();
+
+	  if (numPolicyIters > 0)
+	    bestLevel = pivot[state]*currDir;
 	  
 	  for (auto ait = actions[state].begin();
 	       ait != actions[state].end();
@@ -545,7 +548,7 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 
 	      if (bestBindingPlayer < 0 // didn't find a binding payoff
 		  || (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
-		      *currDir > 1e-8) // Can improve on the best
+		      *currDir > 1e-6) // Can improve on the best
 				       // binding payoff by moving in
 				       // along the frontier
 		  )
@@ -559,7 +562,7 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 	      if ( APSNotBinding // NB bestAPSPayoff has only been
 				    // set if bestAPSNotBinding ==
 				    // false
-		   || (bestAPSPayoff*currDir > nonBindingPayoff*currDir -1e-7) ) 
+		   || (bestAPSPayoff*currDir >= nonBindingPayoff*currDir) ) 
 		{
 		  // ok to use non-binding payoff
 		  if (nonBindingPayoff*currDir > bestLevel)
@@ -575,7 +578,7 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 	      	      newPivot[state] = nonBindingPayoff;
 		    }
 		}
-	      else if (bestAPSPayoff*currDir < nonBindingPayoff*currDir +1e-7)
+	      else if (bestAPSPayoff*currDir < nonBindingPayoff*currDir)
 		{
 		  if (bestAPSPayoff*currDir > bestLevel)
 		    {
@@ -634,7 +637,26 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 	    }
 	} while (anyViolation);
 
-      // numPolicyIters++;
+
+      if (numPolicyIters == env.getParam(SG::MAXPOLICYITERATIONS)/2)
+	cout << "Cycling detected at direction: " << currDir << endl;
+      if (numPolicyIters >= env.getParam(SG::MAXPOLICYITERATIONS)/2)
+	{
+	  cout << "Policy iter: " << numPolicyIters
+	       << ", action tuple: (";
+	  for (int state = 0; state < numStates; state++)
+	    cout << actionTuple[state]->getAction() << " ";
+	  cout << "), regime tuple: (";
+	  for (int state = 0; state < numStates; state++)
+	    cout << regimeTuple[state] << " ";
+	  cout << "), new regime tuple: (";
+	  for (int state = 0; state < numStates; state++)
+	    cout << newRegimeTuple[state] << " ";
+	  cout << "), pivot error: " << scientific << pivotError;
+	  cout << endl;
+	}
+
+
     } while (pivotError > env.getParam(SG::POLICYITERTOL)
 	     && ++numPolicyIters < env.getParam(SG::MAXPOLICYITERATIONS));
 

@@ -147,12 +147,12 @@ public:
     bool tf = false;
     for (int player = 0; player < points.size(); player++)
       if (points[player].size()>0)
-	tf = true;
+	return true;
 
     if (feasiblePoint >= minIC)
-      tf = true;
-    
-    return tf;
+      return true;
+
+    return false;
   }
 
   //! Serializes the action using the boost::serialization library
