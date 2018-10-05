@@ -127,17 +127,20 @@ SGGameHandler::SGGameHandler():
   QVBoxLayout * payoffLayout = new QVBoxLayout();
   QVBoxLayout * probabilityLayout = new QVBoxLayout();
   
-  solveButton = new QPushButton(tr("&Solve"));
+  solveButton = new QPushButton(tr("&Solve with Pencil Sharpening"));
   solveButton->setSizePolicy(QSizePolicy::Fixed,
-			     QSizePolicy::Preferred);
+                 QSizePolicy::Preferred);
   solveButton->resize(300,solveButton->height());
+
+  solveButton_V2 = new QPushButton(tr("&Solve with Max-Min-Max"));
+  solveButton_V2->setSizePolicy(QSizePolicy::Fixed,
+                 QSizePolicy::Preferred);
+  solveButton_V2->resize(300,solveButton->height());
 
   cancelButton = new QPushButton(tr("Cancel"));
   cancelButton->setSizePolicy(QSizePolicy::Fixed,
 			      QSizePolicy::Preferred);
   cancelButton->resize(300,cancelButton->height());
-
-  // qDebug() << "I got to here!!!" << endl;
   
   QHBoxLayout * deltaLayout = new QHBoxLayout();
   deltaLayout->addWidget(deltaEdit);
@@ -193,6 +196,7 @@ SGGameHandler::SGGameHandler():
   
   rightControlLayout->addRow(feasibleCheckBox);
   rightControlLayout->addRow(solveButton);
+  rightControlLayout->addRow(solveButton_V2);
   rightControlLayout->addRow(cancelButton);
   
   controlLayout->addLayout(leftControlLayout);

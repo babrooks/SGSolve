@@ -33,8 +33,8 @@ $(OBJFILES): %.o : $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
 	$(CXX)  $(CFLAGS) $< -c 
 
 libsg.a: $(OBJFILES)
-	ar ru $(LIBDIR)/libsg.a $(OBJFILES)
-	ranlib $(LIBDIR)/libsg.a
+	$(AR) ru $(LIBDIR)/libsg.a $(OBJFILES)
+	$(RANLIB) $(LIBDIR)/libsg.a
 	touch $(LIBDIR)/libsg.a
 
 clean:

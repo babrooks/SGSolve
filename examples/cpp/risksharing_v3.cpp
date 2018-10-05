@@ -29,8 +29,8 @@
 
 int main()
 {
-  double delta = 0.85;
-  int numEndowments = 7;
+  double delta = 0.6;
+  int numEndowments = 9;
   int c2e = 5;
   int numSims = 1e3;
   int numSimIters = 1e5;

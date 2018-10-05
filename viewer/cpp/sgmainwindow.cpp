@@ -122,7 +122,9 @@ SGMainWindow::SGMainWindow()
   connect(aboutAction,SIGNAL(triggered()),
 	  this,SLOT(displayAbout()));
   connect(gameHandler->getSolveButton(),SIGNAL(clicked()),
-	  this,SLOT(solveGame()));
+      this,SLOT(solveGame()));
+  connect(gameHandler->getSolveButton_V2(),SIGNAL(clicked()),
+      this,SLOT(solveGame_V2()));
   connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
 	  this,SLOT(cancelSolve()));
   connect(solveAction,SIGNAL(triggered()),
@@ -152,8 +154,8 @@ SGMainWindow::SGMainWindow()
   // Main widget
   tabWidget = new QTabWidget();
   tabWidget->addTab(gameTab,"Game");
-  tabWidget->addTab(solutionTab,"Solution");
-  tabWidget->addTab(solutionTab2,"Solution V2");
+  tabWidget->addTab(solutionTab,"Solution - Pencil Sharpening");
+  tabWidget->addTab(solutionTab2,"Solution - ABS 2018");
   tabWidget->addTab(logTab,"Log");
   mainLayout->addWidget(tabWidget);
 
@@ -357,39 +359,78 @@ void SGMainWindow::quitProgram()
 void SGMainWindow::solveGame()
 {
   tabWidget->setCurrentIndex(3);
-  
+
   try
     {
 
       logTextEdit->append(QString(""));
-      logTextEdit->append(QString("Starting a new computation..."));
+      logTextEdit->append(QString("Starting a new computation with pencil sharpening..."));
       logTextEdit->append(QString(""));
-      
+
       cancelSolveFlag = false;
-      
+
       solverWorker = new SGSolverWorker(*env,
-					gameHandler->getGame(),
-					logTextEdit);
+                    gameHandler->getGame(),
+                    logTextEdit);
       solverWorker->moveToThread(&solverThread);
       connect(this,SIGNAL(startIteration()),
-	      solverWorker,SLOT(iterate()));
+          solverWorker,SLOT(iterate()));
       connect(solverWorker,SIGNAL(resultReady(bool)),
-      	      this,SLOT(iterationFinished(bool)));
+              this,SLOT(iterationFinished(bool)));
       connect(solverWorker,SIGNAL(exceptionCaught()),
-	      this,SLOT(solverException()));
+          this,SLOT(solverException()));
       solverThread.start();
-      
+
       timer.restart();
-      
+
       emit startIteration();
     }
   catch (exception & e)
     {
       QMessageBox::critical(this,tr("Solver failed"),
-			    tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
-			    QMessageBox::Ok);
+                tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
+                QMessageBox::Ok);
     }
 } // solveGame
+
+void SGMainWindow::solveGame_V2()
+{
+  tabWidget->setCurrentIndex(3);
+
+  try
+    {
+
+      logTextEdit->append(QString(""));
+      logTextEdit->append(QString("Starting a new computation with Max-Min-Max..."));
+      logTextEdit->append(QString(""));
+
+      cancelSolveFlag = false;
+
+//      Needs to be updated to use a new solver worker.
+
+     solverWorker_v2 = new SGSolverWorker_V2(*env,
+                   gameHandler->getGame(),
+                   logTextEdit);
+     solverWorker_v2->moveToThread(&solverThread);
+     connect(this,SIGNAL(startIteration_V2()),
+         solverWorker_v2,SLOT(iterate()));
+     connect(solverWorker_v2,SIGNAL(resultReady(bool)),
+             this,SLOT(iterationFinished_V2(bool)));
+     connect(solverWorker_v2,SIGNAL(exceptionCaught()),
+         this,SLOT(solverException_V2()));
+     solverThread.start();
+
+     timer.restart();
+
+     emit startIteration_V2();
+    }
+  catch (exception & e)
+    {
+      QMessageBox::critical(this,tr("Solver failed"),
+                tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
+                QMessageBox::Ok);
+    }
+} // solveGame_V2
 
 void SGMainWindow::cancelSolve()
 {
@@ -411,7 +452,7 @@ void SGMainWindow::iterationFinished(bool tf)
 	  logTextEdit->append(QString(""));
 	  logTextEdit->append(QString("Computation canceled."));
 
-      tabWidget->setCurrentIndex(3);
+	  tabWidget->setCurrentIndex(3);
 	  
 	  break;
 	}
@@ -484,11 +525,103 @@ void SGMainWindow::iterationFinished(bool tf)
 
 } // iterationFinished
 
+void SGMainWindow::iterationFinished_V2(bool tf)
+{
+  string str;
+
+  switch (solverWorker_v2->getStatus())
+    {
+    case SGSolverWorker::NOTCONVERGED:
+      
+      if (cancelSolveFlag)
+	{
+	  str = solverWorker_v2->getSolver().progressString();
+	  logTextEdit->append(QString(str.c_str()));
+	  logTextEdit->append(QString(""));
+	  logTextEdit->append(QString("Computation canceled."));
+
+	  tabWidget->setCurrentIndex(3);
+	  
+	  break;
+	}
+      else
+	{
+	  string str = solverWorker_v2->getSolver().progressString();
+	  logTextEdit->append(QString(str.c_str()));
+
+	  emit startIteration_V2();
+
+	  return;
+	}
+
+    case SGSolverWorker::CONVERGED:
+      str = solverWorker_v2->getSolver().progressString();
+      logTextEdit->append(QString(str.c_str()));
+      logTextEdit->append(QString(""));
+      logTextEdit->append(QString("Computation complete!"));
+
+
+      break;
+
+    case SGSolverWorker::FAILED:
+      str = solverWorker_v2->getSolver().progressString();
+      logTextEdit->append(QString(str.c_str()));
+      logTextEdit->append(QString(""));
+      logTextEdit->append(QString("Computation failed."));
+
+      break;
+      
+    }
+
+  solutionHandler_V2->setSolution(solverWorker_v2->getSolution());
+
+  int telapsed = timer.elapsed();
+      
+  QString timeString("Time elapsed: ");
+
+  int hrs = telapsed/(60*60*1000);
+  telapsed -= hrs*60*60*1000;
+  int mins = telapsed/(60*1000);
+  telapsed -= mins*60*1000;
+  double secs = telapsed/1000.0;
+      
+  if (hrs)
+    {
+      timeString += QString::number(hrs);
+      timeString += " hours, ";
+      timeString += QString::number(mins);
+      timeString += QString(" minutes, and ");
+    }
+  else if (mins)
+    {
+	  
+      timeString += QString::number(mins);
+      timeString += QString(" minutes and ");
+    }
+
+  timeString += QString::number(secs);
+  timeString += QString(" seconds");
+	
+  logTextEdit->append(timeString);
+
+  tabWidget->setCurrentIndex(2);
+  
+  delete solverWorker_v2;
+
+} // iterationFinished_V2
+
 void SGMainWindow::solverException()
 {
   logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
 
   delete solverWorker;
+} // solverException
+
+void SGMainWindow::solverException_V2()
+{
+  logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
+
+  delete solverWorker_v2;
 } // solverException
 
 void SGMainWindow::keyPressEvent(QKeyEvent * event)

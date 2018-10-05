@@ -19,8 +19,8 @@
 # ben@benjaminbrooks.net
 # Chicago, IL
 
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
-QMAKE_MAC_SDK = macosx10.13
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.14
+QMAKE_MAC_SDK = macosx10.14
   
 QT += widgets printsupport
 
@@ -47,6 +47,7 @@ sgpayofftablemodel.hpp \
 sgsolutionhandler.hpp \
 sgsolutionhandler_v2.hpp \
 sgsolverworker.hpp \
+sgsolverworker_v2.hpp \
 sgcustomplot.hpp \
 sgsimulationhandler.hpp \
 sgsimulationplot.hpp \

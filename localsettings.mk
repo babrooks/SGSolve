@@ -29,6 +29,9 @@ ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/c
  STATIC=
  DYNAMIC=
 
+ AR=/usr/bin/ar
+RANLIB=/usr/bin/ranlib
+
  BOOSTINCLDIR=/usr/local/include/
  BOOSTDIR=/usr/local/lib/
 
@@ -50,6 +53,9 @@ ifneq "$(wildcard /opt/ibm/ILOG/CPLEX_Studio1251/cplex/bin/x86-64_sles10_4.1/cpl
  BOOSTINCLDIR=/usr/local/include/boost/serialization/
  BOOSTDIR=/usr/local/lib/
 
+AR=ar
+RANLIB=ranlib
+
  CXX=g++
 
  RMCMD=rm -rf 
@@ -66,6 +72,8 @@ ifneq "$(wildcard C:\Users\babrooks\ )" ""
 
  CXX=g++
 
+ AR=ar
+RANLIB=ranlib
  RMCMD=del 
 
 endif

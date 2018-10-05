@@ -105,8 +105,8 @@ void SGAction_V2::intersectHalfSpace(const SGPoint& normal,
 }
 
 void SGAction_V2::calculateMinIC(const SGGame & game,
-			      const vector<bool> & update,
-			      const SGTuple & threatTuple)
+				 const vector<bool> & update,
+				 const SGTuple & threatTuple)
 {
   for (int player = 0;
        player < game.getNumPlayers();

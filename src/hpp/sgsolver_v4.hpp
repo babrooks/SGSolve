@@ -66,6 +66,17 @@ private:
   const vector< vector< vector<double> > > & probabilities;
   const vector< vector<int> > numActions;
   const vector< int > numActions_totalByState;
+
+  list<SGPoint> directions;
+  list< vector<double> > levels;
+  SGTuple threatTuple;
+  vector< list<SGAction_V2> > actions;
+  
+  SGPoint dueEast = SGPoint(1.0,0.0);
+  SGPoint dueNorth = SGPoint(0.0,1.0);
+
+  int numIter;
+  double errorLevel;
   
 public:
   //! Default constructor
@@ -95,6 +106,15 @@ public:
 
       Generates directions endogenously. */
   void solve_endogenous();
+
+  //! One iteration of the endogenous algorith.
+  /*! Return the new error level. */
+  double iterate_endogenous();
+
+  //! Initializes the solve routines
+  void initialize();
+
+  std::string progressString() const;
   
   //! Optimizes the policy for the given direction
   void optimizePolicy(SGTuple & pivot,

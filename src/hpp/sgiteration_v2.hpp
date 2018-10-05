@@ -37,8 +37,6 @@
 class SGIteration_V2
 {
 private:
-  int iteration; /*!< The value of SGApprox_V2::numIterations. */
-
   vector< vector<SGBaseAction> > actions; /*!< The actions that can be
                                            supported at the current
                                            iteration */
@@ -61,10 +59,8 @@ public:
   //     stored. For large games, storing the actions can take a large
   //     amount of memory. */
 
-  SGIteration_V2 (int _iteration,
-		  const vector<list<SGAction_V2> > & _actions,
+  SGIteration_V2 (const vector<list<SGAction_V2> > & _actions,
 		  const SGTuple & _threatTuple):
-    iteration{_iteration},
     threatTuple{_threatTuple}
   {
     // Copy the actions and recast them as SGBaseActions
@@ -84,8 +80,6 @@ public:
     steps.push_back(step);
   }
   
-  //! Get method for the iteration.
-  int getIteration() const { return iteration; } 
   //! Get method for the steps
   const list<SGStep> & getSteps() const { return steps; }
   //! Get method for the actions available at the current iteration.
@@ -100,7 +94,6 @@ public:
   //! Serialize the iteration using Boost.
   void serialize(Archive &ar, const unsigned int version)
   {
-    ar & iteration;
     ar & steps;
     ar & actions;
     ar & threatTuple;

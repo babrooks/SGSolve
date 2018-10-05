@@ -212,9 +212,9 @@ void SGSolutionHandler_V2::plotSolution()
     int state = controller->getState();
     int action = controller->getAction();
     int actionIndex = controller->getActionIndex();
-    const SGIteration_V2 & currentIter = controller->getCurrentIter();
+    list<SGIteration_V2>::const_iterator currentIter = controller->getCurrentIter();
     const SGStep & currentStep = controller->getCurrentStep();
-    const list<SGStep> & steps = currentIter.getSteps();
+    const list<SGStep> & steps = currentIter->getSteps();
 
     if (state >= 0 && action >= 0)
     {
@@ -222,7 +222,7 @@ void SGSolutionHandler_V2::plotSolution()
 
         plotSolution(detailPlot,state,false);
 
-        const SGBaseAction & actionObject = currentIter.getActions()[state][actionIndex];
+        const SGBaseAction & actionObject = currentIter->getActions()[state][actionIndex];
 
         // Add expected set
         QVector<double> expSetX(steps.size()),
@@ -253,14 +253,12 @@ void SGSolutionHandler_V2::plotSolution()
         expCurve->setName(tr("Expected continuation values"));
 
         // Add previous iteration expected set
-        if (currentIter.getIteration() > 0)
+        if (currentIter != soln.getIterations().cbegin())
         {
-
             tupleC = 0;
 
-            auto prevIter = soln.getIterations().cbegin();
-            while (prevIter->getIteration()+1<currentIter.getIteration())
-                prevIter++;
+            auto prevIter = currentIter;
+	    prevIter--;
             QVector<double> prevExpSetX(prevIter->getSteps().size()),
                     prevExpSetY(prevExpSetX.size()),
                     prevExpSetT(prevExpSetX.size());
@@ -370,7 +368,7 @@ void SGSolutionHandler_V2::plotSolution()
         yrange.expand(detailPlot->getNominalYRange());
 
         // Add IC region
-        const SGPoint & minIC = currentIter.getActions()[state][actionIndex].getMinICPayoffs();
+        const SGPoint & minIC = currentIter->getActions()[state][actionIndex].getMinICPayoffs();
 
         QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
                                                SGPoint(0,yrange.upper-minIC[1]));
@@ -420,92 +418,90 @@ void SGSolutionHandler_V2::plotSolution()
 void SGSolutionHandler_V2::plotSolution(SGCustomPlot * plot, int state,
                                         bool addSquares)
 {
-    // int start = controller->getStartSliderPosition();
-    // if (start == -1)
-    //   start = 0;
-    // else
-    //   start = controller->getStartIter().getNumExtremeTuples()-1;
-    // int end = controller->getEndIter().getNumExtremeTuples()-1;
+  // int start = controller->getStartSliderPosition();
+  // if (start == -1)
+  //   start = 0;
+  // else
+  //   start = controller->getStartIter().getNumExtremeTuples()-1;
+  // int end = controller->getEndIter().getNumExtremeTuples()-1;
 
-    const SGIteration_V2 & currentIter = controller->getCurrentIter();
-    const list<SGStep> & steps = currentIter.getSteps();
-    const SGStep & currentStep = controller->getCurrentStep();
+  list<SGIteration_V2>::const_iterator currentIter = controller->getCurrentIter();
+  const list<SGStep> & steps = currentIter->getSteps();
+  const SGStep & currentStep = controller->getCurrentStep();
 
-    QVector<double> x(steps.size());
-    QVector<double> y(x.size());
-    QVector<double> t(x.size());
+  QVector<double> x(steps.size());
+  QVector<double> y(x.size());
+  QVector<double> t(x.size());
 
-    // assert(end>=start);
+  // assert(end>=start);
 
-    int stepC = 0;
+  int stepC = 0;
 
-    for (auto step = steps.cbegin();
-         step != steps.cend();
-         ++step)
+  for (auto step = steps.cbegin();
+       step != steps.cend();
+       ++step)
     {
-        x[stepC] = step->getPivot()[state][0];
-        y[stepC] = step->getPivot()[state][1];
-        t[stepC] = stepC;
+      x[stepC] = step->getPivot()[state][0];
+      y[stepC] = step->getPivot()[state][1];
+      t[stepC] = stepC;
 
-        stepC++;
+      stepC++;
     }
-    // const SGIteration & endIter = controller->getEndIter();
-    // t[tupleC-start] = tupleC;
-    // x[tupleC-start] = endIter.getPivot()[state][0];
-    // y[tupleC-start] = endIter.getPivot()[state][1];
+  // const SGIteration & endIter = controller->getEndIter();
+  // t[tupleC-start] = tupleC;
+  // x[tupleC-start] = endIter.getPivot()[state][0];
+  // y[tupleC-start] = endIter.getPivot()[state][1];
 
-    QCPRange xrange = getBounds(x),
-            yrange = getBounds(y);
+  QCPRange xrange = getBounds(x),
+    yrange = getBounds(y);
 
-    QCPCurve * newCurve = new QCPCurve(plot->xAxis,
-                                       plot->yAxis);
-    newCurve->setData(t,x,y);
-    plot->addPlottable(newCurve);
+  QCPCurve * newCurve = new QCPCurve(plot->xAxis,
+				     plot->yAxis);
+  newCurve->setData(t,x,y);
+  plot->addPlottable(newCurve);
 
-    // Add current pivot and current direction
-    double norm = currentStep.getHyperplane().getNormal().norm();
-    if (norm==0)
-        norm=1;
-    QCPCurve * directionCurve = vectorToQCPCurve(plot,
-                                                 currentStep.getPivot()[state],
-                                                 currentStep.getHyperplane().getNormal()*1.5*payoffBound/norm);
+  // Add current pivot and current direction
+  double norm = currentStep.getHyperplane().getNormal().norm();
+  if (norm==0)
+    norm=1;
+  QCPCurve * directionCurve = vectorToQCPCurve(plot,
+					       currentStep.getPivot()[state],
+					       currentStep.getHyperplane().getNormal()*1.5*payoffBound/norm);
 
-    directionCurve->setPen(plotSettings.directionPen);
-    plot->addPlottable(directionCurve);
+  directionCurve->setPen(plotSettings.directionPen);
+  plot->addPlottable(directionCurve);
 
-    addPoint(currentStep.getPivot()[state],plot,plotSettings.pivotStyle);
+  addPoint(currentStep.getPivot()[state],plot,plotSettings.pivotStyle);
 
-    if (addSquares)
+  if (addSquares)
     {
-        plot->addGraph();
-        plot->graph(1)->setData(x,y);
-        plot->graph(1)->setLineStyle(QCPGraph::lsNone);
-        plot->graph(1)->setScatterStyle(plotSettings.tupleStyle);
+      plot->addGraph();
+      plot->graph(1)->setData(x,y);
+      plot->graph(1)->setLineStyle(QCPGraph::lsNone);
+      plot->graph(1)->setScatterStyle(plotSettings.tupleStyle);
     }
 
-    plot->setRanges(xrange,yrange);
+  plot->setRanges(xrange,yrange);
 
-    plot->getTitle()->setText(generatePlotTitle(state,
-                                                currentIter.getActions()[state][currentStep.getActionTuple()[state]].getAction(),
-                              false));
+  plot->getTitle()->setText(generatePlotTitle(state,
+					      currentIter->getActions()[state][currentStep.getActionTuple()[state]].getAction(),
+					      false));
 } // plotSolution
 
 QString SGSolutionHandler_V2::generatePlotTitle(int state, int action,
                                                 bool addIterStep)
 {
-    const SGIteration_V2 & currentIter = controller->getCurrentIter();
-    const SGStep & currentStep = controller->getCurrentStep();
-    // Update the title
-    QString titleString = QString("");
-    if (addIterStep)
+  list<SGIteration_V2>::const_iterator currentIter = controller->getCurrentIter();
+  const SGStep & currentStep = controller->getCurrentStep();
+  // Update the title
+  QString titleString = QString("");
+  if (addIterStep)
     {
         titleString += QString("Iteration: ");
-        titleString += QString::number(currentIter.getIteration());
-        // titleString += QString(", Step: ");
-        // titleString += QString::number(pivotIter.getRevolution());
+        titleString += QString::number(controller->getCurrentIterIndex());
         titleString += QString(", ");
     }
-    if (currentIter.getIteration() >=0
+    if (controller->getCurrentIterIndex() >=0
             && detailedTitlesAction->isChecked())
     {
         titleString += QString("S");

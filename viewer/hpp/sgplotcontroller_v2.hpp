@@ -122,7 +122,9 @@ public:
   //! Access method for the current solution mode.
   SolutionMode getMode () const { return mode; }
   //! Access method for the current SGIteration_V2 pointer.
-  const SGIteration_V2 & getCurrentIter() const { return *currentIter; }
+  list<SGIteration_V2>::const_iterator getCurrentIter() const { return currentIter; }
+  //! Access method for the current SGIteration_V2 pointer.
+  int getCurrentIterIndex() const { return iteration; }
   //! Access method for the current SGStep pointer.
   const SGStep & getCurrentStep() const { return *currentStep; }
   //! Returns the position of the stepSlider.

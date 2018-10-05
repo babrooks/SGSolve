@@ -67,6 +67,8 @@ private:
 
   //! Button that triggers solve routine.
   QPushButton * solveButton;
+  //! Button that triggers solve routine.
+  QPushButton * solveButton_V2;
   //! Button that cancels solve.
   QPushButton * cancelButton;
 
@@ -125,7 +127,11 @@ public:
   //! Returns the solveButton
   QPushButton * getSolveButton() const
   { return solveButton; }
-  
+
+  //! Returns the solveButton_V2
+  QPushButton * getSolveButton_V2() const
+  { return solveButton_V2; }
+
   //! Returns the cancelButton
   QPushButton * getCancelButton() const
   { return cancelButton; }

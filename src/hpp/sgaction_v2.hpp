@@ -126,6 +126,13 @@ public:
   		      const vector<bool> & update,
   		      const SGTuple & threatTuple);
 
+  //! Calculates the minimum incentive compatible continuation payoff
+  void calculateMinIC(const SGGame & game,
+  		      const SGTuple & threatTuple)
+  {
+    calculateMinIC(game,vector<bool>(2,true),threatTuple);
+  }
+  
 
   //! Calculates the IC constraint.
   /*! Calculates the minimum incentive compatible expected

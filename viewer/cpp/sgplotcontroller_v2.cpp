@@ -49,7 +49,7 @@ void SGPlotController_V2::setSolution(SGSolution_V2 * newSoln)
   soln = newSoln; 
   currentIter = soln->getIterations().cend();
   --currentIter;
-  iteration=currentIter->getIteration();
+  iteration=soln->getIterations().size();
   currentStep = currentIter->getSteps().cbegin();
   solnLoaded = true;
 
@@ -60,16 +60,10 @@ void SGPlotController_V2::setSolution(SGSolution_V2 * newSoln)
   // Setup sliders
   int numStates = soln->getGame().getNumStates();
   
-  iterSlider->setRange(soln->getIterations().front().getIteration(),soln->getIterations().back().getIteration());
-  iterSlider->setValue(soln->getIterations().back().getIteration());
+  iterSlider->setRange(0,iteration);
+  iterSlider->setValue(iteration);
   stepSlider->setRange(0,soln->getIterations().back().getSteps().size()-1);
   stepSlider->setValue(0);
-  // setSliderRanges(soln->getIterations().front().getIteration(),
-  // 		  soln->getIterations().back().getIteration());
-
-  // startOfLastRev = endIter;
-  // while ((startOfLastRev--)->getRevolution()
-  // 	 ==endIter->getRevolution()) {}
   
   mode = Progress;
   stepSlider->setEnabled(mode==Progress);
@@ -81,7 +75,7 @@ void SGPlotController_V2::setSolution(SGSolution_V2 * newSoln)
   solutionModeCombo->blockSignals(solutionModeComboBlock);
 
   // Has to be last because this triggers replot
-  setIteration(currentIter->getIteration());
+  setIteration(iteration);
 
   emit solutionChanged();
 } // setSolution
@@ -149,13 +143,18 @@ bool SGPlotController_V2::setIteration(int newIter)
       && newIter>=0
       && newIter <= soln->getIterations().size())
     {
-      iteration = newIter;
-      while (currentIter->getIteration() < iteration
+      while (iteration < newIter
 	     && currentIter != --(soln->getIterations().end()))
-	++currentIter;
-      while (currentIter->getIteration() > iteration
+	{
+	  ++currentIter;
+	  ++iteration;
+	}
+      while (iteration > newIter
 	     && currentIter != soln->getIterations().begin())
-	--currentIter;
+	{
+	  --currentIter;
+	  --iteration;
+	}
 
       currentStep = currentIter->getSteps().cbegin();
 
@@ -197,15 +196,19 @@ void SGPlotController_V2::synchronizeSliders()
 
 void SGPlotController_V2::synchronizeIterSlider()
 {
-    int iter = iterSlider->sliderPosition();
-    while (currentIter->getIteration() < iter
-           && currentIter!=soln->getIterations().cend())
-        ++currentIter;
-    while (currentIter->getIteration() > iter
-           && currentIter!=soln->getIterations().cbegin())
-        --currentIter;
-    if (currentIter == soln->getIterations().cend())
-        --currentIter;
+    int newIter = iterSlider->sliderPosition();
+    while (iteration < newIter
+	   && currentIter != --(soln->getIterations().end()))
+      {
+	++currentIter;
+	++iteration;
+      }
+    while (iteration > newIter
+	   && currentIter != soln->getIterations().begin())
+      {
+	--currentIter;
+	--iteration;
+      }
 
     stepSlider->setRange(0,currentIter->getSteps().size()-1);
 
