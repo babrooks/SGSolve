@@ -21,7 +21,7 @@
 
 //! Kocherlakota style risk sharing model
 //! @example
-#include "risksharing.hpp"
+#include "sgrisksharing.hpp"
 #include "sgsimulator.hpp"
 
 int main()

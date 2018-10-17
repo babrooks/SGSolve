@@ -26,80 +26,107 @@
 
 class SGPlotSettings
 {
+private:
+  std::vector<QCPScatterStyle> styles;
+  std::vector<QPen> pens;
+  std::vector<bool> features;
 public:
-  //! Pivot scatter style
-  QCPScatterStyle pivotStyle;
-  //! Expected pivot scatter style
-  QCPScatterStyle expPivotStyle;
-  //! Stage payoff scatter style
-  QCPScatterStyle stageStyle;
-  //! Binding continuation value scatter style
-  QCPScatterStyle bindingPayoffStyle;
-  //! Binding IC payoff scatter style
-  QCPScatterStyle ICPayoffStyle;
-  //! Payoff style
-  QCPScatterStyle payoffStyle;
-  //! Tuple style
-  QCPScatterStyle tupleStyle;
-  //! Stage payoffs pen
-  QPen stagePen;
-  //! Pivot pen
-  QPen pivotPen;
-  //! Expected pivot pen
-  QPen expPivotPen;
-  //! Expected payoff pen
-  QPen expPen;
-  //! Previous expected payoff pen
-  QPen prevExpPen;
-  //! Value set pen
-  QPen valuePen;
-  //! Incentive constraint pen
-  QPen ICPen;
-  //! Binding payoffs pen
-  QPen bindingPayoffPen;
-  //! Direction pen
-  QPen directionPen;
-  //! Generation line
-  QPen genLinePen;
+  enum SGScatterParam
+    {
+      PivotStyle,
+      ExpPivotStyle,
+      StageStyle,
+      BindingPayoffStyle,
+      ICPayoffStyle,
+      PayoffStyle,
+      TupleStyle,
+      NumScatterParams
+    };
+
+  enum SGPenParam
+    {
+      StagePen,
+      PivotPen,
+      ExpPivotPen,
+      ExpPen,
+      PrevExpPen,
+      ValuePen,
+      ICPen,
+      BindingPayoffPen,
+      DirectionPen,
+      GenLinePen,
+      NumPenParams
+    };
+
+  enum SGPlotFeature
+    {
+      StagePayoffs,
+      Pivot,
+      ExpPivot,
+      PayoffSet,
+      ExpPayoffSet,
+      PrevExpPayoffSet,
+      ICBoundary,
+      BindingPayoffs,
+      Direction,
+      GenLines,
+      GridLines,
+      ZeroLines,
+      UniformRanges,
+      NumPlotFeatures
+    };
 
   //! Constructor
   SGPlotSettings():
-    pivotStyle(QCPScatterStyle::ssCircle,
-	       QPen(Qt::blue),
-	       QBrush(Qt::blue),8),
-    expPivotStyle(QCPScatterStyle::ssCircle,
-		  QPen(Qt::red),
-		  QBrush(Qt::red),8),
-    stageStyle(QCPScatterStyle::ssStar,
-	       QPen(Qt::black),
-	       QBrush(Qt::black),6),
-    bindingPayoffStyle(QCPScatterStyle::ssCircle,
-               QPen(Qt::magenta),
-               QBrush(Qt::magenta),6),
-    ICPayoffStyle(QCPScatterStyle::ssSquare,
-               QPen(Qt::magenta),
-               QBrush(Qt::magenta),2),
-    payoffStyle(QCPScatterStyle::ssCircle,
-		QPen(Qt::black),
-		QBrush(Qt::black),6),
-    tupleStyle(QCPScatterStyle::ssSquare,
-	       QPen(Qt::blue),
-	       QBrush(Qt::blue),2),
-    stagePen(Qt::NoPen),
-    pivotPen(Qt::NoPen),
-    expPivotPen(Qt::NoPen),
-    expPen(Qt::red),
-    prevExpPen(Qt::red),
-    valuePen(Qt::blue),
-    ICPen(Qt::magenta),
-    bindingPayoffPen(Qt::NoPen),
-    directionPen (Qt::darkGreen),
-    genLinePen(Qt::DashLine)
+    styles(SGPlotSettings::NumScatterParams),
+    pens(SGPlotSettings::NumPenParams),
+    features(SGPlotSettings::NumPlotFeatures,true)
   {
-      directionPen.setStyle(Qt::DashLine);
-      prevExpPen.setStyle(Qt::DashLine);
+    restoreDefaults();
   }
 
+  void restoreDefaults()
+  {
+    // Set default values
+    for (int param = 0; param < SGPlotSettings::NumScatterParams; param++)
+      restoreDefault(static_cast<SGPlotSettings::SGScatterParam>(param));
+    for (int param = 0; param < SGPlotSettings::NumPenParams; param++)
+      restoreDefault(static_cast<SGPlotSettings::SGPenParam>(param));
+  } // restore defaults
+
+  void restoreDefault(const SGPlotSettings::SGScatterParam param);
+
+  void restoreDefault(const SGPlotSettings::SGPenParam param);
+  
+  const QCPScatterStyle & get(const SGPlotSettings::SGScatterParam param) const
+  { return styles[param]; }
+
+  const QPen & get(const SGPlotSettings::SGPenParam param) const
+  { return pens[param]; }
+
+  bool get(const SGPlotSettings::SGPlotFeature param) const
+  { return features[param]; }
+  
+  void set(const SGPlotSettings::SGScatterParam param,
+	   const QCPScatterStyle & newStyle)
+  { styles[param] = newStyle; }
+
+  void set(const SGPlotSettings::SGPenParam param,
+	   const QPen & newPen)
+  { pens[param] = newPen; }
+
+  void set(const SGPlotSettings::SGPlotFeature param, bool tf);
+
+  void disable(const SGPlotSettings::SGScatterParam param)
+  { styles[param].setPen(Qt::NoPen); }
+
+  void disable(const SGPlotSettings::SGPenParam param)
+  { pens[param].setStyle(Qt::NoPen); }
+
+  
 }; // SGPlotSettings
+
+
+
 
 #endif

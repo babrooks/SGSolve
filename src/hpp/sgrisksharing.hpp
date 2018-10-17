@@ -19,6 +19,9 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
+#ifndef _SGRISKSHARING_HPP
+#define _SGRISKSHARING_HPP
+
 #include "sg.hpp"
 
 class RiskSharingGame : public SGAbstractGame
@@ -146,3 +149,5 @@ public:
   } // isEquilibriumAction
   
 };
+
+#endif

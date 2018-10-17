@@ -47,52 +47,52 @@ SGLegend::SGLegend(QWidget * parent)
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Pivot trajectory/value set");
-  legendPlot->graph()->setPen(settings.valuePen);
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::ValuePen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Extreme tuples");
-  legendPlot->graph()->setPen(settings.valuePen);
-  legendPlot->graph()->setScatterStyle(settings.tupleStyle);
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::ValuePen));
+  legendPlot->graph()->setScatterStyle(settings.get(SGPlotSettings::TupleStyle));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Current pivot");
-  legendPlot->graph()->setScatterStyle(settings.pivotStyle);
-  legendPlot->graph()->setPen(settings.pivotPen);
+  legendPlot->graph()->setScatterStyle(settings.get(SGPlotSettings::PivotStyle));
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::PivotPen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Expected continuation value set");
-  legendPlot->graph()->setPen(settings.expPen);
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::ExpPen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Expected pivot");
-  legendPlot->graph()->setScatterStyle(settings.expPivotStyle);
-  legendPlot->graph()->setPen(settings.expPivotPen);
+  legendPlot->graph()->setScatterStyle(settings.get(SGPlotSettings::ExpPivotStyle));
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::ExpPivotPen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Stage payoffs");
-  legendPlot->graph()->setScatterStyle(settings.stageStyle);
-  legendPlot->graph()->setPen(settings.stagePen);
+  legendPlot->graph()->setScatterStyle(settings.get(SGPlotSettings::StageStyle));
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::StagePen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("IC constraint");
-  legendPlot->graph()->setPen(settings.ICPen);
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::ICPen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Binding continuation value");
-  legendPlot->graph()->setScatterStyle(settings.bindingPayoffStyle);
-  legendPlot->graph()->setPen(settings.bindingPayoffPen);
+  legendPlot->graph()->setScatterStyle(settings.get(SGPlotSettings::BindingPayoffStyle));
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::BindingPayoffPen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->addGraph();
   legendPlot->graph()->setName("Current direction");
-  legendPlot->graph()->setPen(settings.directionPen);
+  legendPlot->graph()->setPen(settings.get(SGPlotSettings::DirectionPen));
   legendPlot->graph()->setData(x,y);
 
   legendPlot->plotLayout()->insertRow(0);

@@ -67,6 +67,9 @@ SGMainWindow::SGMainWindow()
   viewMenu->addAction(solutionHandler->getDetailedTitlesAction());
   viewMenu->addAction(solutionHandler->getEqualizeAxesAction());
   viewMenu->addSeparator();
+  QAction * plotSettingsAction = new QAction(tr("&Plot settings"),this);
+  viewMenu->addAction(plotSettingsAction);
+  viewMenu->addSeparator();
   viewMenu->addAction(screenShotAction);
 
   QMenu * toolsMenu = menuBar()->addMenu(tr("&Tools"));
@@ -133,6 +136,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(cancelSolve()));
   connect(settingsAction,SIGNAL(triggered()),
 	  this,SLOT(changeSettings()));
+  connect(plotSettingsAction,SIGNAL(triggered()),
+	  this,SLOT(changePlotSettings()));
   connect(rsgAction,SIGNAL(triggered()),
 	  this,SLOT(generateRSG()));
   connect(pdAction,SIGNAL(triggered()),
@@ -241,6 +246,12 @@ void SGMainWindow::loadSolution_V2()
       
       SGSolution_V2::load(soln,newPath_c);
 
+      if (soln.getIterations().empty())
+	{
+	  qDebug() << "Solution has no iterations." << endl;
+	  throw(1);
+	}
+      
       gameHandler->setGame(soln.getGame());
       solutionHandler_V2->setSolution(soln);
       
@@ -704,7 +715,28 @@ void SGMainWindow::changeSettings()
 
 void SGMainWindow::settingsHandlerClosed()
 {
-  delete settingsHandler;
+  delete plotSettingsHandler;
+}
+
+
+void SGMainWindow::changePlotSettings()
+{
+  plotSettingsHandler = new SGPlotSettingsHandler(this,
+						  solutionHandler_V2->getPlotSettingsPtr());
+
+  plotSettingsHandler->adjustSize();
+  plotSettingsHandler->move(this->pos()
+			+this->rect().center()
+			-plotSettingsHandler->pos()
+			-plotSettingsHandler->rect().center());
+  connect(plotSettingsHandler,SIGNAL(closePlotSettingsHandler()),
+	  this,SLOT(plotSettingsHandlerClosed()));
+  plotSettingsHandler->show();
+}
+
+void SGMainWindow::plotSettingsHandlerClosed()
+{
+  delete plotSettingsHandler;
 }
 
 void SGMainWindow::generateRSG()

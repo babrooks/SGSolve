@@ -262,7 +262,7 @@ void SGSolutionHandler::plotSolution()
       QCPCurve * expCurve = new QCPCurve(detailPlot->xAxis,
 					 detailPlot->yAxis);
       expCurve->setData(expSetT,expSetX,expSetY);
-      expCurve->setPen(plotSettings.expPen);
+      expCurve->setPen(plotSettings.get(SGPlotSettings::ExpPen));
       detailPlot->addPlottable(expCurve);
       expCurve->setName(tr("Expected continuation values"));
 
@@ -282,10 +282,10 @@ void SGSolutionHandler::plotSolution()
 	  QCPItemLine * nonBindingGenLine
 	    = sgToQCPItemLine(detailPlot,stagePayoffs,
 			      expPivot-stagePayoffs);
-	  nonBindingGenLine->setPen(plotSettings.genLinePen);
+	  nonBindingGenLine->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
 	  detailPlot->addItem(nonBindingGenLine);
 
-	  addPoint(nonBindingPayoff,detailPlot,plotSettings.payoffStyle);
+	  addPoint(nonBindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
 
 	  QCPItemLine * nonBindingDirection
 	    = sgToQCPItemLine(detailPlot,pivotIter.getPivot()[state],
@@ -307,7 +307,7 @@ void SGSolutionHandler::plotSolution()
 		  QCPItemLine * bindingGenCurve
 		    = sgToQCPItemLine(detailPlot,stagePayoffs,
 				      continuationValue - stagePayoffs);
-		  bindingGenCurve->setPen(plotSettings.genLinePen);
+		  bindingGenCurve->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
 		  detailPlot->addItem(bindingGenCurve);
 
 		  QCPItemLine * bindingDirection
@@ -316,14 +316,14 @@ void SGSolutionHandler::plotSolution()
 		  bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
 		  detailPlot->addItem(bindingDirection);
 				   
-		  addPoint(bindingPayoff,detailPlot,plotSettings.payoffStyle);
+		  addPoint(bindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
 		  addPoint(continuationValue,detailPlot,
-			   plotSettings.bindingPayoffStyle);
+			   plotSettings.get(SGPlotSettings::BindingPayoffStyle));
 		} // for 
 	    } // for tuple
 
 	  // Add expected pivot
-	  addPoint(expPivot,detailPlot,plotSettings.expPivotStyle);
+	  addPoint(expPivot,detailPlot,plotSettings.get(SGPlotSettings::ExpPivotStyle));
 	}
       else
 	{
@@ -334,12 +334,12 @@ void SGSolutionHandler::plotSolution()
 	  detailPlot->addItem(genLine);
 
 	  // Add continuation value
-	  addPoint(continuationValue,detailPlot,plotSettings.payoffStyle);
+	  addPoint(continuationValue,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
 	  
 	}
 
       // Add action
-      addPoint(stagePayoffs,detailPlot,plotSettings.stageStyle);
+      addPoint(stagePayoffs,detailPlot,plotSettings.get(SGPlotSettings::StageStyle));
 
       xrange.expand(QCPRange(stagePayoffs[0],stagePayoffs[0]));
       yrange.expand(QCPRange(stagePayoffs[1],stagePayoffs[1]));
@@ -353,8 +353,8 @@ void SGSolutionHandler::plotSolution()
 					     SGPoint(0,yrange.upper-minIC[1]));
       QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
 					     SGPoint(xrange.upper-minIC[0],0));
-      ICCurveH->setPen(plotSettings.ICPen);
-      ICCurveV->setPen(plotSettings.ICPen);
+      ICCurveH->setPen(plotSettings.get(SGPlotSettings::ICPen));
+      ICCurveV->setPen(plotSettings.get(SGPlotSettings::ICPen));
       detailPlot->addPlottable(ICCurveH);
       detailPlot->addPlottable(ICCurveV);
 
@@ -445,17 +445,17 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
   QCPCurve * directionCurve = vectorToQCPCurve(plot,
 					       pivotIter.getPivot()[state],
 					       pivotIter.getDirection()*1.5*payoffBound/pivotIter.getDirection().norm());
-  directionCurve->setPen(plotSettings.directionPen);
+  directionCurve->setPen(plotSettings.get(SGPlotSettings::DirectionPen));
   plot->addPlottable(directionCurve);
 
-  addPoint(pivotIter.getPivot()[state],plot,plotSettings.pivotStyle);
+  addPoint(pivotIter.getPivot()[state],plot,plotSettings.get(SGPlotSettings::PivotStyle));
 
   if (addSquares)
     {
       plot->addGraph();
       plot->graph(1)->setData(x,y);
       plot->graph(1)->setLineStyle(QCPGraph::lsNone);
-      plot->graph(1)->setScatterStyle(plotSettings.tupleStyle);
+      plot->graph(1)->setScatterStyle(plotSettings.get(SGPlotSettings::TupleStyle));
     }
   
   plot->setRanges(xrange,yrange);

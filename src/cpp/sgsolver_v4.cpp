@@ -157,7 +157,10 @@ void SGSolver_V4::solve()
 	  threatTuple[state][1] = -(*dueSouthLvl)[state];
 	}
 
-      if (env.getParam(SG::STOREITERATIONS))
+      if (env.getParam(SG::STOREITERATIONS)==2
+	  || (env.getParam(SG::STOREITERATIONS)==1
+	      && ( errorLevel < env.getParam(SG::ERRORTOL)
+		   || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
 	soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
 
       findFeasibleTuple(feasibleTuple,actions);
@@ -314,9 +317,6 @@ double SGSolver_V4::iterate_endogenous()
       currDir = newDir;
     } // while !passEast
 
-  if (env.getParam(SG::STOREITERATIONS))
-    soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
-
   // Recompute the error level
   errorLevel = 0;
   {
@@ -348,7 +348,13 @@ double SGSolver_V4::iterate_endogenous()
 	lvl1++;
       }
   }
-      
+  
+  if (env.getParam(SG::STOREITERATIONS)==2
+      || (env.getParam(SG::STOREITERATIONS)==1
+	  && ( errorLevel < env.getParam(SG::ERRORTOL)
+	       || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
+    soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
+
   findFeasibleTuple(feasibleTuple,actions);
       
   // Update the the threat tuple, directions, levels
@@ -838,7 +844,9 @@ void SGSolver_V4::findFeasibleTuple(SGTuple & feasibleTuple,
 	      notAllIC = true;
 	      // Try advancing the action and recomputing
 	      if ((++actionTuple[state])==actions[state].end())
-		throw(SGException(SG::NOFEASIBLETUPLE));
+		{
+		  throw(SGException(SG::NOFEASIBLETUPLE));
+		}
 	    }
 	} // for state
     } // if anyNonBinding

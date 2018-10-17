@@ -113,12 +113,20 @@ private:
   //! Pointer to simulation handler
   SGSimulationHandler * simHandler;
 
+  //! Default pen for grid lines
+  QPen defaultGridLinePen;
+
+  //! Default pen for zero lines
+  QPen defaultZeroLinePen;
+
   // Methods
   //! Plots the solution from start to end
   void plotSolution();
   //! Plots the solution for a particular state.
   void plotSolution(SGCustomPlot * plot, int state,
 		    bool addSquares);
+  //! Turns on or off grid lines and zero lines
+  void configureGridLines(SGCustomPlot * plot);
   //! Generates title for the detail plot
   QString generatePlotTitle(int state, int action,bool addIterRev);
   //! Gets bounds for the plots.
@@ -153,6 +161,9 @@ public:
   //! Returns the detailed titles action
   QAction * getDetailedTitlesAction() const
   { return detailedTitlesAction; }
+
+  SGPlotSettings * getPlotSettingsPtr()
+  { return & plotSettings; }
   
   //! Returns the equalize axes action
   QAction * getEqualizeAxesAction() const

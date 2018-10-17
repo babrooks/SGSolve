@@ -156,7 +156,7 @@ public:
       if (points[player].size()>0)
 	return true;
 
-    if (feasiblePoint >= minIC)
+    if (feasiblePoint >= minIC-1e-6)
       return true;
 
     return false;

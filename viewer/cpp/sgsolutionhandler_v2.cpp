@@ -43,8 +43,8 @@ SGSolutionHandler_V2::SGSolutionHandler_V2(QWidget * _parent):
 
     solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
                                      QSizePolicy::Preferred);
-    leftControlLayout->addRow(new QLabel(tr("Display mode:")),
-                              solutionModeCombo);
+    // leftControlLayout->addRow(new QLabel(tr("Display mode:")),
+    //                           solutionModeCombo);
     controlLayout->addLayout(leftControlLayout);
 
     // Sliders at the bottom
@@ -61,6 +61,10 @@ SGSolutionHandler_V2::SGSolutionHandler_V2(QWidget * _parent):
                               QSizePolicy::Expanding);
     detailPlot->setInteraction(QCP::iRangeZoom,true);
     detailPlot->setInteraction(QCP::iRangeDrag,true);
+
+    defaultGridLinePen = detailPlot->xAxis->grid()->subGridPen();
+    defaultGridLinePen = detailPlot->xAxis->grid()->zeroLinePen();
+
     statePlots.push_back(new SGCustomPlot());
 
     detailPlot->addGraph();
@@ -162,10 +166,10 @@ SGSolutionHandler_V2::SGSolutionHandler_V2(QWidget * _parent):
 void SGSolutionHandler_V2::setSolution(const SGSolution_V2 & newSoln)
 {
     soln = newSoln;
+
     connect(detailPlot,SIGNAL(inspectPoint(SGPoint,int,bool)),
             this,SLOT(inspectPoint(SGPoint,int,bool)) );
-    // connect(detailPlot,SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
-    // 	  this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
+
     // Set up state plots
     QLayoutItem * item;
     while ((item = statePlotsLayout->takeAt(0))!=0)
@@ -186,6 +190,7 @@ void SGSolutionHandler_V2::setSolution(const SGSolution_V2 & newSoln)
         statePlots[state] =  new SGCustomPlot(state,false);
         statePlots[state]->setInteraction(QCP::iRangeZoom,true);
         statePlots[state]->setInteraction(QCP::iRangeDrag,true);
+
 
         connect(statePlots[state],SIGNAL(inspectPoint(SGPoint,int,bool)),
                 this,SLOT(inspectPoint(SGPoint,int,bool)) );
@@ -248,7 +253,7 @@ void SGSolutionHandler_V2::plotSolution()
         QCPCurve * expCurve = new QCPCurve(detailPlot->xAxis,
                                            detailPlot->yAxis);
         expCurve->setData(expSetT,expSetX,expSetY);
-        expCurve->setPen(plotSettings.expPen);
+        expCurve->setPen(plotSettings.get(SGPlotSettings::ExpPen));
         detailPlot->addPlottable(expCurve);
         expCurve->setName(tr("Expected continuation values"));
 
@@ -280,7 +285,7 @@ void SGSolutionHandler_V2::plotSolution()
             QCPCurve * prevExpCurve = new QCPCurve(detailPlot->xAxis,
                                                detailPlot->yAxis);
             prevExpCurve->setData(prevExpSetT,prevExpSetX,prevExpSetY);
-            prevExpCurve->setPen(plotSettings.prevExpPen);
+            prevExpCurve->setPen(plotSettings.get(SGPlotSettings::PrevExpPen));
             detailPlot->addPlottable(prevExpCurve);
             prevExpCurve->setName(tr("Expected continuation values"));
         }
@@ -300,10 +305,10 @@ void SGSolutionHandler_V2::plotSolution()
         QCPItemLine * nonBindingGenLine
                 = sgToQCPItemLine(detailPlot,stagePayoffs,
                                   expPivot-stagePayoffs);
-        nonBindingGenLine->setPen(plotSettings.genLinePen);
+        nonBindingGenLine->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
         detailPlot->addItem(nonBindingGenLine);
 
-        addPoint(nonBindingPayoff,detailPlot,plotSettings.payoffStyle);
+        addPoint(nonBindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
 
         QCPItemLine * nonBindingDirection
                 = sgToQCPItemLine(detailPlot,currentStep.getPivot()[state],
@@ -327,7 +332,7 @@ void SGSolutionHandler_V2::plotSolution()
                 QCPItemLine * bindingGenCurve
                         = sgToQCPItemLine(detailPlot,stagePayoffs,
                                           continuationValue - stagePayoffs);
-                bindingGenCurve->setPen(plotSettings.genLinePen);
+                bindingGenCurve->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
                 detailPlot->addItem(bindingGenCurve);
 
                 QCPItemLine * bindingDirection
@@ -336,14 +341,14 @@ void SGSolutionHandler_V2::plotSolution()
                 bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
                 detailPlot->addItem(bindingDirection);
 
-                addPoint(bindingPayoff,detailPlot,plotSettings.payoffStyle);
+                addPoint(bindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
                 addPoint(continuationValue,detailPlot,
-                         plotSettings.bindingPayoffStyle);
+                         plotSettings.get(SGPlotSettings::BindingPayoffStyle));
             } // for
         } // for tuple
 
         // Add expected pivot
-        addPoint(expPivot,detailPlot,plotSettings.expPivotStyle);
+        addPoint(expPivot,detailPlot,plotSettings.get(SGPlotSettings::ExpPivotStyle));
         // }
         //   else
         // 	{
@@ -354,13 +359,13 @@ void SGSolutionHandler_V2::plotSolution()
         // 	  detailPlot->addItem(genLine);
 
         // 	  // Add continuation value
-        // 	  addPoint(continuationValue,detailPlot,plotSettings.payoffStyle);
+        // 	  addPoint(continuationValue,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
 
         // }
 
 
         // Add action
-        addPoint(stagePayoffs,detailPlot,plotSettings.stageStyle);
+        addPoint(stagePayoffs,detailPlot,plotSettings.get(SGPlotSettings::StageStyle));
 
         xrange.expand(QCPRange(stagePayoffs[0],stagePayoffs[0]));
         yrange.expand(QCPRange(stagePayoffs[1],stagePayoffs[1]));
@@ -374,8 +379,8 @@ void SGSolutionHandler_V2::plotSolution()
                                                SGPoint(0,yrange.upper-minIC[1]));
         QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
                                                SGPoint(xrange.upper-minIC[0],0));
-        ICCurveH->setPen(plotSettings.ICPen);
-        ICCurveV->setPen(plotSettings.ICPen);
+        ICCurveH->setPen(plotSettings.get(SGPlotSettings::ICPen));
+        ICCurveV->setPen(plotSettings.get(SGPlotSettings::ICPen));
         detailPlot->addPlottable(ICCurveH);
         detailPlot->addPlottable(ICCurveV);
 
@@ -393,6 +398,9 @@ void SGSolutionHandler_V2::plotSolution()
 
     if (equalizeAxesAction->isChecked())
         detailPlot->equalizeAxesScales();
+
+    configureGridLines(detailPlot);
+    
     detailPlot->replot();
 
     // Other states
@@ -410,10 +418,61 @@ void SGSolutionHandler_V2::plotSolution()
         if (equalizeAxesAction->isChecked())
             statePlots[state]->equalizeAxesScales();
 
-        statePlots[state]->replot();
+	configureGridLines(statePlots[state]);
+	
     }
 
+    QCPRange uniformXRange = statePlots[0]->getNominalXRange(),
+      uniformYRange = statePlots[0]->getNominalYRange();
+    for (int state = 1;
+	 state < statePlots.size();
+	 state++)
+      {
+	uniformXRange.expand(statePlots[state]->getNominalXRange());
+	uniformYRange.expand(statePlots[state]->getNominalYRange());
+      }
+    
+    for (int state = 0;
+	 state < statePlots.size();
+	 state++)
+      {
+	if (plotSettings.get(SGPlotSettings::UniformRanges) )
+	  {
+	    statePlots[state]->setRanges(uniformXRange,uniformYRange);
+	    statePlots[state]->adjustRanges();
+	  }
+        statePlots[state]->replot();
+      }
+
 } // plotSolution
+
+void SGSolutionHandler_V2::configureGridLines(SGCustomPlot * plot)
+{
+  if (!plotSettings.get(SGPlotSettings::GridLines) )
+    {
+      plot->xAxis->grid()->setSubGridPen(Qt::NoPen);
+      plot->yAxis->grid()->setSubGridPen(Qt::NoPen);
+      plot->xAxis->grid()->setPen(Qt::NoPen);
+      plot->yAxis->grid()->setPen(Qt::NoPen);
+    }
+  else
+    {
+      plot->xAxis->grid()->setSubGridPen(defaultGridLinePen);
+      plot->yAxis->grid()->setSubGridPen(defaultGridLinePen);
+      plot->xAxis->grid()->setPen(defaultGridLinePen);
+      plot->yAxis->grid()->setPen(defaultGridLinePen);
+    }
+  if (!plotSettings.get(SGPlotSettings::ZeroLines) )
+    {
+      plot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
+      plot->yAxis->grid()->setZeroLinePen(Qt::NoPen);
+    }
+  else
+    {
+      plot->xAxis->grid()->setZeroLinePen(defaultZeroLinePen);
+      plot->yAxis->grid()->setZeroLinePen(defaultZeroLinePen);
+    }
+}
 
 void SGSolutionHandler_V2::plotSolution(SGCustomPlot * plot, int state,
                                         bool addSquares)
@@ -468,17 +527,18 @@ void SGSolutionHandler_V2::plotSolution(SGCustomPlot * plot, int state,
 					       currentStep.getPivot()[state],
 					       currentStep.getHyperplane().getNormal()*1.5*payoffBound/norm);
 
-  directionCurve->setPen(plotSettings.directionPen);
+  directionCurve->setPen(plotSettings.get(SGPlotSettings::DirectionPen));
+  // directionCurve->setPen(Qt::NoPen);
   plot->addPlottable(directionCurve);
 
-  addPoint(currentStep.getPivot()[state],plot,plotSettings.pivotStyle);
+  addPoint(currentStep.getPivot()[state],plot,plotSettings.get(SGPlotSettings::PivotStyle));
 
   if (addSquares)
     {
       plot->addGraph();
       plot->graph(1)->setData(x,y);
       plot->graph(1)->setLineStyle(QCPGraph::lsNone);
-      plot->graph(1)->setScatterStyle(plotSettings.tupleStyle);
+      plot->graph(1)->setScatterStyle(plotSettings.get(SGPlotSettings::TupleStyle));
     }
 
   plot->setRanges(xrange,yrange);

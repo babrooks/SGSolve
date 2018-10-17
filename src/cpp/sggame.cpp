@@ -53,6 +53,8 @@ SGGame::SGGame(const SGAbstractGame & game):
 		 = game.probability(state,action,statep));
 	      assert (game.probability(state,action,statep)>=0);
 	    }
+	  // cout << "(s,a)=(" << state << "," << action << "), "
+	  //      << "prob sum: " << probSum << endl;
 	  assert(abs(probSum-1.0)<1e-6);
 
 	  if (game.isEquilibriumAction(state,action))

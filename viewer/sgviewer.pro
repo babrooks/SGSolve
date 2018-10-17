@@ -52,6 +52,8 @@ sgcustomplot.hpp \
 sgsimulationhandler.hpp \
 sgsimulationplot.hpp \
 sgsettingshandler.hpp \
+sgplotsettingshandler.hpp \
+sgplotsettings.hpp \
 sgplotcontroller.hpp \
 sgplotcontroller_v2.hpp \
 sgstatecombomodel.hpp \
@@ -72,12 +74,14 @@ sgcustomplot.cpp \
 sggamehandler.cpp \
 sgprobabilitytablemodel.cpp \
 sgpayofftablemodel.cpp \
+sgplotsettings.cpp \
 sgsimulationhandler.cpp \
 sgsolutionhandler.cpp \
 sgsolutionhandler_v2.cpp \
 sgplotcontroller.cpp \
 sgplotcontroller_v2.cpp \
 sgsettingshandler.cpp \
+sgplotsettingshandler.cpp \
 sglegend.cpp
 
 LIBS += -L../lib/ -L/usr/local/lib/ # -L/opt/Qt/lib/ -L/opt/Qt/plugins/platforms/

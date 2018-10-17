@@ -31,8 +31,10 @@
 #include "sgsolverworker.hpp"
 #include "sgsolverworker_v2.hpp"
 #include "sgsettingshandler.hpp"
+#include "sgplotsettingshandler.hpp"
 #include "sg.hpp"
-#include "risksharing.hpp"
+#include "sgrisksharing.hpp"
+#include "sgpredation.hpp"
 #include "sgrisksharinghandler.hpp"
 #include "sglegend.hpp"
 
@@ -84,6 +86,9 @@ private:
 
   //! The object for controling environment settings.
   SGSettingsHandler * settingsHandler;
+
+  //! The object for controling plot settings.
+  SGPlotSettingsHandler * plotSettingsHandler;
 
   //! Text edit containing the log output.
   QTextEdit * logTextEdit;
@@ -152,6 +157,12 @@ private slots:
   //! Changes settings for the SGEnv object
   void settingsHandlerClosed();
 
+  //! Changes plot settings
+  void changePlotSettings();
+
+  //! Changes plot settings
+  void plotSettingsHandlerClosed();
+  
   //! Triggers a new screen shot.
   void screenShot();
   

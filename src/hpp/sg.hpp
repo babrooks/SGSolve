@@ -23,6 +23,6 @@
 #define _SG_HPP
 
 #include "sgsolver.hpp"
-
+#include "sgsolver_v4.hpp"
 
 #endif

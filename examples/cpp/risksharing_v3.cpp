@@ -21,19 +21,18 @@
 
 //! Kocherlakota style risk sharing model
 //! @example
-#include "risksharing.hpp"
-#include "sgsimulator.hpp"
+#include "sgrisksharing.hpp"
+#include "sgsolver.hpp"
+#include "sgjycsolver.hpp"
 #include "sgsolver_v3.hpp"
 #include "sgsolver_v4.hpp"
 #include <ctime>
 
 int main()
 {
-  double delta = 0.6;
-  int numEndowments = 9;
-  int c2e = 5;
-  int numSims = 1e3;
-  int numSimIters = 1e5;
+  double delta = 0.7;
+  int numEndowments = 2;
+  int c2e = 80;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
 
   {
@@ -41,7 +40,7 @@ int main()
     RiskSharingGame rsg(delta,numEndowments,
 			c2e,persistence,endowmentMode);
     SGEnv env;
-    env.setParam(SG::STOREITERATIONS,2);
+    env.setParam(SG::STOREITERATIONS,1);
     env.setParam(SG::MAXITERATIONS,1e6);
     env.setParam(SG::MAXPOLICYITERATIONS,1e2);
     env.setParam(SG::STOREACTIONS,true);
@@ -52,20 +51,14 @@ int main()
     double duration;
 
     
-    start = clock();
-    SGSolver solver1(env,game);
-    solver1.solve();
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << "Twist time elapsed: "<< duration << " seconds" << endl;
-    // SGSolution soln = solver1.getSolution();
-    // SGSolution::save(soln,"risksharing_v1.sln");
-    
-
     // start = clock();
-    // SGSolver_V3 solver3(game);
-    // solver3.solve();
+    // SGSolver solver1(env,game);
+    // solver1.solve();
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "Gurobi implementation time elapsed: "<< duration << " seconds" << endl;
+    // cout << "Twist time elapsed: "<< duration << " seconds" << endl;
+    // // SGSolution soln = solver1.getSolution();
+    // // SGSolution::save(soln,"risksharing_v1.sln");
+    
 
 
 
@@ -89,8 +82,36 @@ int main()
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
 
-    SGSolution_V2 soln3 = solver5.getSolution();
-    SGSolution_V2::save(soln3,"risksharing_v3_endogenous.sln2");
+    // SGSolution_V2 soln3 = solver5.getSolution();
+    // stringstream ss;
+    // ss << "./solutions/risksharing_nume=" << numEndowments
+    //    << "_c2e=" << c2e
+    //    << "_delta=" << delta
+    //    << ".sln2";
+    // SGSolution_V2::save(soln3,ss.str().c_str());
+    
+    
+    // start = clock();
+    // int numDirections = 100;
+    // SGJYCSolver jycsolver(game,numDirections);
+    // jycsolver.solve();
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "JYC implementation time elapsed with " << numDirections
+    // 	 << " directions: "<< duration << " seconds" << endl;
+
+    // start = clock();
+    // numDirections = 200;
+    // SGJYCSolver jycsolver2(game,numDirections);
+    // jycsolver2.solve();
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "JYC implementation time elapsed with " << numDirections
+    // 	 << " directions: "<< duration << " seconds" << endl;
+    
+    // start = clock();
+    // SGSolver_V3 solver3(game);
+    // solver3.solve();
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "Gurobi implementation time elapsed: "<< duration << " seconds" << endl;
     
     
     
