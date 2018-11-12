@@ -24,7 +24,6 @@
 #include "sg.hpp"
 #include "sgsimulator.hpp"
 
-
 int main ()
 {
   double delta = 0.7;

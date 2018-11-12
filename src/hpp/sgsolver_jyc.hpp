@@ -19,8 +19,8 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGJYCSOLVER_HPP
-#define _SGJYCSOLVER_HPP
+#ifndef _SGSOLVER_JYC_HPP
+#define _SGSOLVER_JYC_HPP
 
 #include "sgcommon.hpp"
 #include "sgutilities.hpp"
@@ -37,7 +37,7 @@
 
   \ingroup src
  */
-class SGJYCSolver
+class SGSolver_JYC
 {
 private:
   //! Const reference to the game being solved.
@@ -59,7 +59,7 @@ private:
 
 public:
   //! Constructor
-  SGJYCSolver(const SGGame & _game, int _numDirections):
+  SGSolver_JYC(const SGGame & _game, int _numDirections):
     env(),
     model(env),
     game(_game),
@@ -98,7 +98,7 @@ public:
   double iterate();
 };
 
-void SGJYCSolver::solve()
+void SGSolver_JYC::solve()
 {
   double errorTol = 1e-6;
   double error = 1.0;
@@ -116,7 +116,7 @@ void SGJYCSolver::solve()
     }
 }
 
-void SGJYCSolver::initialize()
+void SGSolver_JYC::initialize()
 {
 
   // Set directions to be equally spaced
@@ -186,7 +186,7 @@ void SGJYCSolver::initialize()
   delete[] var;
 }
 
-double SGJYCSolver::iterate()
+double SGSolver_JYC::iterate()
 {
   vector<int> actions, deviations;
   int deviation;

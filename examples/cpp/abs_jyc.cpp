@@ -23,7 +23,7 @@
 //! algorithm and generalized JYC.
 //! @example
 #include "sg.hpp"
-#include "sgjycsolver.hpp"
+#include "sgsolver_jyc.hpp"
 #include "risksharing.hpp"
 
 int main()
@@ -58,7 +58,7 @@ int main()
 
 	  std::clock_t start = std::clock();
 
-	  SGJYCSolver solver_jyc(game,numDirections);
+	  SGSolver_JYC solver_jyc(game,numDirections);
 	  solver_jyc.solve();
 
 	  double duration_jyc = (std::clock() - start) / (double) CLOCKS_PER_SEC;

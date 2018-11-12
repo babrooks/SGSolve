@@ -19,8 +19,8 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGITERATION_V2_HPP
-#define _SGITERATION_V2_HPP
+#ifndef _SGITERATION_MAXMINMAX_HPP
+#define _SGITERATION_MAXMINMAX_HPP
 
 #include "sggame.hpp"
 #include "sgstep.hpp"
@@ -28,13 +28,13 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
 
-//! Stores data on the behavior of SGApprox_V2::generate()
+//! Stores data on the behavior of SGApprox_MaxMinMax::generate()
 /*! This class records information on each cut made by the twist
     algorithm. 
 
     \ingroup src
 */
-class SGIteration_V2
+class SGIteration_MaxMinMax
 {
 private:
   vector< vector<SGBaseAction> > actions; /*!< The actions that can be
@@ -48,9 +48,9 @@ private:
   
 public:
   //! Default constructor
-  SGIteration_V2() {}
+  SGIteration_MaxMinMax() {}
 
-  // //! Initializes a new SGIteration_V2 object with data on the current
+  // //! Initializes a new SGIteration_MaxMinMax object with data on the current
   // //! iteration
   // /*! By default, the constructor will also copy the data in
   //     SGApprox::actions, so that the user can later recover the test
@@ -59,7 +59,7 @@ public:
   //     stored. For large games, storing the actions can take a large
   //     amount of memory. */
 
-  SGIteration_V2 (const vector<list<SGAction_V2> > & _actions,
+  SGIteration_MaxMinMax (const vector<list<SGAction_MaxMinMax> > & _actions,
 		  const SGTuple & _threatTuple):
     threatTuple{_threatTuple}
   {
@@ -87,7 +87,7 @@ public:
   //! Get method for the current threat tuple.
   const SGTuple & getThreatTuple() const { return threatTuple; }
   
-  //! Serializes the SGIteration_V2 object using boost.
+  //! Serializes the SGIteration_MaxMinMax object using boost.
   friend class boost::serialization::access;
   template<class Archive>
 
@@ -98,6 +98,6 @@ public:
     ar & actions;
     ar & threatTuple;
   }
-}; // SGIteration_V2
+}; // SGIteration_MaxMinMax
 
 #endif

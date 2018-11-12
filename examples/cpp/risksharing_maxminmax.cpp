@@ -23,9 +23,9 @@
 //! @example
 #include "sgrisksharing.hpp"
 #include "sgsolver.hpp"
-#include "sgjycsolver.hpp"
-#include "sgsolver_v3.hpp"
-#include "sgsolver_v4.hpp"
+#include "sgsolver_jyc.hpp"
+#include "sgsolver_maxminmax_grb.hpp"
+#include "sgsolver_maxminmax.hpp"
 #include <ctime>
 
 int main()
@@ -64,36 +64,36 @@ int main()
 
     // start = clock();
 
-    // SGSolver_V4 solver4(env,game);
+    // SGSolver_MaxMinMax solver4(env,game);
     // solver4.solve();
 
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     // cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
 
-    // SGSolution_V2 soln2 = solver4.getSolution();
-    // SGSolution_V2::save(soln2,"risksharing_v3.sln2");
+    // SGSolution_MaxMinMax soln2 = solver4.getSolution();
+    // SGSolution_MaxMinMax::save(soln2,"risksharing_maxminmax_fixed.sln2");
 
     
     start = clock();
 
-    SGSolver_V4 solver5(env,game);
+    SGSolver_MaxMinMax solver5(env,game);
     solver5.solve_endogenous();
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
 
-    // SGSolution_V2 soln3 = solver5.getSolution();
+    // SGSolution_MaxMinMax soln3 = solver5.getSolution();
     // stringstream ss;
     // ss << "./solutions/risksharing_nume=" << numEndowments
     //    << "_c2e=" << c2e
     //    << "_delta=" << delta
     //    << ".sln2";
-    // SGSolution_V2::save(soln3,ss.str().c_str());
+    // SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
     
     
     // start = clock();
     // int numDirections = 100;
-    // SGJYCSolver jycsolver(game,numDirections);
+    // SGSolver_JYC jycsolver(game,numDirections);
     // jycsolver.solve();
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     // cout << "JYC implementation time elapsed with " << numDirections
@@ -108,7 +108,7 @@ int main()
     // 	 << " directions: "<< duration << " seconds" << endl;
     
     // start = clock();
-    // SGSolver_V3 solver3(game);
+    // SGSolver_MaxMinMax_GRB solver3(game);
     // solver3.solve();
     // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     // cout << "Gurobi implementation time elapsed: "<< duration << " seconds" << endl;

@@ -19,9 +19,9 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#include "sgsolver_v4.hpp"
+#include "sgsolver_maxminmax.hpp"
 
-SGSolver_V4::SGSolver_V4(const SGEnv & _env,
+SGSolver_MaxMinMax::SGSolver_MaxMinMax(const SGEnv & _env,
 			 const SGGame & _game):
   env(_env),
   game(_game),
@@ -38,7 +38,7 @@ SGSolver_V4::SGSolver_V4(const SGEnv & _env,
 
 }
 
-void SGSolver_V4::solve()
+void SGSolver_MaxMinMax::solve()
 {
   initialize();
   
@@ -75,7 +75,7 @@ void SGSolver_V4::solve()
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
-  SGIteration_V2 iter;
+  SGIteration_MaxMinMax iter;
   
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
@@ -108,7 +108,7 @@ void SGSolver_V4::solve()
 	} // for state
 
       if (env.getParam(SG::STOREITERATIONS))
-	iter = SGIteration_V2(actions,threatTuple);
+	iter = SGIteration_MaxMinMax(actions,threatTuple);
       
       // Reset the error level
       errorLevel = 0;
@@ -211,7 +211,7 @@ void SGSolver_V4::solve()
 
 } // solve
 
-void SGSolver_V4::solve_endogenous()
+void SGSolver_MaxMinMax::solve_endogenous()
 {
   initialize();
   
@@ -229,7 +229,7 @@ void SGSolver_V4::solve_endogenous()
   
 } // solve_endogenous
 
-std::string SGSolver_V4::progressString() const
+std::string SGSolver_MaxMinMax::progressString() const
 {
   std::stringstream ss;
   // Print summary of iteration
@@ -245,12 +245,12 @@ std::string SGSolver_V4::progressString() const
 }
 
 
-double SGSolver_V4::iterate_endogenous()
+double SGSolver_MaxMinMax::iterate_endogenous()
 {
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
-  SGIteration_V2 iter;
+  SGIteration_MaxMinMax iter;
   
   // Clear the directions and levels
   list<SGPoint> newDirections;
@@ -266,7 +266,7 @@ double SGSolver_V4::iterate_endogenous()
   vector<SG::Regime> regimeTuple(numStates,SG::Binding);
 
   if (env.getParam(SG::STOREITERATIONS))
-    iter = SGIteration_V2 (actions,threatTuple);
+    iter = SGIteration_MaxMinMax (actions,threatTuple);
       
   // Iterate through directions
   SGPoint currDir = SGPoint(1,0); // Start pointing due east
@@ -406,7 +406,7 @@ double SGSolver_V4::iterate_endogenous()
   
 } // iterate_endogenous
 
-void SGSolver_V4::initialize()
+void SGSolver_MaxMinMax::initialize()
 {
   errorLevel = 1;
   numIter = 0;
@@ -423,7 +423,7 @@ void SGSolver_V4::initialize()
   
   // Initialize actions with a big box as the feasible set
   actions.clear();
-  actions = vector< list<SGAction_V2> > (numStates);
+  actions = vector< list<SGAction_MaxMinMax> > (numStates);
   
   for (int state = 0; state < numStates; state++)
     {
@@ -431,7 +431,7 @@ void SGSolver_V4::initialize()
 	   ait != eqActions[state].cend();
 	   ait++)
 	{
-	  actions[state].push_back(SGAction_V2(env,state,*ait));
+	  actions[state].push_back(SGAction_MaxMinMax(env,state,*ait));
 	  actions[state].back().calculateMinIC(game,threatTuple);
 	  actions[state].back().resetTrimmedPoints();
 	  
@@ -450,11 +450,11 @@ void SGSolver_V4::initialize()
     } // for state
 } // initialize_endogenous
 
-void SGSolver_V4::optimizePolicy(SGTuple & pivot,
+void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 				 vector<SGActionIter> & actionTuple,
 				 vector<SG::Regime> & regimeTuple,
 				 const SGPoint currDir,
-				 const vector<list<SGAction_V2> > & actions,
+				 const vector<list<SGAction_MaxMinMax> > & actions,
 				 const SGTuple & feasibleTuple) const
 {
   // Do policy iteration to find the optimal pivot.
@@ -636,11 +636,11 @@ void SGSolver_V4::optimizePolicy(SGTuple & pivot,
 
 } // optimizePolicy
 
-double SGSolver_V4::sensitivity(const SGTuple & pivot,
+double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 				const vector<SGActionIter> & actionTuple,
 				const vector<SG::Regime> & regimeTuple,
 				const SGPoint currDir,
-				const vector<list<SGAction_V2> > & actions) const
+				const vector<list<SGAction_MaxMinMax> > & actions) const
 {
   SGPoint normDir = currDir.getNormal();
   
@@ -777,8 +777,8 @@ double SGSolver_V4::sensitivity(const SGTuple & pivot,
 } // sensitivity
 
 
-void SGSolver_V4::findFeasibleTuple(SGTuple & feasibleTuple,
-				    const vector<list<SGAction_V2> > & actions) const
+void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
+				    const vector<list<SGAction_MaxMinMax> > & actions) const
 {
   // Update the APS-feasible tuple
 
@@ -853,7 +853,7 @@ void SGSolver_V4::findFeasibleTuple(SGTuple & feasibleTuple,
 
 } // findFeasibleTuple
 
-void SGSolver_V4::policyToPayoffs(SGTuple & pivot,
+void SGSolver_MaxMinMax::policyToPayoffs(SGTuple & pivot,
 				  const vector<SGActionIter>  & actionTuple,
 				  const vector<SG::Regime> & regimeTuple) const
 {

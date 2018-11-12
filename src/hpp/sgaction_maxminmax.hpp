@@ -20,8 +20,8 @@
 // Chicago, IL
 
 // Classes for storing data for stochastic games.
-#ifndef _SGACTION_V2_HPP
-#define _SGACTION_V2_HPP
+#ifndef _SGACTION_MAXMINMAX_HPP
+#define _SGACTION_MAXMINMAX_HPP
 
 #include "sgcommon.hpp"
 #include "sgtuple.hpp"
@@ -37,7 +37,7 @@
 
   \ingroup src
 */
-class SGAction_V2 : public SGBaseAction
+class SGAction_MaxMinMax : public SGBaseAction
 {
 private:
   const SGEnv & env; /*!< Constant reference to the parent
@@ -56,13 +56,13 @@ private:
 
 public:
   //! Default constructor
-  SGAction_V2():
+  SGAction_MaxMinMax():
     env{SGEnv()}
   {}
   
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
-  SGAction_V2(const SGEnv & _env):
+  SGAction_MaxMinMax(const SGEnv & _env):
     env(_env),
     SGBaseAction()
   {}
@@ -70,7 +70,7 @@ public:
   //! Constructor
   /*! Constructs an action for the given state and action index in the
       given environment. */
-  SGAction_V2(const SGEnv & _env, int _state, int _action):
+  SGAction_MaxMinMax(const SGEnv & _env, int _state, int _action):
     env(_env), SGBaseAction(_state,_action),
     bndryDirs(2,SGTuple(2)),
     trimmedBndryDirs(2,SGTuple(2,SGPoint(0,0)))
@@ -173,7 +173,7 @@ public:
     ar & trimmedBndryDirs;
   } // serialize
 
-}; // SGAction_V2
+}; // SGAction_MaxMinMax
 
 
 #endif

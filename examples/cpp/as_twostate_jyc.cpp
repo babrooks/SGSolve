@@ -22,7 +22,7 @@
 //! Example from Abreu-Sannikov. Game with only one state.
 //! @example
 #include "sg.hpp"
-#include "sgjycsolver.hpp"
+#include "sgsolver_jyc.hpp"
 
 int main ()
 {
@@ -90,7 +90,7 @@ int main ()
 		  probabilities);
 
       cout << "Building solver" << endl;
-      SGJYCSolver solver(game,100);
+      SGSolver_JYC solver(game,100);
 
       cout << "Starting solve routine" << endl;
       solver.solve();

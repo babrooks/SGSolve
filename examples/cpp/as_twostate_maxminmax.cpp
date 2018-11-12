@@ -23,7 +23,7 @@
 //! @example
 #include "sg.hpp"
 #include "sgsimulator.hpp"
-#include "sgsolver_v4.hpp"
+#include "sgsolver_maxminmax.hpp"
 
 int main ()
 {
@@ -105,7 +105,7 @@ int main ()
   
       cout << "Building solver" << endl;
 
-      SGSolver_V4 solver(env,game);
+      SGSolver_MaxMinMax solver(env,game);
 
       try
       	{
@@ -117,11 +117,11 @@ int main ()
       	       << e.what() << endl;
       	}
 
-      SGSolution_V2 soln = solver.getSolution();
+      SGSolution_MaxMinMax soln = solver.getSolution();
 
-      SGSolution_V2::save(soln,"as_twostate_v2.sln2");
+      SGSolution_MaxMinMax::save(soln,"as_twostate_maxminmax.sln2");
 
-      SGSolver_V4 solver2(env,game);
+      SGSolver_MaxMinMax solver2(env,game);
       try
 	{
 	  solver2.solve_endogenous();
@@ -132,11 +132,11 @@ int main ()
 	       << e.what() << endl;
 	}
 
-      SGSolution_V2 soln2 = solver2.getSolution();
-      SGSolution_V2::save(soln2,"as_twostate_v2_endogenous.sln2");
+      SGSolution_MaxMinMax soln2 = solver2.getSolution();
+      SGSolution_MaxMinMax::save(soln2,"as_twostate_maxminmax_endogenous.sln2");
 
-      SGSolution_V2 soln3;
-      SGSolution_V2::load(soln3,"as_twostate_v2_endogenous.sln2");
+      SGSolution_MaxMinMax soln3;
+      SGSolution_MaxMinMax::load(soln3,"as_twostate_maxminmax_endogenous.sln2");
       // soln3 = soln2;
 
       // cout << soln3.getIterations().size() << endl;

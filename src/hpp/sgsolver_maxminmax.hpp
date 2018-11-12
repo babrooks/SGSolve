@@ -19,16 +19,16 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGSOLVER_V4_HPP
-#define _SGSOLVER_V4_HPP
+#ifndef _SGSOLVER_MAXMINMAX_HPP
+#define _SGSOLVER_MAXMINMAX_HPP
 
 #include "sgcommon.hpp"
 #include "sgutilities.hpp"
 #include "sgenv.hpp"
 #include "sggame.hpp"
-#include "sgaction_v2.hpp"
+#include "sgaction_maxminmax.hpp"
 #include "sgexception.hpp"
-#include "sgsolution_v2.hpp"
+#include "sgsolution_maxminmax.hpp"
 
 //! Class for solving stochastic games
 /*! This class contains parameters for the algorithm, the solve
@@ -40,9 +40,9 @@
 
   \ingroup src
  */
-class SGSolver_V4
+class SGSolver_MaxMinMax
 {
-  typedef list<SGAction_V2>::const_iterator SGActionIter;
+  typedef list<SGAction_MaxMinMax>::const_iterator SGActionIter;
 
 private:
   // Data
@@ -52,7 +52,7 @@ private:
   //! Constant reference to the game to be solved.
   const SGGame & game; 
   //! SGSolution object used by SGApprox to store data.
-  SGSolution_V2 soln;
+  SGSolution_MaxMinMax soln;
 
   // References to objects in the game
   const double delta; /*!< The discount factor, copied from
@@ -70,7 +70,7 @@ private:
   list<SGPoint> directions;
   list< vector<double> > levels;
   SGTuple threatTuple;
-  vector< list<SGAction_V2> > actions;
+  vector< list<SGAction_MaxMinMax> > actions;
   
   SGPoint dueEast = SGPoint(1.0,0.0);
   SGPoint dueNorth = SGPoint(0.0,1.0);
@@ -80,16 +80,16 @@ private:
   
 public:
   //! Default constructor
-  SGSolver_V4(); 
+  SGSolver_MaxMinMax(); 
 
   //! Constructor
-  /*! Creates a new SGSolver_V4 object and initializes it with the given
+  /*! Creates a new SGSolver_MaxMinMax object and initializes it with the given
       game. */
-  SGSolver_V4(const SGEnv & _env, 
+  SGSolver_MaxMinMax(const SGEnv & _env, 
 	   const SGGame & _game);
 
   //! Destructor
-  ~SGSolver_V4() {}
+  ~SGSolver_MaxMinMax() {}
 
   //! Solve routine
   /*! Initializes a new SGApproximation object and iteratively
@@ -121,7 +121,7 @@ public:
 		      vector<SGActionIter> & actionTuple,
 		      vector<SG::Regime> & regimeTuple,
 		      const SGPoint currDir,
-		      const vector<list<SGAction_V2> > & actions,
+		      const vector<list<SGAction_MaxMinMax> > & actions,
 		      const SGTuple & feasibleTuple) const;
 
   //! Find the next clockwise direction at which the optimal tuple
@@ -130,20 +130,20 @@ public:
 		     const vector<SGActionIter> & actionTuple,
 		     const vector<SG::Regime> & regimeTuple,
 		     const SGPoint currDir,
-		     const vector<list<SGAction_V2> > & actions) const;
+		     const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Find a payoff tuple that is feasible for APS
   void findFeasibleTuple(SGTuple & feasibleTuple,
-			 const vector<list<SGAction_V2> > & actions) const;
+			 const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Converts a policy function to a payoff function using bellman iteration
   void policyToPayoffs(SGTuple & pivot,
 		       const vector<SGActionIter>  & actionTuple,
 		       const vector<SG::Regime> & regimeTuple) const;
 
-  //! Returns a constant reference to the SGSolution_V2 object storing the
+  //! Returns a constant reference to the SGSolution_MaxMinMax object storing the
   //! output of the computation.
-  const SGSolution_V2& getSolution() const {return soln;}
+  const SGSolution_MaxMinMax& getSolution() const {return soln;}
 };
 
 

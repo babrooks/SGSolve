@@ -22,7 +22,7 @@
 #ifndef _SGSTEP_HPP
 #define _SGSTEP_HPP
 
-#include "sgaction_v2.hpp"
+#include "sgaction_maxminmax.hpp"
 #include "sghyperplane.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -46,11 +46,11 @@ public:
   SGStep ()
   {} // default constructor
 
-  SGStep(const vector< list<SGAction_V2>::const_iterator > & _actionTuple,
+  SGStep(const vector< list<SGAction_MaxMinMax>::const_iterator > & _actionTuple,
 	 const vector<SG::Regime> & _regimeTuple,
 	 const SGTuple & _pivot,
 	 const SGHyperplane & _hyperplane,
-	 const vector< list<SGAction_V2> > & actions):
+	 const vector< list<SGAction_MaxMinMax> > & actions):
     actionTuple (_actionTuple.size(),0),
     regimeTuple{_regimeTuple},
     pivot{_pivot},

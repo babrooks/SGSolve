@@ -20,11 +20,11 @@
 // Chicago, IL
 
 // BAB 9-25-2012
-#include "sgaction_v2.hpp"
+#include "sgaction_maxminmax.hpp"
 
-/* SGAction_V2 */
+/* SGAction_MaxMinMax */
 
-void SGAction_V2::trim(const SGPoint& normal,
+void SGAction_MaxMinMax::trim(const SGPoint& normal,
 		    double level)
 {
   assert(trimmedBndryDirs.size()== 2);
@@ -37,7 +37,7 @@ void SGAction_V2::trim(const SGPoint& normal,
     }
 }
 
-void SGAction_V2::intersectHalfSpace(const SGPoint& normal,
+void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
 				     const double level,
 				     const int player,
 				     SGTuple & segment,
@@ -104,7 +104,7 @@ void SGAction_V2::intersectHalfSpace(const SGPoint& normal,
     }
 }
 
-void SGAction_V2::calculateMinIC(const SGGame & game,
+void SGAction_MaxMinMax::calculateMinIC(const SGGame & game,
 				 const vector<bool> & update,
 				 const SGTuple & threatTuple)
 {
@@ -115,14 +115,14 @@ void SGAction_V2::calculateMinIC(const SGGame & game,
       if (!update[player])
 	continue;
 
-      minIC[player] = SGAction_V2::calculateMinIC(action,state,player,
+      minIC[player] = SGAction_MaxMinMax::calculateMinIC(action,state,player,
 					       game,threatTuple);
     }
   resetTrimmedPoints();
 
 } // calculateMinIC
 
-double SGAction_V2::calculateMinIC(int action,int state,int player,
+double SGAction_MaxMinMax::calculateMinIC(int action,int state,int player,
 				const SGGame & game,
 				const SGTuple & threatTuple)
 {

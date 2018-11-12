@@ -19,8 +19,8 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGSOLVER_V3_HPP
-#define _SGSOLVER_V3_HPP
+#ifndef _SGSOLVER_MAXMINMAX_GRB_HPP
+#define _SGSOLVER_MAXMINMAX_GRB_HPP
 
 #include "sgcommon.hpp"
 #include "sgutilities.hpp"
@@ -34,7 +34,7 @@
 
   \ingroup src
 */
-class SGSolver_V3
+class SGSolver_MaxMinMax_GRB
 {
 private:
   //! Const reference to the game being solved.
@@ -111,7 +111,7 @@ public:
     };
     
   //! Constructor
-  SGSolver_V3(const SGGame & _game):
+  SGSolver_MaxMinMax_GRB(const SGGame & _game):
     game(_game),
     payoffs(_game.getPayoffs()),
     prob(_game.getProbabilities()),
@@ -161,7 +161,7 @@ public:
 };
 
 
-void SGSolver_V3::solve()
+void SGSolver_MaxMinMax_GRB::solve()
 {
   double movement = 1.0;
   int numIter = 0;
@@ -214,7 +214,7 @@ void SGSolver_V3::solve()
   cout << "Converged!" << endl;
 }
 
-void SGSolver_V3::initialize()
+void SGSolver_MaxMinMax_GRB::initialize()
 {
   payoffBound = 0;
   for (int s = 0; s < numStates; s++)
@@ -231,7 +231,7 @@ void SGSolver_V3::initialize()
   payoffBound *= 1e2;
 }
 
-double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
+double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 {
   GRBEnv env;
   // env.set(GRB_IntParam_Method,0); // primal simplex
@@ -782,7 +782,7 @@ double SGSolver_V3::iterate(const SGSolverMode mode, int & steps)
   return dist;
 } // iterate
 
-void SGSolver_V3::addBoundingHyperplane(SGPoint & currDir,
+void SGSolver_MaxMinMax_GRB::addBoundingHyperplane(SGPoint & currDir,
 					GRBConstr & xConstr,
 					GRBConstr & yConstr,
 					GRBVar * valueFn,
@@ -861,7 +861,7 @@ void SGSolver_V3::addBoundingHyperplane(SGPoint & currDir,
   yConstr.set(GRB_DoubleAttr_RHS,currDir[1]);
 } // addBoundingHyperlpane
 
-void SGSolver_V3::printIteration(ofstream & ofs, int numIter)
+void SGSolver_MaxMinMax_GRB::printIteration(ofstream & ofs, int numIter)
 {
   const int numStates = game.getNumStates();
   ofs << numIter << " " << directions.size();

@@ -19,11 +19,11 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGSOLUTION_V2_HPP
-#define _SGSOLUTION_V2_HPP
+#ifndef _SGSOLUTION_MAXMINMAX_HPP
+#define _SGSOLUTION_MAXMINMAX_HPP
 
 #include "sggame.hpp"
-#include "sgiteration_v2.hpp"
+#include "sgiteration_maxminmax.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
@@ -37,43 +37,43 @@
     
     \ingroup src
 */
-class SGSolution_V2
+class SGSolution_MaxMinMax
 {
 private:
   SGGame game; /*!< The game that was solved. */
-  list<SGIteration_V2> iterations; /*!< A list of SGIteration_V2 objects
+  list<SGIteration_MaxMinMax> iterations; /*!< A list of SGIteration_MaxMinMax objects
                                    tracking the progress of
                                    SGSolver::solve(). */
   
 public:
   //! Default constructor
-  SGSolution_V2() {}
-  //! Initializes an SGSolution_V2 object with a copy of the SGGame _game.
-  SGSolution_V2(const SGGame& _game):
+  SGSolution_MaxMinMax() {}
+  //! Initializes an SGSolution_MaxMinMax object with a copy of the SGGame _game.
+  SGSolution_MaxMinMax(const SGGame& _game):
     game(_game)
   {}
 
   //! Get method for the game
   const SGGame & getGame() const { return game; }
   //! Get method for the iterations
-  const list<SGIteration_V2> & getIterations() const { return iterations; }
+  const list<SGIteration_MaxMinMax> & getIterations() const { return iterations; }
   
-  //! Resets the SGSolution_V2 object by clearing the iterations and
+  //! Resets the SGSolution_MaxMinMax object by clearing the iterations and
   //! extremeTuples lists.
   void clear() {iterations.clear(); }
-  //! Adds a new iteration to the back of SGSolution_V2::iterations
-  void push_back(const SGIteration_V2 & iteration)
+  //! Adds a new iteration to the back of SGSolution_MaxMinMax::iterations
+  void push_back(const SGIteration_MaxMinMax & iteration)
   { iterations.push_back(iteration); }
 
-  //! Serializes the SGSolution_V2 object using boost
+  //! Serializes the SGSolution_MaxMinMax object using boost
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)
   {
     ar & game & iterations;
   }
 
-  //! Static method for saving an SGSolution_V2 object to the file filename.
-  static void save(const SGSolution_V2 & soln, const char* filename)
+  //! Static method for saving an SGSolution_MaxMinMax object to the file filename.
+  static void save(const SGSolution_MaxMinMax & soln, const char* filename)
   {
     std::ofstream ofs(filename,std::fstream::out);
 
@@ -88,8 +88,8 @@ public:
     ofs.close();
   }
 
-  //! Static method for loading an SGSolution_V2 object from the file filename.
-  static void load(SGSolution_V2 & soln, const char* filename)
+  //! Static method for loading an SGSolution_MaxMinMax object from the file filename.
+  static void load(SGSolution_MaxMinMax & soln, const char* filename)
   {
     std::ifstream ifs(filename,std::fstream::in);
     if (ifs.good() && ifs.is_open())
@@ -104,6 +104,6 @@ public:
   }
 
   friend class boost::serialization::access;
-}; // SGSolution_V2
+}; // SGSolution_MaxMinMax
 
 #endif

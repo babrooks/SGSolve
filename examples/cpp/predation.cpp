@@ -23,7 +23,7 @@
 //! @example
 #include "sgpredation.hpp"
 #include "sgsimulator.hpp"
-#include "sgsolver_v4.hpp"
+#include "sgsolver_maxminmax.hpp"
 #include <ctime>
 
 int main()
@@ -52,13 +52,13 @@ int main()
 
     
     start = clock();
-    SGSolver_V4 solver(env,game);
+    SGSolver_MaxMinMax solver(env,game);
     solver.solve_endogenous();
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
 
-    SGSolution_V2 soln = solver.getSolution();
+    SGSolution_MaxMinMax soln = solver.getSolution();
     stringstream ss;
     ss << "./solutions/predationgame_numq=" << numQuantities
        << "_numF=" << numFirmStates

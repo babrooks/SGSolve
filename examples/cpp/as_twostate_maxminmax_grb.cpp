@@ -23,7 +23,7 @@
 //! @example
 #include "sg.hpp"
 #include "sgsimulator.hpp"
-#include "sgsolver_v3.hpp"
+#include "sgsolver_maxminmax_grb.hpp"
 
 int main ()
 {
@@ -103,7 +103,7 @@ int main ()
   
       cout << "Building solver" << endl;
 
-      SGSolver_V3 solver(game);
+      SGSolver_MaxMinMax_GRB solver(game);
 
       solver.solve();
       

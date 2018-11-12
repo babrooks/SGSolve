@@ -21,10 +21,9 @@
 
 # Makefile for examples
 
-OBJFILES=sggame.o sgsolver.o sgutilities.o sgcomparator.o sgsolution.o
 MAINS= as_twostate abreusannikov pd pd_twostate guitester risksharing finiteresource \
-	as_twostate_v2  as_twostate_v4 predation
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_v3 risksharing_v3
+	as_twostate_v2  as_twostate_maxminmax predation
+MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb risksharing_maxminmax
 GRBTEST=gurobibasistest
 QHULLMAINS=qhulltest
 QHULLGRBMAINS=threeplayer2
@@ -34,11 +33,6 @@ QHULLDIR=../../qhull
 include ../localsettings.mk
 
 all: libsg.a $(MAINS)
-
-# Next correspondsp to targets for each of the object files. We compile
-# them into object code and then package them into a static library.
-$(OBJFILES): %.o: $(CPPDIR)/%.cpp $(HPPDIR)/%.hpp $(HPPDIR)/sgcommon.hpp
-	$(CXX)  $(CFLAGS) $< -c 
 
 $(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp $(HPPDIR)/sgsolver_v3.hpp libsg.a
 	$(CXX) $(CFLAGS) $< \
