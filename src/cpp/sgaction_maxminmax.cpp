@@ -25,7 +25,7 @@
 /* SGAction_MaxMinMax */
 
 void SGAction_MaxMinMax::trim(const SGPoint& normal,
-		    double level)
+			      double level)
 {
   assert(trimmedBndryDirs.size()== 2);
   for (int player=0; player < points.size(); player++)
@@ -37,13 +37,24 @@ void SGAction_MaxMinMax::trim(const SGPoint& normal,
     }
 }
 
-void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
-				     const double level,
-				     const int player,
-				     SGTuple & segment,
-				     SGTuple & segmentDirs)
+const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
+					      const int point) const
 {
-  // First north south.
+  assert(numPlayers == 3);
+  assert(point < bndryDirs[player].size());
+  
+  return SGPoint::cross(bndryDirs[player][point],
+			bndryDirs[player][(point-1)%bndryDirs.size()]);
+
+} // getBndryDir
+
+
+void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
+					    const double level,
+					    const int player,
+					    SGTuple & segment,
+					    SGTuple & segmentDirs)
+{
   if (segment.size() == 2)
     {
       // Two points of intersection for this IC constraint.
@@ -102,12 +113,102 @@ void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
       // No points of intersection. Do nothing.
       segment = SGTuple();
     }
-}
+} // intersectHalfSpace
+
+void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
+						   const double level,
+						   int player,
+						   SGTuple & extPnts,
+						   SGTuple & extPntDirs)
+{
+  assert(numPlayers == 3);
+
+  // Iterate to find a point inside the half space.
+  int k0 = -1; 
+  double l0;
+  do
+    {
+      k0++;
+      l0 = extPnts[k0] * normal;
+    } while (l0 > level && k0 < extPnts.size());
+
+  if (k0 == extPnts.size())
+    {
+      // Whole set is ouside the half space.
+      extPnts.clear();
+      extPntDirs.clear();
+      return;
+    }
+
+  // Now keep iterating to find a point outside the half space;
+  int k1 = k0;
+  double l1;
+  do
+    {
+      k1 = (k1+1)%extPnts.size();
+      l1 = extPnts[k1] * normal;
+    } while (l1 <= level && k1 != k0);
+
+  if (k1 == k0)
+    {
+      // Whole set is inside the half space. Do nothing.
+      return;
+    }
+
+  // Remaining case is that there is at least one point (k0) that is
+  // inside and one point (k1) outside. Move k0 so that it is the
+  // first point inside after k1.
+  k0 = k1;
+  do
+    {
+      k0 = (k0+1)%extPnts.size();
+      l0 = extPnts[k0] * normal;
+    } while (l0 > level);
+
+  // add two new points for the intersections.
+  int k = (k1-1)%extPnts.size();
+  double l = extPnts[k] * normal;
+  double weight = (level-l)/(l1-l);
+  SGPoint intersection1 = weight*extPnts[k1]+(1-weight)*extPnts[k];
+
+  k = (k0+1)%extPnts.size();
+  l = extPnts[k] * normal;
+  weight = (level-l)/(l0-l);
+  SGPoint intersection0 = weight*extPnts[k0]+(1-weight)*extPnts[k];
+
+  extPnts[k1] = intersection1;
+  extPntDirs[k1] = normal;
+  if (k==k1)
+    {
+      extPnts.emplace(k,intersection0);
+      extPntDirs.emplace(k,normal);
+    }
+  else
+    {
+      extPnts[k] = intersection0;
+      extPntDirs[k] = normal;
+
+      // Delete points strictly after k1 and strictly before k (which are
+      // all outside)
+      if (k1<k)
+	{
+	  extPnts.erase(k1+1,k);
+	  extPntDirs.erase(k1+1,k);
+	}
+      else // k0>k1
+	{
+	  extPnts.erase(k1+1,extPnts.size());
+	  extPnts.erase(0,k);
+	}
+    }
+} // intersectPolygonHalfSpace
+
 
 void SGAction_MaxMinMax::calculateMinIC(const SGGame & game,
-				 const vector<bool> & update,
-				 const SGTuple & threatTuple)
+					const vector<bool> & update,
+					const SGTuple & threatTuple)
 {
+  assert(numPlayers == game.getNumPlayers());
   for (int player = 0;
        player < game.getNumPlayers();
        player++)

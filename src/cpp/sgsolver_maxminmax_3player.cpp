@@ -269,7 +269,7 @@ double SGSolver_MaxMinMax::iterate_endogenous()
     iter = SGIteration_MaxMinMax (actions,threatTuple);
       
   // Iterate through directions
-  SGPoint currDir = SGPoint(1.0,0.0); // Start pointing due east
+  SGPoint currDir = SGPoint(1,0); // Start pointing due east
   bool passEast = false;
   while (!passEast)
     {
@@ -280,7 +280,9 @@ double SGSolver_MaxMinMax::iterate_endogenous()
       // Do sensitivity analysis to find the next direction
       SGPoint normDir = currDir.getNormal();
       double bestLevel = sensitivity(pivot,actionTuple,regimeTuple,
-				     currDir,actions);
+				     currDir,
+				     currDir.getNormal(),
+				     actions);
 
       SGPoint newDir = 1.0/(bestLevel+1.0)*currDir
 	+ bestLevel/(bestLevel+1.0)*normDir;
@@ -433,19 +435,8 @@ void SGSolver_MaxMinMax::initialize()
 	{
 	  actions[state].push_back(SGAction_MaxMinMax(env,state,*ait));
 	  actions[state].back().calculateMinIC(game,threatTuple);
-	  actions[state].back().resetTrimmedPoints();
-	  
-	  for (int dir = 0; dir < 4; dir ++)
-	    {
-	      double theta = 2.0*PI*static_cast<double>(dir)/4.0;
-	      SGPoint currDir = SGPoint(cos(theta),sin(theta));
-
-	      double level = max(currDir*payoffLB,currDir*payoffUB);
-	      actions[state].back().trim(currDir,level);
-	    } // for dir
-
+	  actions[state].back().resetTrimmedPoints(payoffUB);
 	  actions[state].back().updateTrim();
-	  
 	}
     } // for state
 } // initialize_endogenous
@@ -453,7 +444,7 @@ void SGSolver_MaxMinMax::initialize()
 void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 				 vector<SGActionIter> & actionTuple,
 				 vector<SG::Regime> & regimeTuple,
-				 const SGPoint currDir,
+				 const SGPoint & currDir,
 				 const vector<list<SGAction_MaxMinMax> > & actions,
 				 const SGTuple & feasibleTuple) const
 {
@@ -469,7 +460,6 @@ void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 
   vector<bool> bestAPSNotBinding(numStates,false);
   SGTuple bestBindingPayoffs(numStates);
-
   
   // policy iteration
   do
@@ -518,7 +508,7 @@ void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 		} // player
 
 	      if (bestBindingPlayer < 0 // didn't find a binding payoff
-		  || (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
+		  || (ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
 		      *currDir > 1e-6) // Can improve on the best
 				       // binding payoff by moving in
 				       // along the frontier
@@ -639,11 +629,10 @@ void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 				const vector<SGActionIter> & actionTuple,
 				const vector<SG::Regime> & regimeTuple,
-				const SGPoint currDir,
+				const SGPoint & currDir,
+				const SGPoint & newDir,
 				const vector<list<SGAction_MaxMinMax> > & actions) const
 {
-  SGPoint normDir = currDir.getNormal();
-  
   double nonBindingIndiffLvl = -1;
   double bindingIndiffLvl = -1;
   double bestLevel = numeric_limits<double>::max()-1.0;
@@ -656,7 +645,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 	   ait != actions[state].end();
 	   ++ait)
 	{
-	  // Find the smallest weight on normDir such that this action
+	  // Find the smallest weight on newDir such that this action
 	  // improves in that direction. For each of the binding 
 
 	  SGPoint nonBindingPayoff = (1-delta)*payoffs[state]
@@ -664,9 +653,9 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 	    + delta * pivot.expectation(probabilities[state][ait->getAction()]);
 
 	  // Calculate the lvl at which indifferent to the pivot
-	  // pivot[state]*(currDir+tmp*normDir)<=nonBindingPayoff*(currDir+tmp*normDir);
-	  // (pivot[state]-nonBindingPayoff)*currDir<=-tmp*normDir*(pivot[state]-nonBindingPayoff)
-	  double denom = normDir*(nonBindingPayoff-pivot[state]);
+	  // pivot[state]*(currDir+tmp*newDir)<=nonBindingPayoff*(currDir+tmp*newDir);
+	  // (pivot[state]-nonBindingPayoff)*currDir<=-tmp*newDir*(pivot[state]-nonBindingPayoff)
+	  double denom = newDir*(nonBindingPayoff-pivot[state]);
 	  double numer = (pivot[state]-nonBindingPayoff)*currDir;
 	  if (SGPoint::distance(pivot[state],nonBindingPayoff) > 1e-6
 	      && abs(denom) > 1e-10)
@@ -676,7 +665,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 	      if (nonBindingIndiffLvl < bestLevel
 		  && nonBindingIndiffLvl > -1e-6)
 		{
-		  SGPoint indiffDir = currDir + normDir * nonBindingIndiffLvl;
+		  SGPoint indiffDir = currDir + newDir * nonBindingIndiffLvl;
 
 		  // See if a binding payoff is higher in the
 		  // indifference direction
@@ -690,7 +679,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 			  double tmpLvl = ait->getPoints()[p][k]*indiffDir;
 			  if (tmpLvl > bestBindLvl
 			      || (tmpLvl > bestBindLvl-1e-8
-				  && ait->getPoints()[p][k]*normDir >= 0))
+				  && ait->getPoints()[p][k]*newDir >= 0))
 			    {
 			      bestBindLvl = tmpLvl;
 			      bestBindingPlayer = p;
@@ -701,7 +690,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 
 		  bool bestAPSNotBinding = false;
 		  if (bestBindingPlayer < 0 // didn't find a binding payoff
-		      || (ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint]
+		      || (ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
 			  *indiffDir > 1e-6) // Can improve on the
 		      // best binding payoff by
 		      // moving in along the
@@ -740,7 +729,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 		  SGPoint bindingPayoff = (1-delta)*payoffs[state]
 		    [ait->getAction()]
 		    + delta * ait->getPoints()[p][k];
-		  double denom = normDir*(bindingPayoff-pivot[state]);
+		  double denom = newDir*(bindingPayoff-pivot[state]);
 		  double numer = (pivot[state]-bindingPayoff)*currDir;
 		  if (SGPoint::distance(pivot[state],bindingPayoff)>1e-6
 		      && abs(denom) > 1e-10)
@@ -750,7 +739,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 		      if (bindingIndiffLvl < bestLevel
 			  && bindingIndiffLvl > -1e-6)
 			{
-			  SGPoint indiffDir = currDir + normDir * bindingIndiffLvl;
+			  SGPoint indiffDir = currDir + newDir * bindingIndiffLvl;
 
 			  if (nonBindingPayoff*indiffDir
 			      >= bindingPayoff*indiffDir-1e-6)
@@ -786,7 +775,7 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
   // the same as the actionTuple and regimeTuple that determine the
   // pivot.
   vector<SGActionIter> actionTuple(numStates);
-  vector< SG::Regime > regimeTuple(numStates,SG::Binding);
+  vector<SG::Regime> regimeTuple(numStates,SG::Binding);
 
   bool anyNonBinding = false;
   for (int state = 0; state < numStates; state++)
@@ -854,7 +843,7 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
 } // findFeasibleTuple
 
 void SGSolver_MaxMinMax::policyToPayoffs(SGTuple & pivot,
-				  const vector<SGActionIter>  & actionTuple,
+				  const vector<SGActionIter> & actionTuple,
 				  const vector<SG::Regime> & regimeTuple) const
 {
   // Do Bellman iteration to find new fixed point
@@ -876,7 +865,7 @@ void SGSolver_MaxMinMax::policyToPayoffs(SGTuple & pivot,
       pivot = newPivot;
     } while (bellmanPivotGap > env.getParam(SG::UPDATEPIVOTTOL)
 	     && (++updatePivotPasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
-
+  
   if (updatePivotPasses == env.getParam(SG::MAXUPDATEPIVOTPASSES) )
     cout << "WARNING: Maximum pivot update passes reached." << endl;
   

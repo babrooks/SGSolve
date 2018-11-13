@@ -26,7 +26,7 @@
 
 #include "sgcommon.hpp"
 
-//! A vector in \f$\mathbb{R}^2\f$
+//! A vector in \f$\mathbb{R}^n\f$
 /*! A simple two-dimensional vector that supports arithmetic operations. 
 
   \ingroup src
@@ -34,26 +34,31 @@
 class SGPoint
 {
 protected:
-  vector<double> xy; /*!< Two dimensional vector of doubles. */
+  vector<double> x; /*!< Two dimensional vector of doubles. */
 
 public:
   //! Default constructor that sets vector equal to zero.
-  SGPoint():  xy(2,0.0) {}
+  SGPoint():  x(2,0.0) {}
   //! Sets both elements of the vector equal to x.
-  SGPoint(double x): xy(2,x) {}
-  //! Creates an SGPoint from the two-vector _xy. 
-  SGPoint(vector<double> _xy)
+  SGPoint(double _x): x(2,_x) {}
+  //! Creates an n dimensional zero vector
+  SGPoint(int n): x(n,0) {}
+  //! Creates an n dimensional zero vector
+  SGPoint(int n, double _x): x(n,_x) {}
+  //! Creates an SGPoint from the two-vector _x. 
+  SGPoint(vector<double> _x)
   {
-    assert(_xy.size()==2);
-    xy = _xy;
+    x = _x;
   }
   //! Creates an SGPoint with elements x and y.
-  SGPoint(double x, double y): xy(2,0.0)
-  { xy[0] = x; xy[1] = y;  }
+  SGPoint(double _x0, double _x1): x(2,0.0)
+  { x[0] = _x0; x[1] = _x1;  }
 
   //! Destructor
   ~SGPoint(){}
 
+  //! Returns the number of coordinates
+  int size () const {return x.size();}
   //! Returns the counter-clockwise normal vector.
   SGPoint getNormal() const;
   //! Returns the Euclidean norm.
@@ -63,6 +68,9 @@ public:
   //! Calculates distance between p0 and p1 in the sup-norm.
   static double distance(const SGPoint& p0,
 			 const SGPoint& p1);
+  //! Cross product for 3-vectors
+  static SGPoint cross(const SGPoint& p0,
+		       const SGPoint& p1);
   //! Rotates the point clockwise by pi radians
   bool rotateCCW(double pi);
   //! Rotates the point clockwise by pi radians
@@ -157,7 +165,7 @@ public:
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)
   {
-    ar & xy;
+    ar & x;
   }
 
   friend class boost::serialization::access;

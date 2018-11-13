@@ -57,7 +57,8 @@ private:
 public:
   //! Default constructor
   SGAction_MaxMinMax():
-    env{SGEnv()}
+    env{SGEnv()},
+    SGBaseAction()
   {}
   
   //! Constructor
@@ -68,18 +69,37 @@ public:
   {}
 
   //! Constructor
+  /*! Grandfather in two player code. */
+  SGAction_MaxMinMax(const SGEnv & _env,
+		     int _state,
+		     int _action):
+    SGAction_MaxMinMax(env,2,_state,_action)
+  {}
+
+  //! Constructor
   /*! Constructs an action for the given state and action index in the
       given environment. */
-  SGAction_MaxMinMax(const SGEnv & _env, int _state, int _action):
-    env(_env), SGBaseAction(_state,_action),
-    bndryDirs(2,SGTuple(2)),
-    trimmedBndryDirs(2,SGTuple(2,SGPoint(0,0)))
+  SGAction_MaxMinMax(const SGEnv & _env,
+		     int _numPlayers,
+		     int _state,
+		     int _action):
+    env(_env),
+    SGBaseAction(_numPlayers,_state,_action),
+    bndryDirs(_numPlayers,SGTuple(2)),
+    trimmedBndryDirs(_numPlayers,SGTuple(2,SGPoint(2,0.0)))
   {
-    trimmedPoints.resize(2);
+    trimmedPoints.resize(_numPlayers);
+    // cout << numPlayers << endl;
   }
 
+  //! Resets the trimmed points for two players
+  /*!< Sets the trimmed points to rays that point from the minimum
+     incentive compatible continuation value along the positive
+     coordinate axes. */
   void resetTrimmedPoints()
   {
+    assert(numPlayers==2);
+    
     SGPoint point = minIC;
     trimmedPoints[0].clear();
     trimmedPoints[0].push_back(point);
@@ -92,14 +112,37 @@ public:
     point[0] = numeric_limits<double>::max();
     trimmedPoints[1].push_back(point);
 
-    trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2,SGPoint(0,0)));
+    trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2,SGPoint(2,0.0)));
   } // resetTrimmedPoints
 
+  //! Resets the trimmed points for three players
+  /*!< Sets the trimmed points to a large box in the coordinate plane
+     between the minimum incentive compatible payoff and the payoff
+     upper bound. */
+  void resetTrimmedPoints(const SGPoint & payoffUB)
+  {
+    assert(numPlayers==3);
+    
+    for (int p = 0; p < numPlayers; p++)
+      {
+	SGPoint point = minIC;
+	trimmedPoints[p].clear();
+	trimmedPoints[p].push_back(point);
+	point[(p+1)%numPlayers] = payoffUB[(p+1)%numPlayers];
+	trimmedPoints[p].push_back(point);
+	point[(p+2)%numPlayers] = payoffUB[(p+2)%numPlayers];
+	trimmedPoints[p].push_back(point);
+	point[(p+1)%numPlayers] = minIC[(p+1)%numPlayers];
+	trimmedPoints[p].push_back(point);
+      }
+    trimmedBndryDirs = vector<SGTuple> (4,SGTuple(2,SGPoint(2,0.0)));
+  } // resetTrimmedPoints
+  
   //! Sets points equal to the trimmed points
   void updateTrim() 
   { 
     points = trimmedPoints; 
-    for (int player = 0; player < 2; player++)
+    for (int player = 0; player < numPlayers; player++)
       {
 	if (points[player].size() == 0)
 	  tuples[player] = vector<int>(0);
@@ -107,14 +150,19 @@ public:
     bndryDirs = trimmedBndryDirs;
   }
     
-  //! Intersects the segment with the ray emanating from the pivot
+  //! Intersects the segment with a half space
   void intersectHalfSpace(const SGPoint & normal,
 			  const double level,
 			  int player,
 			  SGTuple & segment,
 			  SGTuple & segmentDirs);
 
-
+  //! Intersects the IC polygon with a half space
+  void intersectPolygonHalfSpace(const SGPoint & normal,
+				 const double level,
+				 int player,
+				 SGTuple & extPnts,
+				 SGTuple & extPntDirs);
   
   //! Trims the trimmedPoints using intersectRaySegment.
   void trim(const SGPoint & normal,
@@ -130,7 +178,7 @@ public:
   void calculateMinIC(const SGGame & game,
   		      const SGTuple & threatTuple)
   {
-    calculateMinIC(game,vector<bool>(2,true),threatTuple);
+    calculateMinIC(game,vector<bool>(numPlayers,true),threatTuple);
   }
   
 
@@ -147,6 +195,12 @@ public:
 
   //! Get method for bndry dirs
   const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
+  //! Get boundary direction for 3 players
+  /*!< Returns the cross product of the boundary directions at the
+     given point, i.e., the direction along an edge of the boundary
+     that points into the feasible and IC region. Only works for three
+     players. */
+  const SGPoint getBndryDir(const int player,const int point) const;
   
   // Returns whether the action can be supported
   bool supportable(const SGPoint & feasiblePoint ) const

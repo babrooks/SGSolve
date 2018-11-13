@@ -104,6 +104,10 @@ public:
   void push_back(const SGPoint & point);
   //! Sets the tuple equal to an empty tuple.
   void clear();
+  //! Erases elements
+  void erase(int start, int end);
+  //! Adds an element at the location
+  void emplace(int location,const SGPoint & point);
 
   //! Returns the number of points in the tuple.
   int size() const { return points.size(); }

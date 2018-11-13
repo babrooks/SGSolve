@@ -26,17 +26,19 @@
 /* SGPoint */
 SGPoint SGPoint::getNormal() const
 {
-  return SGPoint(-xy[1],xy[0]);
+  assert(x.size()==2);
+  return SGPoint(-x[1],x[0]);
 }
 
 double SGPoint::angle(const SGPoint& base) const
 {
+  assert(x.size()==2);
   const double colinearTol = 1e-13;
 
   if ( abs( (*this)*base.getNormal() ) <  colinearTol )
     {
-      if ( this->xy[0] * base.xy[0] > 0
-  	   || this->xy[1] * base.xy[1] > 0) // same direction
+      if ( this->x[0] * base.x[0] > 0
+  	   || this->x[1] * base.x[1] > 0) // same direction
   	return 0.0;
       return PI; // Opposite direction.
     }
@@ -60,88 +62,119 @@ double SGPoint::angle(const SGPoint& base) const
 
 bool SGPoint::rotateCCW(double pi)
 {
-  double tmp = cos(pi)*xy[0]-sin(pi)*xy[1];
-  xy[1] = sin(pi)*xy[0]+cos(pi)*xy[1];
-  xy[0] = tmp;
+  assert(x.size()==2);
+  double tmp = cos(pi)*x[0]-sin(pi)*x[1];
+  x[1] = sin(pi)*x[0]+cos(pi)*x[1];
+  x[0] = tmp;
   return true;
 }
 
 bool SGPoint::normalize()
 {
-  double tmp = sqrt(xy[0]*xy[0]+xy[1]*xy[1]);
+  double sum = 0;
+  for ( int k = 0; k < x.size(); k++)
+    sum += x[k]*x[k];
+  double tmp = sqrt(sum);
   if (tmp < 1e-15)
     return false;
-  xy[0] /= tmp;
-  xy[1] /= tmp;
+  for ( int k = 0; k < x.size(); k++)
+    x[k] /= tmp;
+
   return true;
 }
 
 double SGPoint::distance(const SGPoint & p0,
 			 const SGPoint& p1)
-{ return std::max(abs(p0.xy[0]-p1.xy[0]),abs(p0.xy[1]-p1.xy[1])); }
+{
+  assert(p0.size() == p1.size());
+  double m = 0;
+  for (int k = 0; k < p0.size(); k++)
+    m = std::max(m,abs(p0.x[k]-p1.x[k]));
+  return m;
+}
+
+SGPoint SGPoint::cross(const SGPoint& p0,
+		       const SGPoint& p1)
+{
+  assert(p0.size() == p1.size());
+  assert(p0.size() == 3);
+
+  SGPoint crossProd(3,0);
+  crossProd[0] = p0[1]*p1[2]-p0[2]*p1[1];
+  crossProd[1] = p0[2]*p1[0]-p0[0]*p1[2];
+  crossProd[2] = p0[0]*p1[1]-p0[1]*p1[0];
+  return crossProd;
+}
 
 void SGPoint::max(const SGPoint & p)
 {
-  xy[0] = std::max(xy[0],p[0]);
-  xy[1] = std::max(xy[1],p[1]);
+  assert(x.size() == p.size());
+  for (int k = 0; k < x.size(); k++)
+    x[k] = std::max(x[k],p[k]);
 }
 
 void SGPoint::min(const SGPoint & p)
 {
-  xy[0] = std::min(xy[0],p[0]);
-  xy[1] = std::min(xy[1],p[1]);
+  assert(x.size() == p.size());
+  for (int k = 0; k < x.size(); k++)
+    x[k] = std::min(x[k],p[k]);
 }
 
 double& SGPoint::operator[](int player)
 {
-  if(player < 0 || player >= 2)
+  // player = player % x.size(); // Wrap around
+  if(player < 0 || player >= x.size())
     throw(SGException(SG::OUT_OF_BOUNDS));
 
-  return xy[player];
+  return x[player];
 }
 
 const double& SGPoint::operator[](int player) const
 {
-  if(player < 0 || player >= 2)
+  // player = player % x.size(); // Wrap around
+  if(player < 0 || player >= x.size())
     throw(SGException(SG::OUT_OF_BOUNDS));
 
-  return xy[player];
+  return x[player];
 }
 
 SGPoint& SGPoint::operator=(const SGPoint & rhs)
 {
+  // assert(this->x.size() == rhs.x.size());
   if (this != &rhs)
     {
-      this->xy.resize(2,0.0);
-      this->xy = rhs.xy;
+      this->x = rhs.x;
     }
   return *this;
 }
 
 SGPoint& SGPoint::operator=(double d)
 {
-  this->xy[0] = d; this->xy[1] = d;
+  for (int k = 0; k < x.size(); k++)
+    this->x[k] = d;
   return *this;
 }
 
 SGPoint& SGPoint::operator+=(const SGPoint & rhs)
 {
-  for (int i=0; i<2; i++)
-    this->xy[i] += rhs.xy[i];
+  assert(this->x.size() == rhs.x.size());
+  for (int k=0; k<x.size(); k++)
+    this->x[k] += rhs.x[k];
   return *this;
 }
 
 SGPoint& SGPoint::operator-=(const SGPoint & rhs)
 {
-  for (int i=0; i<2; i++)
-    this->xy[i] -= rhs.xy[i];
+  assert(this->x.size() == rhs.x.size());
+  for (int k=0; k<x.size(); k++)
+    this->x[k] -= rhs.x[k];
   return *this;
 }
 
 SGPoint& SGPoint::operator*=(double d)
 {
-  for (int i=0; i<2; i++)
-    this->xy[i] *= d;
+  for (int k=0; k<x.size(); k++)
+    this->x[k] *= d;
   return *this;
 }
 
@@ -150,8 +183,8 @@ SGPoint& SGPoint::operator/=(double d)
   if(d==0.0)
     throw(SGException(SG::DIVIDE_BY_ZERO));
 
-  for (int i=0; i<2; i++)
-    this->xy[i] /= d;
+  for (int k=0; k<x.size(); k++)
+    this->x[k] /= d;
   return *this;
 }
 
@@ -171,13 +204,18 @@ SGPoint operator/(const SGPoint & point,double d)
 { return (SGPoint(point) /= d); } 
 
 double SGPoint::operator*(const SGPoint & rhs) const
-{ return this->xy[0]*rhs.xy[0] + this->xy[1]*rhs.xy[1]; }
+{
+  double sum = 0;
+  for (int k = 0; k < x.size(); k++)
+    sum += this->x[k]*rhs.x[k];
+  return sum;
+}
 
 bool SGPoint::operator==(const SGPoint & rhs) const
 {
-  for (int coordinate = 0; coordinate < this->xy.size(); coordinate++)
+  for (int k = 0; k < this->x.size(); k++)
     {
-      if (abs(this->xy[coordinate]-rhs.xy[coordinate]) > 0.0)
+      if (abs(this->x[k]-rhs.x[k]) > 0.0)
 	return false;
     }
   return true;
@@ -187,31 +225,55 @@ bool SGPoint::operator!=(const SGPoint & rhs) const
 { return !((*this)==rhs); }
 
 bool SGPoint::operator>=(const SGPoint & rhs) const
-{ return (this->xy[0]>=rhs.xy[0] && this->xy[1]>=rhs.xy[1]); }
+{
+  assert(x.size() == rhs.size());
+  bool tf = false;
+  for (int k = 0; k < x.size(); k++)
+    tf = tf && (this->x[k]>=rhs.x[k]);
+  return tf; 
+}
 bool SGPoint::operator>(const SGPoint & rhs) const
 { return !((*this)<=rhs); }
 bool SGPoint::operator<=(const SGPoint & rhs) const
-{ return (this->xy[0]<=rhs.xy[0] && this->xy[1]<=rhs.xy[1]); }
+{
+  assert(x.size() == rhs.size());
+  bool tf = false;
+  for (int k = 0; k < x.size(); k++)
+    tf = tf && (this->x[k]<=rhs.x[k]);
+  return tf; 
+}
 bool SGPoint::operator<(const SGPoint & rhs) const
 { return !((*this)>=rhs); }
 bool SGPoint::operator>=(double rhs) const
-{ return (this->xy[0]>=rhs && this->xy[1]>=rhs); }
+{
+  bool tf = false;
+  for (int k = 0; k < x.size(); k++)
+    tf = tf && (this->x[k]>=rhs);
+  return tf; 
+}
 bool SGPoint::operator>(double rhs) const
 { return !((*this)<=rhs); }
 bool SGPoint::operator<=(double rhs) const
-{ return (this->xy[0]<=rhs && this->xy[1]<=rhs); }
+{
+  bool tf = false;
+  for (int k = 0; k < x.size(); k++)
+    tf = tf && (this->x[k]<=rhs);
+  return tf; 
+}
 bool SGPoint::operator<(double rhs) const
 { return !((*this)>=rhs); }
 
 ostream& operator<<(ostream& out, const SGPoint& rhs)
 {
-  // out << rhs.xy[0] << " " << rhs.xy[1];
-  if (rhs.xy.size() > 0)
+  // out << rhs.x[0] << " " << rhs.x[1];
+  if (rhs.x.size() > 0)
     {
       out.setf(std::ios::fixed,std::ios::floatfield);
       out.precision(3);
-      out << "(" << std::setw(8) << rhs.xy[0] 
-	  << ", " << std::setw(8) << rhs.xy[1] << ")";
+      out << "(";
+      for (int k = 0; k < rhs.size()-1; k++)
+	out << std::setw(8) << rhs.x[0] << ", ";
+      out << std::setw(8) << rhs.x.back() << ")";
       out.width(2);
     }
   else
@@ -242,16 +304,16 @@ double SGPoint::signedArea(const SGPoint& p0,
 			   const SGPoint& p1,
 			   const SGPoint& p2)
 {
-  return ((p1.xy[0] - p0.xy[0])*(p2.xy[1]-p0.xy[1])
-	  -(p1.xy[1] - p0.xy[1])*(p2.xy[0]-p0.xy[0]));
+  return ((p1.x[0] - p0.x[0])*(p2.x[1]-p0.x[1])
+	  -(p1.x[1] - p0.x[1])*(p2.x[0]-p0.x[0]));
 }
 
 void SGPoint::roundPoint(double tol)
 {
   if (tol>0)
     {
-      xy[0] = round(xy[0]/tol)*tol;
-      xy[1] = round(xy[1]/tol)*tol;
+      for (int k = 0; k < x.size(); k++)
+	x[k] = round(x[k]/tol)*tol;
     }
 }
 

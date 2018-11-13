@@ -54,14 +54,29 @@ protected:
       s and returns a multiindex that gives each player's action. */
   vector<int> indexToActions(int index,int state) const
   {
-    vector<int> actions(2,0);
-    actions[0] = index%numActions[state][0];
-    actions[1] = index/numActions[state][0];
+    vector<int> actions(numPlayers,0);
+    for (int p = 0; p < numPlayers; p++)
+      {
+	actions[p] = index%numActions[state][p];
+	index /= numActions[state][p];
+      }
     return actions;
   } // indexToActions
   
 public:
   //! Constructor for the pure virtual class
+  SGAbstractGame(int _numPlayers,
+		 double _delta,
+		 int _numStates,
+		 vector< vector<int> > _numActions):
+    numPlayers(_numPlayers),
+    delta(_delta),
+    numStates(_numStates),
+    numActions(_numActions)
+  {}
+
+  //! Constructor for the pure virtual class
+  /*! Grandfather in old code that is specialized to two players. */
   SGAbstractGame(double _delta,
 		 int _numStates,
 		 vector< vector<int> > _numActions):
@@ -123,6 +138,8 @@ public:
   bool isEquilibriumAction(int state,int action) const
   { return isEquilibriumAction(state,indexToActions(action,state)); }
 
+  //! Returns the number of players
+  int getNumPlayers() const { return numPlayers; }
   //! Returns the discount factor
   double getDelta() const { return delta; }
   //! Returns the number of states

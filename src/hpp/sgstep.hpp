@@ -34,14 +34,11 @@ private:
   SGTuple pivot; /*!< The pivot tuple. */
   SGHyperplane hyperplane; /*!< The hyperplanes that define the
 			      approximation. */
-  vector<int> actionTuple; /*!< The actions that are optimal
-			      in each direction. Note that this
-			      is given by an index in the
-			      actions array, not the primitive
-			      action in the game. */
-  vector<SG::Regime> regimeTuple; /*!< The regimes that are
-				     optimal in each
-				     direction. */
+  vector<int> actionTuple; /*!< The optimal actions. Note that these
+			      are given by indices in the actions
+			      array, not the primitive action in the
+			      game. */
+  vector<SG::Regime> regimeTuple; /*!< The optimal regimes. */
 public:
   SGStep ()
   {} // default constructor

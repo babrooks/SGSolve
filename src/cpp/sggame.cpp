@@ -22,26 +22,28 @@
 #include "sggame.hpp"
 
 SGGame::SGGame(const SGAbstractGame & game):
-  numPlayers(2),
+  numPlayers(game.getNumPlayers()),
   delta(game.getDelta()),
   numStates(game.getNumStates()),
   numActions(game.getNumActions()),
-  numActions_total(numStates),
+  numActions_total(numStates,1),
   payoffs(numStates),
   probabilities(numStates),
   eqActions(numStates),
-  unconstrained(2)
+  unconstrained(numPlayers)
 {
   for (int player = 0; player < numPlayers; player++)
     unconstrained[player] = !game.constrained(player);
 
   for (int state = 0; state < numStates; state++)
     {
-      numActions_total[state] = numActions[state][0] * numActions[state][1];
+      for (int p = 0; p < numPlayers; p++)
+	numActions_total[state] *= numActions[state][p];
+      
       payoffs[state] = vector<SGPoint>(numActions_total[state]);
       probabilities[state] = vector< vector<double> >(numActions_total[state],
 						      vector<double> (numStates,0));
-
+      
       for (int action = 0; action < numActions_total[state]; action++)
 	{
 	  double probSum = 0;
@@ -79,7 +81,7 @@ SGGame::SGGame(double _delta,
 	       const vector< vector< vector<double> > > & _payoffs,
 	       const vector< vector< vector<double> > > & _probabilities,
 	       const vector<bool> & _unconstrained):
-  SGGame(_delta,_numStates,_numActions,_payoffs,_probabilities,
+  SGGame(2,_delta,_numStates,_numActions,_payoffs,_probabilities,
 	 vector<list<int> >(0),_unconstrained)
 {}
 
@@ -90,8 +92,20 @@ SGGame::SGGame(double _delta,
 	       const vector< vector< vector<double> > > & _probabilities,
 	       const vector< list<int> > & _eqActions,
 	       const vector<bool> & _unconstrained):
+  SGGame(2,_delta,_numStates,_numActions,_payoffs,_probabilities,
+	 _eqActions,_unconstrained)
+{}
+
+SGGame::SGGame(int _numPlayers,
+	       double _delta,
+	       int _numStates,
+	       const vector< vector<int> > & _numActions,
+	       const vector< vector< vector<double> > > & _payoffs,
+	       const vector< vector< vector<double> > > & _probabilities,
+	       const vector< list<int> > & _eqActions,
+	       const vector<bool> & _unconstrained):
+  numPlayers(_numPlayers),
   delta(_delta),
-  numPlayers(2),
   numStates(_numStates), 
   numActions(_numActions),
   probabilities(_probabilities),
@@ -185,15 +199,15 @@ SGGame::SGGame(double _delta,
 	} // for
     } 
 
-  if(unconstrained.size()!=2)
+  if(unconstrained.size()!=numPlayers)
     throw(SGException(SG::OUT_OF_BOUNDS));
 
-} // SGGame
+} // SGGame main constructor
 
 void SGGame::getPayoffBounds(SGPoint & UB, SGPoint & LB) const
 {
-  UB = SGPoint(numeric_limits<double>::min());
-  LB = SGPoint(numeric_limits<double>::max());
+  UB = SGPoint(numPlayers,numeric_limits<double>::min());
+  LB = SGPoint(numPlayers,numeric_limits<double>::max());
 
   for (int state = 0; 
        state < numStates;

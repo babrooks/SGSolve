@@ -38,6 +38,7 @@
 class SGBaseAction
 {
 protected:
+  int numPlayers;
   int state; /*!< The state in which this action profile can be played. */
   int action; /*!< The index of the action profile. */
   SGPoint minIC; /*!< The minimum continuation value to support
@@ -76,28 +77,38 @@ public:
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
   SGBaseAction():
+    numPlayers(2),
     isNull(true),
     action(-1),
     state(-1)
   {}
 
   //! Constructor
+  /*! Grandfather in two-player code. */
+  SGBaseAction(int _state, int _action):
+    SGBaseAction(2,_state,_action)
+  { }
+  
+  //! Constructor
   /*! Constructs an action for the given state and action index in the
       given environment. */
-  SGBaseAction(int _state, int _action):
+  SGBaseAction(int _numPlayers,
+	       int _state,
+	       int _action):
+    numPlayers(_numPlayers),
     state(_state),
     action(_action),
     minIC(-numeric_limits<double>::max()),
     isNull(false),
     corner(false)
   {
-    points.resize(2);
-    tuples.resize(2); 
+    points.resize(numPlayers);
+    tuples.resize(numPlayers); 
   }
 
   //! Destructor
   ~SGBaseAction() {}
-
+  
   //! Returns true if the action is null.
   bool getIsNull() const {return isNull;}
   //! Returns the action
@@ -123,19 +134,19 @@ public:
   //! Sets the tuples array
   void setTuples(const vector< vector<int> > & newTuples)
   {
-    assert(newTuples.size()<=2);
+    assert(newTuples.size()<=numPlayers);
     tuples = newTuples;
   } // setTuples
   //! Sets the points array  
   void setPoints(const vector<SGTuple> & newPoints)
   {
-    assert(newPoints.size()<=2);
+    assert(newPoints.size()<=numPlayers);
     points = newPoints;
   } // setPoints
   void setPointsAndTuples(const vector<SGTuple> & newPoints,
 			  const vector< vector<int> > & newTuples)
   {
-    assert(newPoints.size() <= 2);
+    assert(newPoints.size() <= numPlayers);
     assert(newPoints.size() == newTuples.size());
     points = newPoints;
     tuples = newTuples;
@@ -149,6 +160,7 @@ public:
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)
   {
+    ar & numPlayers;
     ar & state;
     ar & action;
     ar & minIC;

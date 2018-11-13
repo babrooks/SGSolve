@@ -120,7 +120,7 @@ public:
   void optimizePolicy(SGTuple & pivot,
 		      vector<SGActionIter> & actionTuple,
 		      vector<SG::Regime> & regimeTuple,
-		      const SGPoint currDir,
+		      const SGPoint & currDir,
 		      const vector<list<SGAction_MaxMinMax> > & actions,
 		      const SGTuple & feasibleTuple) const;
 
@@ -129,7 +129,8 @@ public:
   double sensitivity(const SGTuple & pivot,
 		     const vector<SGActionIter> & actionTuple,
 		     const vector<SG::Regime> & regimeTuple,
-		     const SGPoint currDir,
+		     const SGPoint & currDir,
+		     const SGPoint & newDir,
 		     const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Find a payoff tuple that is feasible for APS

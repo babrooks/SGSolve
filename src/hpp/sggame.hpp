@@ -40,7 +40,7 @@ class SGGame
 {
 private:
   double delta; /*!< The discount factor. */
-  int numPlayers; /*!< The number of players, always 2. */
+  int numPlayers; /*!< The number of players. */
   int numStates; /*!< The number of states, must be at least 1. */
   vector< vector<int> > numActions; /*!< Gives the number of each
                                        player's actions in each
@@ -50,7 +50,8 @@ private:
                                        pair (a1,a2) is mapped into an
                                        action profile using the
                                        formula
-                                       a=a1+a2*numActions[s][a1]. */
+                                       a=a1+a2*numActions[s][a1], and
+                                       generalized to n>2. */
   vector<int> numActions_total; /*!< Total number of action profiles
                                    for each state. */
 
@@ -145,7 +146,7 @@ public:
 	 const vector< vector< vector<double> > > & _probabilities,
 	 const vector<bool> & _unconstrained);
 
-  //! Constructor with custom equilibrium actions
+  //! Constructor customizing equilibrium actions
   /*!< If _eqActions is an empty vector, the constructor will
      initialize it so that all action profiles are allowed. Otherwise,
      we restrict attention to equilibria in which action profiles in
@@ -158,9 +159,20 @@ public:
 	 const vector< list<int> > & _eqActions,
 	 const vector<bool> & _unconstrained);
 
+  //! Constructor with custom numPlayers
+  /*!< All other constructors eventually call this constructor. */
+  SGGame(int _numPlayers,
+	 double _delta,
+	 int _numStates,
+	 const vector< vector<int> > & _numActions,
+	 const vector< vector< vector<double> > > & _payoffs,
+	 const vector< vector< vector<double> > > & _probabilities,
+	 const vector< list<int> > & _eqActions,
+	 const vector<bool> & _unconstrained);
+  
   //! Returns SGGame::delta, the discount factor
   double getDelta() const { return delta; }  
-  //! Returns SGGame::numPlayers, the number of players (always 2)
+  //! Returns SGGame::numPlayers, the number of players
   int getNumPlayers() const { return numPlayers; }
   //! Returns the number of states.
   int getNumStates() const { return numStates; }
