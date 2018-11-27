@@ -217,21 +217,21 @@ void SGAction_MaxMinMax::calculateMinIC(const SGGame & game,
 	continue;
 
       minIC[player] = SGAction_MaxMinMax::calculateMinIC(action,state,player,
-					       game,threatTuple);
+							 game,threatTuple);
     }
   resetTrimmedPoints();
 
 } // calculateMinIC
 
 double SGAction_MaxMinMax::calculateMinIC(int action,int state,int player,
-				const SGGame & game,
-				const SGTuple & threatTuple)
+					  const SGGame & game,
+					  const SGTuple & threatTuple)
 {
   vector<int> playersActions, playersDeviations;
   int deviation, deviationIndex;
   double currentGains;
 
-  double minIC = -numeric_limits<double>::max();
+  double tmpMinIC = -numeric_limits<double>::max();
 
   indexToVector(action,playersActions,
 		game.getNumActions()[state]);
@@ -252,10 +252,10 @@ double SGAction_MaxMinMax::calculateMinIC(int action,int state,int player,
 	+ threatTuple.expectation(game.getProbabilities()[state][deviationIndex], 
 				  player);
 
-      if (currentGains > minIC)
-	minIC = currentGains;
+      if (currentGains > tmpMinIC)
+	tmpMinIC = currentGains;
     } // deviation
 
-  return minIC;
+  return tmpMinIC;
 }  // calculateMinIC
 

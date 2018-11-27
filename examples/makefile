@@ -22,7 +22,7 @@
 # Makefile for examples
 
 MAINS= as_twostate abreusannikov pd pd_twostate guitester risksharing finiteresource \
-	as_twostate_maxminmax predation
+	as_twostate_maxminmax predation contribution
 MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb risksharing_maxminmax
 GRBTEST=gurobibasistest
 QHULLMAINS=qhulltest
@@ -65,6 +65,5 @@ $(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/sg.hpp $(HPPDIR)/sgsolution.
 	$(DYNAMIC) $(LDFLAGS) -o $@
 
 clean:
-	rm -rf *.o *.a $(MAINS) $(LIBDIR)/libsg.a $(MAINSGRB)
-	make clean -C ../src
+	rm -rf *.o *.a $(MAINS) $(LIBDIR)/libsg.a $(MAINSGRB) $(MAINS).dSYM
 	make clean -C ../lib

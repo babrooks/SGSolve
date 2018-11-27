@@ -97,7 +97,7 @@ public:
       met. Stores progress in the data member. 
 
       Fixed directions. */
-  void solve();
+  void solve_fixed();
 
   //! Solve routine
   /*! Initializes a new SGApproximation object and iteratively

@@ -19,9 +19,9 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#include "sgsolver_maxminmax.hpp"
+#include "sgsolver_maxminmax_3player.hpp"
 
-SGSolver_MaxMinMax::SGSolver_MaxMinMax(const SGEnv & _env,
+SGSolver_MaxMinMax_3Player::SGSolver_MaxMinMax_3Player(const SGEnv & _env,
 			 const SGGame & _game):
   env(_env),
   game(_game),
@@ -38,40 +38,52 @@ SGSolver_MaxMinMax::SGSolver_MaxMinMax(const SGEnv & _env,
 
 }
 
-void SGSolver_MaxMinMax::solve()
+void SGSolver_MaxMinMax_3Player::solve_fixed()
 {
   initialize();
   
   // Initialize directions
-  int numDirections = 200;
+  int numDirsApprox = 200;
+  int numDirections = 0;
 
-  // make an even multiple of 4
-  numDirections += (-numDirections)%4;
+  double a = 4.0*PI/static_cast<double>(numDirsApprox);
+  double d = sqrt(a);
+  int Mpsi = round(PI/d);
+  double dpsi = PI/static_cast<double>(Mpsi);
+  double dphi = a/dpsi;
 
-  // Initialize directions
-  list<vector< double> > :: const_iterator dueSouthLvl, dueWestLvl;
-  for (int dir = 0; dir < numDirections; dir++)
+  // Initialize directions - approximately evenly spaced around the
+  // sphere, with three negative coordinate directions at the end.
+  vector< list<vector< double> > :: const_iterator> playerMinLvls(numPlayers);
+  for (int mpsi = 0; mpsi < Mpsi; mpsi++)
     {
-      double theta = 2.0*PI
-	*static_cast<double>(dir)/static_cast<double>(numDirections);
-      directions.push_back(SGPoint(cos(theta),sin(theta)));
+      double psi = PI*(static_cast<double>(mpsi)+0.5)/static_cast<double>(Mpsi);
+      int Mphi = round(2.0*PI*sin(psi)/dpsi);
+
+      for (int mphi = 0; mphi < Mphi; mphi++)
+	{
+	  double phi = 2.0*PI*static_cast<double>(mphi)/static_cast<double>(Mphi);
+
+	  SGPoint newDir(3,0.0);
+	  newDir[0]=sin(psi)*cos(phi);
+	  newDir[1]=sin(psi)*sin(phi);
+	  newDir[2]=cos(psi);
+	  directions.push_back(newDir);
+	  levels.push_back(vector<double>(numStates,0));
+
+	  numDirections++;	  
+	}
+    }
+  numDirections += numPlayers;
+  for (int player = 0; player < numPlayers; player++)
+    {
+      SGPoint newDir(numPlayers,0.0);
+      newDir[player] = 1.0;
+      directions.push_back(newDir);
+      playerMinLvls[player] = levels.cend();
       levels.push_back(vector<double>(numStates,0));
-    } // for dir
-
-  {
-    int dirCnt = 0;
-    for (auto lit = levels.cbegin();
-	 lit != levels.cend();
-	 ++lit)
-      {
-	if (dirCnt == numDirections/2)
-	  dueWestLvl = lit;
-	if (dirCnt == 3*numDirections/4)
-	  dueSouthLvl = lit;
-	dirCnt++;
-      }
-  }
-
+    }
+  
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
@@ -153,8 +165,8 @@ void SGSolver_MaxMinMax::solve()
       // Update the the threat tuple
       for (int state = 0; state < numStates; state++)
 	{
-	  threatTuple[state][0] = -(*dueWestLvl)[state];
-	  threatTuple[state][1] = -(*dueSouthLvl)[state];
+	  for (int player = 0; player < numPlayers; player++)
+	    threatTuple[state][player] = -(*playerMinLvls[player])[state];
 	}
 
       if (env.getParam(SG::STOREITERATIONS)==2
@@ -211,7 +223,7 @@ void SGSolver_MaxMinMax::solve()
 
 } // solve
 
-void SGSolver_MaxMinMax::solve_endogenous()
+void SGSolver_MaxMinMax_3Player::solve_endogenous()
 {
   initialize();
   
@@ -229,7 +241,7 @@ void SGSolver_MaxMinMax::solve_endogenous()
   
 } // solve_endogenous
 
-std::string SGSolver_MaxMinMax::progressString() const
+std::string SGSolver_MaxMinMax_3Player::progressString() const
 {
   std::stringstream ss;
   // Print summary of iteration
@@ -245,7 +257,7 @@ std::string SGSolver_MaxMinMax::progressString() const
 }
 
 
-double SGSolver_MaxMinMax::iterate_endogenous()
+double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 {
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
@@ -408,7 +420,7 @@ double SGSolver_MaxMinMax::iterate_endogenous()
   
 } // iterate_endogenous
 
-void SGSolver_MaxMinMax::initialize()
+void SGSolver_MaxMinMax_3Player::initialize()
 {
   errorLevel = 1;
   numIter = 0;
@@ -433,7 +445,7 @@ void SGSolver_MaxMinMax::initialize()
 	   ait != eqActions[state].cend();
 	   ait++)
 	{
-	  actions[state].push_back(SGAction_MaxMinMax(env,state,*ait));
+	  actions[state].push_back(SGAction_MaxMinMax(env,numPlayers,state,*ait));
 	  actions[state].back().calculateMinIC(game,threatTuple);
 	  actions[state].back().resetTrimmedPoints(payoffUB);
 	  actions[state].back().updateTrim();
@@ -441,7 +453,7 @@ void SGSolver_MaxMinMax::initialize()
     } // for state
 } // initialize_endogenous
 
-void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
+void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 				 vector<SGActionIter> & actionTuple,
 				 vector<SG::Regime> & regimeTuple,
 				 const SGPoint & currDir,
@@ -626,7 +638,7 @@ void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 
 } // optimizePolicy
 
-double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
+double SGSolver_MaxMinMax_3Player::sensitivity(const SGTuple & pivot,
 				const vector<SGActionIter> & actionTuple,
 				const vector<SG::Regime> & regimeTuple,
 				const SGPoint & currDir,
@@ -766,7 +778,7 @@ double SGSolver_MaxMinMax::sensitivity(const SGTuple & pivot,
 } // sensitivity
 
 
-void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
+void SGSolver_MaxMinMax_3Player::findFeasibleTuple(SGTuple & feasibleTuple,
 				    const vector<list<SGAction_MaxMinMax> > & actions) const
 {
   // Update the APS-feasible tuple
@@ -842,7 +854,7 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
 
 } // findFeasibleTuple
 
-void SGSolver_MaxMinMax::policyToPayoffs(SGTuple & pivot,
+void SGSolver_MaxMinMax_3Player::policyToPayoffs(SGTuple & pivot,
 				  const vector<SGActionIter> & actionTuple,
 				  const vector<SG::Regime> & regimeTuple) const
 {
