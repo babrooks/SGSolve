@@ -73,7 +73,7 @@ public:
   SGAction_MaxMinMax(const SGEnv & _env,
 		     int _state,
 		     int _action):
-    SGAction_MaxMinMax(env,2,_state,_action)
+    SGAction_MaxMinMax(_env,2,_state,_action)
   {}
 
   //! Constructor

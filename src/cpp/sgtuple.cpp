@@ -30,7 +30,7 @@ SGPoint SGTuple::expectation(const vector<double> & prob) const
   if(prob.size() != points.size())
     throw(SGException(SG::TUPLE_SIZE_MISMATCH));
 
-  SGPoint point(points.front().size());
+  SGPoint point(points.front().size(),0.0);
   for (int state=0; state<points.size(); state++)
     point += (prob[state] * points[state]);
   return point;

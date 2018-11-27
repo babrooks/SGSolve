@@ -173,7 +173,6 @@ void SGSolver_MaxMinMax::solve()
 	       ++ait)
 	    {
 	      ait->calculateMinIC(game,threatTuple);
-	      // ait->resetTrimmedPoints();
 
 	      {
 		list<SGPoint>::const_iterator dir;
@@ -371,7 +370,6 @@ double SGSolver_MaxMinMax::iterate_endogenous()
 	   ++ait)
 	{
 	  ait->calculateMinIC(game,threatTuple);
-	  //ait->resetTrimmedPoints();
 
 	  // Trim the actions
 	  auto dir = directions.cbegin();
