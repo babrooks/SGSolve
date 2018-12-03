@@ -21,10 +21,10 @@
 #include <fstream>
 #include <string>
 #include <cmath>
-#include "sgsolution_v2.hpp"
+#include "sgsolution_maxminmax.hpp"
 
-SGSolution_V2 soln;
-list<SGIteration_V2>::const_iterator currentIteration;
+SGSolution_MaxMinMax soln;
+list<SGIteration_MaxMinMax>::const_iterator currentIteration;
 int currentIterationIndex;
 int numStates;
 int numPlayers;
@@ -66,7 +66,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		
     try
       {
-	SGSolution_V2::load(soln, inputFileName);
+	SGSolution_MaxMinMax::load(soln, inputFileName);
 	currentIterationIndex = 0;
 	currentIteration = soln.getIterations().begin();
 
@@ -188,50 +188,47 @@ void mexFunction(int nlhs, mxArray *plhs[],
       // GetPayoffs
 	  else if (!strcmp(optionStr,"GetPayoffs"))
 	{
-	  int a0, a1;
-	  double * outputPtr0, *outputPtr1;
+	  double * outputPtr0;
 			
-	  if (nlhs!=2)
-	    mexErrMsgTxt("Two outputs required.");
+	  if (nlhs!=1)
+	    mexErrMsgTxt("Must have one output.");
 	  else if (nrhs!=2)
-	    mexErrMsgTxt("One argument required.");
+	    mexErrMsgTxt("One arguments required, state.");
 	  else if (!mxIsDouble(prhs[1]))
 	    mexErrMsgTxt("Inputs must be doubles.");
 			
 	  rows = mxGetM(prhs[1]); cols = mxGetM(prhs[1]);
 	  inputPtr = mxGetPr(prhs[1]);
-			
 	  if (rows!=1 || cols!=1)
 	    mexErrMsgTxt("Input must be scalar double.");
 	  state = static_cast<int>(inputPtr[0]);
 	  if (state < 0 || state > numStates-1)
 	    mexErrMsgTxt("State is out of range.");
+
+	  // int player = static_cast<int>(inputPtr[1]);
+	  // if (player < 0 || player > numPlayers-1)
+	  //   mexErrMsgTxt("Player is out of range.");
 			
 	  numActions = soln.getGame().getNumActions();
 	  payoffs = vector<SGPoint>(soln.getGame().getPayoffs()[state]);
-			
-	  plhs[0] = mxCreateDoubleMatrix(numActions[state][0],
-					 numActions[state][1],mxREAL);
-	  plhs[1] = mxCreateDoubleMatrix(numActions[state][0],
-					 numActions[state][1],mxREAL);
+
+	  int numActions_total = 1;
+	  for (int p = 0; p < numPlayers; p++)
+	    numActions_total *= numActions[state][p];
+	  plhs[0] = mxCreateDoubleMatrix(numActions_total,numPlayers,mxREAL);
 			
 	  outputPtr0 = mxGetPr(plhs[0]);
-	  outputPtr1 = mxGetPr(plhs[1]);
 	  outputCounter = 0;
-	  for (a1 = 0; a1 < numActions[state][1]; a1++)
+	  for (int p = 0; p < numPlayers; p++)
 	    {
-	      for (a0 = 0; a0 < numActions[state][0]; a0++)
+	      for (int a = 0; a < numActions_total; a++)
 		{
 		  outputPtr0[outputCounter]
-		    = payoffs[a0+a1*numActions[state][0]][0];
-		  outputPtr1[outputCounter]
-		    = payoffs[a0+a1*numActions[state][0]][1];
+		    = payoffs[a][p];
 					
 		  outputCounter++;
-		} // state
-	    } // action
-			
-			
+		} // action
+	    } // player
 	} // GetPayoffs
 		
       // Iter++
@@ -293,13 +290,13 @@ void mexFunction(int nlhs, mxArray *plhs[],
 			
 	  mxArray *fieldOutput;
 	  SGPoint minICPayoffs, payoffs;
-	  int nFields = 5;
-			
+	  int nFields = 6;
 	  const char *fieldNames[] = {"pivots",
 				      "directions",
 				      "levels",
-				      "actions",
-				      "regimes"};
+				      "actionTuples",
+				      "regimeTuples",
+				      "actions"};
 	  
 	  plhs[0] = mxCreateStructMatrix(1,1,nFields,fieldNames);
 			
@@ -360,7 +357,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    }
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
-	  // actions
+	  // Action tuples
 	  fieldOutput = mxCreateDoubleMatrix(currentIteration->getSteps().size(),
 					     numStates,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
@@ -377,7 +374,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	    }
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
 			
-	  // Regimes
+	  // Regime tuples
 	  fieldOutput = mxCreateDoubleMatrix(currentIteration->getSteps().size(),
 					     numStates,mxREAL);
 	  outputPtr = mxGetPr(fieldOutput);
@@ -393,9 +390,122 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		  else
 		    outputPtr[outputCounter] = 0;
 		  outputCounter++;
-		}
-	    }
+		} // step
+	    } // state
 	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
+
+	  // Actions
+	  fieldOutput = mxCreateCellMatrix(numStates,1);
+	  int nActionFields = 4;
+	  const char *actionFieldNames[] = {"state",
+					    "action",
+					    "minIC",
+					    "points"};
+	  for (state = 0; state < numStates; state++)
+	    {
+	      mxArray * stateActionsPtr
+		= mxCreateCellMatrix(currentIteration->getActions()[state].size(),1);
+	      int actionCtr = 0;
+	      for (auto ait = currentIteration->getActions()[state].cbegin();
+		   ait != currentIteration->getActions()[state].cend();
+		   ait ++)
+		{
+		  mxArray * actionStructPtr
+		    = mxCreateStructMatrix(1,1,nActionFields,
+					   actionFieldNames);
+		  int actionField = 0;
+		  mxArray * actionFieldOutput;
+
+		  // State
+		  actionFieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
+		  outputPtr = mxGetPr(actionFieldOutput);
+		  outputPtr[0] = ait->getState();
+		  mxSetFieldByNumber(actionStructPtr,0,actionField++,
+				     actionFieldOutput);
+		  
+		  // Action
+		  actionFieldOutput = mxCreateDoubleMatrix(1,1,mxREAL);
+		  outputPtr = mxGetPr(actionFieldOutput);
+		  outputPtr[0] = ait->getAction();;
+		  mxSetFieldByNumber(actionStructPtr,0,actionField++,
+				     actionFieldOutput);
+		  
+		  // minIC
+		  actionFieldOutput = mxCreateDoubleMatrix(numPlayers,1,mxREAL);
+		  outputPtr = mxGetPr(actionFieldOutput);
+		  for (player = 0; player < numPlayers; player++)
+		    outputPtr[player] = ait->getMinICPayoffs()[player];
+		  mxSetFieldByNumber(actionStructPtr,0,actionField++,
+				     actionFieldOutput);
+		  
+		  // Points
+
+		  // A cell array, with one cell for each player. Each
+		  // cell contains the tuple of extreme binding
+		  // payoffs for that player. The tuple is represented
+		  // as a k * n matrix where k is the number of
+		  // extreme points and n is the number of players.
+		  actionFieldOutput = mxCreateCellMatrix(numPlayers,1);
+		  for (player = 0; player < numPlayers; player++)
+		    {
+		      // Create point matrix for each player
+		      mxArray * extPntsPtr
+			= mxCreateDoubleMatrix(ait->getPoints()[player].size(),
+					       numPlayers,mxREAL);
+		      outputPtr = mxGetPr(extPntsPtr);
+		      outputCounter = 0;
+		      for (int p = 0; p < numPlayers; p++)
+			{
+			  for (int ep = 0; ep < ait->getPoints()[player].size();
+			       ep++)
+			    {
+			      outputPtr[outputCounter]
+				= ait->getPoints()[player][ep][p];
+			      outputCounter++;
+			    } // extreme point
+			} // player
+		      
+		      mxSetCell(actionFieldOutput,player,extPntsPtr);
+		    }
+		  mxSetFieldByNumber(actionStructPtr,0,actionField++,
+				     actionFieldOutput);
+
+		  // // BndryDirs
+
+		  // actionFieldOutput = mxCreateCellMatrix(numPlayers,1);
+		  // for (player = 0; player < numPlayers; player++)
+		  //   {
+		  //     // Create point matrix for each player
+		  //     mxArray * extPntsPtr
+		  // 	= mxCreateDoubleMatrix(ait->getBndryDirs()[player].size(),
+		  // 			       numPlayers,mxREAL);
+		  //     outputPtr = mxGetPr(extPntsPtr);
+		  //     outputCounter = 0;
+		  //     for (int p = 0; p < numPlayers; p++)
+		  // 	{
+		  // 	  for (int ep = 0; ep < ait->getPoints()[player].size();
+		  // 	       ep++)
+		  // 	    {
+		  // 	      outputPtr[outputCounter]
+		  // 		= ait->getPoints()[player][ep][p];
+		  // 	      outputCounter++;
+		  // 	    } // extreme point
+		  // 	} // player
+		      
+		  //     mxSetCell(actionFieldOutput,player,extPntsPtr);
+		  //   }
+		  // mxSetFieldByNumber(actionStructPtr,0,actionField++,
+		  // 		     actionFieldOutput);
+		  
+		  mxSetCell(stateActionsPtr,actionCtr,actionStructPtr);
+		  actionCtr++;
+		} // ait
+	      
+	      mxSetCell(fieldOutput,state,stateActionsPtr);
+	    } // state
+	  
+	  mxSetFieldByNumber(plhs[0],0,currentField++,fieldOutput);
+
 	  
 	} // GetCurentIteration
 		

@@ -241,7 +241,7 @@ void SGTuple::erase(int start, int end)
 
 void SGTuple::emplace(int location,const SGPoint & point)
 {
-  points.emplace(points.begin()+location,point);
+  points.insert(points.begin()+location,point);
 }
 
 

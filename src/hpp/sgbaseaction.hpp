@@ -98,7 +98,7 @@ public:
     numPlayers(_numPlayers),
     state(_state),
     action(_action),
-    minIC(-numeric_limits<double>::max()),
+    minIC(_numPlayers,-numeric_limits<double>::max()),
     isNull(false),
     corner(false)
   {

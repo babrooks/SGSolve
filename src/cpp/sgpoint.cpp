@@ -171,6 +171,13 @@ SGPoint& SGPoint::operator-=(const SGPoint & rhs)
   return *this;
 }
 
+SGPoint& SGPoint::operator-=(double d)
+{
+  for (int k=0; k<x.size(); k++)
+    this->x[k] -= d;
+  return *this;
+}
+
 SGPoint& SGPoint::operator*=(double d)
 {
   for (int k=0; k<x.size(); k++)
@@ -193,6 +200,11 @@ const SGPoint SGPoint::operator+(const SGPoint & rhs) const
 
 const SGPoint SGPoint::operator-(const SGPoint & rhs) const
 { return (SGPoint(*this) -= rhs); }
+
+const SGPoint SGPoint::operator-(double d) const
+{
+  return SGPoint(*this) -= d;
+}
 
 SGPoint operator*(double d,const SGPoint & point)
 { return (SGPoint(point) *= d); }
@@ -265,14 +277,13 @@ bool SGPoint::operator<(double rhs) const
 
 ostream& operator<<(ostream& out, const SGPoint& rhs)
 {
-  // out << rhs.x[0] << " " << rhs.x[1];
   if (rhs.x.size() > 0)
     {
       out.setf(std::ios::fixed,std::ios::floatfield);
       out.precision(3);
       out << "(";
       for (int k = 0; k < rhs.size()-1; k++)
-	out << std::setw(8) << rhs.x[0] << ", ";
+	out << std::setw(8) << rhs.x[k] << ", ";
       out << std::setw(8) << rhs.x.back() << ")";
       out.width(2);
     }

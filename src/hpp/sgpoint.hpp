@@ -99,6 +99,8 @@ public:
   SGPoint& operator+=(const SGPoint & rhs);
   //! Augmented subtraction
   SGPoint& operator-=(const SGPoint & rhs);
+  //! Augmented subtraction
+  SGPoint& operator-=(double d);
   //! Augmented scalar multiplication
   SGPoint& operator*=(double d);
   //! Augmented scalar division
@@ -107,6 +109,8 @@ public:
   const SGPoint operator+(const SGPoint & rhs) const;
   //! Vector subtraction
   const SGPoint operator-(const SGPoint & rhs) const;
+  //! Vector subtraction
+  const SGPoint operator-(double d) const;
   //! Left-scalar multiplication
   friend SGPoint operator*(double d,const SGPoint & point);
   //! Right-scalar multiplication

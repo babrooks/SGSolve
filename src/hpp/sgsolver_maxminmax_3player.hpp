@@ -72,6 +72,9 @@ private:
   SGTuple threatTuple;
   vector< list<SGAction_MaxMinMax> > actions;
   
+  SGPoint payoffLB;
+  SGPoint payoffUB;
+
   SGPoint dueEast = SGPoint(1.0,0.0);
   SGPoint dueNorth = SGPoint(0.0,1.0);
 

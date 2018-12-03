@@ -123,6 +123,7 @@ public:
   {
     assert(numPlayers==3);
     
+    trimmedBndryDirs = vector<SGTuple> (3,SGTuple(4,SGPoint(3,0.0)));
     for (int p = 0; p < numPlayers; p++)
       {
 	SGPoint point = minIC;
@@ -134,8 +135,11 @@ public:
 	trimmedPoints[p].push_back(point);
 	point[(p+1)%numPlayers] = minIC[(p+1)%numPlayers];
 	trimmedPoints[p].push_back(point);
+
+	SGPoint dir(3,0.0);
+	dir[p] = 1.0;
+	trimmedBndryDirs[p] = SGTuple(4,dir);
       }
-    trimmedBndryDirs = vector<SGTuple> (4,SGTuple(2,SGPoint(2,0.0)));
   } // resetTrimmedPoints
   
   //! Sets points equal to the trimmed points

@@ -40,7 +40,10 @@ SGSolver_MaxMinMax_3Player::SGSolver_MaxMinMax_3Player(const SGEnv & _env,
 
 void SGSolver_MaxMinMax_3Player::solve_fixed()
 {
+  cout << "Initializing solver..." << endl;
+
   initialize();
+
   
   // Initialize directions
   int numDirsApprox = 200;
@@ -64,7 +67,7 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	{
 	  double phi = 2.0*PI*static_cast<double>(mphi)/static_cast<double>(Mphi);
 
-	  SGPoint newDir(3,0.0);
+	  SGPoint newDir(numPlayers,0.0);
 	  newDir[0]=sin(psi)*cos(phi);
 	  newDir[1]=sin(psi)*sin(phi);
 	  newDir[2]=cos(psi);
@@ -78,20 +81,33 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
   for (int player = 0; player < numPlayers; player++)
     {
       SGPoint newDir(numPlayers,0.0);
-      newDir[player] = 1.0;
+      newDir[player] = -1.0;
+
       directions.push_back(newDir);
-      playerMinLvls[player] = levels.cend();
+
       levels.push_back(vector<double>(numStates,0));
+      playerMinLvls[player] = levels.cend();
+      playerMinLvls[player]--;
     }
+
+  // for (auto it = directions.cbegin();
+  //      it != directions.cend();
+  //      ++it)
+  //   cout << *it << endl;
   
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
   SGIteration_MaxMinMax iter;
+
+  cout << "Starting main loop..." << endl;
   
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
+
+      // cout << "Updating actions..." << endl;
+      
       vector<SGActionIter> actionTuple(numStates);
       // Pick the initial actions arbitrarily
       for (int state = 0; state < numStates; state++)
@@ -107,12 +123,14 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	       ++ait)
 	    {
 	      ait->updateTrim();
+	      // for (int p = 0; p < numPlayers; p++)
+	      // 	cout << ait->getPoints()[p] << endl;
 
 	      // WARNING: NO GUARANTEE THAT THIS POINT IS FEASIBLE
 	      if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
 							       [ait->getAction()]))))
 		{
-		  actions[state].erase(ait++);
+		  // actions[state].erase(ait++);
 		  continue;
 		}
 	      
@@ -125,6 +143,8 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
       // Reset the error level
       errorLevel = 0;
 
+      // cout << "Iterating over directions..." << endl;
+      
       {
 	list<vector< double> >::iterator lvl;
 	int dirCnt;
@@ -158,9 +178,9 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	    if (env.getParam(SG::STOREITERATIONS))
 	      iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
 				    SGHyperplane(currDir,newLevels),actions));
-	  
+	    
 	  } // for dir lvl dirCntr
-      }
+      } // Computing new levels
 
       // Update the the threat tuple
       for (int state = 0; state < numStates; state++)
@@ -173,10 +193,14 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	  || (env.getParam(SG::STOREITERATIONS)==1
 	      && ( errorLevel < env.getParam(SG::ERRORTOL)
 		   || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
-	soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
+	soln.push_back(iter); // Important to do this before updating
+			      // the threat point and minIC of the
+			      // actions
 
       findFeasibleTuple(feasibleTuple,actions);
       
+      // cout << "Computing new binding payoffs..." << endl;
+
       // Recalculate minimum IC continuation payoffs
       for (int state = 0; state < numStates; state++)
 	{
@@ -185,10 +209,12 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	       ++ait)
 	    {
 	      ait->calculateMinIC(game,threatTuple);
+	      ait->resetTrimmedPoints(payoffUB);
 
 	      {
 		list<SGPoint>::const_iterator dir;
 		list< vector< double> >::const_iterator lvl;
+		int dirCnt = 0;
 		for (dir = directions.cbegin(),
 		       lvl = levels.cbegin();
 		     dir != directions.cend(),
@@ -196,6 +222,9 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 		     dir++, lvl++)
 		  {
 		    // Compute the expected level
+
+		    // cout  << "direction: " << dirCnt++ << endl;
+
 		    double expLevel = 0;
 		    for (int sp = 0; sp < numStates; sp++)
 		      expLevel += probabilities[state][ait->getAction()][sp]
@@ -206,22 +235,16 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 		  } // for dir
 	      }
 	    } // for ait
-	  
 	} // for state
 
-      cout << "Iter: " << numIter
-	   << ", errorLvl: " << scientific << errorLevel
-	   << ", remaining actions: ( ";
-      for (int state = 0; state < numStates; state++)
-	cout << actions[state].size() << " ";
-      cout << ")" << endl;
+      cout << progressString() << endl;
       
       numIter++;
     } // while
 
   cout << "Converged!" << endl;
 
-} // solve
+} // solve_fixed
 
 void SGSolver_MaxMinMax_3Player::solve_endogenous()
 {
@@ -384,6 +407,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	   ++ait)
 	{
 	  ait->calculateMinIC(game,threatTuple);
+	  ait->resetTrimmedPoints(payoffUB);
 
 	  // Trim the actions
 	  auto dir = directions.cbegin();
@@ -425,7 +449,6 @@ void SGSolver_MaxMinMax_3Player::initialize()
   errorLevel = 1;
   numIter = 0;
   
-  SGPoint payoffLB, payoffUB;
   game.getPayoffBounds(payoffUB,payoffLB);
 
   threatTuple = SGTuple(numStates,payoffLB);
