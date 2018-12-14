@@ -26,3 +26,4 @@
 #include "sgsolver_maxminmax.hpp"
 
 #endif
+

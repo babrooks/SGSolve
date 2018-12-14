@@ -123,9 +123,7 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	       ++ait)
 	    {
 	      ait->updateTrim();
-	      // for (int p = 0; p < numPlayers; p++)
-	      // 	cout << ait->getPoints()[p] << endl;
-
+	      
 	      // WARNING: NO GUARANTEE THAT THIS POINT IS FEASIBLE
 	      if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
 							       [ait->getAction()]))))
@@ -233,6 +231,7 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 		    // Trim the action
 		    ait->trim(*dir,expLevel);
 		  } // for dir
+
 	      }
 	    } // for ait
 	} // for state
@@ -474,7 +473,7 @@ void SGSolver_MaxMinMax_3Player::initialize()
 	  actions[state].back().updateTrim();
 	}
     } // for state
-} // initialize_endogenous
+} // initialize
 
 void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 				 vector<SGActionIter> & actionTuple,
@@ -515,13 +514,22 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 	    {
 	      // Procedure to find an improvement to the policy
 	      // function
-	      
+
+	      bool debugMode = currDir[0] < -0.12 && currDir[1] < -0.99 && ait->getAction() == 2;
+	      if (debugMode)
+		{
+		  cout << currDir << " "
+		       << ait->getState() << " "
+		       << ait->getAction() << " "
+		       << endl;
+		}
+
 	      SGPoint nonBindingPayoff = (1-delta)*payoffs[state]
 		[ait->getAction()]
 		+ delta * pivot.expectation(probabilities[state][ait->getAction()]);
 
 	      bool APSNotBinding = false;
-	      SGPoint bestAPSPayoff;
+	      SGPoint bestAPSPayoff(numPlayers,0.0);
 
 	      // Find which payoff is highest in current normal and
 	      // break ties in favor of the clockwise 90 degree.
@@ -538,10 +546,19 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 			  bestBindLvl = tmpLvl;
 			  bestBindingPlayer = p;
 			  bestBindingPoint = k;
+
 			}
+
+		      if (debugMode && p == 1)
+			{
+			  cout << "   " << tmpLvl
+			       << " " << ait->getPoints()[1][k] << endl;
+			}
+		      
 		    } // point
 		} // player
 
+		  
 	      if (bestBindingPlayer < 0 // didn't find a binding payoff
 		  || (ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
 		      *currDir > 1e-6) // Can improve on the best
@@ -554,6 +571,16 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 	      else // Found a binding payoff
 		bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
 		  + delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
+
+
+	      if (debugMode && bestBindingPlayer >= 0)
+		{
+		  cout << "   " << ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
+		       << " " << ait->getBndryDir(bestBindingPlayer,bestBindingPoint)*currDir
+		       << " " << APSNotBinding
+		       << endl;
+		}
+		      
 
 	      if ( APSNotBinding // NB bestAPSPayoff has only been
 				    // set if bestAPSNotBinding ==
@@ -584,6 +611,7 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 	      	      newPivot[state] = bestAPSPayoff;
 		    }
 		}
+
 	    } // ait
 
 	  pivotError = max(pivotError,abs(bestLevel-pivot[state]*currDir));

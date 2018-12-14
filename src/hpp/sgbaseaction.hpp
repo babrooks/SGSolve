@@ -59,6 +59,10 @@ protected:
                                northern or easternmost of the two
                                binding payoffs. */ 
 
+  vector<SGTuple> bndryDirs; /*!< Stores the slope of the
+                                         frontier at the extreme
+                                         payoffs. */
+  
   vector< vector< int > > tuples; /*!< The vector tuples[i][j] points
                                      to the element of
                                      SGApproximation::extremeTuples
@@ -99,10 +103,11 @@ public:
     state(_state),
     action(_action),
     minIC(_numPlayers,-numeric_limits<double>::max()),
+    points(numPlayers),
+    bndryDirs(_numPlayers,SGTuple(2)),
     isNull(false),
     corner(false)
   {
-    points.resize(numPlayers);
     tuples.resize(numPlayers); 
   }
 
@@ -115,6 +120,8 @@ public:
   int getAction() const { return action; }
   //! Returns the points array
   const vector<SGTuple> & getPoints() const { return points; }
+  //! Get method for bndry dirs
+  const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
   //! Returns the tuples array
   const vector< vector<int> > & getTuples() const { return tuples; }
   //! Returns the state
@@ -166,6 +173,7 @@ public:
     ar & minIC;
     ar & points;
     ar & tuples;
+    ar & bndryDirs;
     ar & isNull;
     ar & corner;
   } // serialize

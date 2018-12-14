@@ -45,9 +45,13 @@ end % state
 
 
 %% 
-i = 4;
-s = 2;
-a = 8;
+sgmex2('LoadSolution','../examples/solutions/contribution.sln2');
+
+%% 
+
+i = 1;
+s = 1;
+a = 3;
 sgmex2('IterToBeginning');
 
 for k=1:i-1
@@ -96,12 +100,50 @@ for p=1:3
     Y=X;
     Y(2:3,mod(p,3)+1)=payoffBounds(2);
     Y(3:4,mod(p+1,3)+1)=payoffBounds(2);
-    p2=patch(Y(:,1),Y(:,2),Y(:,3),ones(size(Y,1),1))
+    p2=patch(Y(:,1),Y(:,2),Y(:,3),ones(size(Y,1),1));
     set(p2,'facealpha',0.3,'facecolor','r');
+
+    if ~isempty(nextIter.actions{s}{a}.points{p})
+        X1=nextIter.actions{s}{a}.points{p};
+        X2a=nextIter.actions{s}{a}.bndryDirs{p};
+        X2=cross(X2a,X2a([2:end 1],:),2);
+        q=quiver3(X1(:,1),X1(:,2),X1(:,3),...
+            X2(:,1),X2(:,2),X2(:,3));
+        set(q,'linewidth',1.5,'autoscale','off','color','blue');
+    end
+
 end
+
+d=0.25*iter.directions(114,:);
+q=quiver3(4.5,1.5,4.5,...
+    d(1),d(2),d(3));
+set(q,'linewidth',1.5,'autoscale','off','color','red');
+
 hold off
 view(az,el);
 bounds = [min(min(V)),max(max(V))];
 Z=0.5*payoffs0+0.5*payoffs1;
 bounds = [min(min(Z)),max(max(Z))];
+bounds(1)=1;
 set(gca,'zlim',bounds,'xlim',bounds,'ylim',bounds);
+
+%%
+sgmex2('IterToBeginning');
+iter0=sgmex2('GetCurrentIteration');
+sgmex2('Iter++');
+iter1=sgmex2('GetCurrentIteration');
+sgmex2('Iter++');
+iter2=sgmex2('GetCurrentIteration');
+
+% [iter0.actionTuples iter0.regimeTuples,...
+%     iter1.actionTuples iter1.regimeTuples,...
+%     iter2.actionTuples iter2.regimeTuples]
+
+x=max(max(iter2.levels-iter1.levels))
+
+k=find(iter2.levels>iter1.levels+x/2,1,'first')
+
+%%
+X=iter1.actions{1}{3}.points{1}
+X=iter1.actions{1}{3}.bndryDirs{1}
+

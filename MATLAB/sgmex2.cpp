@@ -126,6 +126,16 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	  outputPtr[0] = numStates;
 	} // GetNumStates
 		
+      // GetNumIterations
+      else if (!strcmp(optionStr,"GetNumIterations"))
+	{
+	  if (nlhs!=1)
+	    mexErrMsgTxt("One output required.");
+	  plhs[0] = mxCreateDoubleMatrix(1,1,mxREAL);
+	  outputPtr = mxGetPr(plhs[0]);
+	  outputPtr[0] = soln.getIterations().size();
+	} // GetNumStates
+		
       // GetNumActions
       else if (!strcmp(optionStr,"GetNumActions"))
 	{
@@ -396,11 +406,12 @@ void mexFunction(int nlhs, mxArray *plhs[],
 
 	  // Actions
 	  fieldOutput = mxCreateCellMatrix(numStates,1);
-	  int nActionFields = 4;
+	  int nActionFields = 5;
 	  const char *actionFieldNames[] = {"state",
 					    "action",
 					    "minIC",
-					    "points"};
+					    "points",
+					    "bndryDirs"};
 	  for (state = 0; state < numStates; state++)
 	    {
 	      mxArray * stateActionsPtr
@@ -470,32 +481,32 @@ void mexFunction(int nlhs, mxArray *plhs[],
 		  mxSetFieldByNumber(actionStructPtr,0,actionField++,
 				     actionFieldOutput);
 
-		  // // BndryDirs
+		  // BndryDirs
 
-		  // actionFieldOutput = mxCreateCellMatrix(numPlayers,1);
-		  // for (player = 0; player < numPlayers; player++)
-		  //   {
-		  //     // Create point matrix for each player
-		  //     mxArray * extPntsPtr
-		  // 	= mxCreateDoubleMatrix(ait->getBndryDirs()[player].size(),
-		  // 			       numPlayers,mxREAL);
-		  //     outputPtr = mxGetPr(extPntsPtr);
-		  //     outputCounter = 0;
-		  //     for (int p = 0; p < numPlayers; p++)
-		  // 	{
-		  // 	  for (int ep = 0; ep < ait->getPoints()[player].size();
-		  // 	       ep++)
-		  // 	    {
-		  // 	      outputPtr[outputCounter]
-		  // 		= ait->getPoints()[player][ep][p];
-		  // 	      outputCounter++;
-		  // 	    } // extreme point
-		  // 	} // player
+		  actionFieldOutput = mxCreateCellMatrix(numPlayers,1);
+		  for (player = 0; player < numPlayers; player++)
+		    {
+		      // Create point matrix for each player
+		      mxArray * extPntsPtr
+		  	= mxCreateDoubleMatrix(ait->getBndryDirs()[player].size(),
+		  			       numPlayers,mxREAL);
+		      outputPtr = mxGetPr(extPntsPtr);
+		      outputCounter = 0;
+		      for (int p = 0; p < numPlayers; p++)
+		  	{
+		  	  for (int ep = 0; ep < ait->getBndryDirs()[player].size();
+		  	       ep++)
+		  	    {
+		  	      outputPtr[outputCounter]
+		  		= ait->getBndryDirs()[player][ep][p];
+		  	      outputCounter++;
+		  	    } // extreme point
+		  	} // player
 		      
-		  //     mxSetCell(actionFieldOutput,player,extPntsPtr);
-		  //   }
-		  // mxSetFieldByNumber(actionStructPtr,0,actionField++,
-		  // 		     actionFieldOutput);
+		      mxSetCell(actionFieldOutput,player,extPntsPtr);
+		    }
+		  mxSetFieldByNumber(actionStructPtr,0,actionField++,
+		  		     actionFieldOutput);
 		  
 		  mxSetCell(stateActionsPtr,actionCtr,actionStructPtr);
 		  actionCtr++;

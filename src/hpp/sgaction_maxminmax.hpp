@@ -30,6 +30,7 @@
 #include "sgbaseaction.hpp"
 #include "sghyperplane.hpp"
 
+
 //! Enhanced version of SGBaseAction
 /*! Same functionality as SGBaseAction, but includes additional
     methods for computing payoffs and a reference to a parent SGEnv
@@ -40,14 +41,9 @@
 class SGAction_MaxMinMax : public SGBaseAction
 {
 private:
-  const SGEnv & env; /*!< Constant reference to the parent
-                        environment. */
+  const SGEnv * env; /*!< Pointer to the parent environment. */
 
 
-  vector<SGTuple> bndryDirs; /*!< Stores the slope of the
-                                         frontier at the extreme
-                                         payoffs. */
-  
   vector<SGTuple> trimmedPoints; /*!< Stores the "trimmed" points
                                       before updating. */
   vector<SGTuple> trimmedBndryDirs; /*!< Stores the boundary
@@ -57,14 +53,14 @@ private:
 public:
   //! Default constructor
   SGAction_MaxMinMax():
-    env{SGEnv()},
+    env(new SGEnv()),
     SGBaseAction()
   {}
   
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
   SGAction_MaxMinMax(const SGEnv & _env):
-    env(_env),
+    env(&_env),
     SGBaseAction()
   {}
 
@@ -83,9 +79,8 @@ public:
 		     int _numPlayers,
 		     int _state,
 		     int _action):
-    env(_env),
+    env(&_env),
     SGBaseAction(_numPlayers,_state,_action),
-    bndryDirs(_numPlayers,SGTuple(2)),
     trimmedBndryDirs(_numPlayers,SGTuple(2,SGPoint(2,0.0)))
   {
     trimmedPoints.resize(_numPlayers);
@@ -96,51 +91,13 @@ public:
   /*!< Sets the trimmed points to rays that point from the minimum
      incentive compatible continuation value along the positive
      coordinate axes. */
-  void resetTrimmedPoints()
-  {
-    assert(numPlayers==2);
-    
-    SGPoint point = minIC;
-    trimmedPoints[0].clear();
-    trimmedPoints[0].push_back(point);
-    point[1] = numeric_limits<double>::max();
-    trimmedPoints[0].push_back(point);
-
-    point[1] =  minIC[1];
-    trimmedPoints[1].clear();
-    trimmedPoints[1].push_back(point);
-    point[0] = numeric_limits<double>::max();
-    trimmedPoints[1].push_back(point);
-
-    trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2,SGPoint(2,0.0)));
-  } // resetTrimmedPoints
-
+  void resetTrimmedPoints();
+  
   //! Resets the trimmed points for three players
   /*!< Sets the trimmed points to a large box in the coordinate plane
      between the minimum incentive compatible payoff and the payoff
      upper bound. */
-  void resetTrimmedPoints(const SGPoint & payoffUB)
-  {
-    assert(numPlayers==3);
-    
-    trimmedBndryDirs = vector<SGTuple> (3,SGTuple(4,SGPoint(3,0.0)));
-    for (int p = 0; p < numPlayers; p++)
-      {
-	SGPoint point = minIC;
-	trimmedPoints[p].clear();
-	trimmedPoints[p].push_back(point);
-	point[(p+1)%numPlayers] = payoffUB[(p+1)%numPlayers];
-	trimmedPoints[p].push_back(point);
-	point[(p+2)%numPlayers] = payoffUB[(p+2)%numPlayers];
-	trimmedPoints[p].push_back(point);
-	point[(p+1)%numPlayers] = minIC[(p+1)%numPlayers];
-	trimmedPoints[p].push_back(point);
-
-	SGPoint dir(3,0.0);
-	dir[p] = 1.0;
-	trimmedBndryDirs[p] = SGTuple(4,dir);
-      }
-  } // resetTrimmedPoints
+  void resetTrimmedPoints(const SGPoint & payoffUB);
   
   //! Sets points equal to the trimmed points
   void updateTrim() 
@@ -184,6 +141,8 @@ public:
   {
     calculateMinIC(game,vector<bool>(numPlayers,true),threatTuple);
   }
+
+  
   
 
   //! Calculates the IC constraint.
@@ -197,8 +156,9 @@ public:
   //! Get method for trimmed points
   const vector<SGTuple> & getTrimmedPoints() const { return trimmedPoints; }
 
-  //! Get method for bndry dirs
-  const vector<SGTuple> & getBndryDirs() const { return bndryDirs; }
+  //! Get method for trimmed points
+  const vector<SGTuple> & getTrimmedBndryDirs() const { return trimmedBndryDirs; }
+
   //! Get boundary direction for 3 players
   /*!< Returns the cross product of the boundary directions at the
      given point, i.e., the direction along an edge of the boundary
@@ -220,18 +180,25 @@ public:
     return false;
   }
 
-  //! Serializes the action using the boost::serialization library
-  template<class Archive>
-  void serialize(Archive &ar, const unsigned int version)
-  {
-    ar & boost::serialization::base_object<SGBaseAction>(*this);
-    ar & env;
-    ar & bndryDirs;
-    ar & trimmedPoints;
-    ar & trimmedBndryDirs;
-  } // serialize
+  // //! Serializes the action using the boost::serialization library
+  // template<class Archive>
+  // void serialize(Archive &ar, const unsigned int version)
+  // {
+  //   ar & boost::serialization::base_object<SGBaseAction>(*this);
+  //   ar & env;
+  //   ar & bndryDirs;
+  //   ar & trimmedPoints;
+  //   ar & trimmedBndryDirs;
+  // } // serialize
 
 }; // SGAction_MaxMinMax
 
+bool operator==(const SGAction_MaxMinMax & lhs,
+		const SGAction_MaxMinMax & rhs);
+
+bool operator<(const SGAction_MaxMinMax & lhs,
+	       const SGAction_MaxMinMax & rhs);
+
+template class std::list<SGAction_MaxMinMax>;
 
 #endif

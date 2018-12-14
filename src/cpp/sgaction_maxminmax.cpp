@@ -24,6 +24,75 @@
 
 /* SGAction_MaxMinMax */
 
+
+void SGAction_MaxMinMax::resetTrimmedPoints()
+{
+  assert(numPlayers==2);
+    
+  SGPoint point = minIC;
+  trimmedPoints[0].clear();
+  trimmedPoints[0].push_back(point);
+  point[1] = numeric_limits<double>::max();
+  trimmedPoints[0].push_back(point);
+
+  point[1] =  minIC[1];
+  trimmedPoints[1].clear();
+  trimmedPoints[1].push_back(point);
+  point[0] = numeric_limits<double>::max();
+  trimmedPoints[1].push_back(point);
+
+  trimmedBndryDirs = vector<SGTuple> (2,SGTuple(2,SGPoint(2,0.0)));
+} // resetTrimmedPoints
+
+
+void SGAction_MaxMinMax::resetTrimmedPoints(const SGPoint & payoffUB)
+{
+  assert(numPlayers==3);
+    
+  trimmedBndryDirs = vector<SGTuple> (3,SGTuple(4,SGPoint(3,0.0)));
+  for (int p = 0; p < numPlayers; p++)
+    {
+      SGPoint point = minIC;
+      trimmedPoints[p].clear();
+      trimmedPoints[p].push_back(point);
+      point[(p+1)%numPlayers] = payoffUB[(p+1)%numPlayers];
+      trimmedPoints[p].push_back(point);
+      point[(p+2)%numPlayers] = payoffUB[(p+2)%numPlayers];
+      trimmedPoints[p].push_back(point);
+      point[(p+1)%numPlayers] = minIC[(p+1)%numPlayers];
+      trimmedPoints[p].push_back(point);
+
+      // SGPoint dir(3,0.0);
+      // trimmedBndryDirs[p].clear();
+      // dir[(p+1)%numPlayers] = -1;
+      // trimmedBndryDirs[p].push_back(dir);
+      // dir[(p+1)%numPlayers] = 0;
+      // dir[(p+2)%numPlayers] = 1;
+      // trimmedBndryDirs[p].push_back(dir);
+      // dir[(p+1)%numPlayers] = 1;
+      // dir[(p+2)%numPlayers] = 0;
+      // trimmedBndryDirs[p].push_back(dir);
+      // dir[(p+1)%numPlayers] = 0;
+      // dir[(p+2)%numPlayers] = -1;
+      // trimmedBndryDirs[p].push_back(dir);
+
+      SGPoint dir(3,0.0);
+      trimmedBndryDirs[p].clear();
+      dir[(p+2)%numPlayers] = -1;
+      trimmedBndryDirs[p].push_back(dir);
+      dir[(p+1)%numPlayers] = 1;
+      dir[(p+2)%numPlayers] = 0;
+      trimmedBndryDirs[p].push_back(dir);
+      dir[(p+1)%numPlayers] = 0;
+      dir[(p+2)%numPlayers] = 1;
+      trimmedBndryDirs[p].push_back(dir);
+      dir[(p+1)%numPlayers] = -1;
+      dir[(p+2)%numPlayers] = 0;
+      trimmedBndryDirs[p].push_back(dir);
+    }
+} // resetTrimmedPoints
+
+
 void SGAction_MaxMinMax::trim(const SGPoint& normal,
 			      double level)
 {
@@ -52,7 +121,7 @@ void SGAction_MaxMinMax::trim(const SGPoint& normal,
 				    trimmedBndryDirs[player]);
 	}
     }
-}
+} // trim
 
 const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
 					      const int point) const
@@ -60,8 +129,8 @@ const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
   assert(numPlayers == 3);
   assert(point < bndryDirs[player].size());
   
-  return SGPoint::cross(bndryDirs[player][point],
-			bndryDirs[player][(point-1+bndryDirs.size())%bndryDirs.size()]);
+  return SGPoint::cross(bndryDirs[player][(point+1)%bndryDirs[player].size()],
+			bndryDirs[player][point]);
 
 } // getBndryDir
 
@@ -81,8 +150,8 @@ void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
       double l0 = normal * segment[0];
       double l1 = normal * segment[1];
       
-      if (l0 > level + env.getParam(SG::ICTOL)
-	  && l1 > level + env.getParam(SG::ICTOL))
+      if (l0 > level + env->getParam(SG::ICTOL)
+	  && l1 > level + env->getParam(SG::ICTOL))
 	{
 	  // Both lie above the ray.
 	  // cout << "Warning: No binding IC Payoffs for (s,a)=(" << state << "," << action << ")" << endl;
@@ -94,7 +163,7 @@ void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
 	{
 	  // Leave points alone.
 	}
-      else if (abs(l0 - l1)>env.getParam(SG::INTERSECTTOL))
+      else if (abs(l0 - l1)>env->getParam(SG::INTERSECTTOL))
 	{
 	  // Can take intersection.
 	  double weightOn1 = (level - l0)/(l1 - l0);
@@ -146,7 +215,7 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
   for (k0 = 0; k0 < extPnts.size(); k0++)
     {
       l0 = extPnts[k0] * normal;
-      if (l0 < level+env.getParam(SG::ICTOL))
+      if (l0 < level+env->getParam(SG::ICTOL))
 	break;
     } 
 
@@ -171,7 +240,7 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
        k1 = (k1+1)%extPnts.size())
     {
       l1 = extPnts[k1] * normal;
-      if (l1 >= level+env.getParam(SG::ICTOL))
+      if (l1 >= level+env->getParam(SG::ICTOL))
 	break;
     }
 
@@ -189,7 +258,7 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
        k0 = (k0+1)%extPnts.size())
     {
       l0 = extPnts[k0] * normal;
-      if (l0 < level+env.getParam(SG::ICTOL))
+      if (l0 < level+env->getParam(SG::ICTOL))
 	break;
     } 
 
@@ -206,7 +275,7 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
 
   // Replace k1 (which is outside) with the intersection between k1 and k1-1
   extPnts[k1] = intersection1;
-  extPntDirs[k1] = normal;
+  // extPntDirs[k1] = normal;
 
   // Now have to insert intersection0 and delete points that are
   // outside the half space.
@@ -297,3 +366,15 @@ double SGAction_MaxMinMax::calculateMinIC(int action,int state,int player,
   return tmpMinIC;
 }  // calculateMinIC
 
+bool operator==(const SGAction_MaxMinMax & lhs,
+		const SGAction_MaxMinMax & rhs)
+{
+  return lhs.getState() == rhs.getState() && lhs.getAction() == rhs.getAction();
+}
+
+bool operator<(const SGAction_MaxMinMax & lhs,
+	       const SGAction_MaxMinMax & rhs)
+{
+  return lhs.getState() < rhs.getState() ||
+    (lhs.getState() == rhs.getState() && lhs.getAction() < rhs.getAction());
+}
