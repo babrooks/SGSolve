@@ -91,6 +91,8 @@ namespace SG
       INTERSECTTOL, /*! Controls the length of segment that is
 		      sufficient to take an intersection in
 		      SGAction. */
+      BNDRYPNTTOL, /*! Distance below which extreme binding
+                       continuation values are considered equal . */
       NUMDOUBLEPARAMS /*!< Used internally to indicate the number of
 			enumerated double parameters. */
     };

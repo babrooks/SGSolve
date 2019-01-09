@@ -244,6 +244,11 @@ void SGTuple::emplace(int location,const SGPoint & point)
   points.insert(points.begin()+location,point);
 }
 
+void SGTuple::unique(double tol)
+{
+  SGPointComparator comparator(tol);
+  std::unique(points.begin(),points.end(),comparator);
+}
 
 double SGTuple::max(int coordinate) const
 {

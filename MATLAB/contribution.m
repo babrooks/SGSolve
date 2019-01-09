@@ -49,9 +49,11 @@ sgmex2('LoadSolution','../examples/solutions/contribution.sln2');
 
 %% 
 
-i = 1;
+i = 10;
 s = 1;
-a = 3;
+a = 8;
+dir=217;
+
 sgmex2('IterToBeginning');
 
 for k=1:i-1
@@ -65,21 +67,17 @@ nextIter=sgmex2('GetCurrentIteration');
 
 subplot(1,1,1);
 clf
-[V,nr]=con2vert(iter.directions,0.5*sum(iter.levels(:,:),2));
+[V,nr]=con2vert(iter.directions,mean(iter.levels,2));
 
 % V=0.5*(iter.pivots(:,1:3)+iter.pivots(:,4:6));
 
-% payoffs0=sgmex2('GetPayoffs',0);
-% payoffs1=sgmex2('GetPayoffs',1);
+payoffs0=sgmex2('GetPayoffs',0);
+payoffs1=sgmex2('GetPayoffs',1);
 % V=0.5*payoffs0+0.5*payoffs1;
 
 faces=convhulln(V);
 for row=1:size(faces,1)
     F = V(faces(row,:),:);
-    %     if ~all(abs(sum(F,2)-2*c)<1e-6) ...
-    %             && ~all(abs(F(:,1)-minU)<1e-6)...
-    %             && ~all(abs(F(:,2)-minU)<1e-6)...
-    %             && ~all(abs(F(:,3)-minU)<1e-6)
     p2 = patch(F(:,1),...
         F(:,2),...
         F(:,3),...
@@ -91,7 +89,7 @@ end
 
 hold on;
 
-for p=1:3
+for p=[1:3]
     X=nextIter.actions{s}{a}.points{p};
     h=scatter3(X(:,1),X(:,2),X(:,3),'r.');
     set(h,'sizedata',500);
@@ -106,25 +104,33 @@ for p=1:3
     if ~isempty(nextIter.actions{s}{a}.points{p})
         X1=nextIter.actions{s}{a}.points{p};
         X2a=nextIter.actions{s}{a}.bndryDirs{p};
-        X2=cross(X2a,X2a([2:end 1],:),2);
+        X2=cross(X2a([end 1:end-1],:),X2a,2);
         q=quiver3(X1(:,1),X1(:,2),X1(:,3),...
             X2(:,1),X2(:,2),X2(:,3));
         set(q,'linewidth',1.5,'autoscale','off','color','blue');
     end
-
 end
 
-d=0.25*iter.directions(114,:);
-q=quiver3(4.5,1.5,4.5,...
+d=iter.directions(dir,:);
+p = 0.5*(iter.pivots(dir,1:3)+iter.pivots(dir,4:6));
+q=quiver3(p(1),p(2),p(3),...
     d(1),d(2),d(3));
 set(q,'linewidth',1.5,'autoscale','off','color','red');
+q=scatter3(p(1),p(2),p(3),'r.');
+set(q,'sizedata',500);
+
+Z1=0.5*payoffs0+0.5*payoffs1;
+Z=[payoffs0;payoffs1];
+% Z=Z1
+
+h=scatter3(Z1(:,1),Z1(:,2),Z1(:,3),'k.');
+set(h,'sizedata',500);
 
 hold off
 view(az,el);
 bounds = [min(min(V)),max(max(V))];
-Z=0.5*payoffs0+0.5*payoffs1;
 bounds = [min(min(Z)),max(max(Z))];
-bounds(1)=1;
+% bounds(1)=1;
 set(gca,'zlim',bounds,'xlim',bounds,'ylim',bounds);
 
 %%

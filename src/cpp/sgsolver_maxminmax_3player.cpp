@@ -22,7 +22,7 @@
 #include "sgsolver_maxminmax_3player.hpp"
 
 SGSolver_MaxMinMax_3Player::SGSolver_MaxMinMax_3Player(const SGEnv & _env,
-			 const SGGame & _game):
+						       const SGGame & _game):
   env(_env),
   game(_game),
   soln(_game),
@@ -476,11 +476,11 @@ void SGSolver_MaxMinMax_3Player::initialize()
 } // initialize
 
 void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
-				 vector<SGActionIter> & actionTuple,
-				 vector<SG::Regime> & regimeTuple,
-				 const SGPoint & currDir,
-				 const vector<list<SGAction_MaxMinMax> > & actions,
-				 const SGTuple & feasibleTuple) const
+						vector<SGActionIter> & actionTuple,
+						vector<SG::Regime> & regimeTuple,
+						const SGPoint & currDir,
+						const vector<list<SGAction_MaxMinMax> > & actions,
+						const SGTuple & feasibleTuple) const
 {
   // Do policy iteration to find the optimal pivot.
   
@@ -516,6 +516,8 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 	      // function
 
 	      bool debugMode = currDir[0] < -0.12 && currDir[1] < -0.99 && ait->getAction() == 2;
+	      debugMode = false;
+	      
 	      if (debugMode)
 		{
 		  cout << currDir << " "
@@ -560,8 +562,8 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 
 		  
 	      if (bestBindingPlayer < 0 // didn't find a binding payoff
-		  || (ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
-		      *currDir > 1e-6) // Can improve on the best
+		  || ( ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
+		       *currDir > env.getParam(SG::ICTOL) ) // Can improve on the best
 				       // binding payoff by moving in
 				       // along the frontier
 		  )

@@ -49,7 +49,11 @@ private:
   vector<SGTuple> trimmedBndryDirs; /*!< Stores the boundary
                                          directions for the trimmed
                                          points. */
+  // vector< vector<SGTuple> > bndryDirs_3Player; /*!< Stores boundary
+  //                                               directions for three
+  //                                               players. */ 
 
+  
 public:
   //! Default constructor
   SGAction_MaxMinMax():
@@ -142,8 +146,10 @@ public:
     calculateMinIC(game,vector<bool>(numPlayers,true),threatTuple);
   }
 
-  
-  
+  // //! Computes non-redudant boundary directions
+  // /*! Takes as input a list of bounding hyperplanes and computes which
+  //     ones are extreme around a given point. */
+  // void computeBndryDirs_3Player(const list<SGHyperplane> & hyperplanes);
 
   //! Calculates the IC constraint.
   /*! Calculates the minimum incentive compatible expected

@@ -24,6 +24,42 @@
 
 /* SGAction_MaxMinMax */
 
+// void SGAction_MaxMinMax::computeBndryDirs_3Player(const list<SGHyperplane> & hyperplanes)
+// {
+//   // Do each binding constraint in sequence
+//   for (int player = 0; player < numPlayers; player++)
+//     {
+//       // First merge redundant payoffs
+//       points[player].unique(env->getParam(SG::BNDRYPNTTOL));
+
+//       // Now go through each point and collect the hyperplanes that go
+//       // through that point. Only add non-redundant hyperplanes.
+//       bndryDirs_3Player[player].resize(points[player].size());
+//       for (int pntCntr = 0; pntCntr < points[player].size(); pntCntr++)
+// 	{
+// 	  for (auto hit = hyperplanes.cbegin();
+// 	       hit != hyperplanes.cend();
+// 	       ++hit)
+// 	    {
+// 	      if (abs(points[player][pntCtr]*(hit->getNormal()) - hit->getLevels(state)) < 1e-6)
+// 		{
+// 		  // Point lies on hyperplane. Compute convex hull of
+// 		  // the union of the hyperplanes in
+// 		  // points[player][pntCntr] and hit.
+
+// 		  if (bndryDirs_3Player[player][pntCntr].size() < 3)
+// 		    bndryDirs_3Player.push_back(hit->getNormal())
+		  
+// 		}
+// 	    }
+
+// 	} // pntCntr
+
+//     } // int player
+
+  
+// } // computeBndryDirs_3Player
+
 
 void SGAction_MaxMinMax::resetTrimmedPoints()
 {
@@ -78,6 +114,9 @@ void SGAction_MaxMinMax::resetTrimmedPoints(const SGPoint & payoffUB)
 
       SGPoint dir(3,0.0);
       trimmedBndryDirs[p].clear();
+      dir[(p+1)%numPlayers] = -1;
+      trimmedBndryDirs[p].push_back(dir);
+      dir[(p+1)%numPlayers] = 0;
       dir[(p+2)%numPlayers] = -1;
       trimmedBndryDirs[p].push_back(dir);
       dir[(p+1)%numPlayers] = 1;
@@ -85,9 +124,6 @@ void SGAction_MaxMinMax::resetTrimmedPoints(const SGPoint & payoffUB)
       trimmedBndryDirs[p].push_back(dir);
       dir[(p+1)%numPlayers] = 0;
       dir[(p+2)%numPlayers] = 1;
-      trimmedBndryDirs[p].push_back(dir);
-      dir[(p+1)%numPlayers] = -1;
-      dir[(p+2)%numPlayers] = 0;
       trimmedBndryDirs[p].push_back(dir);
     }
 } // resetTrimmedPoints
@@ -129,7 +165,7 @@ const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
   assert(numPlayers == 3);
   assert(point < bndryDirs[player].size());
   
-  return SGPoint::cross(bndryDirs[player][(point+1)%bndryDirs[player].size()],
+  return SGPoint::cross(bndryDirs[player][(point-1+bndryDirs[player].size())%bndryDirs[player].size()],
 			bndryDirs[player][point]);
 
 } // getBndryDir
@@ -208,40 +244,55 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
 						   SGTuple & extPntDirs)
 {
   assert(numPlayers == 3);
-
+  
   // Iterate to find a point inside the half space.
   int k0 = 0; 
+  int k1, k2;
   double l0;
   for (k0 = 0; k0 < extPnts.size(); k0++)
     {
       l0 = extPnts[k0] * normal;
-      if (l0 < level+env->getParam(SG::ICTOL))
-	break;
-    } 
+      k1 = (k0-1+extPnts.size())%extPnts.size();
+
+      // Conditions for being considered "inside" are that either (a)
+      // the point itself is below the hyperplane or (b) the point is
+      // on the hyperplane but the boundary direction points below or
+      // (c) the boundary direction points above and if we substitute
+      // in the normal for this point, the new boundary direction
+      // would point above the old normal.
+      if (l0 < level-env->getParam(SG::ICTOL)
+	  || (abs(l0-level) <= env->getParam(SG::ICTOL)
+	      && (SGPoint::cross(extPntDirs[k1],extPntDirs[k0])*normal < env->getParam(SG::ICTOL) ) ) )
+  	break;
+    }
 
   if (k0 == extPnts.size())
     {
       // Whole set is ouside the half space.
       extPnts.clear();
       extPntDirs.clear();
-
-      // cout << "Alert: No binding continuation values found. Player: " << player
-      // 	   << ", state: " << state
-      // 	   << ", action: " << action
-      // 	   << endl;
       return;
     }
 
   // Now keep iterating to find a point outside the half space;
-  int k1;
   double l1;
   for (k1 = (k0+1)%extPnts.size();
        k1 != k0;
        k1 = (k1+1)%extPnts.size())
     {
       l1 = extPnts[k1] * normal;
-      if (l1 >= level+env->getParam(SG::ICTOL))
-	break;
+      k2 = (k1-1+extPnts.size())%extPnts.size();
+
+      // Conditions for being considered "outside" are that either (a)
+      // the point itself is above the hyperplane or (b) the point is
+      // on the hyperplane but the boundary direction points outside
+      // and if we substitute in the normal for the previous bounding
+      // direction, the new boundary direction would point above the
+      // old normal.
+      if (l1 > level+env->getParam(SG::ICTOL)
+	    || (abs(l1-level) <= env->getParam(SG::ICTOL)
+		&& (SGPoint::cross(extPntDirs[k2],extPntDirs[k1])*normal >= env->getParam(SG::ICTOL) ) ) )
+  	break;
     }
 
   if (k1 == k0)
@@ -258,16 +309,19 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
        k0 = (k0+1)%extPnts.size())
     {
       l0 = extPnts[k0] * normal;
-      if (l0 < level+env->getParam(SG::ICTOL))
-	break;
-    } 
+      k2 = (k0-1+extPnts.size())%extPnts.size();
+      if (l0 < level-env->getParam(SG::ICTOL)
+	  || (abs(l0-level) <= env->getParam(SG::ICTOL)
+	      && (SGPoint::cross(extPntDirs[k2],extPntDirs[k0])*normal < env->getParam(SG::ICTOL) ) ) )
+  	break;
+    }
 
   // add two new points for the intersections.
   int k = (k1-1+extPnts.size())%extPnts.size(); // The inside point just before k1
   double l = extPnts[k] * normal;
   double weight = (level-l)/(l1-l);
   SGPoint intersection1 = weight*extPnts[k1]+(1-weight)*extPnts[k];
-
+  
   k = (k0-1+extPnts.size())%extPnts.size(); // The outside point just before k0
   l = extPnts[k] * normal;
   weight = (level-l)/(l0-l);
@@ -275,7 +329,7 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
 
   // Replace k1 (which is outside) with the intersection between k1 and k1-1
   extPnts[k1] = intersection1;
-  // extPntDirs[k1] = normal;
+  extPntDirs[k1] = normal;
 
   // Now have to insert intersection0 and delete points that are
   // outside the half space.
@@ -291,22 +345,22 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
       // There is more than one point outside. Replace point at k with
       // intersection0.
       extPnts[k] = intersection0;
-      extPntDirs[k] = normal;
+      // extPntDirs[k] = normal;
 
       // Delete points strictly after k1 and strictly before k (which are
       // all outside)
       if (k1<k)
-	{
-	  extPnts.erase(k1+1,k);
-	  extPntDirs.erase(k1+1,k);
-	}
+  	{
+  	  extPnts.erase(k1+1,k);
+  	  extPntDirs.erase(k1+1,k);
+  	}
       else // k0>k1
-	{
-	  extPnts.erase(k1+1,extPnts.size());
-	  extPnts.erase(0,k);
-	  extPntDirs.erase(k1+1,extPntDirs.size());
-	  extPntDirs.erase(0,k);
-	}
+  	{
+  	  extPnts.erase(k1+1,extPnts.size());
+  	  extPnts.erase(0,k);
+  	  extPntDirs.erase(k1+1,extPntDirs.size());
+  	  extPntDirs.erase(0,k);
+  	}
     }
 } // intersectPolygonHalfSpace
 

@@ -32,6 +32,22 @@
 
   \ingroup src
 */
+
+class SGPointComparator
+{
+private:
+  double tol;
+public:
+  SGPointComparator(double _tol):
+    tol(_tol)
+  {}
+
+  bool operator()(const SGPoint & pnt0, const SGPoint & pnt1) const
+  {
+    return SGPoint::distance(pnt0,pnt1) < tol;
+  }
+};
+
 class SGTuple
 {
 private:
@@ -108,7 +124,9 @@ public:
   void erase(int start, int end);
   //! Adds an element at the location
   void emplace(int location,const SGPoint & point);
-
+  //! Removes non-unique elements
+  void unique(double tol);
+  
   //! Returns the number of points in the tuple.
   int size() const { return points.size(); }
 
