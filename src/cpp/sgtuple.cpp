@@ -224,6 +224,16 @@ bool SGTuple::strictlyLessThan(const SGTuple & tuple,int coordinate) const
   return lessthan && strict;
 }
 
+bool SGTuple::anyNaN() const
+{
+  for (int p = 0; p < points.size(); p++)
+    {
+      if (points[p].anyNaN())
+	return true;
+    }
+  return false;
+}
+
 void SGTuple::push_back(const SGPoint & point)
 {
   points.push_back(point); 

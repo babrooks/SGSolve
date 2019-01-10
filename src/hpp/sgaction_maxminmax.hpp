@@ -186,16 +186,7 @@ public:
     return false;
   }
 
-  // //! Serializes the action using the boost::serialization library
-  // template<class Archive>
-  // void serialize(Archive &ar, const unsigned int version)
-  // {
-  //   ar & boost::serialization::base_object<SGBaseAction>(*this);
-  //   ar & env;
-  //   ar & bndryDirs;
-  //   ar & trimmedPoints;
-  //   ar & trimmedBndryDirs;
-  // } // serialize
+  void testThreePlayerIntersection();
 
 }; // SGAction_MaxMinMax
 

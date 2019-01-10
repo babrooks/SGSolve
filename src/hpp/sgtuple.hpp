@@ -92,6 +92,9 @@ public:
       in the player coordinate. */
   bool strictlyLessThan(const SGTuple & tuple, int coordinate) const;
 
+  //! Check if any of the entries are NaN
+  bool anyNaN() const;
+  
   //! Round off significant digits smaller than tol.
   void roundTuple(double tol);
 

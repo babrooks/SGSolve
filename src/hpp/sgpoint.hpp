@@ -77,6 +77,8 @@ public:
   bool rotateCW(double pi) {return rotateCCW(-pi);}
   //! Normalizes so that the norm is one
   bool normalize();
+  //! Checks if any of the entries are NaN
+  bool anyNaN() const;
   
   //! Rounds off significant digits smaller than tol.
   void roundPoint(double tol);

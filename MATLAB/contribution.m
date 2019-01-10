@@ -49,7 +49,7 @@ sgmex2('LoadSolution','../examples/solutions/contribution.sln2');
 
 %% 
 
-i = 10;
+i = 12;
 s = 1;
 a = 8;
 dir=217;

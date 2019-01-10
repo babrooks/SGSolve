@@ -22,7 +22,7 @@
 # Makefile for examples
 
 MAINS= as_twostate abreusannikov pd pd_twostate guitester risksharing finiteresource \
-	as_twostate_maxminmax predation contribution
+	as_twostate_maxminmax predation contribution threeplayertest
 MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb risksharing_maxminmax
 GRBTEST=gurobibasistest
 QHULLMAINS=qhulltest

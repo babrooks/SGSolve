@@ -24,6 +24,17 @@
 #include "sgexception.hpp"
 
 /* SGPoint */
+
+bool SGPoint::anyNaN() const
+{
+  for (int p = 0; p < x.size(); p++)
+    {
+      if (isnan(x[p]))
+	return true;
+    }
+  return false;
+}
+
 SGPoint SGPoint::getNormal() const
 {
   assert(x.size()==2);
