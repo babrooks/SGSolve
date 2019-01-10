@@ -114,8 +114,8 @@ const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
   assert(numPlayers == 3);
   assert(point < bndryDirs[player].size());
   
-  return SGPoint::cross(bndryDirs[player][(point-1+bndryDirs[player].size())%bndryDirs[player].size()],
-			bndryDirs[player][point]);
+  return SGPoint::cross(bndryDirs[player][point],
+			bndryDirs[player][(point+1+bndryDirs[player].size())%bndryDirs[player].size()]);
 
 } // getBndryDir
 

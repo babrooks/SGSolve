@@ -49,7 +49,7 @@ sgmex2('LoadSolution','../examples/solutions/contribution.sln2');
 
 %% 
 
-i = 12;
+i = 44;
 s = 1;
 a = 8;
 dir=217;
@@ -104,7 +104,8 @@ for p=[1:3]
     if ~isempty(nextIter.actions{s}{a}.points{p})
         X1=nextIter.actions{s}{a}.points{p};
         X2a=nextIter.actions{s}{a}.bndryDirs{p};
-        X2=cross(X2a([end 1:end-1],:),X2a,2);
+        % X2=cross(X2a([end 1:end-1],:),X2a,2);
+        X2=-1*cross(X2a([2:end 1],:),X2a,2);
         q=quiver3(X1(:,1),X1(:,2),X1(:,3),...
             X2(:,1),X2(:,2),X2(:,3));
         set(q,'linewidth',1.5,'autoscale','off','color','blue');
