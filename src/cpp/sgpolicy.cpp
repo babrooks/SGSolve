@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -19,34 +19,32 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef _SGCOMMON_HPP
-#define _SGCOMMON_HPP
+#include "sgpolicy.hpp"
 
-#include <iostream>
-#include <iomanip>
-#include <sstream>
-#include <fstream>
-#include <vector>
-#include <list>
-#include <limits>
-#include <algorithm>
-#include <functional>
-#include <math.h>
-#include <exception>
-#include <assert.h>
-#include <cmath>
-#include <stdio.h>
-#include <time.h>
-#include <set>
-#include <unordered_set>
-#include <queue>
+bool operator< (const SGPolicy & p1, const SGPolicy & p2)
+{
+  if (p1.action.getState() < p2.action.getState())
+    return true;
+  if (p1.action.getState() > p2.action.getState())
+    return false;
 
-#include <boost/serialization/list.hpp>
-#include <boost/serialization/vector.hpp>
+  // States must be equal
 
-#define PI 3.14159265358979323846264338327950288
+  if (p1.action.getAction() < p2.action.getAction())
+    return true;
+  if (p1.action.getAction() > p2.action.getAction())
+    return false;
 
-using namespace std;
-// using namespace boost;
+  // States and actions are equal
 
-#endif
+  if (p1.bindingPlayer < p2.bindingPlayer)
+    return true;
+  if (p1.bindingPlayer > p2.bindingPlayer)
+    return false;
+
+  // States and actions and regime/binding player are equal
+  if (p1.bindingPoint < p2.bindingPoint)
+    return true;
+
+  return false;
+}

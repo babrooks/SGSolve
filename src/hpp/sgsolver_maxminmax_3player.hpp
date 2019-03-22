@@ -29,6 +29,7 @@
 #include "sgaction_maxminmax.hpp"
 #include "sgexception.hpp"
 #include "sgsolution_maxminmax.hpp"
+#include "sgproductpolicy.hpp"
 
 //! Class for solving stochastic games
 /*! This class contains parameters for the algorithm, the solve
@@ -127,6 +128,11 @@ public:
 		      const vector<list<SGAction_MaxMinMax> > & actions,
 		      const SGTuple & feasibleTuple) const;
 
+  void computeOptimalPolicies(SGProductPolicy & optPolicies,
+			      const SGTuple & pivot,
+			      const SGPoint & currDir,
+			      const vector<list<SGAction_MaxMinMax> > & actions) const;
+  
   //! Find the next clockwise direction at which the optimal tuple
   //! changes
   double sensitivity(const SGTuple & pivot,
