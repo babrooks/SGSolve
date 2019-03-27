@@ -1,7 +1,10 @@
 %% Code for analyzing solution of the three player contribution game
 
-sgmex2('LoadSolution','../examples/solutions/contribution.sln2');
-sgmex2('IterToBeginning');
+% sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
+sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
+% sgmex2('IterToBeginning');
+sgmex2('IterToEnd');
+
 iter = sgmex2('GetCurrentIteration');
 
 payoffBounds = [1e10,-1e10];
@@ -37,22 +40,27 @@ for s=1:2
         colormap(gray);
         set(p2,'facealpha',0.8,'edgealpha',0.5);
         %     end
+        
     end
-    
+    hold on
+    h=scatter3(V(:,1),V(:,2),V(:,3),'k.');
+    set(h,'sizedata',500);
+
     set(gca,'zlim',payoffBounds,'xlim',payoffBounds,'ylim',payoffBounds);
+    hold off
     
 end % state
 
+%% 
+% sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
+sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
 
 %% 
-sgmex2('LoadSolution','../examples/solutions/contribution.sln2');
 
-%% 
-
-i = 44;
+i = 40;
 s = 1;
 a = 8;
-dir=217;
+dir=2;
 
 sgmex2('IterToBeginning');
 
@@ -62,7 +70,7 @@ end
 [az,el]=view;
 
 iter = sgmex2('GetCurrentIteration');
-sgmex2('Iter++');
+% sgmex2('Iter++');
 nextIter=sgmex2('GetCurrentIteration');
 
 subplot(1,1,1);
@@ -122,7 +130,7 @@ set(q,'sizedata',500);
 
 Z1=0.5*payoffs0+0.5*payoffs1;
 Z=[payoffs0;payoffs1];
-% Z=Z1
+Z=Z1
 
 h=scatter3(Z1(:,1),Z1(:,2),Z1(:,3),'k.');
 set(h,'sizedata',500);
@@ -153,4 +161,32 @@ k=find(iter2.levels>iter1.levels+x/2,1,'first')
 %%
 X=iter1.actions{1}{3}.points{1}
 X=iter1.actions{1}{3}.bndryDirs{1}
+
+%% 
+hold on
+q=quiver3(5.5,5.5,5.5,12,3,3);
+set(q,'linewidth',1.5,'autoscale','off','color','magenta');
+q=quiver3(5.5,5.5,5.5,6,6,6);
+set(q,'linewidth',1.5,'autoscale','off','color','green');
+q=quiver3(5.5,5.5,5.5,6,-3,6);
+set(q,'linewidth',1.5,'autoscale','off','color','cyan');
+hold off
+
+%% 
+z1=(4+2/3)*[1 1 1]; z2=[5,4,4]; z3=[4,5,4];
+cross(z2-z1,z3-z1)
+
+
+%% 
+z2=[4.5 4.5 1.5]; z1=[2.5 2.5 2.5]; z3=[4.5 1.5 4.5];
+cross(z2-z1,z3-z1)
+
+%%
+set(gcf,'paperunits','inches','units','inches');
+fpos = [-14.9028    1.1944    7.7778    5.8333];
+set(gcf,'position',fpos);
+set(gcf,'papersize',fpos(3:4),'paperposition',[0 0 fpos(3:4)]);
+print(gcf,'-dpdf','contribution_fixed2.pdf');
+
+
 

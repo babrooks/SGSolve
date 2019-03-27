@@ -44,7 +44,7 @@ public:
     for (int p=0; p < numPlayers; p++)
       actionSum += actions[p];
 
-    // Payoff is sum a_j - 2 a_i + state.
+    // Payoff is 2*sum a_j - 3* a_i + 5*state.
     for (int p=0; p < numPlayers; p++)
       point[p] = 2.0*actionSum - 3.0*actions[p]
 	+ 5.0*static_cast<double>(state)/(static_cast<double>(numStates)-1.0);

@@ -42,8 +42,6 @@
  */
 class SGSolver_MaxMinMax
 {
-  typedef list<SGAction_MaxMinMax>::const_iterator SGActionIter;
-
 private:
   // Data
 

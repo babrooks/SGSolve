@@ -23,16 +23,16 @@
 
 bool operator< (const SGPolicy & p1, const SGPolicy & p2)
 {
-  if (p1.action.getState() < p2.action.getState())
+  if (p1.action->getState() < p2.action->getState())
     return true;
-  if (p1.action.getState() > p2.action.getState())
+  if (p1.action->getState() > p2.action->getState())
     return false;
 
   // States must be equal
 
-  if (p1.action.getAction() < p2.action.getAction())
+  if (p1.action->getAction() < p2.action->getAction())
     return true;
-  if (p1.action.getAction() > p2.action.getAction())
+  if (p1.action->getAction() > p2.action->getAction())
     return false;
 
   // States and actions are equal
@@ -48,3 +48,21 @@ bool operator< (const SGPolicy & p1, const SGPolicy & p2)
 
   return false;
 }
+
+ostream& operator<<(ostream& out, const SGPolicy& rhs)
+{
+  out.setf(std::ios::fixed,std::ios::floatfield);
+  out << "s" << rhs.getAction()->getState()
+      << "a" << rhs.getAction()->getAction()
+      << "r";
+  if (rhs.getRegime()==SG::NonBinding)
+    out << "N";
+  else
+    {
+      out << "Bp" << rhs.getBindingPlayer()
+	  << "k" << rhs.getBindingPoint();
+    }
+
+  return out;
+}
+

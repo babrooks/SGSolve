@@ -22,20 +22,21 @@
 #ifndef _SGPOLICY_HPP
 #define _SGPOLICY_HPP
 
-#include "sgbaseaction.hpp"
+#include "sgaction_maxminmax.hpp"
 
 //! Class for storing policies
+typedef list<SGAction_MaxMinMax>::const_iterator SGActionIter;
 
 class SGPolicy
 {
 private:
-  const SGBaseAction & action;
+  SGActionIter action;
   SG::Regime regime;
   int bindingPlayer;
   int bindingPoint;
 
 public:
-  SGPolicy(const SGBaseAction & _action,
+  SGPolicy(const SGActionIter & _action,
 	   const SG::Regime _regime,
 	   const int _bindingPlayer = -1,
 	   const int _bindingPoint = -1):
@@ -45,14 +46,23 @@ public:
     bindingPoint(_bindingPoint)
   {}
 
+  const SGActionIter & getAction() const
+  { return action; }
+  const SG::Regime & getRegime() const
+  { return regime; }
+  const int getBindingPlayer() const
+  { return bindingPlayer; }
+  const int getBindingPoint() const
+  { return bindingPoint; }
+
   std::string hash() const
   {
     std::string str;
 
     str += "s";
-    str += std::to_string(action.getState());
+    str += std::to_string(action->getState());
     str += "a";
-    str += std::to_string(action.getAction());
+    str += std::to_string(action->getAction());
     if (regime==SG::NonBinding)
       str += "NB";
     else
@@ -66,7 +76,21 @@ public:
     return str;
   }
 
+  bool isEqual(const SGActionIter & _action,
+	       const SG::Regime & _regime,
+	       const int _bindingPlayer=-1,
+	       const int _bindingPoint=-1) const
+  {
+    return (_action != action
+	    || _regime != regime
+	    || (regime == SG::Binding && 
+		(bindingPlayer != _bindingPlayer
+		 || bindingPoint != _bindingPoint)));
+  }
+
   friend bool operator< (const SGPolicy &, const SGPolicy &);
+  friend ostream& operator<<(ostream& out, const SGPolicy &);
+
 }; // SGPolicy
 
 

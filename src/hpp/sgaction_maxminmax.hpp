@@ -197,5 +197,9 @@ bool operator<(const SGAction_MaxMinMax & lhs,
 	       const SGAction_MaxMinMax & rhs);
 
 template class std::list<SGAction_MaxMinMax>;
+template std::list<SGAction_MaxMinMax>::const_iterator;
+template std::list<SGAction_MaxMinMax>::iterator;
+
+typedef list<SGAction_MaxMinMax>::const_iterator SGActionIter;
 
 #endif

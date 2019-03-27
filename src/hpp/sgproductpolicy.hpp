@@ -88,6 +88,26 @@ public:
       policies[state].clear();
   }
   
+  bool isempty() const
+  {
+    bool tf = false;
+    for (int state = 0; state < policies.size(); state++)
+      {
+	if (policies[state].size()==0)
+	  tf = true;
+      }
+    return tf;
+  }
+  
+  int dimension() const
+  {
+    int dim = 0;
+    for (int state = 0; state < policies.size(); state++)
+      dim += policies[state].size();
+    
+    return dim-policies.size()+1;
+  }
+  
   std::string hash() const
   {
     std::string str;
@@ -102,86 +122,5 @@ public:
 
   int numStates() const {return policies.size();}
 }; // SGProductPolicy
-
-//! Class for iterating edges of a product policy
-class SGEdgePolicy
-{
-private:
-  const SGProductPolicy & master;
-  vector<SGPolicySet::const_iterator> policies;
-  SGPolicySet::const_iterator subPolicy;
-  int baseState;
-  int subState;
-  
-public:
-  SGEdgePolicy(const SGProductPolicy & _master):
-    master(_master), policies(_master.numStates())
-  {
-    for (int s = 0; s < master.numStates(); s++)
-      policies[s] = master.getPolicies(s).begin();
-    for (int s = 0; s < master.numStates(); s++)
-      {
-	if (master.getPolicies(s).size()>1)
-	  {
-	    subPolicy = master.getPolicies(s).begin()++;
-	    subState = s;
-	    baseState = s;
-	    break;
-	  }
-      }
-  }
-
-  bool operator++()
-  {
-    // Try to increment the substitute policy
-    while (++subPolicy == master.getPolicies(subState).end())
-      {
-	// Ran out of policies in the current state. Try to find
-	// another state.
-	while (++subState < master.numStates())
-	  {
-	    if (master.getPolicies(subState).size()>1)
-	      {
-		subPolicy = master.getPolicies(subState).begin()++;
-		return true;
-	      } // if
-	  } // while
-	
-      } // while
-    
-    // If we got to here, ran out of states to increment the
-    // subPolicy. Try to increment the base policy instead. First
-    // reset the policy in the base state and then increment the base
-    // policy.
-    policies[baseState] = master.getPolicies(baseState).begin();
-    while (++baseState < master.numStates())
-      {
-	if (master.getPolicies(subState).size() > 1)
-	  {
-	    policies[baseState] = master.getPolicies(baseState).begin()++;
-	    subState = baseState;
-	    subPolicy = policies[baseState]++;
-
-	    // Try to increment the substitute policy
-	    while (++subPolicy == master.getPolicies(subState).end())
-	      {
-		// Ran out of policies in the current state. Try to find
-		// another state.
-		while (++subState < master.numStates())
-		  {
-		    if (master.getPolicies(subState).size()>1)
-		      {
-			subPolicy = master.getPolicies(subState).begin()++;
-			return true;
-		      } // if
-		  } // while
-	      } // while
-	  }
-      }
-
-    return false;
-  }
-  
-}; // SGEdgePolicy
 
 #endif

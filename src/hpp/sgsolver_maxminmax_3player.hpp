@@ -29,7 +29,7 @@
 #include "sgaction_maxminmax.hpp"
 #include "sgexception.hpp"
 #include "sgsolution_maxminmax.hpp"
-#include "sgproductpolicy.hpp"
+#include "sgedgepolicy.hpp"
 
 //! Class for solving stochastic games
 /*! This class contains parameters for the algorithm, the solve
@@ -43,8 +43,6 @@
  */
 class SGSolver_MaxMinMax_3Player
 {
-  typedef list<SGAction_MaxMinMax>::const_iterator SGActionIter;
-
 private:
   // Data
 
@@ -128,16 +126,18 @@ public:
 		      const vector<list<SGAction_MaxMinMax> > & actions,
 		      const SGTuple & feasibleTuple) const;
 
-  void computeOptimalPolicies(SGProductPolicy & optPolicies,
+  //! Compute all policies that are at least as high as the given
+  //! pivot. Returns false if there is a strict improvement, and true
+  //! otherwise. Will short circuit if it finds a strict improvement.
+  bool computeOptimalPolicies(SGProductPolicy & optPolicies,
 			      const SGTuple & pivot,
 			      const SGPoint & currDir,
 			      const vector<list<SGAction_MaxMinMax> > & actions) const;
   
   //! Find the next clockwise direction at which the optimal tuple
   //! changes
-  double sensitivity(const SGTuple & pivot,
-		     const vector<SGActionIter> & actionTuple,
-		     const vector<SG::Regime> & regimeTuple,
+  double sensitivity(SGPoint & optSubDir,
+		     const SGTuple & pivot,
 		     const SGPoint & currDir,
 		     const SGPoint & newDir,
 		     const vector<list<SGAction_MaxMinMax> > & actions) const;

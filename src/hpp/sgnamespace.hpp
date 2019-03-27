@@ -50,7 +50,9 @@ namespace SG
 			    with one another, e.g., arrays that should
 			    be the same size are not. */
       SIMERROR, /*!< Simulator error. */
-      NOFEASIBLETUPLE /*!< Could not find a feasible tuple for APS. */
+      NOFEASIBLETUPLE, /*!< Could not find a feasible tuple for APS. */
+      NOEDGES, /*!< Could not find an edge in a product policy. */
+      NOOPTIMALPOLICIES /*!< Could not find an optimal policy for some state. */
     };
 
   //! Double parameters

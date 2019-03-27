@@ -54,42 +54,32 @@ int main ()
 
       env.setParam(SG::ICTOL,1e-6);
       
-      cout << "Building solver" << endl;
-      SGSolver_MaxMinMax_3Player solver(env,game);
+      // cout << "Building solver" << endl;
+      // SGSolver_MaxMinMax_3Player solver(env,game);
 
-      cout << "Starting solve routine" << endl;
-      solver.solve_fixed();
+      // cout << "Starting solve routine" << endl;
+      // solver.solve_fixed();
+      // cout << "Saving data... ";
+      // SGSolution_MaxMinMax soln = solver.getSolution();
+      // SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
+      // cout << "Done with fixed!" << endl;
 
-      SGSolution_MaxMinMax soln = solver.getSolution();
+      cout << "Building solver2" << endl;
+      SGSolver_MaxMinMax_3Player solver2(env,game);
+      try
+	{
+	  solver2.solve_endogenous();
+	}
+      catch(SGException e)
+	{
+	  cout << "Caught the following exception:" << endl
+	       << e.what() << endl;
+	}
+      SGSolution_MaxMinMax soln2 = solver2.getSolution();
       
       cout << "Saving data... ";
-      SGSolution_MaxMinMax::save(soln,"./solutions/contribution.sln2");
-      cout << "Done!" << endl;
-
-      // SGGame::save(game,"pd.sgm");
-
-      // ofstream ofs ("pd_twostate.log");
-      
-      // for (auto iterit = soln.getIterations().cbegin();
-      // 	   iterit != soln.getIterations().cend();
-      // 	   iterit++)
-      // 	{
-      // 	  for (int state = 0; state < numStates; state++)
-      // 	    {
-      // 	      for (int player = 0; player < numPlayers; player++)
-      // 		{
-      // 		  for (auto stepit = iterit->getSteps().cbegin();
-      // 		       stepit != iterit->getSteps().cend();
-      // 		       stepit++)
-      // 		    {
-      // 		      ofs << stepit->getPivot()[state][player] << " ";
-      // 		    }
-      // 		  ofs << endl;
-      // 		} // for player
-      // 	    } // for state
-      // 	} // for iter
-      // ofs.close();
-
+      SGSolution_MaxMinMax::save(soln2,"./solutions/contribution_endog.sln2");
+      cout << "Done with endogenous!" << endl;
     }
   catch (SGException e)
     {
