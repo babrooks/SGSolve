@@ -25,6 +25,7 @@
 #include "sg.hpp"
 #include "sgsolver_maxminmax_3player.hpp"
 #include "sgcontribution.hpp"
+#include <ctime>
 
 int main ()
 {
@@ -54,11 +55,18 @@ int main ()
 
       env.setParam(SG::ICTOL,1e-6);
       
+      clock_t start;
+      double duration;
+
       // cout << "Building solver" << endl;
       // SGSolver_MaxMinMax_3Player solver(env,game);
 
       // cout << "Starting solve routine" << endl;
+      // start = clock();
       // solver.solve_fixed();
+      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      // cout << "Fixed direction solver time elapsed: "<< duration << " seconds" << endl;
+      
       // cout << "Saving data... ";
       // SGSolution_MaxMinMax soln = solver.getSolution();
       // SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
@@ -68,6 +76,7 @@ int main ()
       SGSolver_MaxMinMax_3Player solver2(env,game);
       try
 	{
+	  start = clock();
 	  solver2.solve_endogenous();
 	}
       catch(SGException e)
@@ -75,6 +84,8 @@ int main ()
 	  cout << "Caught the following exception:" << endl
 	       << e.what() << endl;
 	}
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << "Endogenous direction solver time elapsed: "<< duration << " seconds" << endl;
       SGSolution_MaxMinMax soln2 = solver2.getSolution();
       
       cout << "Saving data... ";

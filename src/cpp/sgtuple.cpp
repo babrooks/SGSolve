@@ -70,29 +70,29 @@ double SGTuple::average(int player) const
   return e;
 }
 
-SGPoint& SGTuple::operator[](int state)
-{
-  // state = state % points.size(); // Wrap around
-  if(state < 0 || 
-     state >= points.size())
-    throw(SGException(SG::OUT_OF_BOUNDS));
-  if (points.size() == 0)
-    throw(SGException(SG::EMPTY_TUPLE));
+// inline SGPoint& SGTuple::operator[](int state)
+// {
+//   // state = state % points.size(); // Wrap around
+//   if(state < 0 || 
+//      state >= points.size())
+//     throw(SGException(SG::OUT_OF_BOUNDS));
+//   if (points.size() == 0)
+//     throw(SGException(SG::EMPTY_TUPLE));
 
-  return points[state];
-}
+//   return points[state];
+// }
 
-const SGPoint& SGTuple::operator[](int state) const
-{
-  if (points.size() == 0)
-    throw(SGException(SG::EMPTY_TUPLE));
-  if(state < 0 || 
-     state >= points.size())
-    throw(SGException(SG::OUT_OF_BOUNDS));
-  // state = state % points.size(); // Wrap around
+// inline const SGPoint& SGTuple::operator[](int state) const
+// {
+//   if (points.size() == 0)
+//     throw(SGException(SG::EMPTY_TUPLE));
+//   if(state < 0 || 
+//      state >= points.size())
+//     throw(SGException(SG::OUT_OF_BOUNDS));
+//   // state = state % points.size(); // Wrap around
 
-  return points[state];
-}
+//   return points[state];
+// }
 
 SGTuple& SGTuple::operator=(const SGTuple & rhs)
 {

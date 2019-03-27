@@ -134,10 +134,36 @@ public:
   int size() const { return points.size(); }
 
   // Operators
-  //! Random access the elements of the tuple.
-  SGPoint& operator[](int state);
-  //! Constant random access to elements of the tuple.
-  const SGPoint& operator[](int state) const;
+  //! Random access operator
+  inline SGPoint& operator[](int state)
+  {
+    // state = state % points.size(); // Wrap around
+    // if(state < 0 || 
+    //    state >= points.size())
+    //   throw(SGException(SG::OUT_OF_BOUNDS));
+    // if (points.size() == 0)
+    //   throw(SGException(SG::EMPTY_TUPLE));
+
+    return points[state];
+  }
+
+  //! Const random access operator
+  inline const SGPoint& operator[](int state) const
+  {
+    // if (points.size() == 0)
+    //   throw(SGException(SG::EMPTY_TUPLE));
+    // if(state < 0 || 
+    //    state >= points.size())
+    //   throw(SGException(SG::OUT_OF_BOUNDS));
+    // state = state % points.size(); // Wrap around
+
+    return points[state];
+  }
+
+  // //! Random access the elements of the tuple.
+  // inline SGPoint& operator[](int state);
+  // //! Constant random access to elements of the tuple.
+  // inline const SGPoint& operator[](int state) const;
   //! Assignment operator
   SGTuple& operator=(const SGTuple & rhs);
   //! Augmented addition of tuples

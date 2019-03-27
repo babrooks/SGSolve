@@ -131,23 +131,31 @@ void SGPoint::min(const SGPoint & p)
     x[k] = std::min(x[k],p[k]);
 }
 
-double& SGPoint::operator[](int player)
+void SGPoint::plusWithWeight(const SGPoint & p,double w)
 {
-  // player = player % x.size(); // Wrap around
-  if(player < 0 || player >= x.size())
-    throw(SGException(SG::OUT_OF_BOUNDS));
-
-  return x[player];
+  assert(p.size() == x.size());
+  for (int k = 0; k < x.size(); k++)
+    x[k] += w*p[k];
 }
 
-const double& SGPoint::operator[](int player) const
-{
-  // player = player % x.size(); // Wrap around
-  if(player < 0 || player >= x.size())
-    throw(SGException(SG::OUT_OF_BOUNDS));
+// Made these operators inlined and included in header
+// double& SGPoint::operator[](int player)
+// {
+//   // player = player % x.size(); // Wrap around
+//   if(player < 0 || player >= x.size())
+//     throw(SGException(SG::OUT_OF_BOUNDS));
 
-  return x[player];
-}
+//   return x[player];
+// }
+
+// const double& SGPoint::operator[](int player) const
+// {
+//   // player = player % x.size(); // Wrap around
+//   if(player < 0 || player >= x.size())
+//     throw(SGException(SG::OUT_OF_BOUNDS));
+
+//   return x[player];
+// }
 
 SGPoint& SGPoint::operator=(const SGPoint & rhs)
 {
@@ -226,13 +234,14 @@ SGPoint operator*(const SGPoint & point,double d)
 SGPoint operator/(const SGPoint & point,double d)
 { return (SGPoint(point) /= d); } 
 
-double SGPoint::operator*(const SGPoint & rhs) const
-{
-  double sum = 0;
-  for (int k = 0; k < x.size(); k++)
-    sum += this->x[k]*rhs.x[k];
-  return sum;
-}
+// Inlined in header
+// double SGPoint::operator*(const SGPoint & rhs) const
+// {
+//   double sum = 0;
+//   for (int k = 0; k < x.size(); k++)
+//     sum += this->x[k]*rhs.x[k];
+//   return sum;
+// }
 
 bool SGPoint::operator==(const SGPoint & rhs) const
 {

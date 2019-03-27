@@ -88,11 +88,32 @@ public:
   //! Takes the pointwise minimum with another SGPoint
   void min(const SGPoint & p);
 
+  //! Plus with weight
+  void plusWithWeight(const SGPoint & p,double w);
+  
   // Operators
-  //! Access operator.
-  double& operator[](int player);
-  //! Constant access operator.
-  const double& operator[](int player) const;
+  inline double& operator[](int player)
+  {
+    // // player = player % x.size(); // Wrap around
+    // if(player < 0 || player >= x.size())
+    //   throw(SGException(SG::OUT_OF_BOUNDS));
+
+    return x[player];
+  }
+
+  inline const double& operator[](int player) const
+  {
+    // // player = player % x.size(); // Wrap around
+    // if(player < 0 || player >= x.size())
+    //   throw(SGException(SG::OUT_OF_BOUNDS));
+
+    return x[player];
+  }
+
+  // //! Access operator.
+  // double& operator[](int player);
+  // //! Constant access operator.
+  // const double& operator[](int player) const;
   //! Assignment operator
   SGPoint& operator=(const SGPoint & rhs);
   //! Sets both coordinates equal to d.
@@ -120,7 +141,14 @@ public:
   //! Right scalar division.
   friend SGPoint operator/(const SGPoint & point,double d);
   //! Dot product.
-  double operator*(const SGPoint & rhs) const; // dot product
+  inline double operator*(const SGPoint & rhs) const
+  {
+    double sum = 0;
+    for (int k = 0; k < x.size(); k++)
+      sum += this->x[k]*rhs.x[k];
+    return sum;
+  }
+  // double operator*(const SGPoint & rhs) const; // dot product
   //! Equality
   bool operator==(const SGPoint & rhs) const;
   //! Not equls

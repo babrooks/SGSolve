@@ -407,7 +407,8 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
   foundFaces.insert(initialFace.hash());
   std::queue<SGProductPolicy> unexploredFaces;
   unexploredFaces.push(initialFace);
-
+  list<SGPoint> foundSubDirs;
+  list<SGTuple> foundPivots;
   
   while (!unexploredFaces.empty())
     {
@@ -420,6 +421,8 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
       int newFaceCount = 0;
       // Pop first face off
       SGEdgePolicy edge(unexploredFaces.front());
+      foundSubDirs.clear();
+      foundPivots.clear();
       do
 	{
 	  // cout << "edgeCount=" << edgeCount << ", Policies: ";
@@ -464,8 +467,47 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	      subDir = (1-delta)*payoffs[subState][subActionIndex]
 		+ delta*subAction->getPoints()[subPlayer][subPoint]-pivot[subState];
 	    }
-	  
+
 	  rotateDir = SGPoint::cross(faceDir,subDir);
+	  
+	  // Avoid searching the same edge twice.
+	  bool newEdge = true;
+	  auto sit = foundSubDirs.cbegin();
+	  auto pit = foundPivots.cbegin();
+	  while( sit != foundSubDirs.cend())
+	    {
+	      bool sameEdge = SGPoint::distance(subDir,*sit)<1e-8;
+	      
+	      if (sameEdge)
+		{
+		  for (int s = 0; s < numStates; s++)
+		    {
+		      if (abs((pivot[s]*rotateDir -(*pit)[s]*rotateDir)>1e-8))
+			sameEdge = false;
+		      break;
+		    }
+
+		  if (sameEdge)
+		    {
+		      newEdge = false;
+		      break;
+		    }
+		  
+		}
+		
+	      ++ sit; ++ pit;
+	    }
+	  if (newEdge)
+	    {
+	      foundSubDirs.push_back(subDir);
+	      foundPivots.push_back(pivot);
+	    }
+	  else
+	    {
+	      continue;
+	    }
+	    
+	  
 	  if (subDir.norm() < 1e-10)
 	    {
 	      cout << "Warning: Null substitution direction." << endl;
@@ -529,8 +571,8 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	    } // for weight
 	  ++ edgeCount;
 	} while( ++edge );
-      cout << "edgeCount: " << edgeCount
-      	   << ", newFaceCount " << newFaceCount << " new faces." << endl;
+      // cout << "edgeCount: " << edgeCount
+      // 	   << ", newFaceCount " << newFaceCount << " new faces." << endl;
 
       if (env.getParam(SG::STOREITERATIONS))
 	iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
@@ -1006,15 +1048,17 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 	  // Find the smallest weight on newDir such that this action
 	  // improves in that direction. 
 
-	  SGPoint nonBindingPayoff = (1-delta)*payoffs[state]
-	    [ait->getAction()]
-	    + delta * pivot.expectation(probabilities[state][ait->getAction()]);
+	  // SGPoint nonBindingPayoff = (1-delta)*payoffs[state]
+	  //   [ait->getAction()]
+	  //   + delta * pivot.expectation(probabilities[state][ait->getAction()]);
+	  SGPoint nonBindingPayoff(3,0.0);
+	  nonBindingPayoff.plusWithWeight(payoffs[state][ait->getAction()],
+					  1.0-delta);
+	  nonBindingPayoff.plusWithWeight(pivot.expectation(probabilities[state][ait->getAction()]),delta);
 
 	  // Calculate the lvl at which indifferent to the pivot
-	  // pivot[state]*(currDir+tmp*newDir)<=nonBindingPayoff*(currDir+tmp*newDir);
-	  // (pivot[state]-nonBindingPayoff)*currDir<=-tmp*newDir*(pivot[state]-nonBindingPayoff)
-	  double denom = newDir*(nonBindingPayoff-pivot[state]);
-	  double numer = (pivot[state]-nonBindingPayoff)*currDir;
+	  double denom = newDir*nonBindingPayoff-newDir*pivot[state];
+	  double numer = (pivot[state]*currDir-nonBindingPayoff*currDir);
 	  if (SGPoint::distance(pivot[state],nonBindingPayoff) > 1e-6
 	      && abs(denom) > 1e-10)
 	    {
@@ -1023,7 +1067,8 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 	      if (nonBindingIndiffLvl < bestLevel
 		  && nonBindingIndiffLvl > -1e-6)
 		{
-		  SGPoint indiffDir = currDir + newDir * nonBindingIndiffLvl;
+		  SGPoint indiffDir = currDir;
+		  indiffDir.plusWithWeight(newDir,nonBindingIndiffLvl);
 
 		  // See if a binding payoff is higher in the
 		  // indifference direction
@@ -1086,11 +1131,11 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 	    {
 	      for (int k = 0; k < ait->getPoints()[p].size(); k++)
 		{
-		  SGPoint bindingPayoff = (1-delta)*payoffs[state]
-		    [ait->getAction()]
-		    + delta * ait->getPoints()[p][k];
-		  double denom = newDir*(bindingPayoff-pivot[state]);
-		  double numer = (pivot[state]-bindingPayoff)*currDir;
+		  SGPoint bindingPayoff = payoffs[state][ait->getAction()];
+		  bindingPayoff *= 1.0-delta;
+		  bindingPayoff.plusWithWeight(ait->getPoints()[p][k],delta);
+		  double denom = newDir*bindingPayoff-newDir*pivot[state];
+		  double numer = pivot[state]*currDir-bindingPayoff*currDir;
 		  if (SGPoint::distance(pivot[state],bindingPayoff)>1e-6
 		      && abs(denom) > 1e-10)
 		    {
@@ -1240,10 +1285,13 @@ void SGSolver_MaxMinMax_3Player::policyToPayoffs(SGTuple & pivot,
       for (int state = 0; state < numStates; state++)
 	{
 	  if (regimeTuple[state] == SG::NonBinding)
-	    newPivot[state] = (1-delta)*payoffs[state]
-	      [actionTuple[state]->getAction()]
-	      + delta*pivot.expectation(probabilities[state]
-					[actionTuple[state]->getAction()]);
+	    {
+	      newPivot[state] = payoffs[state][actionTuple[state]->getAction()];
+	      newPivot[state] *= 1.0-delta;
+	      newPivot[state].plusWithWeight(pivot.expectation(probabilities[state]
+							       [actionTuple[state]->getAction()]),
+					     delta);
+	    }
 	}
       bellmanPivotGap = SGTuple::distance(newPivot,pivot);
       pivot = newPivot;
