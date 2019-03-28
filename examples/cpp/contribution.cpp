@@ -31,7 +31,7 @@ int main ()
 {
   double delta = 2.0/3.0;
   // delta=0.8;
-  //delta=1.0/3.0;
+  delta=1.0/3.0;
   
   int action, state, player;
   int numPlayers = 3;
@@ -59,7 +59,6 @@ int main ()
       double duration;
 
       // SGSolver_MaxMinMax_3Player solver(env,game);
-
       // cout << "Starting solve routine" << endl;
       // start = clock();
       // solver.solve_fixed();

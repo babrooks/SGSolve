@@ -25,6 +25,7 @@
 /* SGAction_MaxMinMax */
 
 
+
 void SGAction_MaxMinMax::resetTrimmedPoints()
 {
   assert(numPlayers==2);
@@ -391,4 +392,19 @@ bool operator<(const SGAction_MaxMinMax & lhs,
 {
   return lhs.getState() < rhs.getState() ||
     (lhs.getState() == rhs.getState() && lhs.getAction() < rhs.getAction());
+}
+
+void SGAction_MaxMinMax::mergeDuplicatePoints(const double tol)
+{
+  for (int p = 0; p < points.size(); p++)
+    {
+      for (int k = 0; k < points[p].size(); k++)
+	{
+	  for (int kp = k; kp < points[p].size(); kp++)
+	    {
+	      if (SGPoint::distance(points[p][k],points[p][kp])<tol)
+		points[p].erase(kp,kp);
+	    } // kp
+	} // k
+    }
 }

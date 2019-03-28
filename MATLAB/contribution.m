@@ -57,9 +57,9 @@ sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
 
 %% 
 
-i =30;
+i =3;
 s = 1;
-a = 1;
+a = 8;
 dir=7;
 
 sgmex2('IterToBeginning');

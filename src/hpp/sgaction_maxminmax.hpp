@@ -133,6 +133,8 @@ public:
   void trim(const SGPoint & normal,
 	    double level);
 
+  //! Merges duplicates up to the given tolerance
+  void mergeDuplicatePoints(const double tol);
 
   //! Calculates the minimum incentive compatible continuation payoff
   void calculateMinIC(const SGGame & game,
