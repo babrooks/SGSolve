@@ -59,7 +59,7 @@ sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
 
 i =3;
 s = 1;
-a = 8;
+a = 1;
 dir=7;
 
 sgmex2('IterToBeginning');
@@ -186,6 +186,12 @@ cross(z2-z1,z3-z1)
 %% 
 z2=[4.5 4.5 1.5]; z1=[2.5 2.5 2.5]; z3=[4.5 1.5 4.5];
 cross(z2-z1,z3-z1)
+
+%%
+fd = [-2/3 1/3 -2/3]; rd = [-2/3 -2-2/3 -2/3]; lvl0 = 0.05555555555; lvl1=0.25;
+
+nd0 = fd*1/(1+lvl0)+rd*lvl0/(1+lvl0)
+nd1 = fd*1/(1+lvl1)+rd*lvl1/(1+lvl1)
 
 %%
 set(gcf,'paperunits','inches','units','inches');

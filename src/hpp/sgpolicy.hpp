@@ -55,26 +55,7 @@ public:
   const int getBindingPoint() const
   { return bindingPoint; }
 
-  std::string hash() const
-  {
-    std::string str;
-
-    str += "s";
-    str += std::to_string(action->getState());
-    str += "a";
-    str += std::to_string(action->getAction());
-    if (regime==SG::NonBinding)
-      str += "NB";
-    else
-      {
-	str += "Bp";
-	str += std::to_string(bindingPlayer);
-	str += "pnt";
-	str += std::to_string(bindingPoint);
-      }
-    
-    return str;
-  }
+  std::string hash() const;
 
   bool isEqual(const SGActionIter & _action,
 	       const SG::Regime & _regime,

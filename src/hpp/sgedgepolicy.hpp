@@ -52,6 +52,8 @@ public:
   const int getSubState() const
   { return subState; }
 
+  std::string hash() const;
+
   bool operator++();
   
 }; // SGEdgePolicy

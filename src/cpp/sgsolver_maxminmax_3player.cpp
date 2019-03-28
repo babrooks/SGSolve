@@ -366,13 +366,34 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
   
   list<SGPoint> foundSubDirs;
   list<SGTuple> foundPivots;
+
+  SGPoint faceDir0(3,-2.0/3.0), faceDir1(faceDir0), faceDir2(faceDir0);
+  faceDir0[0] = 1.0/3.0;
+  faceDir1[1] = 1.0/3.0;
+  faceDir2[2] = 1.0/3.0;
+    
   
   while (!unexploredFaces.empty())
     {
       faceDir = unexploredFaces.front().getDir();
+
+      debugMode = (numIter==2 || numIter==3)
+	&& (SGPoint::distance(faceDir,faceDir0)<1e-4
+	    || SGPoint::distance(faceDir,faceDir1)<1e-4
+	    || SGPoint::distance(faceDir,faceDir2)<1e-4);
+
       // cout << "faceDir: " << faceDir
       // 	   << ", unexploredFaces: " << unexploredFaces.size()
       // 	   << ", foundFaces: " << foundFaces.size() << endl;
+
+      if (debugMode)
+	{
+	  cout << unexploredFaces.front().hash() << endl;
+	  cout << "faceDir: " << faceDir;
+	  for (int s = 0; s < numStates; s++)
+	    cout << " " << unexploredFaces.front().getLevels()[s];
+	  cout << endl;
+	}
 
       
       int edgeCount = 0;
@@ -436,24 +457,36 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	    {
 	      bool sameEdge = SGPoint::distance(subDir,*sit)<1e-8;
 	      
+	      for (int s = 0; s < numStates; s++)
+		{
+		  if (abs((pivot[s]*rotateDir -(*pit)[s]*rotateDir))>1e-8)
+		    {
+		      sameEdge = false;
+		      break;
+		    }
+		}
+
 	      if (sameEdge)
 		{
-		  for (int s = 0; s < numStates; s++)
-		    {
-		      if (abs((pivot[s]*rotateDir -(*pit)[s]*rotateDir)>1e-8))
-			sameEdge = false;
-		      break;
-		    }
-
-		  if (sameEdge)
-		    {
-		      newEdge = false;
-		      break;
-		    }
+		  newEdge = false;
+		  break;
 		}
 		
 	      ++ sit; ++ pit;
 	    }
+	  
+	  if (debugMode)
+	    {
+	      cout << edge.hash() << endl;
+	      cout << "subDir: " <<  subDir << ", lvls:";
+	      for (int s = 0; s < numStates; s++)
+		cout << " " << pivot[s]*rotateDir;
+	      cout << ", rotateDir: " << rotateDir
+		   << ", new: " << newEdge;
+	      cout << endl;
+	    }
+	  std::string critEdgeHash("E_s0a1NBs1a1NB_subs0a4NB");
+
 	  if (newEdge)
 	    {
 	      foundSubDirs.push_back(subDir);
@@ -476,9 +509,25 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 				      faceDir,
 				      weight*rotateDir,
 				      actions);
-	      SGPoint newDir = 1.0/(bestLevel+1.0)*faceDir
-		+ bestLevel/(bestLevel+1.0)*rotateDir;
+	      SGPoint newDir = faceDir;
+	      newDir *= 1.0/(bestLevel+1.0);
+	      newDir.plusWithWeight(rotateDir,weight*bestLevel/(bestLevel+1.0));
 	      newDir /= newDir.norm();
+
+	      if (debugMode)
+		{
+		  cout << setprecision(8) << min(bestLevel,9999.0) << " " << newDir << endl;
+
+		  SGPoint dir0(3,-0.622), dir1(dir0), dir2(dir0);
+		  dir0[0] = 0.47565;
+		  dir1[1] = 0.47565;
+		  dir2[2] = 0.47565;
+
+		  if (SGPoint::distance(newDir,dir0)<1e-4
+		      || SGPoint::distance(newDir,dir1)<1e-4
+		      || SGPoint::distance(newDir,dir2)<1e-4)
+		    cout << "************************************I FOUND THE CRITICAL DIRECTION!!!" << endl;
+		}
 
 	      SGProductPolicy newFace(numStates, newDir);
 	      if (computeOptimalPolicies(newFace,pivot,newDir,actions))
@@ -680,7 +729,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	      lvl++;
 	    } // for dir, lvl
 	  ait->updateTrim();
-	  //ait->mergeDuplicatePoints(1e-10);
+	  // ait->mergeDuplicatePoints(1e-6);
 
 	  // Delete the action if not supportable
 	  if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
@@ -726,7 +775,7 @@ void SGSolver_MaxMinMax_3Player::initialize()
 	  actions[state].back().calculateMinIC(game,threatTuple);
 	  actions[state].back().resetTrimmedPoints(payoffUB);
 	  actions[state].back().updateTrim();
-	  //actions[state].back().mergeDuplicatePoints(1e-10);
+	  // actions[state].back().mergeDuplicatePoints(1e-6);
 	}
     } // for state
 } // initialize
@@ -738,8 +787,7 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 						const vector<list<SGAction_MaxMinMax> > & actions,
 						const SGTuple & feasibleTuple) const
 {
-  // TODO Breaks if you don't choose an initial pivot that is inside
-  // the feasible set.
+  // TODO Breaks if the initial pivot is outside the feasible set.
 
   // Do policy iteration to find the optimal pivot.
   
@@ -824,7 +872,7 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 		  if (nonBindingPayoff*currDir > bestLevel)
 		    {
 	      	      bestLevel = nonBindingPayoff*currDir;
-
+		      
 		      bestAPSNotBinding[state] = APSNotBinding;
 		      if (!APSNotBinding)
 			bestBindingPayoffs[state] = bestAPSPayoff;
@@ -962,13 +1010,25 @@ bool SGSolver_MaxMinMax_3Player::computeOptimalPolicies(SGProductPolicy & optPol
 	    {
 	      for (int k = 0; k < ait->getPoints()[p].size(); k++)
 		{
-		  double tmpLvl = ait->getPoints()[p][k]*currDir;
-		  if (tmpLvl > bestBindLvl)
+		  double bindLvl = ait->getPoints()[p][k]*currDir;
+		  if (bindLvl > bestBindLvl)
 		    {
-		      bestBindLvl = tmpLvl;
+		      bestBindLvl = bindLvl;
 		      bestBindingPlayer = p;
 		      bestBindingPoint = k;
 		    }
+
+		  if (bindLvl <= nonBindingLvl+1e-10)
+		    {
+		      if (bindLvl - bestLevel > improveTol)
+			return false;
+		      else if (bindLvl-bestLevel > -optTol)
+			{
+			  optPolicies.insertPolicy(state,
+						   SGPolicy(ait,SG::Binding,p,k));
+			}
+		    }
+		  
 		} // point
 	    } // player
 	  
@@ -1007,17 +1067,6 @@ bool SGSolver_MaxMinMax_3Player::computeOptimalPolicies(SGProductPolicy & optPol
 
 		}
 	    }
-	  if (bestAPSLvl <= nonBindingLvl+1e-10)
-	    {
-	      if (bestAPSLvl - bestLevel > improveTol)
-		return false;
-	      else if (bestAPSLvl-bestLevel > -optTol)
-		{
-		  optPolicies.insertPolicy(state,
-					   SGPolicy(ait,SG::NonBinding,
-						    bestBindingPlayer,bestBindingPoint));
-		}
-	    }
 	} // ait
     } // state
 
@@ -1030,19 +1079,16 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 					       const SGPoint & newDir,
 					       const vector<list<SGAction_MaxMinMax> > & actions) const
 {
-  const double minIndiffLvl = 1e-6;
+  const double minIndiffLvl = 1e-8;
   
   double nonBindingIndiffLvl = -1;
   double bindingIndiffLvl = -1;
-  double bestLevel = numeric_limits<double>::max()-1.0;
+  double bestLevel = numeric_limits<double>::max();
   bool availSubFound = false;
 
   // Look in each state for improvements
   for (int state = 0; state < numStates; state++)
     {
-      // cout << "currDir=" << currDir << ", newDir=" << newDir << ", pivot=" << pivot[state] << endl;
-  
-
       for (auto ait = actions[state].cbegin();
 	   ait != actions[state].cend();
 	   ++ait)

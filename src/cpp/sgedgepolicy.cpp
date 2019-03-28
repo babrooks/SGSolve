@@ -97,3 +97,15 @@ bool SGEdgePolicy::operator++()
   return (incrementSubPolicy() || incrementBasePolicy() );
 } // operator++
 
+std::string SGEdgePolicy::hash() const
+{
+  std::string str("E_"); // for "Edge"
+  for (int s = 0; s < policies.size(); s++)
+    {
+      str += policies[s]->hash();
+    }
+  str += "_sub";
+  str += subPolicy->hash();
+
+  return str;
+}

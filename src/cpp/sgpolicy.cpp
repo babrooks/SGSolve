@@ -21,6 +21,28 @@
 
 #include "sgpolicy.hpp"
 
+
+std::string SGPolicy::hash() const
+{
+  std::string str;
+
+  str += "s";
+  str += std::to_string(action->getState());
+  str += "a";
+  str += std::to_string(action->getAction());
+  if (regime==SG::NonBinding)
+    str += "NB";
+  else
+    {
+      str += "Bp";
+      str += std::to_string(bindingPlayer);
+      str += "k";
+      str += std::to_string(bindingPoint);
+    }
+    
+  return str;
+}
+
 bool operator< (const SGPolicy & p1, const SGPolicy & p2)
 {
   if (p1.action->getState() < p2.action->getState())
@@ -37,12 +59,15 @@ bool operator< (const SGPolicy & p1, const SGPolicy & p2)
 
   // States and actions are equal
 
+  if (p1.regime == SG::NonBinding && p2.regime != SG::NonBinding)
+    return true;
+
   if (p1.bindingPlayer < p2.bindingPlayer)
     return true;
   if (p1.bindingPlayer > p2.bindingPlayer)
     return false;
 
-  // States and actions and regime/binding player are equal
+  // States, actions, regime, and binding player are equal
   if (p1.bindingPoint < p2.bindingPoint)
     return true;
 

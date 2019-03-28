@@ -108,17 +108,7 @@ public:
     return dim-policies.size()+1;
   }
   
-  std::string hash() const
-  {
-    std::string str;
-    for (int s = 0; s < policies.size(); s++)
-      {
-	for (auto it = policies[s].begin(); it != policies[s].end(); it++)
-	  str += it->hash();
-      }
-
-    return str;
-  }
+  std::string hash() const;
 
   int numStates() const {return policies.size();}
 }; // SGProductPolicy
