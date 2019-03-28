@@ -57,10 +57,10 @@ sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
 
 %% 
 
-i = 3;
+i =30;
 s = 1;
-a = 8;
-dir=2;
+a = 1;
+dir=7;
 
 sgmex2('IterToBeginning');
 
@@ -70,7 +70,7 @@ end
 [az,el]=view;
 
 iter = sgmex2('GetCurrentIteration');
-% sgmex2('Iter++');
+sgmex2('Iter++');
 nextIter=sgmex2('GetCurrentIteration');
 
 subplot(1,1,1);
@@ -107,7 +107,7 @@ for p=[1:3]
     Y(2:3,mod(p,3)+1)=payoffBounds(2);
     Y(3:4,mod(p+1,3)+1)=payoffBounds(2);
     p2=patch(Y(:,1),Y(:,2),Y(:,3),ones(size(Y,1),1));
-    set(p2,'facealpha',0.3,'facecolor','r');
+    set(p2,'facealpha',0.1,'facecolor','r');
 
     if ~isempty(nextIter.actions{s}{a}.points{p})
         X1=nextIter.actions{s}{a}.points{p};
@@ -128,9 +128,15 @@ set(q,'linewidth',1.5,'autoscale','off','color','red');
 q=scatter3(p(1),p(2),p(3),'r.');
 set(q,'sizedata',500);
 
+d1=[d(2)+d(3) -d(1) -d(1)];
+d2=cross(d1,d);
+optPlane = [p+100*(d1+d2);p+100*(d1-d2);p+100*(-d1-d2);p+100*(-d1+d2)];
+p3=patch(optPlane(:,1),optPlane(:,2),optPlane(:,3),ones(size(optPlane,1),1));
+set(p3,'facealpha',0.1,'facecolor','b');
+
 Z1=0.5*payoffs0+0.5*payoffs1;
 Z=[payoffs0;payoffs1];
-Z=Z1
+% Z=Z1
 
 h=scatter3(Z1(:,1),Z1(:,2),Z1(:,3),'k.');
 set(h,'sizedata',500);

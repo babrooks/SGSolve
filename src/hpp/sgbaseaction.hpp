@@ -163,6 +163,8 @@ public:
     corner=tf;
   }
 
+  bool isCorner(const int p, const int k) const;
+
   //! Serializes the action using the boost::serialization library
   template<class Archive>
   void serialize(Archive &ar, const unsigned int version)

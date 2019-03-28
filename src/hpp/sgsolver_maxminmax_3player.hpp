@@ -79,6 +79,8 @@ private:
 
   int numIter;
   double errorLevel;
+
+  bool debugMode;
   
 public:
   //! Default constructor

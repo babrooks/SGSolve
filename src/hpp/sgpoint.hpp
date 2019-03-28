@@ -141,14 +141,7 @@ public:
   //! Right scalar division.
   friend SGPoint operator/(const SGPoint & point,double d);
   //! Dot product.
-  inline double operator*(const SGPoint & rhs) const
-  {
-    double sum = 0;
-    for (int k = 0; k < x.size(); k++)
-      sum += this->x[k]*rhs.x[k];
-    return sum;
-  }
-  // double operator*(const SGPoint & rhs) const; // dot product
+  double operator*(const SGPoint & rhs) const; // dot product
   //! Equality
   bool operator==(const SGPoint & rhs) const;
   //! Not equls

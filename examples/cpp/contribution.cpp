@@ -30,8 +30,8 @@
 int main ()
 {
   double delta = 2.0/3.0;
-  // delta=0.9;
-  // delta=0.5;
+  // delta=0.8;
+  //delta=1.0/3.0;
   
   int action, state, player;
   int numPlayers = 3;
@@ -47,32 +47,27 @@ int main ()
 
       SGEnv env;
 
-      env.setParam(SG::DIRECTIONTOL,1e-12); 
-      env.setParam(SG::NORMTOL,1e-12); 
-      env.setParam(SG::LEVELTOL,1e-12); 
-      env.setParam(SG::IMPROVETOL,1e-13); 
-      env.setParam(SG::MAXITERATIONS,100); 
+      // env.setParam(SG::DIRECTIONTOL,1e-12); 
+      // env.setParam(SG::NORMTOL,1e-12); 
+      // env.setParam(SG::LEVELTOL,1e-12); 
+      // env.setParam(SG::IMPROVETOL,1e-13); 
+      // env.setParam(SG::ICTOL,1e-6);
+      env.setParam(SG::MAXITERATIONS,50); 
 
-      env.setParam(SG::ICTOL,1e-6);
       
       clock_t start;
       double duration;
 
-      // cout << "Building solver" << endl;
       // SGSolver_MaxMinMax_3Player solver(env,game);
 
       // cout << "Starting solve routine" << endl;
       // start = clock();
       // solver.solve_fixed();
       // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      // cout << "Fixed direction solver time elapsed: "<< duration << " seconds" << endl;
-      
-      // cout << "Saving data... ";
+      // cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
       // SGSolution_MaxMinMax soln = solver.getSolution();
       // SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
-      // cout << "Done with fixed!" << endl;
 
-      cout << "Building solver2" << endl;
       SGSolver_MaxMinMax_3Player solver2(env,game);
       try
 	{
@@ -85,12 +80,9 @@ int main ()
 	       << e.what() << endl;
 	}
       duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      cout << "Endogenous direction solver time elapsed: "<< duration << " seconds" << endl;
+      cout << "Endog dir solver time elapsed: "<< duration << " seconds" << endl;
       SGSolution_MaxMinMax soln2 = solver2.getSolution();
-      
-      cout << "Saving data... ";
       SGSolution_MaxMinMax::save(soln2,"./solutions/contribution_endog.sln2");
-      cout << "Done with endogenous!" << endl;
     }
   catch (SGException e)
     {

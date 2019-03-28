@@ -234,14 +234,13 @@ SGPoint operator*(const SGPoint & point,double d)
 SGPoint operator/(const SGPoint & point,double d)
 { return (SGPoint(point) /= d); } 
 
-// Inlined in header
-// double SGPoint::operator*(const SGPoint & rhs) const
-// {
-//   double sum = 0;
-//   for (int k = 0; k < x.size(); k++)
-//     sum += this->x[k]*rhs.x[k];
-//   return sum;
-// }
+double SGPoint::operator*(const SGPoint & rhs) const
+{
+  double sum = 0;
+  for (int k = 0; k < x.size(); k++)
+    sum += this->x[k]*rhs.x[k];
+  return sum;
+}
 
 bool SGPoint::operator==(const SGPoint & rhs) const
 {
@@ -303,8 +302,8 @@ ostream& operator<<(ostream& out, const SGPoint& rhs)
       out.precision(3);
       out << "(";
       for (int k = 0; k < rhs.size()-1; k++)
-	out << std::setw(8) << rhs.x[k] << ", ";
-      out << std::setw(8) << rhs.x.back() << ")";
+	out << std::setw(6) << rhs.x[k] << ", ";
+      out << std::setw(6) << rhs.x.back() << ")";
       out.width(2);
     }
   else
