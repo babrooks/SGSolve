@@ -22,8 +22,9 @@
 # Makefile for examples
 
 MAINS= as_twostate abreusannikov pd pd_twostate guitester risksharing finiteresource \
-	as_twostate_maxminmax predation contribution threeplayertest
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb risksharing_maxminmax
+	as_twostate_maxminmax predation threeplayertest 
+MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb \
+	risksharing_maxminmax contribution 
 GRBTEST=gurobibasistest
 QHULLMAINS=qhulltest
 QHULLGRBMAINS=threeplayer2
@@ -34,7 +35,7 @@ include ../localsettings.mk
 
 all: libsg.a $(MAINS)
 
-$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgjycsolver.hpp $(HPPDIR)/sgsolver_v3.hpp libsg.a
+$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgsolver_jyc.hpp $(HPPDIR)/sgsolver_maxminmax.hpp libsg.a
 	$(CXX) $(CFLAGS) $< \
 	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
@@ -59,7 +60,7 @@ $(QHULLGRBMAINS): % : $(EXAMPLEDIR)/%.cpp
 libsg.a: 
 	make -C ../lib
 
-$(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/sg.hpp $(HPPDIR)/sgsolution.hpp
+$(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/*.hpp
 	$(CXX) $(CFLAGS) $< -L$(LIBDIR) -lsg \
 	$(STATIC) -lboost_serialization \
 	$(DYNAMIC) $(LDFLAGS) -o $@

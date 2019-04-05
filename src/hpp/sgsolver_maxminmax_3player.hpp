@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -78,6 +78,8 @@ private:
   SGPoint dueNorth = SGPoint(0.0,1.0);
 
   int numIter;
+  int numRedundDirs;
+  int numEndogDirs;
   double errorLevel;
 
   bool debugMode;
@@ -95,15 +97,16 @@ public:
   //! Destructor
   ~SGSolver_MaxMinMax_3Player() {}
 
-  //! Solve routine
+  //! Fixed direction solve routine
   /*! Initializes a new SGApproximation object and iteratively
       generates it until one of the stopping criteria have been
       met. Stores progress in the data member. 
 
-      Fixed directions. */
+      Fixed directions, with some limited adjustment of dropping
+      redundant directions and adding new face directions. */
   void solve_fixed();
 
-  //! Solve routine
+  //! Endogenous direction solve routine
   /*! Initializes a new SGApproximation object and iteratively
       generates it until one of the stopping criteria have been
       met. Stores progress in the data member. 
@@ -111,10 +114,22 @@ public:
       Generates directions endogenously. */
   void solve_endogenous();
 
-  //! One iteration of the endogenous algorith.
+  // //! Hybrid solve routine
+  // /*! Initializes a new SGApproximation object and iteratively
+  //     generates it until one of the stopping criteria have been
+  //     met. Stores progress in the data member. 
+
+  //     Combines fixed/endogenous direction code. */
+  // void solve_hybrid();
+  
+  //! One iteration of the endogenous algorithm.
   /*! Return the new error level. */
   double iterate_endogenous();
 
+  //! One iteration of the fixed algorithm.
+  /*! Return the new error level. */
+  double iterate_fixed(const int maxDirections);
+  
   //! Initializes the solve routines
   void initialize();
 

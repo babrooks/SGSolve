@@ -52,6 +52,7 @@ namespace SG
       SIMERROR, /*!< Simulator error. */
       NOFEASIBLETUPLE, /*!< Could not find a feasible tuple for APS. */
       NOEDGES, /*!< Could not find an edge in a product policy. */
+      NOACTIONS, /*!< Could not find an action. */
       NOOPTIMALPOLICIES /*!< Could not find an optimal policy for some state. */
     };
 

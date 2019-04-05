@@ -79,7 +79,7 @@ public:
   bool normalize();
   //! Checks if any of the entries are NaN
   bool anyNaN() const;
-  
+
   //! Rounds off significant digits smaller than tol.
   void roundPoint(double tol);
 

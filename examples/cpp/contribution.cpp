@@ -24,6 +24,7 @@
 
 #include "sg.hpp"
 #include "sgsolver_maxminmax_3player.hpp"
+#include "sgsolver_jyc.hpp"
 #include "sgcontribution.hpp"
 #include <ctime>
 
@@ -31,13 +32,13 @@ int main ()
 {
   double delta = 2.0/3.0;
   // delta=0.8;
-  delta=1.0/3.0;
-  
+  // delta=1.0/3.0;
+  // delta=0.25;
+    
   int action, state, player;
   int numPlayers = 3;
   int numStates = 2;
-
-
+  
   ContributionGame cg(numPlayers,delta,numStates);
   
   try
@@ -51,37 +52,52 @@ int main ()
       // env.setParam(SG::NORMTOL,1e-12); 
       // env.setParam(SG::LEVELTOL,1e-12); 
       // env.setParam(SG::IMPROVETOL,1e-13); 
-      // env.setParam(SG::ICTOL,1e-6);
-      env.setParam(SG::MAXITERATIONS,50); 
+      //env.setParam(SG::ERRORTOL,1e-10); 
+      env.setParam(SG::ICTOL,1e-10);
+      env.setParam(SG::MAXITERATIONS,200); 
 
       
       clock_t start;
       double duration;
 
-      // SGSolver_MaxMinMax_3Player solver(env,game);
-      // cout << "Starting solve routine" << endl;
-      // start = clock();
-      // solver.solve_fixed();
-      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      // cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
-      // SGSolution_MaxMinMax soln = solver.getSolution();
-      // SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
-
-      SGSolver_MaxMinMax_3Player solver2(env,game);
+      start = clock();
+      SGSolver_MaxMinMax_3Player solver(env,game);
+      cout << "Starting solve routine" << endl;
       try
-	{
-	  start = clock();
-	  solver2.solve_endogenous();
+      	{
+      solver.solve_fixed();
 	}
       catch(SGException e)
-	{
-	  cout << "Caught the following exception:" << endl
-	       << e.what() << endl;
-	}
+      	{
+      	  cout << "Caught the following exception:" << endl
+      	       << e.what() << endl;
+      	}
       duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      cout << "Endog dir solver time elapsed: "<< duration << " seconds" << endl;
-      SGSolution_MaxMinMax soln2 = solver2.getSolution();
-      SGSolution_MaxMinMax::save(soln2,"./solutions/contribution_endog.sln2");
+      cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
+      SGSolution_MaxMinMax soln = solver.getSolution();
+      SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
+
+      // start=clock();
+      // SGSolver_JYC solver_jyc(game,200);
+      // solver_jyc.solve();
+      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      // cout << "JYC solver time elapsed: "<< duration << " seconds" << endl;
+      
+      // 	  start = clock();
+      // SGSolver_MaxMinMax_3Player solver2(env,game);
+      // try
+      // 	{
+      // 	  solver2.solve_endogenous();
+      // 	}
+      // catch(SGException e)
+      // 	{
+      // 	  cout << "Caught the following exception:" << endl
+      // 	       << e.what() << endl;
+      // 	}
+      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      // cout << "Endog dir solver time elapsed: "<< duration << " seconds" << endl;
+      // SGSolution_MaxMinMax soln2 = solver2.getSolution();
+      // SGSolution_MaxMinMax::save(soln2,"./solutions/contribution_endog.sln2");
     }
   catch (SGException e)
     {

@@ -1,7 +1,7 @@
 %% Code for analyzing solution of the three player contribution game
 
-% sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
-sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
+sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
+% sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
 % sgmex2('IterToBeginning');
 sgmex2('IterToEnd');
 
@@ -24,11 +24,11 @@ scatter3(iter.directions(:,1),iter.directions(:,2),iter.directions(:,3));
 clf
 
 for s=1:2
-    [V,nr]=con2vert(iter.directions,iter.levels(:,s));
-    faces=convhulln(V);
+    [EV,nrEV]=con2vert(iter.directions,iter.levels(:,s));
+    faces=convhulln(EV);
     subplot(1,2,s)
     for row=1:size(faces,1)
-        F = V(faces(row,:),:);
+        F = EV(faces(row,:),:);
         %     if ~all(abs(sum(F,2)-2*c)<1e-6) ...
         %             && ~all(abs(F(:,1)-minU)<1e-6)...
         %             && ~all(abs(F(:,2)-minU)<1e-6)...
@@ -43,7 +43,7 @@ for s=1:2
         
     end
     hold on
-    h=scatter3(V(:,1),V(:,2),V(:,3),'k.');
+    h=scatter3(EV(:,1),EV(:,2),EV(:,3),'k.');
     set(h,'sizedata',500);
 
     set(gca,'zlim',payoffBounds,'xlim',payoffBounds,'ylim',payoffBounds);
@@ -52,17 +52,19 @@ for s=1:2
 end % state
 
 %% 
-% sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
-sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
+sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
+% sgmex2('LoadSolution','../examples/solutions/contribution_endog.sln2');
 
 %% 
 
-i =3;
+i = 47;
 s = 1;
-a = 1;
-dir=7;
+a = 8;
+dir=2;
 
 sgmex2('IterToBeginning');
+
+probabilities=sgmex2('GetProbabilities',s-1);
 
 for k=1:i-1
     sgmex2('Iter++');
@@ -75,7 +77,8 @@ nextIter=sgmex2('GetCurrentIteration');
 
 subplot(1,1,1);
 clf
-[V,nr]=con2vert(iter.directions,mean(iter.levels,2));
+[EV,nrEV]=con2vert(iter.directions,iter.levels*probabilities(a,:)');
+[V,nrV]=con2vert(iter.directions,iter.levels(:,s));
 
 % V=0.5*(iter.pivots(:,1:3)+iter.pivots(:,4:6));
 
@@ -83,9 +86,9 @@ payoffs0=sgmex2('GetPayoffs',0);
 payoffs1=sgmex2('GetPayoffs',1);
 % V=0.5*payoffs0+0.5*payoffs1;
 
-faces=convhulln(V);
+faces=convhulln(EV);
 for row=1:size(faces,1)
-    F = V(faces(row,:),:);
+    F = EV(faces(row,:),:);
     p2 = patch(F(:,1),...
         F(:,2),...
         F(:,3),...
@@ -96,6 +99,28 @@ for row=1:size(faces,1)
 end
 
 hold on;
+
+faces=convhulln(V);
+for row=1:size(faces,1)
+    F = V(faces(row,:),:);
+    p2 = patch(F(:,1),...
+        F(:,2),...
+        F(:,3),...
+        ones(size(faces,2),1));
+    colormap(gray);
+    set(p2,'facealpha',0.2,'edgealpha',0.5,'facecolor','r');
+    %     end
+end
+
+
+Z1=0.5*payoffs0+0.5*payoffs1;
+Z1=sgmex2('GetPayoffs',s-1);
+Z=[payoffs0;payoffs1];
+% Z=Z1
+
+h=scatter3(Z1(a,1),Z1(a,2),Z1(a,3),'k.');
+set(h,'sizedata',500);
+
 
 for p=[1:3]
     X=nextIter.actions{s}{a}.points{p};
@@ -124,8 +149,8 @@ d=iter.directions(dir,:);
 p = 0.5*(iter.pivots(dir,1:3)+iter.pivots(dir,4:6));
 q=quiver3(p(1),p(2),p(3),...
     d(1),d(2),d(3));
-set(q,'linewidth',1.5,'autoscale','off','color','red');
-q=scatter3(p(1),p(2),p(3),'r.');
+set(q,'linewidth',1.5,'autoscale','off','color','cyan');
+q=scatter3(p(1),p(2),p(3),'c.');
 set(q,'sizedata',500);
 
 d1=[d(2)+d(3) -d(1) -d(1)];
@@ -134,19 +159,26 @@ optPlane = [p+100*(d1+d2);p+100*(d1-d2);p+100*(-d1-d2);p+100*(-d1+d2)];
 p3=patch(optPlane(:,1),optPlane(:,2),optPlane(:,3),ones(size(optPlane,1),1));
 set(p3,'facealpha',0.1,'facecolor','b');
 
-Z1=0.5*payoffs0+0.5*payoffs1;
-Z=[payoffs0;payoffs1];
-% Z=Z1
-
-h=scatter3(Z1(:,1),Z1(:,2),Z1(:,3),'k.');
-set(h,'sizedata',500);
 
 hold off
 view(az,el);
-bounds = [min(min(V)),max(max(V))];
+bounds = [min(min(EV)),max(max(EV))];
 bounds = [min(min(Z)),max(max(Z))];
 % bounds(1)=1;
 set(gca,'zlim',bounds,'xlim',bounds,'ylim',bounds);
+
+%% Count the number of true faces
+numTrueFaces = 0;
+trueFaces = false(size(iter.directions,1),1);
+for k=1:size(iter.directions,1)
+    lvls = V*iter.directions(k,:)';
+    if (sum(lvls>=max(lvls)-1e-5)>=3)
+        numTrueFaces = numTrueFaces+1;
+    trueFaces(k)=true;
+    end
+end
+numTrueFaces
+
 
 %%
 sgmex2('IterToBeginning');
@@ -190,7 +222,7 @@ cross(z2-z1,z3-z1)
 %%
 fd = [-2/3 1/3 -2/3]; rd = [-2/3 -2-2/3 -2/3]; lvl0 = 0.05555555555; lvl1=0.25;
 
-nd0 = fd*1/(1+lvl0)+rd*lvl0/(1+lvl0)
+nd0 = fd*1/(1+lvl0)-rd*lvl0/(1+lvl0)
 nd1 = fd*1/(1+lvl1)+rd*lvl1/(1+lvl1)
 
 %%
@@ -200,5 +232,25 @@ set(gcf,'position',fpos);
 set(gcf,'papersize',fpos(3:4),'paperposition',[0 0 fpos(3:4)]);
 print(gcf,'-dpdf','contribution_fixed2.pdf');
 
+%% 
+% x=rand(1,3)
+x=[1 1 -1]
+y=[x(2)+x(3),-x(1)-x(3),-x(1)+x(2)]
+dot(x,y)
+z=cross(x,y);
+X=[x];
+Y=zeros(size(X));
+q=quiver3(Y(:,1),Y(:,2),Y(:,3),X(:,1),X(:,2),X(:,3))
+set(q(1),'color','r');
+hold on
+X=[y];
+Y=zeros(size(X));
+q=quiver3(Y(:,1),Y(:,2),Y(:,3),X(:,1),X(:,2),X(:,3))
+set(q(1),'color','b');
+X=[z];
+Y=zeros(size(X));
+q=quiver3(Y(:,1),Y(:,2),Y(:,3),X(:,1),X(:,2),X(:,3))
+set(q(1),'color','b');
+hold off
 
 

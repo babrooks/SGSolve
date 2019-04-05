@@ -105,7 +105,7 @@ public:
   
   //! Sets points equal to the trimmed points
   void updateTrim() 
-  { 
+  {
     points = trimmedPoints; 
     for (int player = 0; player < numPlayers; player++)
       {
@@ -114,23 +114,43 @@ public:
       }
     bndryDirs = trimmedBndryDirs;
   }
+
+  double distToTrimmed()
+  {
+    double dist = 0.0;
+    
+    for (int p = 0; p < points.size(); p ++)
+      {
+	double tmpDist = numeric_limits<double>::max();
+	for (int k = 0; k < trimmedPoints[p].size(); k++)
+	  {
+	    for (int kp = 0; kp < points[p].size(); kp++)
+	      {
+		tmpDist = min(tmpDist,SGPoint::distance(points[p][kp],trimmedPoints[p][k]));
+		tmpDist = min(tmpDist,SGPoint::distance(bndryDirs[p][kp],trimmedBndryDirs[p][k]));
+	      } // kp
+	  } // k
+	dist = max(dist,tmpDist);
+      } // p
+  } // distToTrimmed
     
   //! Intersects the segment with a half space
-  void intersectHalfSpace(const SGPoint & normal,
+  bool intersectHalfSpace(const SGPoint & normal,
 			  const double level,
 			  int player,
 			  SGTuple & segment,
 			  SGTuple & segmentDirs);
 
   //! Intersects the IC polygon with a half space
-  void intersectPolygonHalfSpace(const SGPoint & normal,
+  bool intersectPolygonHalfSpace(const SGPoint & normal,
 				 const double level,
 				 int player,
 				 SGTuple & extPnts,
 				 SGTuple & extPntDirs);
   
   //! Trims the trimmedPoints using intersectRaySegment.
-  void trim(const SGPoint & normal,
+  /*!< Returns true if the action was actually trimmed. */
+  bool trim(const SGPoint & normal,
 	    double level);
 
   //! Merges duplicates up to the given tolerance
@@ -175,18 +195,7 @@ public:
   const SGPoint getBndryDir(const int player,const int point) const;
   
   // Returns whether the action can be supported
-  bool supportable(const SGPoint & feasiblePoint ) const
-  {
-    bool tf = false;
-    for (int player = 0; player < points.size(); player++)
-      if (points[player].size()>0)
-	return true;
-
-    if (feasiblePoint >= minIC-1e-6)
-      return true;
-
-    return false;
-  }
+  bool supportable(const SGPoint & feasiblePoint ) const;
 
   void testThreePlayerIntersection();
 

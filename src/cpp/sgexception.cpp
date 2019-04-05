@@ -48,6 +48,8 @@ const char* SGException::what() const throw()
       return "Could not find a feasible tuple for APS. Equilibrium payoff correspondence is possibly empty";
     case SG::NOEDGES:
       return "Could not find an edge in the product policy.";
+    case SG::NOACTIONS:
+      return "Could not find an action in some state.";
     case SG::NOOPTIMALPOLICIES:
       return "Could not find an optimal policy in some state.";
     default:

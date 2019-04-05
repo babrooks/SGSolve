@@ -258,7 +258,7 @@ bool SGPoint::operator!=(const SGPoint & rhs) const
 bool SGPoint::operator>=(const SGPoint & rhs) const
 {
   assert(x.size() == rhs.size());
-  bool tf = false;
+  bool tf = true;
   for (int k = 0; k < x.size(); k++)
     tf = tf && (this->x[k]>=rhs.x[k]);
   return tf; 
@@ -268,7 +268,7 @@ bool SGPoint::operator>(const SGPoint & rhs) const
 bool SGPoint::operator<=(const SGPoint & rhs) const
 {
   assert(x.size() == rhs.size());
-  bool tf = false;
+  bool tf = true;
   for (int k = 0; k < x.size(); k++)
     tf = tf && (this->x[k]<=rhs.x[k]);
   return tf; 
@@ -277,7 +277,7 @@ bool SGPoint::operator<(const SGPoint & rhs) const
 { return !((*this)>=rhs); }
 bool SGPoint::operator>=(double rhs) const
 {
-  bool tf = false;
+  bool tf = true;
   for (int k = 0; k < x.size(); k++)
     tf = tf && (this->x[k]>=rhs);
   return tf; 
@@ -286,7 +286,7 @@ bool SGPoint::operator>(double rhs) const
 { return !((*this)<=rhs); }
 bool SGPoint::operator<=(double rhs) const
 {
-  bool tf = false;
+  bool tf = true;
   for (int k = 0; k < x.size(); k++)
     tf = tf && (this->x[k]<=rhs);
   return tf; 

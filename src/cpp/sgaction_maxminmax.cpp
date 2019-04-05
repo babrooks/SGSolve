@@ -79,18 +79,20 @@ void SGAction_MaxMinMax::resetTrimmedPoints(const SGPoint & payoffUB)
 } // resetTrimmedPoints
 
 
-void SGAction_MaxMinMax::trim(const SGPoint& normal,
+bool SGAction_MaxMinMax::trim(const SGPoint& normal,
 			      double level)
 {
+  bool tf = false;
   if (numPlayers==2)
     {
       assert(trimmedBndryDirs.size()== 2);
       for (int player=0; player < points.size(); player++)
 	{
 	  assert(trimmedPoints[player].size() == trimmedBndryDirs[player].size());
-	  intersectHalfSpace(normal,level,player,
-			     trimmedPoints[player],
-			     trimmedBndryDirs[player]);
+	  if (intersectHalfSpace(normal,level,player,
+					trimmedPoints[player],
+				 trimmedBndryDirs[player]))
+	    tf = true;
 	}
     }
   else if (numPlayers==3)
@@ -99,14 +101,16 @@ void SGAction_MaxMinMax::trim(const SGPoint& normal,
 	{
 	  if (trimmedPoints[player].size()==0)
 	    continue;
-	  
-	  intersectPolygonHalfSpace(normal,
-				    level,
-				    player,
-				    trimmedPoints[player],
-				    trimmedBndryDirs[player]);
+
+	  if (intersectPolygonHalfSpace(normal,
+					level,
+					player,
+					trimmedPoints[player],
+					trimmedBndryDirs[player]))
+	    tf = true;
 	}
     }
+  return tf;
 } // trim
 
 const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
@@ -121,7 +125,7 @@ const SGPoint SGAction_MaxMinMax::getBndryDir(const int player,
 } // getBndryDir
 
 
-void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
+bool SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
 					    const double level,
 					    const int player,
 					    SGTuple & segment,
@@ -148,6 +152,7 @@ void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
 	       && l1 < level)
 	{
 	  // Leave points alone.
+	  return false;
 	}
       else if (abs(l0 - l1)>env->getParam(SG::INTERSECTTOL))
 	{
@@ -184,16 +189,22 @@ void SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
     {
       // No points of intersection. Do nothing.
       segment = SGTuple();
+      return false;
     }
+
+  return true;
 } // intersectHalfSpace
 
-void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
+bool SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
 						   const double level,
 						   int player,
 						   SGTuple & extPnts,
 						   SGTuple & extPntDirs)
 {
   assert(numPlayers == 3);
+
+  if (extPnts.size() == 0)
+    return false;
   
   // Iterate to find a point inside the half space.
   int k0 = 0; 
@@ -221,7 +232,7 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
       // Whole set is ouside the half space.
       extPnts.clear();
       extPntDirs.clear();
-      return;
+      return true;
     }
 
   // Now keep iterating to find a point outside the half space;
@@ -240,15 +251,15 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
       // direction, the new boundary direction would point above the
       // old normal.
       if (l1 > level+env->getParam(SG::ICTOL)
-	    || (abs(l1-level) <= env->getParam(SG::ICTOL)
-		&& (SGPoint::cross(extPntDirs[k1],extPntDirs[k2])*normal >= env->getParam(SG::ICTOL) ) ) )
+	  || (abs(l1-level) <= env->getParam(SG::ICTOL)
+	      && (SGPoint::cross(extPntDirs[k1],extPntDirs[k2])*normal >= env->getParam(SG::ICTOL) ) ) )
   	break;
     }
 
   if (k1 == k0)
     {
       // Whole set is inside the half space. Do nothing.
-      return;
+      return false;
     }
 
   // Remaining case is that there is at least one point (k0) that is
@@ -267,28 +278,41 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
     }
 
   // add two new points for the intersections.
+  bool tf = true;
+  
   int k = (k1-1+extPnts.size())%extPnts.size(); // The inside point just before k1
   double l = extPnts[k] * normal;
-  double weight = 0;
-  if (abs(l1-l)>1e-9)
-    weight = (level-l)/(l1-l);
+  double weight1 = 0.0, weight0 = 0.0;
+  if (abs(l1-l)>1e-12)
+    {
+      weight1 = (level-l)/(l1-l);
+
+    }
   else
-    weight=0.0;
-  SGPoint intersection1 = weight*extPnts[k1]+(1-weight)*extPnts[k];
+    {
+      weight1=0.0;
+    }
+  SGPoint intersection1 = weight1*extPnts[k1]+(1.0-weight1)*extPnts[k];
 
   k = (k0-1+extPnts.size())%extPnts.size(); // The outside point just before k0
   l = extPnts[k] * normal;
-  if (abs(l0-l)>1e-9)
-    weight = (level-l)/(l0-l);
+  if (abs(l0-l)>1e-12)
+    {
+      weight0 = max(0.0,min((level-l)/(l0-l),1.0));
+      
+    }
   else
-    weight=0.0;
-  SGPoint intersection0 = weight*extPnts[k0]+(1-weight)*extPnts[k];
+    {
+      weight0=0.0;
+    }
+  SGPoint intersection0 = weight0*extPnts[k0]+(1.0-weight0)*extPnts[k];
 
   assert(!intersection1.anyNaN());
   assert(!intersection0.anyNaN());
 
   // Replace k1 (which is outside) with the intersection between k1 and k1-1
   extPnts[k1] = intersection1;
+
   // if (weight==0.0)
   //      extPntDirs[k1] = normal;
 
@@ -323,6 +347,9 @@ void SGAction_MaxMinMax::intersectPolygonHalfSpace(const SGPoint & normal,
   	  extPntDirs.erase(0,k);
   	}
     }
+
+
+  return tf;
 } // intersectPolygonHalfSpace
 
 
@@ -400,11 +427,30 @@ void SGAction_MaxMinMax::mergeDuplicatePoints(const double tol)
     {
       for (int k = 0; k < points[p].size(); k++)
 	{
-	  for (int kp = k; kp < points[p].size(); kp++)
+	  for (int kp = k+1; kp < points[p].size(); kp++)
 	    {
 	      if (SGPoint::distance(points[p][k],points[p][kp])<tol)
-		points[p].erase(kp,kp);
+		{
+		  points[p].erase(kp,kp+1);
+		  bndryDirs[p].erase(kp,kp+1);
+		}
 	    } // kp
 	} // k
     }
+}
+
+bool SGAction_MaxMinMax::supportable(const SGPoint & feasiblePoint ) const
+{
+  for (int player = 0; player < points.size(); player++)
+    if (points[player].size()>0)
+      return true;
+
+  if (feasiblePoint >= minIC - 1e-6)
+    return true;
+
+  // cout << "s" << state << "a" << action
+  //      << " is not supportable: minIC: " << minIC
+  //      << ", feasPnt: " << feasiblePoint << endl;
+  
+  return false;
 }

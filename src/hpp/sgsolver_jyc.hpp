@@ -36,7 +36,7 @@
   link to Gurobi. 
 
   \ingroup src
- */
+*/
 class SGSolver_JYC
 {
 private:
@@ -48,8 +48,8 @@ private:
   //! The Gurobi model.
   GRBModel model;
 
-  //! Payoff bounds.
-  vector< vector<double> > bounds;
+  //! Payoff levels.
+  vector< vector<double> > levels;
 
   //! List of gradients in which to bound the correspondence.
   vector<SGPoint> directions;
@@ -63,7 +63,7 @@ public:
     env(),
     model(env),
     game(_game),
-    bounds(vector< vector<double> > (game.getNumStates(),
+    levels(vector< vector<double> > (game.getNumStates(),
 				     vector<double>(_numDirections,0))),
     directions(_numDirections),
     numDirections(_numDirections)
@@ -81,8 +81,8 @@ public:
   const SGGame & getGame() const { return game; }
   //! Returns the environment
   GRBEnv & getEnv() {return env; }
-  //! Returns payoff bounds
-  const vector< vector<double> > & getBounds() const { return bounds; }
+  //! Returns payoff levels
+  const vector< vector<double> > & getLevels() const { return levels; }
   //! Return directions
   const vector<SGPoint> & getDirections() const { return directions; }
   //! Return numDirections
@@ -100,7 +100,7 @@ public:
 
 void SGSolver_JYC::solve()
 {
-  double errorTol = 1e-6;
+  double errorTol = 1e-8;
   double error = 1.0;
   int numIterations = 0;
 
@@ -118,17 +118,58 @@ void SGSolver_JYC::solve()
 
 void SGSolver_JYC::initialize()
 {
+  const int numPlayers = game.getNumPlayers();
 
   // Set directions to be equally spaced
-  for (int dir = 0; dir < numDirections; dir++)
+  if (numPlayers==2)
     {
-      double theta = 2.0*dir/numDirections*PI;
-      directions[dir] = SGPoint(std::cos(theta),
-				std::sin(theta));
+      for (int dir = 0; dir < numDirections; dir++)
+	{
+	  double theta = 2.0*dir/numDirections*PI;
+	  directions[dir] = SGPoint(std::cos(theta),
+				    std::sin(theta));
+	}
     }
+  else if (numPlayers==3)
+    {
+      int numDirsApprox = numDirections;
+      numDirections = 0;
+      directions.clear();
+      
+      double a = 4.0*PI/static_cast<double>(numDirsApprox);
+      double d = sqrt(a);
+      int Mpsi = round(PI/d);
+      double dpsi = PI/static_cast<double>(Mpsi);
+      double dphi = a/dpsi;
+
+      // Initialize directions - approximately evenly spaced around the
+      // sphere, with three negative coordinate directions at the end.
+      vector< list<vector< double> > :: const_iterator> playerMinLvls(numPlayers);
+      for (int mpsi = 0; mpsi < Mpsi; mpsi++)
+	{
+	  double psi = PI*(static_cast<double>(mpsi)+0.5)/static_cast<double>(Mpsi);
+	  int Mphi = round(2.0*PI*sin(psi)/dpsi);
+
+	  for (int mphi = 0; mphi < Mphi; mphi++)
+	    {
+	      double phi = 2.0*PI*static_cast<double>(mphi)/static_cast<double>(Mphi);
+
+	      SGPoint newDir(numPlayers,0.0);
+	      newDir[0]=sin(psi)*cos(phi);
+	      newDir[1]=sin(psi)*sin(phi);
+	      newDir[2]=cos(psi);
+	      directions.push_back(newDir);
+
+	      numDirections++;	  
+	    }
+	}
+
+      levels= vector< vector<double> > (game.getNumStates(),
+					vector<double>(numDirections,0));      
+    } // 3 players
 
   // Variables 
-  GRBVar *  var = model.addVars(4*game.getNumStates()); // One variable for each
+  GRBVar *  var = model.addVars(2*numPlayers*game.getNumStates()); // One variable for each
 					      // player/state in
 					      // equilibrium and one
 					      // variable for each
@@ -139,27 +180,27 @@ void SGSolver_JYC::initialize()
       var[varCtr].set(GRB_DoubleAttr_LB,-1e20);
     }
 
-  // First 2*numStates variables correspond to eq payoffs, second
-  // 2*numStates are threats.
+  // First numPlayers*numStates variables correspond to eq payoffs, second
+  // numPlayers*numStates are threats.
   model.update();
 
-  // Calculate initial bounds. 
+  // Calculate initial levels. 
   SGPoint NE, SW;
   game.getPayoffBounds(NE,SW);
   SGPoint NW(SW[0],NE[1]), SE(NE[0],SW[1]);
 
   for (int dir = 0; dir < numDirections; dir++)
     {
-      bounds[0][dir] = NE*directions[dir];
-      bounds[0][dir] = std::max(bounds[0][dir],
+      levels[0][dir] = NE*directions[dir];
+      levels[0][dir] = std::max(levels[0][dir],
 				SE*directions[dir]);
-      bounds[0][dir] = std::max(bounds[0][dir],
+      levels[0][dir] = std::max(levels[0][dir],
 				SW*directions[dir]);
-      bounds[0][dir] = std::max(bounds[0][dir],
+      levels[0][dir] = std::max(levels[0][dir],
 				NW*directions[dir]);
 
       for (int state = 1; state < game.getNumStates(); state++)
-	bounds[state][dir] = bounds[0][dir];
+	levels[state][dir] = levels[0][dir];
     } // direction
 
   // Add feasibility constraints.
@@ -168,17 +209,24 @@ void SGSolver_JYC::initialize()
       // Equilibrium payoffs
       for (int dir = 0; dir < numDirections; dir++)
 	{
-	  model.addConstr(var[2*state]*directions[dir][0]
-			  + var[2*state+1]*directions[dir][1]
-			  <= bounds[state][dir]);
+	  GRBLinExpr lhs = 0;
+	  for (int p = 0; p < numPlayers; p++)
+	    {
+	      lhs += var[numPlayers*state+p]*directions[dir][p];
+	    }
+	  model.addConstr(lhs <= levels[state][dir]);
 	} // direction
 
       // Threat points
       for (int dir = 0; dir < numDirections; dir++)
 	{
-	  model.addConstr(var[2*game.getNumStates()+2*state]*directions[dir][0]
-			  + var[2*game.getNumStates()+2*state+1]*directions[dir][1]
-			  <= bounds[state][dir]);
+	  GRBLinExpr lhs = 0;
+	  for (int p = 0; p < numPlayers; p++)
+	    {
+	      lhs += var[numPlayers*game.getNumStates()
+			 +numPlayers*state+p]*directions[dir][p];
+	    }
+	  model.addConstr(lhs <= levels[state][dir]);
 	} // direction
     } // state
   model.update();
@@ -188,6 +236,8 @@ void SGSolver_JYC::initialize()
 
 double SGSolver_JYC::iterate()
 {
+  const int numPlayers = game.getNumPlayers();
+
   vector<int> actions, deviations;
   int deviation;
 
@@ -208,13 +258,13 @@ double SGSolver_JYC::iterate()
       // Equilibrium payoffs
       for (int dir = 0; dir < numDirections; dir++)
   	{
-  	  constr[2*state*numDirections+dir].set(GRB_DoubleAttr_RHS,bounds[state][dir]);
-  	  constr[(2*state+1)*numDirections+dir].set(GRB_DoubleAttr_RHS,bounds[state][dir]);
+  	  constr[2*state*numDirections+dir].set(GRB_DoubleAttr_RHS,levels[state][dir]);
+  	  constr[(2*state+1)*numDirections+dir].set(GRB_DoubleAttr_RHS,levels[state][dir]);
   	} // direction
     } // state
 
   vector< vector<double> > 
-    newBounds(numStates,
+    newLevels(numStates,
 	      vector<double>(numDirections,
 			     -numeric_limits<double>::max()));
   for (int state = 0; state < numStates; state++)
@@ -229,13 +279,13 @@ double SGSolver_JYC::iterate()
 	  deviations = actions;
 
 	  // Implement incentive constraints for this action
-	  for (int player = 0; player < 2; player ++)
+	  for (int player = 0; player < numPlayers; player ++)
 	    {
 	      
 	      GRBLinExpr lhs = 0;
 	      lhs += (1-delta)*payoffs[state][action][player];
 	      for (int sp = 0; sp < numStates; sp++)
-	  	lhs += delta*prob[state][action][sp]*var[2*sp+player];
+	  	lhs += delta*prob[state][action][sp]*var[numPlayers*sp+player];
 
 	      for (int dev = 0; dev < numActions[state][player]; dev++)
 	  	{
@@ -250,8 +300,8 @@ double SGSolver_JYC::iterate()
 	  	  rhs += (1-delta)*payoffs[state][deviation][player];
 	  	  for (int sp = 0; sp < numStates; sp++)
 	  	    {
-	  	      rhs += delta*prob[state][deviation][sp]*var[2*numStates
-	  						       +2*sp+player];
+	  	      rhs += delta*prob[state][deviation][sp]*var[numPlayers*numStates
+	  						       +numPlayers*sp+player];
 	  	    }
 		  
 	  	  model.addConstr(lhs >= rhs);
@@ -267,9 +317,9 @@ double SGSolver_JYC::iterate()
 	      GRBLinExpr obj = 0;
 	      for (int sp = 0; sp < numStates; sp++)
 		{
-		  for (int player = 0; player < 2; player++)
+		  for (int player = 0; player < numPlayers; player++)
 		    obj += directions[dir][player]*prob[state][action][sp]
-		      *var[2*sp+player];
+		      *var[numPlayers*sp+player];
 		  
 		}
 	      
@@ -283,8 +333,8 @@ double SGSolver_JYC::iterate()
 		  double val = (1-delta)*payoffs[state][action]*directions[dir]
 		    + delta * model.get(GRB_DoubleAttr_ObjVal);
 
-		  if (val > newBounds[state][dir])
-		    newBounds[state][dir] = val;
+		  if (val > newLevels[state][dir])
+		    newLevels[state][dir] = val;
 		}
 	      else
 		break;
@@ -292,7 +342,7 @@ double SGSolver_JYC::iterate()
 
 	  // Remove IC constraints.
 	  constr = model.getConstrs();
-	  for (int constrCtr = 2*numStates*numDirections; 
+	  for (int constrCtr = numPlayers*numStates*numDirections; 
 	       constrCtr < model.get(GRB_IntAttr_NumConstrs);
 	       constrCtr++)
 	    model.remove(constr[constrCtr]);
@@ -308,9 +358,9 @@ double SGSolver_JYC::iterate()
   for (int state = 0; state < numStates; state++)
     {
       for (int dir = 0; dir < numDirections; dir++)
-	dist = std::max(dist,abs(bounds[state][dir]-newBounds[state][dir]));
+	dist = std::max(dist,abs(levels[state][dir]-newLevels[state][dir]));
     } // state
-  bounds = newBounds;
+  levels = newLevels;
 
   return dist;
 } // iterate

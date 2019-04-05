@@ -91,13 +91,13 @@ int main()
     // SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
     
     
-    // start = clock();
-    // int numDirections = 100;
-    // SGSolver_JYC jycsolver(game,numDirections);
-    // jycsolver.solve();
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "JYC implementation time elapsed with " << numDirections
-    // 	 << " directions: "<< duration << " seconds" << endl;
+    start = clock();
+    int numDirections = 100;
+    SGSolver_JYC jycsolver(game,numDirections);
+    jycsolver.solve();
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << "JYC implementation time elapsed with " << numDirections
+    	 << " directions: "<< duration << " seconds" << endl;
 
     // start = clock();
     // numDirections = 200;

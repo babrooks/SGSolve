@@ -48,13 +48,17 @@ public:
     for (int p=0; p < numPlayers; p++)
       point[p] = 2.0*actionSum - 3.0*actions[p]
 	+ 5.0*static_cast<double>(state)/(static_cast<double>(numStates)-1.0);
+    // // Perturbed version
+    // for (int p=0; p < numPlayers; p++)
+    //   point[p] = 2.0*actionSum - 3.0*(actions[p]+0.1*actionSum)*(1.0+0.1*state)
+    // 	+ 5.0*static_cast<double>(state)/(static_cast<double>(numStates)-1.0);
     
     return point;
   } // payoffs
 
   virtual double probability(int state, const vector<int> & actions, int statep) const
   {
-    // Make it uniform for testing
+    // // Make it uniform for testing
     return 1.0/static_cast<double>(numStates);
     
     double prob = 0;
