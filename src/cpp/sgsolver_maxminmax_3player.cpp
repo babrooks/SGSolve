@@ -41,14 +41,15 @@ SGSolver_MaxMinMax_3Player::SGSolver_MaxMinMax_3Player(const SGEnv & _env,
   
 }
 
-void SGSolver_MaxMinMax_3Player::solve_fixed()
+void SGSolver_MaxMinMax_3Player::solve_fixed(const int numDirsApprox,
+					     const bool dropRedundant,
+					     const bool addEndogenous)
 {
   cout << "Initializing solver..." << endl;
 
   initialize();
   
   // Initialize directions
-  int numDirsApprox = 200;
   int numDirections = 0;
 
   double a = 4.0*PI/static_cast<double>(numDirsApprox);
@@ -79,16 +80,14 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 	  numDirections++;	  
 	}
     }
-  numDirections += numPlayers;
-  
-  for (int player = numPlayers-1; player >=0; player--)
+
+  threatDirections.clear();
+  for (int player = 0; player <numPlayers; player++)
     {
       SGPoint newDir(numPlayers,0.0);
       newDir[player] = -1.0;
 
-      directions.push_front(newDir);
-
-      levels.push_front(vector<double>(numStates,0));
+      threatDirections.push_back(newDir);
     }
 
   // numDirections += 6;
@@ -118,7 +117,7 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
-      iterate_fixed(numDirections);
+      iterate_fixed(numDirections,dropRedundant,addEndogenous);
       cout << progressString() << endl;
 
       numIter++;
@@ -135,15 +134,17 @@ void SGSolver_MaxMinMax_3Player::solve_fixed()
 
 } // solve_fixed
 
-double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
+double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
+						 const bool dropRedundant,
+						 const bool addEndogenous)
 {
-  bool dropRedundant = true;
-  bool addEndogenous = true;
+  int addEndogFreq = 5;
+  int dropAfterThisIter = addEndogFreq;
   
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine generator (seed);
   std::normal_distribution<double> normDistr(0.0,1.0);
-  std::uniform_int_distribution<int> intDistr(0.0,directions.size()-numPlayers);
+  std::uniform_int_distribution<int> intDistr(0.0,directions.size());
 
   SGTuple pivot = threatTuple;
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
@@ -165,7 +166,6 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 	   ++ait)
 	{
 	  ait->updateTrim();
-	  // ait->mergeDuplicatePoints(1e-8);
 	      
 	  // WARNING: NO GUARANTEE THAT THIS POINT IS FEASIBLE
 	  if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
@@ -227,19 +227,12 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 
   // If there are fewer directions than the max, add a new face
   // direction to the front
-  auto firstNonThreatDir = directions.begin();
-  auto firstNonThreatLvl = levels.begin();
-  for (int p = 0; p < numPlayers; p++)
-    {
-      ++firstNonThreatDir;
-      ++firstNonThreatLvl;
-    }
     
   int endogDirCnt = 0;
   int currNumDirs = directions.size();
   if (addEndogenous
       && directions.size() < maxDirections
-      && numIter%2)
+      && ( (numIter%addEndogFreq) == addEndogFreq-1))
     {
       for (int k = 0; k < maxDirections-currNumDirs; k++)
 	// for (int k = 0; k < 40; k++)
@@ -249,22 +242,6 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 	  SGPoint startDir = SGPoint(numPlayers,0.0); 
 	  SGPoint rotateDir = SGPoint(numPlayers,0.0);
 
-	  // list<SGPoint>::const_iterator startDirIt = directions.cbegin();
-	  // int startDirPos = intDistr(generator);
-	  // for (int startDirCnt = 0; startDirCnt < startDirPos; startDirCnt++)
-	  //   startDirIt++;
-	  // startDir = *startDirIt;
-	  // if (startDir.norm() > 1e-6)
-	  //   startDir /= startDir.norm();
-	  
-	  // double perturbWeight = 1.0;
-	  // for (int p = 0; p  < numPlayers; p++)
-	  //   {
-	  //     rotateDir[p] = -1.0*startDir[p]
-	  // 	+ perturbWeight * normDistr(generator);
-	  //   }
-	  // // cout << *startDirIt << " " << startDir <<  " " << rotateDir << endl;
-	  
 	  for (int p = 0; p  < numPlayers; p++)
 	    {
 	      startDir[p] = normDistr(generator);
@@ -272,8 +249,8 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 	    }
 
 	  
-	  if (rotateDir.norm() > 1e-6)
-	    rotateDir /= rotateDir.norm();
+	  // if (rotateDir.norm() > 1e-6)
+	  //   rotateDir /= rotateDir.norm();
 
 	  optimizePolicy(pivot,actionTuple,regimeTuple,startDir,
 			 actions,feasibleTuple);
@@ -286,21 +263,14 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 				  startDir,
 				  rotateDir,
 				  actions);
-	  if (bestLevel > 1e9 || bestLevel < 1e-9)
+	  if (bestLevel > 1e9 || bestLevel < 1e-9
+	      || optSubDir.norm() < 1e-6)
 	    {
 	      continue;
 	    }
 	  
-	  if (optSubDir.norm() > 1e-6)
-	    optSubDir /= optSubDir.norm();
+	  SGPoint newDir = startDir+ bestLevel*rotateDir;
 
-	  SGPoint newDir = 1.0/(bestLevel+1.0)*startDir
-	    + bestLevel/(bestLevel+1.0)*rotateDir;
-
-	  // assert(optSubDir.norm() > 1e-6);
-	  // assert(newDir.norm() > 1e-6);
-	  // newDir /= newDir.norm();
-  
 	  // Need the actual direction of the new substitution here
 	  rotateDir = SGPoint::cross(newDir,optSubDir);
 	  // assert(rotateDir.norm() > 1e-6);
@@ -310,18 +280,16 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 				  newDir,
 				  rotateDir,
 				  actions);
-	  if (bestLevel > 1e9 || bestLevel < 1e-9)
+	  SGPoint faceDir = newDir + bestLevel*rotateDir;
+
+	  if (bestLevel > 1e9 || bestLevel < 1e-9
+	      || faceDir.norm() < 1e-6)
 	    {
 	      continue;
 	    }
   
-	  SGPoint faceDir = 1.0/(bestLevel+1.0)*newDir
-	    + bestLevel/(bestLevel+1.0)*rotateDir;
-	  // assert(optSubDir.norm() > 1e-6);
-	  // assert(faceDir.norm() > 1e-6);
-	  
 	  // faceDir /= faceDir.norm();
-	  if (faceDir.norm() > 1e-6)
+	  if (faceDir.norm() >= 1e-6)
 	    faceDir /= faceDir.norm();
 
 	  bool alreadyPresent = false;
@@ -329,7 +297,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 	       dit != directions.cend();
 	       dit++)
 	    {
-	      if (SGPoint::distance(*dit,faceDir)<1e-6)
+	      if (SGPoint::distance(*dit,faceDir)<1e-5)
 		{
 		  alreadyPresent = true;
 		  break;
@@ -342,11 +310,10 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 	  endogDirCnt++;
 	  optimizePolicy(pivot,actionTuple,regimeTuple,faceDir,
 			 actions,feasibleTuple);
-	  firstNonThreatDir = directions.emplace(firstNonThreatDir,faceDir);
-	  firstNonThreatLvl = levels.emplace(firstNonThreatLvl, vector<double>(numStates,0.0));
+	  directions.push_front(faceDir);
+	  levels.push_front( vector<double>(numStates,0.0));
 	  for (int s = 0; s < numStates; s++)
-	    (*firstNonThreatLvl)[s] = pivot[s]*faceDir;
-	  // cout << "I added the direction " << faceDir << endl;
+	    levels.front()[s] = pivot[s]*faceDir;
 
 	  if (directions.size()==maxDirections)
 	    break;
@@ -357,43 +324,30 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
     {
       cout << "Added " << endogDirCnt << " endogenous directions." << endl;
     }
-  else if (numIter>5 && numIter%2)
-    {
-      cout << "Shuffling directions and levels." << endl;
-      
-      auto dit0 = firstNonThreatDir;
-      auto lit0 = firstNonThreatLvl;
-      int dirCnt = 0;
-      while (dit0 != directions.end())
-      	{
-      	  int k = intDistr(generator)-1;
-
-      	  auto dit1 = firstNonThreatDir;
-      	  auto lit1 = firstNonThreatLvl;
-      	  for (int kp = 0; kp < k; kp++)
-      	    {
-      	      dit1++;
-      	      lit1++;
-      	    }
-
-      	  std::swap(*dit0,*dit1);
-      	  std::swap(*lit0,*lit1);
-
-	  ++ dirCnt;
-      	  ++dit0;
-      	  ++lit0;
-      	}
-    }
 
   // Update the the threat tuple
-  list< vector<double> >::const_iterator lvl = levels.cbegin();
-  for (int player = 0; player < numPlayers; player++)
-    {
-      for (int state = 0; state < numStates; state++)
-	threatTuple[state][player] = -(*lvl)[state];
+  {
+    list<SGPoint>::const_iterator dit = threatDirections.cbegin();
+    for (int player = 0; player < numPlayers; player++)
+      {
+	optimizePolicy(pivot,actionTuple,regimeTuple,*dit,
+		       actions,feasibleTuple);
+      
+	vector<double> newLevels(numStates,0);
+	for (int state = 0; state < numStates; state++)
+	  {
+	    newLevels[state] = -1.0*(pivot[state]*(*dit));
+	    errorLevel = max(errorLevel,
+			     abs(threatTuple[state][player] - newLevels[state]));
+	    threatTuple[state][player] = newLevels[state];
+	  }
+	if (env.getParam(SG::STOREITERATIONS))
+	  iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
+				SGHyperplane(*dit,newLevels),actions));
 
-      lvl ++;
-    }
+	++dit;
+      }
+  }
   // cout << "New threat tuple: " << threatTuple << endl;
 
   if (env.getParam(SG::STOREITERATIONS)==2
@@ -422,16 +376,40 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 	    ait->resetTrimmedPoints(payoffUB);
 	  }
       }
-	
+
+    // Go through the half spaces in a random order.
+    std::vector<int> order(directions.size(),0);
+    vector<bool> redundant(directions.size(),true);
+    std::uniform_int_distribution<int> intDistr2(0.0,directions.size()-1);
+    for (int d =0; d < order.size(); d++)
+      {
+    	order[d] = d;
+      }
+    for (int d =0; d < order.size(); d++)
+      {
+    	int k = intDistr2(generator);
+    	std::swap(order[d],order[k]);
+      }
+    
     list<SGPoint>::iterator dir = directions.begin();
     list< vector< double> >::iterator lvl = levels.begin();
     int dirCnt = 0;
-    while (dir != directions.cend()) // Last three
-      // directions are
-      // threat points
+    // while (dir != directions.end())
+    for (int d = 0; d < order.size(); d++)
       {
-	bool redundant = true;
-	    
+	while (dirCnt < order[d])
+	  {
+	    dir++;
+	    lvl++;
+	    dirCnt++;
+	  }
+	while (dirCnt > order[d])
+	  {
+	    dir--;
+	    lvl--;
+	    dirCnt--;
+	  }
+	
 	for (int state = 0; state < numStates; state++)
 	  {
 	    for (auto ait = actions[state].begin();
@@ -450,28 +428,33 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
 		// Trim the action
 		if(ait->trim(*dir,expLevel))
 		  {
-		    redundant=false;
+		    redundant[order[d]]=false;
 		  }
 	      } // for ait
 	  } // for state
-
-	if (dropRedundant
-	    && redundant && numIter>5
-	    && numIter%2
-	    && dirCnt >=3 )
-	  {
-	    dirCnt++;
-	    redundDirCnt++;
-	    directions.erase(dir++);
-	    levels.erase(lvl++);
-	    continue;
-	  }
-		
-	dirCnt++;
-	dir++;
-	lvl++;
       } // whiledir
 
+    if (dropRedundant
+	&& numIter > dropAfterThisIter)
+      {
+	dir=directions.begin();
+	lvl = levels.begin();
+	for (int d = 0; d < order.size(); d++)
+	  {
+	    if (redundant[d])
+	      {
+		redundDirCnt++;
+		directions.erase(dir++);
+		levels.erase(lvl++);
+	      }
+	    else
+	      {
+		dir++;
+		lvl++;
+	      }
+	  }
+      }
+    
     if (redundDirCnt)
       cout << "Dropped " << redundDirCnt << " redundant directions." << endl;
   }
@@ -479,7 +462,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections)
   numRedundDirs += redundDirCnt;
   numEndogDirs += endogDirCnt;
   
-  if (endogDirCnt || redundDirCnt)
+  if (endogDirCnt)
     errorLevel = 1.0;
   
 
@@ -565,8 +548,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 			  rotateDir,
 			  actions);
 
-  SGPoint newDir = 1.0/(bestLevel+1.0)*currDir
-    + bestLevel/(bestLevel+1.0)*rotateDir;
+  SGPoint newDir = currDir+ bestLevel*rotateDir;
 
   // assert(optSubDir.norm() > 1e-6);
   // assert(newDir.norm() > 1e-6);
@@ -987,7 +969,9 @@ void SGSolver_MaxMinMax_3Player::initialize()
   // Initialize actions with a big box as the feasible set
   actions.clear();
   actions = vector< list<SGAction_MaxMinMax> > (numStates);
-  
+
+  int numActions_grandTotal = 0;
+  int numEqActions_grandTotal = 0;
   for (int state = 0; state < numStates; state++)
     {
       for (auto ait = eqActions[state].cbegin();
@@ -1000,7 +984,14 @@ void SGSolver_MaxMinMax_3Player::initialize()
 	  actions[state].back().updateTrim();
 	  // actions[state].back().mergeDuplicatePoints(1e-8);
 	}
+      numEqActions_grandTotal += eqActions[state].size();
+      int numActions_total = 1;
+      for (int p = 0; p < numPlayers; p++)
+	numActions_total *= game.getNumActions()[state][p];
+      numActions_grandTotal += numActions_total;
     } // for state
+
+  cout << "The game has " << numActions_grandTotal << " total action profiles across all states, of which " << numEqActions_grandTotal << " are allowed in equilibrium." << endl;
 } // initialize
 
 void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
@@ -1026,36 +1017,6 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
   vector<bool> bestAPSNotBinding(numStates,false);
   SGTuple bestBindingPayoffs(numStates,SGPoint(3,0.0));
 
-  // // Initialize the pivot to the lowest bounds in the current direction.
-  // list<SGPoint> boundingBox;
-  // SGPoint bnd(payoffLB); // L L L
-  // boundingBox.push_back(bnd); 
-  // bnd[0] = payoffUB[0];  // H L L 
-  // boundingBox.push_back(bnd);
-  // bnd[0] = payoffLB[0]; bnd[1] = payoffUB[1]; // L H L
-  // boundingBox.push_back(bnd);
-  // bnd[0] = payoffUB[0]; bnd[1] = payoffUB[1]; // H H L
-  // boundingBox.push_back(bnd);
-  // bnd[0] = payoffLB[0]; bnd[1] = payoffLB[1]; bnd[2] = payoffUB[2];  // L L H
-  // boundingBox.push_back(bnd); 
-  // bnd[0] = payoffUB[0];  // H L H
-  // boundingBox.push_back(bnd);
-  // bnd[0] = payoffLB[0]; bnd[1] = payoffUB[1]; // L H H
-  // boundingBox.push_back(bnd);
-  // bnd[0] = payoffUB[0]; bnd[1] = payoffUB[1]; // H H H
-  // boundingBox.push_back(bnd);
-
-  // list<SGPoint>::const_iterator minPnt = boundingBox.cbegin();
-  // for (auto pit=boundingBox.cbegin(); pit != boundingBox.cend(); pit++)
-  //   {
-  //     if (currDir*(*minPnt)>currDir*(*pit))
-  // 	minPnt = pit;
-  //   }
-  // for (int s = 0; s < numStates; s++)
-  //   {
-  //     pivot[s] = *minPnt;
-  //   }
-  
   // policy iteration
   do
     {
@@ -1333,7 +1294,7 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 					       const SGPoint & newDir,
 					       const vector<list<SGAction_MaxMinMax> > & actions) const
 {
-  const double minIndiffLvl = 1e-12; // A level of 1e-6 eliminates
+  const double minIndiffLvl = 1e-13; // A level of 1e-6 eliminates
 				    // spurious edges on the
 				    // contribution examples for
 				    // delta=1/3,2/3
@@ -1364,7 +1325,7 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 	  // Calculate the lvl at which indifferent to the pivot
 	  double denom = newDir*nonBindingPayoff-newDir*pivot[state];
 	  double numer = (pivot[state]*currDir-nonBindingPayoff*currDir);
-	  if (abs(denom) > 1e-12)
+	  if (abs(denom) > env.getParam(SG::NORMTOL))
 	    {
 	      nonBindingIndiffLvl = numer/denom;
 
@@ -1396,7 +1357,7 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 		  bool bestAPSNotBinding = false;
 		  if (bestBindingPlayer < 0 // didn't find a binding payoff
 		      || (ait->getBndryDir(bestBindingPlayer,bestBindingPoint)
-			  *indiffDir > 1e-12)
+			  *indiffDir > env.getParam(SG::IMPROVETOL))
 		      )
 		    {
 		      // Can improve on the best binding payoff by
@@ -1406,7 +1367,8 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 
 		  if ( bestAPSNotBinding // NB bestAPSPayoff has only been
 		       // set if bestAPSNotBinding == true
-		       || bestBindLvl > nonBindingPayoff*indiffDir -1e-10)
+		       || bestBindLvl > nonBindingPayoff*indiffDir 
+		       -env.getParam(SG::IMPROVETOL))
 		    {
 		      // If we get to here, non-binding regime is
 		      // available in the indifferent direction, and
@@ -1421,7 +1383,7 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 	    } // Positive level of indifference
 
 	  double bestBindIndiffLvl = numeric_limits<double>::max();
-	  SGPoint bestBindPnt(3,0.0);
+	  SGPoint bestBindPnt(numPlayers,0.0);
 
 	  // Now check the binding directions
 	  for (int p = 0; p < numPlayers; p++)
@@ -1433,7 +1395,7 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 		  bindingPayoff.plusWithWeight(ait->getPoints()[p][k],delta);
 		  double denom = newDir*bindingPayoff-newDir*pivot[state];
 		  double numer = pivot[state]*currDir-bindingPayoff*currDir;
-		  if (abs(denom) > 1e-10)
+		  if (abs(denom) > env.getParam(SG::NORMTOL))
 		    {
 		      
 		      bindingIndiffLvl = numer/denom;
@@ -1449,14 +1411,16 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 			      for (int kp = 0; kp < ait->getPoints()[pp].size(); kp++)
 				{
 				  if (ait->getPoints()[pp][kp]*indiffDir
-				      > ait->getPoints()[p][k]*indiffDir+1e-10) 
+				      > ait->getPoints()[p][k]*indiffDir
+				      +env.getParam(SG::IMPROVETOL)) 
 				    isBestBinding = false;
 				}
 			    }
 
 			  if (isBestBinding
 			      && (nonBindingPayoff*indiffDir
-				  >= bindingPayoff*indiffDir-1e-10))
+				  >= bindingPayoff*indiffDir
+				  -env.getParam(SG::IMPROVETOL)))
 			    {
 			      availSubFound = true;
 			      bestLevel = bindingIndiffLvl;

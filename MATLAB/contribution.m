@@ -57,7 +57,7 @@ sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
 
 %% 
 
-i = 47;
+i = 45;
 s = 1;
 a = 8;
 dir=2;
@@ -172,7 +172,7 @@ numTrueFaces = 0;
 trueFaces = false(size(iter.directions,1),1);
 for k=1:size(iter.directions,1)
     lvls = V*iter.directions(k,:)';
-    if (sum(lvls>=max(lvls)-1e-5)>=3)
+    if (sum(lvls>=max(lvls)-1e-8)>=3)
         numTrueFaces = numTrueFaces+1;
     trueFaces(k)=true;
     end

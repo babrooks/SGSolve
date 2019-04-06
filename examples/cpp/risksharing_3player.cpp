@@ -25,7 +25,7 @@
 #include "sg.hpp"
 #include "sgsolver_maxminmax_3player.hpp"
 #include "sgsolver_jyc.hpp"
-#include "sgcontribution.hpp"
+#include "sgrisksharing_3player.hpp"
 #include <ctime>
 
 int main ()
@@ -38,13 +38,33 @@ int main ()
   int action, state, player;
   int numPlayers = 3;
   int numStates = 2;
+
+  int numEndowments = 3;
+  int c2e = 3;
+
+  int numDirections = 400;
+
+  bool dropRedundant = true;
+  bool addEndogenous = true;
   
-  ContributionGame cg(numPlayers,delta,numStates);
+  RiskSharingGame_3Player rg(delta,numEndowments,c2e);
+
+  stringstream ss;
+
+  ss << "./solutions/risksharing_3player_endog_e=" << numEndowments
+     << "_d=" << setprecision(3) << delta
+     << "_c2e=" << c2e
+     << "_nd=" << numDirections;
+  if (dropRedundant)
+    ss << "_dropredund";
+  if (addEndogenous)
+    ss << "_addendog";
+  ss << ".sln2";
   
   try
     {
       cout << "Constructing game object" << endl;
-      SGGame game(cg);
+      SGGame game(rg);
 
       SGEnv env;
 
@@ -56,9 +76,8 @@ int main ()
       env.setParam(SG::ICTOL,1e-10); // Seems to work well on the
 				     // delta=2/3 and delta=1/3
 				     // contribution games
-      env.setParam(SG::MAXITERATIONS,100);
+      env.setParam(SG::MAXITERATIONS,60);
       env.setParam(SG::STOREITERATIONS,2);
-
       
       clock_t start;
       double duration;
@@ -68,7 +87,7 @@ int main ()
       cout << "Starting solve routine" << endl;
       try
       	{
-	  solver.solve_fixed();
+	  solver.solve_fixed(numDirections,dropRedundant,addEndogenous);
 	}
       catch(SGException e)
       	{
@@ -78,7 +97,7 @@ int main ()
       duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
       cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
       SGSolution_MaxMinMax soln = solver.getSolution();
-      SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
+      SGSolution_MaxMinMax::save(soln,ss.str().c_str());
 
       // start=clock();
       // SGSolver_JYC solver_jyc(game,200);

@@ -68,6 +68,7 @@ private:
 
   list<SGPoint> directions;
   list< vector<double> > levels;
+  list<SGPoint> threatDirections;
   SGTuple threatTuple;
   vector< list<SGAction_MaxMinMax> > actions;
   
@@ -104,7 +105,9 @@ public:
 
       Fixed directions, with some limited adjustment of dropping
       redundant directions and adding new face directions. */
-  void solve_fixed();
+  void solve_fixed(const int numDirsApprox = 200,
+		   const bool dropRedundant = true,
+		   const bool addEndogenous = true);
 
   //! Endogenous direction solve routine
   /*! Initializes a new SGApproximation object and iteratively
@@ -128,7 +131,9 @@ public:
 
   //! One iteration of the fixed algorithm.
   /*! Return the new error level. */
-  double iterate_fixed(const int maxDirections);
+  double iterate_fixed(const int maxDirections,
+		       const bool dropRedundant,
+		       const bool addEndogenous);
   
   //! Initializes the solve routines
   void initialize();
