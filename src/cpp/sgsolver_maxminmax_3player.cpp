@@ -314,7 +314,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	  levels.push_front( vector<double>(numStates,0.0));
 	  for (int s = 0; s < numStates; s++)
 	    levels.front()[s] = pivot[s]*faceDir;
-
+	  
 	  if (directions.size()==maxDirections)
 	    break;
 	}
@@ -336,10 +336,10 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	vector<double> newLevels(numStates,0);
 	for (int state = 0; state < numStates; state++)
 	  {
-	    newLevels[state] = -1.0*(pivot[state]*(*dit));
+	    newLevels[state] = (pivot[state]*(*dit));
 	    errorLevel = max(errorLevel,
-			     abs(threatTuple[state][player] - newLevels[state]));
-	    threatTuple[state][player] = newLevels[state];
+			     abs(threatTuple[state][player] + newLevels[state]));
+	    threatTuple[state][player] = -1.0*newLevels[state];
 	  }
 	if (env.getParam(SG::STOREITERATIONS))
 	  iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
@@ -434,8 +434,38 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	  } // for state
       } // whiledir
 
+    dir = threatDirections.begin();
+    dirCnt = 0;
+    while (dir != threatDirections.end())
+      {
+	for (int state = 0; state < numStates; state++)
+	  {
+	    for (auto ait = actions[state].begin();
+		 ait != actions[state].end();
+		 ++ait)
+	      {
+		// Compute the expected level
+
+		// cout  << "direction: " << dirCnt++ << endl;
+
+		double expLevel = 0;
+		for (int sp = 0; sp < numStates; sp++)
+		  expLevel += probabilities[state][ait->getAction()][sp]
+		    * threatTuple[sp][dirCnt];
+		    
+		// Trim the action
+		ait->trim(*dir,expLevel);
+	      } // for ait
+	  } // for state
+	dir++;
+	dirCnt++;
+      }
+
+    // Every once in awhile, don't drop directions, to make sure we
+    // get an accurate measure of the hausdorff distance.
     if (dropRedundant
-	&& numIter > dropAfterThisIter)
+	&& numIter > dropAfterThisIter
+	&& numIter%addEndogFreq!= 1) 
       {
 	dir=directions.begin();
 	lvl = levels.begin();
@@ -1198,8 +1228,8 @@ bool SGSolver_MaxMinMax_3Player::computeOptimalPolicies(SGProductPolicy & optPol
 {
   vector<bool> bestAPSNotBinding(numStates,false);
 
-  const double improveTol = 1e-6;
-  const double optTol = 1e-10;
+  const double improveTol = 1e-10;
+  const double optTol = 1e-12;
   
   optPolicies.clear();
 

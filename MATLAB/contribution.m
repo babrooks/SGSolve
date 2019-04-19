@@ -57,7 +57,7 @@ sgmex2('LoadSolution','../examples/solutions/contribution_fixed.sln2');
 
 %% 
 
-i = 45;
+i = 46;
 s = 1;
 a = 8;
 dir=2;
@@ -166,6 +166,131 @@ bounds = [min(min(EV)),max(max(EV))];
 bounds = [min(min(Z)),max(max(Z))];
 % bounds(1)=1;
 set(gca,'zlim',bounds,'xlim',bounds,'ylim',bounds);
+
+%% Plot the equilibrium payoff set
+faceAlpha=0.6;
+edgeAlpha=0.5;
+
+% i = 46;
+s = 1;
+a = 8;
+dir=2;
+
+sgmex2('IterToEnd');
+
+probabilities=sgmex2('GetProbabilities',s-1);
+% 
+% for k=1:i-1
+%     sgmex2('Iter++');
+% end
+[az,el]=view;
+
+iter = sgmex2('GetCurrentIteration');
+sgmex2('Iter++');
+nextIter=sgmex2('GetCurrentIteration');
+
+subplot(1,1,1);
+clf
+[EV,nrEV]=con2vert(iter.directions,iter.levels*probabilities(a,:)');
+
+% V=0.5*(iter.pivots(:,1:3)+iter.pivots(:,4:6));
+
+payoffs0=sgmex2('GetPayoffs',0);
+payoffs1=sgmex2('GetPayoffs',1);
+% V=0.5*payoffs0+0.5*payoffs1;
+
+faces=convhull(EV,'simplify',true);
+
+% for row=1:size(faces,1)
+%     F = EV(faces(row,:),:);
+%     p2 = patch(F(:,1),...
+%         F(:,2),...
+%         F(:,3),...
+%         ones(size(faces,2),1));
+%     colormap(gray);
+%     set(p2,'facealpha',0.5,'edgealpha',0.0);
+%     %     end
+% end
+
+h=scatter3(EV(:,1),EV(:,2),EV(:,3),'k.');
+set(h,'sizedata',100);
+
+for d=1:size(iter.directions,1)
+    tf = EV*(iter.directions(d,:)')>iter.levels(d,:)*(probabilities(a,:)')-1e-2;
+    
+    if sum(tf)<3
+        continue;
+    end
+    
+    facePnts = EV(tf,:);
+    d1 = (facePnts(2,:)-facePnts(1,:))';
+    d2 = (facePnts(3,:)-facePnts(1,:))';
+    
+    dirLvls = [facePnts*d1-facePnts(1,:)*d1,...
+        facePnts*d2-facePnts(1,:)*d2];
+    K=convhull(dirLvls);
+    F=facePnts(K,:);
+    
+    p2 = patch(F(:,1),...
+        F(:,2),...
+        F(:,3),...
+        ones(size(F,1),1));
+    colormap(gray);
+    set(p2,'facealpha',faceAlpha,'edgealpha',edgeAlpha);
+    %     end
+end
+hold on
+
+for s=1:2
+    [V,nrV]=con2vert(iter.directions,iter.levels(:,s));
+    h=scatter3(V(:,1),V(:,2),V(:,3),'k.');
+    set(h,'sizedata',100);
+    
+    for d=1:size(iter.directions,1)
+        tf = V*(iter.directions(d,:)')>iter.levels(d,s)-1e-2;
+        
+        if sum(tf)<3
+            continue;
+        end
+        
+        facePnts = V(tf,:);
+        d1 = (facePnts(2,:)-facePnts(1,:))';
+        d2 = (facePnts(3,:)-facePnts(1,:))';
+        
+        dirLvls = [facePnts*d1-facePnts(1,:)*d1,...
+            facePnts*d2-facePnts(1,:)*d2];
+        K=convhull(dirLvls);
+        F=facePnts(K,:);
+        
+        p2 = patch(F(:,1),...
+            F(:,2),...
+            F(:,3),...
+            ones(size(F,1),1));
+        colormap(gray);
+        set(p2,'facealpha',faceAlpha,'edgealpha',edgeAlpha,'facecolor',[0.75 .25 0.25]);
+        %     end
+    end
+end
+
+
+hold off
+view(az,el);
+bounds = [min(min(EV)),max(max(EV))];
+bounds = [min(min(Z)),max(max(Z))];
+% bounds(1)=1;
+% set(gca,'zlim',bounds,'xlim',bounds,'ylim',bounds);
+
+xlabel('$v_1$','interpreter','latex');
+ylabel('$v_3$','interpreter','latex');
+zlabel('$v_2$','interpreter','latex');
+set(gca,'ticklabelinterpreter','latex');
+
+set(gcf,'paperunits','inches','units','inches');
+% fpos = [-7.7778       3.8472       7.7778       5.8333];
+fpos = get(gcf,'position');
+set(gcf,'position',fpos,'papersize',fpos(3:4),'paperposition',[0 0 fpos(3:4)]);
+print(gcf,'-dpdf','contribution_payoffsets1.pdf');
+
 
 %% Count the number of true faces
 numTrueFaces = 0;

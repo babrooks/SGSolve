@@ -34,18 +34,17 @@ int main ()
   // delta=0.8;
   // delta=1.0/3.0;
   // delta=0.25;
-    
+  delta=0.6;
+  
   int action, state, player;
-  int numPlayers = 3;
-  int numStates = 2;
 
   int numEndowments = 3;
   int c2e = 3;
 
-  int numDirections = 400;
+  int numDirections = 300;
 
-  bool dropRedundant = true;
-  bool addEndogenous = true;
+  bool dropRedundant = false;
+  bool addEndogenous = false;
   
   RiskSharingGame_3Player rg(delta,numEndowments,c2e);
 
@@ -68,12 +67,12 @@ int main ()
 
       SGEnv env;
 
-      // env.setParam(SG::DIRECTIONTOL,1e-12); 
-      // env.setParam(SG::NORMTOL,1e-12); 
-      // env.setParam(SG::LEVELTOL,1e-12); 
-      // env.setParam(SG::IMPROVETOL,1e-13); 
+       env.setParam(SG::DIRECTIONTOL,1e-12); 
+      env.setParam(SG::NORMTOL,1e-12); 
+      env.setParam(SG::LEVELTOL,1e-12); 
+      env.setParam(SG::IMPROVETOL,1e-13); 
       //env.setParam(SG::ERRORTOL,1e-10); 
-      env.setParam(SG::ICTOL,1e-10); // Seems to work well on the
+      env.setParam(SG::ICTOL,1e-13); // Seems to work well on the
 				     // delta=2/3 and delta=1/3
 				     // contribution games
       env.setParam(SG::MAXITERATIONS,60);
