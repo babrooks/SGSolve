@@ -26,7 +26,7 @@
 #include <QComboBox>
 #include <QScrollBar>
 #include <QDebug>
-#include "sgsolution_v2.hpp"
+#include "sgsolution_maxminmax.hpp"
 
 //! Handles the plot settings for SGSolutionHandler
 /*! This class intermediates between the controllers (iterSlider,
@@ -74,7 +74,7 @@ private:
   int iteration;
 
   //! The current solution object
-  SGSolution_V2 * soln;
+  SGSolution_MaxMinMax * soln;
   
   //! The current plot mode
   PlotMode plotMode;
@@ -83,7 +83,7 @@ private:
   SolutionMode mode;
   
   //! Points to the current SGiteration.
-  list<SGIteration_V2>::const_iterator currentIter;
+  list<SGIteration_MaxMinMax>::const_iterator currentIter;
   //! Points to the current step.
   list< SGStep >::const_iterator currentStep;
 
@@ -121,9 +121,9 @@ public:
   PlotMode getPlotMode() const { return plotMode; }
   //! Access method for the current solution mode.
   SolutionMode getMode () const { return mode; }
-  //! Access method for the current SGIteration_V2 pointer.
-  list<SGIteration_V2>::const_iterator getCurrentIter() const { return currentIter; }
-  //! Access method for the current SGIteration_V2 pointer.
+  //! Access method for the current SGIteration_MaxMinMax pointer.
+  list<SGIteration_MaxMinMax>::const_iterator getCurrentIter() const { return currentIter; }
+  //! Access method for the current SGIteration_MaxMinMax pointer.
   int getCurrentIterIndex() const { return iteration; }
   //! Access method for the current SGStep pointer.
   const SGStep & getCurrentStep() const { return *currentStep; }
@@ -132,9 +132,9 @@ public:
   //! Returns true if a solution has been loaded.
   bool hasSolution() const { return solnLoaded; }
   //! Returns the current solution.
-  const SGSolution_V2 * getSolution() const { return soln; }
+  const SGSolution_MaxMinMax * getSolution() const { return soln; }
   //! Sets the solution.
-  void setSolution(SGSolution_V2 * newSoln);
+  void setSolution(SGSolution_MaxMinMax * newSoln);
   //! Sets the current state.
   bool setState(int newState);
   //! Sets the plot mode.

@@ -137,7 +137,7 @@ void SGSolver_MaxMinMax::solve()
 	      {
 		// Update the levels and the error level with the
 		// movement in this direction
-		newLevels[state] = pivot[state]*currDir;
+		newLevels[state] = (pivot[state]*currDir);
 		errorLevel = max(errorLevel,abs(newLevels[state]-(*lvl)[state]));
 		(*lvl)[state] = newLevels[state];
 	      } // for state
@@ -153,8 +153,8 @@ void SGSolver_MaxMinMax::solve()
       // Update the the threat tuple
       for (int state = 0; state < numStates; state++)
 	{
-	  threatTuple[state][0] = -(*dueWestLvl)[state];
-	  threatTuple[state][1] = -(*dueSouthLvl)[state];
+	  threatTuple[state][0] = -(*dueWestLvl)[state]+env.getParam(SG::SUBGENFACTOR);
+	  threatTuple[state][1] = -(*dueSouthLvl)[state]+env.getParam(SG::SUBGENFACTOR);
 	}
 
       if (env.getParam(SG::STOREITERATIONS)==2
@@ -191,7 +191,7 @@ void SGSolver_MaxMinMax::solve()
 			* (*lvl)[sp];
 		  
 		    // Trim the action
-		    ait->trim(*dir,expLevel);
+		    ait->trim(*dir,expLevel-env.getParam(SG::SUBGENFACTOR));
 		  } // for dir
 	      }
 	    } // for ait
@@ -291,7 +291,7 @@ double SGSolver_MaxMinMax::iterate_endogenous()
       newDirections.push_back(newDir);
       for (int state = 0; state < numStates; state++)
 	{
-	  newLevels.back()[state] = pivot[state]*newDir;
+	  newLevels.back()[state] = (pivot[state]*newDir);
 	} // for state
       if (env.getParam(SG::STOREITERATIONS))
 	iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
@@ -305,12 +305,12 @@ double SGSolver_MaxMinMax::iterate_endogenous()
       if (currDir*dueNorth > 0 && newDir*dueNorth <= 0) // Passing due west
 	{
 	  for (int state = 0; state < numStates; state++)
-	    newThreatTuple[state][0] = pivot[state][0];
+	    newThreatTuple[state][0] = pivot[state][0]+env.getParam(SG::SUBGENFACTOR);
 	}
       else if (currDir*dueEast < 0 && newDir*dueEast >= 0) // Passing due south
 	{
 	  for (int state = 0; state < numStates; state++)
-	    newThreatTuple[state][1] = pivot[state][1];
+	    newThreatTuple[state][1] = pivot[state][1]+env.getParam(SG::SUBGENFACTOR);
 	}
       else if (currDir*dueNorth < 0 && newDir*dueNorth >= 0)
 	passEast = true;
@@ -385,7 +385,7 @@ double SGSolver_MaxMinMax::iterate_endogenous()
 		expLevel += probabilities[state][ait->getAction()][sp]
 		  * (*lvl)[sp];
 
-	      ait->trim(*dir,expLevel);
+	      ait->trim(*dir,expLevel-env.getParam(SG::SUBGENFACTOR));
 
 	      dir++;
 	      lvl++;
@@ -443,7 +443,7 @@ void SGSolver_MaxMinMax::initialize()
 	      SGPoint currDir = SGPoint(cos(theta),sin(theta));
 
 	      double level = max(currDir*payoffLB,currDir*payoffUB);
-	      actions[state].back().trim(currDir,level);
+	      actions[state].back().trim(currDir,level-env.getParam(SG::SUBGENFACTOR));
 	    } // for dir
 
 	  actions[state].back().updateTrim();

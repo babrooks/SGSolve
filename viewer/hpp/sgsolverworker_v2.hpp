@@ -24,7 +24,7 @@
 
 #include <QtWidgets>
 #include "sg.hpp"
-#include "sgsolver_v4.hpp"
+#include "sgsolver_maxminmax.hpp"
 
 //! Class for implementing the twist algorithm within SGViewer
 /*! If we just used the SGSolver class to solve the game, the
@@ -51,7 +51,7 @@ private:
   //! An environment object to hold settings.
   const SGEnv & env;
   //! The main object for performing calculations
-  SGSolver_V4 solver;
+  SGSolver_MaxMinMax solver;
   //! A pointer to the text edit in which to report progress.
   QTextEdit * logTextEdit;
   //! Number of iterations
@@ -119,11 +119,11 @@ public slots:
   } // iterate
 
   //! Returns the SGSolution object.
-  const SGSolution_V2 & getSolution() const
+  const SGSolution_MaxMinMax & getSolution() const
   { return solver.getSolution(); }
 
   //! Returns the solver object.
-  const SGSolver_V4 & getSolver() const
+  const SGSolver_MaxMinMax & getSolver() const
   { return solver; }
   
 signals:

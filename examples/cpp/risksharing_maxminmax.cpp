@@ -40,11 +40,12 @@ int main()
     RiskSharingGame rsg(delta,numEndowments,
 			c2e,persistence,endowmentMode);
     SGEnv env;
-    env.setParam(SG::STOREITERATIONS,1);
+    env.setParam(SG::STOREITERATIONS,2);
     env.setParam(SG::MAXITERATIONS,1e6);
     env.setParam(SG::MAXPOLICYITERATIONS,1e2);
     env.setParam(SG::STOREACTIONS,true);
     env.setParam(SG::ERRORTOL,1e-6);
+    env.setParam(SG::SUBGENFACTOR,1e-3);
     SGGame game(rsg);
 
     clock_t start;
@@ -62,17 +63,18 @@ int main()
 
 
 
-    // start = clock();
+    start = clock();
 
-    // SGSolver_MaxMinMax solver4(env,game);
-    // solver4.solve();
+    SGSolver_MaxMinMax solver4(env,game);
+    solver4.solve();
 
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
 
-    // SGSolution_MaxMinMax soln2 = solver4.getSolution();
-    // SGSolution_MaxMinMax::save(soln2,"risksharing_maxminmax_fixed.sln2");
+    SGSolution_MaxMinMax soln2 = solver4.getSolution();
+    SGSolution_MaxMinMax::save(soln2,"risksharing_maxminmax_fixed.sln2");
 
+    env.setParam(SG::SUBGENFACTOR,0);
     
     start = clock();
 
@@ -82,22 +84,22 @@ int main()
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
 
-    // SGSolution_MaxMinMax soln3 = solver5.getSolution();
-    // stringstream ss;
-    // ss << "./solutions/risksharing_nume=" << numEndowments
-    //    << "_c2e=" << c2e
-    //    << "_delta=" << delta
-    //    << ".sln2";
-    // SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
+    SGSolution_MaxMinMax soln3 = solver5.getSolution();
+    stringstream ss;
+    ss << "./solutions/risksharing_nume=" << numEndowments
+       << "_c2e=" << c2e
+       << "_delta=" << delta
+       << ".sln2";
+    SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
     
     
-    start = clock();
-    int numDirections = 100;
-    SGSolver_JYC jycsolver(game,numDirections);
-    jycsolver.solve();
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << "JYC implementation time elapsed with " << numDirections
-    	 << " directions: "<< duration << " seconds" << endl;
+    // start = clock();
+    // int numDirections = 100;
+    // SGSolver_JYC jycsolver(game,numDirections);
+    // jycsolver.solve();
+    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    // cout << "JYC implementation time elapsed with " << numDirections
+    // 	 << " directions: "<< duration << " seconds" << endl;
 
     // start = clock();
     // numDirections = 200;

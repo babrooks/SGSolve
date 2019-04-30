@@ -242,9 +242,9 @@ void SGMainWindow::loadSolution_V2()
       QByteArray ba = newPath.toLocal8Bit();
       const char * newPath_c = ba.data();
 
-      SGSolution_V2 soln;
+      SGSolution_MaxMinMax soln;
       
-      SGSolution_V2::load(soln,newPath_c);
+      SGSolution_MaxMinMax::load(soln,newPath_c);
 
       if (soln.getIterations().empty())
 	{

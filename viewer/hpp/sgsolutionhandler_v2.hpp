@@ -23,7 +23,7 @@
 #define SGSOLUTIONHANDLER_V2_HPP
 
 #include "sgplotsettings.hpp"
-#include "sgsolution_v2.hpp"
+#include "sgsolution_maxminmax.hpp"
 #include "sgcustomplot.hpp"
 #include "sgsimulationhandler.hpp"
 #include "sgplotcontroller_v2.hpp"
@@ -74,7 +74,7 @@ private:
   //! Solution
   /*! Stores all of the information related to the result of the
       computation. */
-  SGSolution_V2 soln;
+  SGSolution_MaxMinMax soln;
   //! A pointer to the associated plot controller.
   SGPlotController_V2 * controller;
 
@@ -149,9 +149,9 @@ public:
   SGSolutionHandler_V2(QWidget * parent = 0);
 
   //! Sets the solution to newSoln.
-  void setSolution(const SGSolution_V2 & newSoln);
+  void setSolution(const SGSolution_MaxMinMax & newSoln);
   //! Returns a const reference to the solution.
-  const SGSolution_V2 & getSolution() const
+  const SGSolution_MaxMinMax & getSolution() const
   {return soln;}
 
   //! Returns the layout

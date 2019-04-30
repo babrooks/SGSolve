@@ -42,7 +42,7 @@ SGPlotController_V2::SGPlotController_V2(QComboBox * _stateCombo,
 	  this,SLOT(changeMode(int)));
 } // Constructor
 
-void SGPlotController_V2::setSolution(SGSolution_V2 * newSoln)
+void SGPlotController_V2::setSolution(SGSolution_MaxMinMax * newSoln)
 { 
   action=-1;
   state=-1;

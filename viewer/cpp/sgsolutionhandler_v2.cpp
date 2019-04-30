@@ -163,7 +163,7 @@ SGSolutionHandler_V2::SGSolutionHandler_V2(QWidget * _parent):
     layout->addWidget(botSolutionPanel);
 } // constructor
 
-void SGSolutionHandler_V2::setSolution(const SGSolution_V2 & newSoln)
+void SGSolutionHandler_V2::setSolution(const SGSolution_MaxMinMax & newSoln)
 {
     soln = newSoln;
 
@@ -217,7 +217,7 @@ void SGSolutionHandler_V2::plotSolution()
     int state = controller->getState();
     int action = controller->getAction();
     int actionIndex = controller->getActionIndex();
-    list<SGIteration_V2>::const_iterator currentIter = controller->getCurrentIter();
+    list<SGIteration_MaxMinMax>::const_iterator currentIter = controller->getCurrentIter();
     const SGStep & currentStep = controller->getCurrentStep();
     const list<SGStep> & steps = currentIter->getSteps();
 
@@ -376,9 +376,9 @@ void SGSolutionHandler_V2::plotSolution()
         const SGPoint & minIC = currentIter->getActions()[state][actionIndex].getMinICPayoffs();
 
         QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
-                                               SGPoint(0,yrange.upper-minIC[1]));
+                                               SGPoint(0.0,yrange.upper-minIC[1]));
         QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
-                                               SGPoint(xrange.upper-minIC[0],0));
+                                               SGPoint(xrange.upper-minIC[0],0.0));
         ICCurveH->setPen(plotSettings.get(SGPlotSettings::ICPen));
         ICCurveV->setPen(plotSettings.get(SGPlotSettings::ICPen));
         detailPlot->addPlottable(ICCurveH);
@@ -484,7 +484,7 @@ void SGSolutionHandler_V2::plotSolution(SGCustomPlot * plot, int state,
   //   start = controller->getStartIter().getNumExtremeTuples()-1;
   // int end = controller->getEndIter().getNumExtremeTuples()-1;
 
-  list<SGIteration_V2>::const_iterator currentIter = controller->getCurrentIter();
+  list<SGIteration_MaxMinMax>::const_iterator currentIter = controller->getCurrentIter();
   const list<SGStep> & steps = currentIter->getSteps();
   const SGStep & currentStep = controller->getCurrentStep();
 
@@ -551,7 +551,7 @@ void SGSolutionHandler_V2::plotSolution(SGCustomPlot * plot, int state,
 QString SGSolutionHandler_V2::generatePlotTitle(int state, int action,
                                                 bool addIterStep)
 {
-  list<SGIteration_V2>::const_iterator currentIter = controller->getCurrentIter();
+  list<SGIteration_MaxMinMax>::const_iterator currentIter = controller->getCurrentIter();
   const SGStep & currentStep = controller->getCurrentStep();
   // Update the title
   QString titleString = QString("");

@@ -96,6 +96,7 @@ namespace SG
 		      SGAction. */
       BNDRYPNTTOL, /*! Distance below which extreme binding
                        continuation values are considered equal . */
+      SUBGENFACTOR, /*! Scaling of the hyperplanes to test for supergeneration. */
       NUMDOUBLEPARAMS /*!< Used internally to indicate the number of
 			enumerated double parameters. */
     };
