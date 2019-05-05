@@ -78,8 +78,10 @@ SGMainWindow::SGMainWindow()
   QMenu * gamesMenu = toolsMenu->addMenu(tr("Special &games"));
   QAction * rsgAction = new QAction(tr("&Risk sharing"),this);
   QAction * pdAction = new QAction(tr("&Prisoners' Dilemmas"),this);
+  QAction * bosAction = new QAction(tr("&Battle of the Sexes"),this);
   gamesMenu->addAction(rsgAction);
   gamesMenu->addAction(pdAction);
+  gamesMenu->addAction(bosAction);
   toolsMenu->addSeparator();
   QAction * solveAction = new QAction(tr("&Solve game"),this);
   QAction * cancelAction = new QAction(tr("&Cancel computation"),this);
@@ -142,6 +144,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(generateRSG()));
   connect(pdAction,SIGNAL(triggered()),
 	  this,SLOT(generatePD()));
+  connect(bosAction,SIGNAL(triggered()),
+	  this,SLOT(generateBoS()));
   
   connect(loadSolutionAction_V2,SIGNAL(triggered()),
 	  this,SLOT(loadSolution_V2()));
@@ -760,7 +764,7 @@ void SGMainWindow::generateRSG()
 
       tabWidget->setCurrentIndex(0);
 
-      QString newWindowTitle(tr("SGViewer - Risk sharing game"));
+      QString newWindowTitle(tr("SGViewer - Risk sharing"));
       setWindowTitle(newWindowTitle);
     }
 } // generateRSG
@@ -824,7 +828,49 @@ void SGMainWindow::generatePD()
 
   tabWidget->setCurrentIndex(0);
 
-  QString newWindowTitle(tr("SGViewer - Prisoners' di"));
+  QString newWindowTitle(tr("SGViewer - Prisoners' dilemma"));
   setWindowTitle(newWindowTitle);
 
 } // generatePD
+
+void SGMainWindow::generateBoS()
+{
+  double delta = 0.4;
+  
+  int action, state, player;
+  int numPlayers = 2;
+  int numStates = 1;
+
+  vector< vector< int > > numActions(numStates,vector<int>(numPlayers,2));
+  vector<int> numActions_total(numStates,4);
+
+  // Payoffs
+  vector< vector< vector<double> > > 
+    payoffs(numStates,vector< vector<double> >(4,vector<double>(numPlayers,0.0)));
+  payoffs[0][0][0] = 0;
+  payoffs[0][1][0] = 1;
+  payoffs[0][2][0] = 3;
+  payoffs[0][3][0] = 0;
+  payoffs[0][0][1] = 0;
+  payoffs[0][1][1] = 3;
+  payoffs[0][2][1] = 1;
+  payoffs[0][3][1] = 0;
+
+  // Transition probabilities
+  vector< vector< vector<double> > >
+    probabilities(numStates,vector< vector<double> >(4,vector<double>(numStates,1.0)));
+
+  SGGame game(delta,
+	      numStates,
+	      numActions,
+	      payoffs,
+	      probabilities);
+  
+  gameHandler->setGame(game);
+
+  tabWidget->setCurrentIndex(0);
+
+  QString newWindowTitle(tr("SGViewer - Battle of the Sexes"));
+  setWindowTitle(newWindowTitle);
+
+} // generateBoS

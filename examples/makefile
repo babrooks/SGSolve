@@ -21,7 +21,7 @@
 
 # Makefile for examples
 
-MAINS= as_twostate abreusannikov pd pd_twostate guitester risksharing finiteresource \
+MAINS= as_twostate abreusannikov pd bos pd_twostate guitester risksharing finiteresource \
 	as_twostate_maxminmax predation threeplayertest 
 MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb \
 	risksharing_maxminmax contribution risksharing_3player risksharing_3player_merged

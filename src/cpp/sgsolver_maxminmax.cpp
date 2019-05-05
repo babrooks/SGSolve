@@ -153,8 +153,8 @@ void SGSolver_MaxMinMax::solve()
       // Update the the threat tuple
       for (int state = 0; state < numStates; state++)
 	{
-	  threatTuple[state][0] = -(*dueWestLvl)[state]+env.getParam(SG::SUBGENFACTOR);
-	  threatTuple[state][1] = -(*dueSouthLvl)[state]+env.getParam(SG::SUBGENFACTOR);
+	  threatTuple[state][0] = -(*dueWestLvl)[state];
+	  threatTuple[state][1] = -(*dueSouthLvl)[state];
 	}
 
       if (env.getParam(SG::STOREITERATIONS)==2
@@ -191,7 +191,7 @@ void SGSolver_MaxMinMax::solve()
 			* (*lvl)[sp];
 		  
 		    // Trim the action
-		    ait->trim(*dir,expLevel-env.getParam(SG::SUBGENFACTOR));
+		    ait->trim(*dir,expLevel);
 		  } // for dir
 	      }
 	    } // for ait
@@ -305,12 +305,12 @@ double SGSolver_MaxMinMax::iterate_endogenous()
       if (currDir*dueNorth > 0 && newDir*dueNorth <= 0) // Passing due west
 	{
 	  for (int state = 0; state < numStates; state++)
-	    newThreatTuple[state][0] = pivot[state][0]+env.getParam(SG::SUBGENFACTOR);
+	    newThreatTuple[state][0] = pivot[state][0];
 	}
       else if (currDir*dueEast < 0 && newDir*dueEast >= 0) // Passing due south
 	{
 	  for (int state = 0; state < numStates; state++)
-	    newThreatTuple[state][1] = pivot[state][1]+env.getParam(SG::SUBGENFACTOR);
+	    newThreatTuple[state][1] = pivot[state][1];
 	}
       else if (currDir*dueNorth < 0 && newDir*dueNorth >= 0)
 	passEast = true;
@@ -385,7 +385,7 @@ double SGSolver_MaxMinMax::iterate_endogenous()
 		expLevel += probabilities[state][ait->getAction()][sp]
 		  * (*lvl)[sp];
 
-	      ait->trim(*dir,expLevel-env.getParam(SG::SUBGENFACTOR));
+	      ait->trim(*dir,expLevel);
 
 	      dir++;
 	      lvl++;
@@ -443,7 +443,7 @@ void SGSolver_MaxMinMax::initialize()
 	      SGPoint currDir = SGPoint(cos(theta),sin(theta));
 
 	      double level = max(currDir*payoffLB,currDir*payoffUB);
-	      actions[state].back().trim(currDir,level-env.getParam(SG::SUBGENFACTOR));
+	      actions[state].back().trim(currDir,level);
 	    } // for dir
 
 	  actions[state].back().updateTrim();
@@ -453,11 +453,11 @@ void SGSolver_MaxMinMax::initialize()
 } // initialize_endogenous
 
 void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
-				 vector<SGActionIter> & actionTuple,
-				 vector<SG::Regime> & regimeTuple,
-				 const SGPoint currDir,
-				 const vector<list<SGAction_MaxMinMax> > & actions,
-				 const SGTuple & feasibleTuple) const
+					vector<SGActionIter> & actionTuple,
+					vector<SG::Regime> & regimeTuple,
+					const SGPoint currDir,
+					const vector<list<SGAction_MaxMinMax> > & actions,
+					const SGTuple & feasibleTuple) const
 {
   // Do policy iteration to find the optimal pivot.
   
@@ -856,12 +856,13 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
 } // findFeasibleTuple
 
 void SGSolver_MaxMinMax::policyToPayoffs(SGTuple & pivot,
-				  const vector<SGActionIter>  & actionTuple,
-				  const vector<SG::Regime> & regimeTuple) const
+					 const vector<SGActionIter>  & actionTuple,
+					 const vector<SG::Regime> & regimeTuple)
+  const
 {
   // Do Bellman iteration to find new fixed point
-  int updatePivotPasses = 0;
-  double bellmanPivotGap = 0;
+  int updatePasses = 0;
+  double bellmanGap = 0;
   SGTuple newPivot(pivot);
 
   do
@@ -874,12 +875,47 @@ void SGSolver_MaxMinMax::policyToPayoffs(SGTuple & pivot,
 	      + delta*pivot.expectation(probabilities[state]
 					[actionTuple[state]->getAction()]);
 	}
-      bellmanPivotGap = SGTuple::distance(newPivot,pivot);
+      bellmanGap = SGTuple::distance(newPivot,pivot);
       pivot = newPivot;
-    } while (bellmanPivotGap > env.getParam(SG::UPDATEPIVOTTOL)
-	     && (++updatePivotPasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
+    } while (bellmanGap > env.getParam(SG::UPDATEPIVOTTOL)
+	     && (++updatePasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
 
-  if (updatePivotPasses == env.getParam(SG::MAXUPDATEPIVOTPASSES) )
+  if (updatePasses == env.getParam(SG::MAXUPDATEPIVOTPASSES) )
     cout << "WARNING: Maximum pivot update passes reached." << endl;
   
 } // policyToPayoffs
+
+void SGSolver_MaxMinMax::policyToPenalties(vector<double> & penalties,
+					   const vector<SGActionIter>  & actionTuple,
+					   const vector<SG::Regime> & regimeTuple)
+  const
+{
+  // Do Bellman iteration to find new fixed point
+  assert(penalties.size()==numStates);
+  
+  int updatePasses = 0;
+  double bellmanGap = 0;
+  vector<double> newPenalties(numStates,env.get(SG::SUBGENFACTOR));
+
+  do
+    {
+      bellmanGap = 0.0;
+      for (int state = 0; state < numStates; state++)
+	{
+	  if (regimeTuple[state] == SG::NonBinding)
+	    {
+	      for (int sp = 0; sp < numStates; sp++)
+		newPenalty += delta*probabilities[state]
+		  [actionTuple[state]->getAction()][sp]*penalties[sp];
+
+	      bellmanGap = max(bellmanGap,abs(newPenalties[state]-penalties[state]));
+	    }
+	}
+      penalties = newPenalties;
+    } while (bellmanGap > env.getParam(SG::UPDATEPIVOTTOL)
+	     && (++updatePasses < env.getParam(SG::MAXUPDATEPIVOTPASSES) ));
+
+  if (updatePasses == env.getParam(SG::MAXUPDATEPIVOTPASSES) )
+    cout << "WARNING: Maximum pivot update passes reached." << endl;
+  
+} // policyToPenalties

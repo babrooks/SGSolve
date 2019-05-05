@@ -209,6 +209,9 @@ private slots:
 
   //! Generate prisoner's dilemma game
   void generatePD();
+
+  //! Generate a Battle of the Sexes
+  void generateBoS();
 };
 
 

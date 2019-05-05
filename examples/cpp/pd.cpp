@@ -71,14 +71,13 @@ int main ()
       env.setParam(SG::IMPROVETOL,1e-13); 
 
       cout << "Building solver" << endl;
-      // SGSolver solver(env,game);
-      SGSolver_V4 solver(env,game);
+      SGSolver_MaxMinMax solver(env,game);
 
       cout << "Starting solve routine" << endl;
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution_V2::save(solver.getSolution(),"sgtest.sln2");
+      SGSolution_MaxMinMax::save(solver.getSolution(),"sgtest.sln2");
       cout << "Done!" << endl;
 
       SGGame::save(game,"pd.sgm");

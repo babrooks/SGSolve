@@ -139,6 +139,12 @@ public:
 		       const vector<SGActionIter>  & actionTuple,
 		       const vector<SG::Regime> & regimeTuple) const;
 
+  //! Converts a policy function to the associated penalties using
+  //! bellman iteration, when computing inner approximation
+  void policyToPayoffs(vector<double> & penalties,
+		       const vector<SGActionIter>  & actionTuple,
+		       const vector<SG::Regime> & regimeTuple) const;
+
   //! Returns a constant reference to the SGSolution_MaxMinMax object storing the
   //! output of the computation.
   const SGSolution_MaxMinMax& getSolution() const {return soln;}

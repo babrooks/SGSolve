@@ -350,9 +350,9 @@ void SGSolutionHandler::plotSolution()
       const SGPoint & minIC = pivotIter.getActions()[state][actionIndex].getMinICPayoffs();
 
       QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
-					     SGPoint(0,yrange.upper-minIC[1]));
+					     SGPoint(0.0,yrange.upper-minIC[1]));
       QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
-					     SGPoint(xrange.upper-minIC[0],0));
+					     SGPoint(xrange.upper-minIC[0],0.0));
       ICCurveH->setPen(plotSettings.get(SGPlotSettings::ICPen));
       ICCurveV->setPen(plotSettings.get(SGPlotSettings::ICPen));
       detailPlot->addPlottable(ICCurveH);
