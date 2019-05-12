@@ -69,6 +69,8 @@ SGSettingsHandler::SGSettingsHandler(QWidget * parent,
 		     new SGDblParamEdit(this,env,SG::BACKBENDINGTOL));
   editLayout->addRow(QString("Movement tolerance:"),
 		     new SGDblParamEdit(this,env,SG::ROUNDTOL));
+  editLayout->addRow(QString("Sub-generation penalty:"),
+		     new SGDblParamEdit(this,env,SG::SUBGENFACTOR));
 
   // Construct and add integer parameter edits.
   editLayout->addRow(QString("Max iterations:"),

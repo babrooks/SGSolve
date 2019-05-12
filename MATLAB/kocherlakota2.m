@@ -101,3 +101,90 @@ set(gcf,'position',fpos);
 set(gcf,'papersize',fpos(3:4),'paperposition',[0 0 fpos(3:4)]);
 print(gcf,'-dpdf','~/Dropbox/work/collaborations/abreubrookssannikov/Ben/risksharing_twostate_ineff.pdf');
 
+
+%% Load data for inner approximation illustration
+sgmex2('LoadSolution','../examples/solutions/risksharing_nume=2_c2e=200_delta=0.7.sln2');
+sgmex2('IterToEnd');
+
+outerIter = sgmex2('GetCurrentIteration');
+
+sgmex2('LoadSolution','../examples/solutions/risksharing_nume=2_c2e=200_delta=0.7_sgf=0.005.sln2');
+% sgmex2('LoadSolution','../examples/solutions/risksharing_nume=2_c2e=200_delta=0.7_sgf=1e-06.sln2');
+sgmex2('IterToEnd');
+
+innerIter = sgmex2('GetCurrentIteration');
+
+%% Plot sets
+ax=zeros(1,2);
+for s=1:2
+    ax(s)=subplot(1,2,s);
+
+    [V,nrV]=con2vert(outerIter.directions,outerIter.levels(:,s));
+    P=outerIter.pivots(:,(2*s-1):2*s);
+    k=convhull(V);    
+    V=V(k([1:end 1],1),:);
+    p1=plot(V(:,1),V(:,2),'b-',...
+        P(:,1),P(:,2),'b.');
+
+    hold on
+
+    [V,nrV]=con2vert(innerIter.directions,innerIter.levels(:,s));
+    P=innerIter.pivots(:,(2*s-1):2*s);
+    k=convhull(V);    
+    V=V(k([1:end 1],1),:);
+    p2=plot(V(:,1),V(:,2),'r-',...
+        P(:,1),P(:,2),'r.');
+    
+    [V,nrV]=con2vert(innerIter.directions,0.005+innerIter.levels(:,s));
+    P=innerIter.pivots(:,(2*s-1):2*s);
+    k=convhull(V);    
+    V=V(k([1:end 1],1),:);
+    p3=plot(V(:,1),V(:,2),'r:');
+    
+    hold off
+
+    xlabel('$v_1$','interpreter','latex');
+    ylabel('$v_2$','interpreter','latex');
+    set(gca,'ticklabelinterpreter','latex');
+    axis equal
+    
+    if s==2
+        l=legend([p1(1) p2(1)],'Upper bound','Lower bound');
+        set(l,'interpreter','latex');
+    end
+
+end % s
+
+title(ax(1),'$e=(0,1)$','interpreter','latex');
+title(ax(2),'$e=(1,0)$','interpreter','latex');
+
+xlim=[0.34 0.78];
+ylim=xlim+0.54-xlim(1);
+set(ax(1),'xlim',xlim,'ylim',ylim);
+set(ax(2),'xlim',ylim,'ylim',xlim);
+
+set(gcf,'paperunits','inches','units','inches');
+fpos = [6.9722    2.1667    8.4861    3.5278];
+set(gcf,'position',fpos);
+set(gcf,'papersize',fpos(3:4),'paperposition',[0 0 fpos(3:4)]);
+print(gcf,'-dpdf','~/Dropbox/work/collaborations/abreubrookssannikov/Ben/risksharing_twostate_innerapprox.pdf');
+
+%%
+sgmex2('LoadSolution','../examples/solutions/risksharing_nume=2_c2e=200_delta=0.7.sln2');
+sgmex2('IterToEnd');
+outerIter = sgmex2('GetCurrentIteration');
+
+sgmex2('LoadSolution','../examples/solutions/risksharing_nume=2_c2e=200_delta=0.7_sgf=1e-06.sln2');
+sgmex2('IterToEnd');
+innerIter = sgmex2('GetCurrentIteration');
+
+dist = 0;
+for s=1:2
+   V=con2vert(outerIter.directions,outerIter.levels(:,s));
+   
+   X=bsxfun(@plus,innerIter.directions*(V'),-innerIter.levels(:,s));
+   dist = max(dist,max(max(X)));
+ 
+end
+
+display(dist)

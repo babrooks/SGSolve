@@ -38,6 +38,35 @@ void SGAction::trim(const SGPoint& pivot,
     intersectRaySegment(pivot,direction,trimmedPoints[player]);
 }
 
+void SGAction::updateTrim()
+{
+  points = trimmedPoints;
+  for (int player = 0; player < 2; player++)
+    {
+      if (points[player].size() == 0)
+	tuples[player] = vector<int>(0);
+    }
+}
+
+double SGAction::distToTrimmed() const
+{
+  double dist = 0;
+  for (int player = 0; player < 2; player++)
+    {
+      if (points[player].size() != trimmedPoints[player].size())
+	return 1.0;
+
+      for (int k = 0; k < points[player].size(); k++)
+	{
+	  for (int p = 0; p < numPlayers; p++)
+	    dist = max(dist,abs(points[player][k][p]
+				-trimmedPoints[player][k][p]));
+	}
+    }
+  return dist;
+}
+
+
 void SGAction::intersectRaySegment(const SGPoint& pivot, 
 				   const SGPoint& direction,
 				   int player)

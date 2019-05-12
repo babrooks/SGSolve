@@ -109,6 +109,10 @@ public:
   /*! Return the new error level. */
   double iterate_endogenous();
 
+  //! Compute approximate Hausdorff distance
+double pseudoHausdorff(const list<SGPoint> & newDirections,
+					   const list<vector<double> > & newLevels) const;
+
   //! Initializes the solve routines
   void initialize();
 
@@ -116,6 +120,7 @@ public:
   
   //! Optimizes the policy for the given direction
   void optimizePolicy(SGTuple & pivot,
+		      vector<double> & penalties,
 		      vector<SGActionIter> & actionTuple,
 		      vector<SG::Regime> & regimeTuple,
 		      const SGPoint currDir,
@@ -125,6 +130,7 @@ public:
   //! Find the next clockwise direction at which the optimal tuple
   //! changes
   double sensitivity(const SGTuple & pivot,
+		     const vector<double> & penalties,
 		     const vector<SGActionIter> & actionTuple,
 		     const vector<SG::Regime> & regimeTuple,
 		     const SGPoint currDir,
@@ -141,9 +147,9 @@ public:
 
   //! Converts a policy function to the associated penalties using
   //! bellman iteration, when computing inner approximation
-  void policyToPayoffs(vector<double> & penalties,
-		       const vector<SGActionIter>  & actionTuple,
-		       const vector<SG::Regime> & regimeTuple) const;
+  void policyToPenalties(vector<double> & penalties,
+			 const vector<SGActionIter>  & actionTuple,
+			 const vector<SG::Regime> & regimeTuple) const;
 
   //! Returns a constant reference to the SGSolution_MaxMinMax object storing the
   //! output of the computation.

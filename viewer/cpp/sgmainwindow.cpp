@@ -719,7 +719,7 @@ void SGMainWindow::changeSettings()
 
 void SGMainWindow::settingsHandlerClosed()
 {
-  delete plotSettingsHandler;
+  delete settingsHandler;
 }
 
 
@@ -730,9 +730,9 @@ void SGMainWindow::changePlotSettings()
 
   plotSettingsHandler->adjustSize();
   plotSettingsHandler->move(this->pos()
-			+this->rect().center()
-			-plotSettingsHandler->pos()
-			-plotSettingsHandler->rect().center());
+			    +this->rect().center()
+			    -plotSettingsHandler->pos()
+			    -plotSettingsHandler->rect().center());
   connect(plotSettingsHandler,SIGNAL(closePlotSettingsHandler()),
 	  this,SLOT(plotSettingsHandlerClosed()));
   plotSettingsHandler->show();

@@ -104,36 +104,10 @@ public:
   void resetTrimmedPoints(const SGPoint & payoffUB);
   
   //! Sets points equal to the trimmed points
-  void updateTrim() 
-  {
-    points = trimmedPoints; 
-    for (int player = 0; player < numPlayers; player++)
-      {
-	if (points[player].size() == 0)
-	  tuples[player] = vector<int>(0);
-      }
-    bndryDirs = trimmedBndryDirs;
-  }
+  void updateTrim();
 
-  double distToTrimmed()
-  {
-    double dist = 0.0;
-    
-    for (int p = 0; p < points.size(); p ++)
-      {
-	double tmpDist = numeric_limits<double>::max();
-	for (int k = 0; k < trimmedPoints[p].size(); k++)
-	  {
-	    for (int kp = 0; kp < points[p].size(); kp++)
-	      {
-		tmpDist = min(tmpDist,SGPoint::distance(points[p][kp],trimmedPoints[p][k]));
-		tmpDist = min(tmpDist,SGPoint::distance(bndryDirs[p][kp],trimmedBndryDirs[p][k]));
-	      } // kp
-	  } // k
-	dist = max(dist,tmpDist);
-      } // p
-  } // distToTrimmed
-    
+  double distToTrimmed() const;
+
   //! Intersects the segment with a half space
   bool intersectHalfSpace(const SGPoint & normal,
 			  const double level,

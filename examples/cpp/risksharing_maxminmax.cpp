@@ -32,7 +32,7 @@ int main()
 {
   double delta = 0.7;
   int numEndowments = 2;
-  int c2e = 80;
+  int c2e = 200;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
 
   {
@@ -41,17 +41,18 @@ int main()
 			c2e,persistence,endowmentMode);
     SGEnv env;
     env.setParam(SG::STOREITERATIONS,2);
-    env.setParam(SG::MAXITERATIONS,1e6);
-    env.setParam(SG::MAXPOLICYITERATIONS,1e2);
-    env.setParam(SG::STOREACTIONS,true);
-    env.setParam(SG::ERRORTOL,1e-6);
-    env.setParam(SG::SUBGENFACTOR,1e-3);
+    // env.setParam(SG::STOREACTIONS,true);
+    env.setParam(SG::ERRORTOL,1e-5);
+
+    env.setParam(SG::SUBGENFACTOR,1e-6);
+    if (env.getParam(SG::SUBGENFACTOR)>0)
+      env.setParam(SG::ERRORTOL,
+		   env.getParam(SG::SUBGENFACTOR)/10);
     SGGame game(rsg);
 
     clock_t start;
     double duration;
 
-    
     // start = clock();
     // SGSolver solver1(env,game);
     // solver1.solve();
@@ -59,9 +60,6 @@ int main()
     // cout << "Twist time elapsed: "<< duration << " seconds" << endl;
     // // SGSolution soln = solver1.getSolution();
     // // SGSolution::save(soln,"risksharing_v1.sln");
-    
-
-
 
     start = clock();
 
@@ -72,10 +70,8 @@ int main()
     cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
 
     SGSolution_MaxMinMax soln2 = solver4.getSolution();
-    SGSolution_MaxMinMax::save(soln2,"risksharing_maxminmax_fixed.sln2");
+    SGSolution_MaxMinMax::save(soln2,"./solutions/risksharing_maxminmax_fixed.sln2");
 
-    env.setParam(SG::SUBGENFACTOR,0);
-    
     start = clock();
 
     SGSolver_MaxMinMax solver5(env,game);
@@ -88,8 +84,10 @@ int main()
     stringstream ss;
     ss << "./solutions/risksharing_nume=" << numEndowments
        << "_c2e=" << c2e
-       << "_delta=" << delta
-       << ".sln2";
+       << "_delta=" << delta;
+    if (env.getParam(SG::SUBGENFACTOR)>0)
+      ss << "_sgf=" << env.getParam(SG::SUBGENFACTOR);
+    ss << ".sln2";
     SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
     
     

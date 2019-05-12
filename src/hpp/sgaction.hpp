@@ -94,15 +94,10 @@ public:
 		      const SGTuple & threatTuple);
 
   //! Sets points equal to the trimmed points
-  void updateTrim() 
-  { 
-    points = trimmedPoints; 
-    for (int player = 0; player < 2; player++)
-      {
-	if (points[player].size() == 0)
-	  tuples[player] = vector<int>(0);
-      }
-  }
+  void updateTrim();
+
+  //! Calculates sup norm distance between comparable points and trimmed points
+  double distToTrimmed() const;
   
   void calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
 				     const SGGame & game,

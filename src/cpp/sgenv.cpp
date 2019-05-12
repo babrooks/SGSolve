@@ -42,17 +42,16 @@ void SGEnv::restoreDefaults()
   doubleParams[SG::PASTTHREATTOL] = 1e-10;
   doubleParams[SG::UPDATEPIVOTTOL] = 1e-13;
   doubleParams[SG::POLICYITERTOL] = 1e-9;
-  doubleParams[SG::ICTOL] = 1e-6;
-  doubleParams[SG::NORMTOL] = 1e-12;
+  doubleParams[SG::ICTOL] = 1e-6; // 6
+  doubleParams[SG::NORMTOL] = 1e-12; // 12
   doubleParams[SG::FLATTOL] = 1e-10;
-  doubleParams[SG::LEVELTOL] = 1e-12;
-  doubleParams[SG::IMPROVETOL] = 1e-13;
+  doubleParams[SG::LEVELTOL] = 1e-12; // 12
+  doubleParams[SG::IMPROVETOL] = 1e-13;  // 13
   doubleParams[SG::BACKBENDINGTOL] = 1e-6;
   doubleParams[SG::MOVEMENTTOL] = 1e-14; 
   doubleParams[SG::ROUNDTOL] = 0.0;
-  doubleParams[SG::INTERSECTTOL] = 1e-10;
+  doubleParams[SG::INTERSECTTOL] = 1e-6; // 10
   doubleParams[SG::BNDRYPNTTOL] = 1e-6;
-  doubleParams[SG::SUBGENFACTOR] = 0.0;
 
   boolParams[SG::MERGETUPLES] = false;
   boolParams[SG::BACKBENDINGWARNING] = false;
