@@ -65,6 +65,9 @@
   TODO: Refine the procedure for constructing the transition table
   when both incentive constraints bind.
 
+  This code is part of the pencil-sharpening algorithm and has not
+  been updated to the max-min-max algorithm.
+
   \ingroup src
 */
 class SGSimulator

@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -45,9 +45,6 @@ private:
   //! Int parameters
   vector<int> intParams;
   
-  // //! Output stream. Not currently used.
-  // ofstream os; 
-  
 public:
 
   //! Constructor
@@ -75,15 +72,6 @@ public:
   //! Method for getting integer parameters.
   int getParam(SG::INT_PARAM param) const;
 
-  // //! Method for redirecting output
-  // void setOStream(ostream & newOS)
-  // {
-  //   os.basic_ios<char>::rdbuf(newOS.rdbuf());
-  // }
-
-  // //! Return reference to the output stream.
-  // ofstream & getOS() { return os; }
-  
   //! Method for restoring default values for all parameters.
   void restoreDefaults();
 

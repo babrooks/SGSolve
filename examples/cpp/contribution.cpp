@@ -21,7 +21,6 @@
 
 //! One state prisoner's dilemma
 //! @example
-
 #include "sg.hpp"
 #include "sgsolver_maxminmax_3player.hpp"
 #include "sgsolver_jyc.hpp"
@@ -80,26 +79,26 @@ int main ()
       SGSolution_MaxMinMax soln = solver.getSolution();
       SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
 
-      // start = clock();
-      // SGSolver_MaxMinMax_3Player solver2(env,game);
-      // cout << "Starting solve routine" << endl;
-      // try
-      // 	{
-      // 	  solver2.solve_fixed(200,false,false);
-      // 	}
-      // catch(SGException e)
-      // 	{
-      // 	  cout << "Caught the following exception:" << endl
-      // 	       << e.what() << endl;
-      // 	}
-      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      // cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
+      start = clock();
+      SGSolver_MaxMinMax_3Player solver2(env,game);
+      cout << "Starting solve routine" << endl;
+      try
+      	{
+      	  solver2.solve_fixed(200,false,false);
+      	}
+      catch(SGException e)
+      	{
+      	  cout << "Caught the following exception:" << endl
+      	       << e.what() << endl;
+      	}
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
       
-      // start=clock();
-      // SGSolver_JYC solver_jyc(game,200);
-      // solver_jyc.solve();
-      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      // cout << "JYC solver time elapsed: "<< duration << " seconds" << endl;
+      start=clock();
+      SGSolver_JYC solver_jyc(game,200);
+      solver_jyc.solve();
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << "JYC solver time elapsed: "<< duration << " seconds" << endl;
       
     }
   catch (SGException e)

@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 class SGPointComparator
 {
 private:
-  double tol;
+  double tol; /*!< Tolerance for testing equality of tuples. */
 public:
   SGPointComparator(double _tol):
     tol(_tol)
@@ -160,10 +160,6 @@ public:
     return points[state];
   }
 
-  // //! Random access the elements of the tuple.
-  // inline SGPoint& operator[](int state);
-  // //! Constant random access to elements of the tuple.
-  // inline const SGPoint& operator[](int state) const;
   //! Assignment operator
   SGTuple& operator=(const SGTuple & rhs);
   //! Augmented addition of tuples

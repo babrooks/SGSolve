@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -33,7 +33,9 @@
   Yeltekin, and Conklin (2002) for solving stochastic games.
 
   This file has no associated cpp file, so that libsg does not have to
-  link to Gurobi. 
+  link to Gurobi.
+
+  Currently works on two and three player games.
 
   \ingroup src
 */

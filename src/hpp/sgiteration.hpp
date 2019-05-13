@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -34,6 +34,8 @@ class SGApprox;
 //! Stores data on the behavior of SGApprox::generate()
 /*! This class records information on each cut made by the twist
     algorithm. 
+
+    Part of the pencil sharpening algorithm.
 
     \ingroup src
 */

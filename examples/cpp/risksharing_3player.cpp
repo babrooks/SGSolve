@@ -21,7 +21,6 @@
 
 //! One state prisoner's dilemma
 //! @example
-
 #include "sg.hpp"
 #include "sgsolver_maxminmax_3player.hpp"
 #include "sgsolver_jyc.hpp"

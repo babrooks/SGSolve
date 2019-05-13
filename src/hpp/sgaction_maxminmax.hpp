@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -34,7 +34,10 @@
 //! Enhanced version of SGBaseAction
 /*! Same functionality as SGBaseAction, but includes additional
     methods for computing payoffs and a reference to a parent SGEnv
-    object to control parameters for the computation.
+    object to control parameters for the computation. 
+
+    This class is used by SGSolver_MaxMinMax to implement the
+    max-min-max algorithm.
 
   \ingroup src
 */
@@ -49,10 +52,6 @@ private:
   vector<SGTuple> trimmedBndryDirs; /*!< Stores the boundary
                                          directions for the trimmed
                                          points. */
-  // vector< vector<SGTuple> > bndryDirs_3Player; /*!< Stores boundary
-  //                                               directions for three
-  //                                               players. */ 
-
   
 public:
   //! Default constructor
@@ -69,7 +68,7 @@ public:
   {}
 
   //! Constructor
-  /*! Grandfather in two player code. */
+  /*! Grandfather in old two player code. */
   SGAction_MaxMinMax(const SGEnv & _env,
 		     int _state,
 		     int _action):
@@ -106,6 +105,7 @@ public:
   //! Sets points equal to the trimmed points
   void updateTrim();
 
+  //! Calculates the distance between points and trimmedPoints in the sup norm
   double distToTrimmed() const;
 
   //! Intersects the segment with a half space
@@ -142,11 +142,6 @@ public:
     calculateMinIC(game,vector<bool>(numPlayers,true),threatTuple);
   }
 
-  // //! Computes non-redudant boundary directions
-  // /*! Takes as input a list of bounding hyperplanes and computes which
-  //     ones are extreme around a given point. */
-  // void computeBndryDirs_3Player(const list<SGHyperplane> & hyperplanes);
-
   //! Calculates the IC constraint.
   /*! Calculates the minimum incentive compatible expected
       continuation value for the given action, relative to the given
@@ -171,13 +166,17 @@ public:
   // Returns whether the action can be supported
   bool supportable(const SGPoint & feasiblePoint ) const;
 
-  void testThreePlayerIntersection();
-
 }; // SGAction_MaxMinMax
 
+//! Overloaded equality operator
+/*!< Returns true if the state and action are the same. */
 bool operator==(const SGAction_MaxMinMax & lhs,
 		const SGAction_MaxMinMax & rhs);
 
+//! Overloaded comparison operator.
+/*!< Returns true if the lhs state is strictly less than the rhs
+   state, or if they are equal and the lhs action is strictly less
+   than the rhs action/ */
 bool operator<(const SGAction_MaxMinMax & lhs,
 	       const SGAction_MaxMinMax & rhs);
 

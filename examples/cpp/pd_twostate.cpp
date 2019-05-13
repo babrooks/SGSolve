@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -90,15 +90,15 @@ int main ()
       env.setParam(SG::IMPROVETOL,1e-13); 
 
       cout << "Building solver" << endl;
-      SGSolver_V4 solver(env,game);
+      SGSolver_MaxMinMax solver(env,game);
 
       cout << "Starting solve routine" << endl;
-      solver.solve_endogenous();
+      solver.solve();
 
-      SGSolution_V2 soln = solver.getSolution();
+      SGSolution_MaxMinMax soln = solver.getSolution();
       
       cout << "Saving data... ";
-      SGSolution_V2::save(soln,"sgtest.sln2");
+      SGSolution_MaxMinMax::save(soln,"sgtest.sln2");
       cout << "Done!" << endl;
 
       SGGame::save(game,"pd.sgm");

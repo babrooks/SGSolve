@@ -31,6 +31,8 @@ namespace std
   class list<SGAction> { public: SGAction element; };
   class list<SGTuple> { public: SGTuple element; };
   class list<SGIteration> { public: SGIteration element; };
+  class list<SGIteration_MaxMinMax> { public: SGIteration element; };
+  class list<SGStep> { public: SGIteration element; };
   // class vector<SGTuple> { public: SGTuple element; };
 }
 

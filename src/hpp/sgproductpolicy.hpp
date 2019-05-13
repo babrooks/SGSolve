@@ -24,6 +24,7 @@
 
 #include "sgpolicy.hpp"
 
+//! Function object for comparing two policies
 struct policyComp {
   bool operator() (const SGPolicy & lhs, const SGPolicy & rhs)
   { return lhs < rhs;}
@@ -32,18 +33,23 @@ struct policyComp {
 typedef set<SGPolicy,policyComp> SGPolicySet;
 
 //! Class for storing product policies
+/*!< This class is part of the routine for the exact computation of
+   the max-min-max operator in SGSolver_MaxMinMax_3Player. */
 class SGProductPolicy
 {
 private:
-  vector<SGPolicySet> policies;
-  SGPoint dir;
-  vector<double> levels;
+  vector<SGPolicySet> policies; /*!< The vector of sets of policies
+                                   for each state. */
+  SGPoint dir; /*!< The direction in which these policies are optimal. */
+  vector<double> levels; /*!< The associated optimal levels. */
 
 public:
+  //! Constructor
   SGProductPolicy(int _numStates, const SGPoint & _dir):
     policies(_numStates), dir(_dir), levels(_numStates)
   {}
 
+  //! Get method for policies in a given state
   const SGPolicySet & getPolicies(int state) const
   {
     if (state >= policies.size() || state<0)
@@ -52,12 +58,15 @@ public:
     return policies[state];
   }
 
+  //! Get method for the direction
   const SGPoint & getDir() const
   { return dir; }
 
+  //! Get method for levels
   const vector<double> & getLevels() const
   { return levels; }
 
+  //! Inserts a new policy in the given state
   void insertPolicy(int state, const SGPolicy & policy)
   {
     if (state >= policies.size() || state<0)
@@ -66,6 +75,7 @@ public:
     policies[state].insert(policy);
   }
 
+  //! Removes a policy from the given state
   void erasePolicy(int state, const SGPolicy & policy)
   {
     if (state >= policies.size() || state<0)
@@ -74,6 +84,7 @@ public:
     policies[state].erase(policy);
   }
 
+  //! Sets the level in a given state
   void setLevel(int state, double lvl)
   {
     if (state >= policies.size() || state<0)
@@ -82,12 +93,14 @@ public:
     levels[state] = lvl;
   }
 
+  //! Clears the policies in all states.
   void clear()
   {
     for (int state = 0; state < policies.size(); state++)
       policies[state].clear();
   }
-  
+
+  //! Returns whether the policy set is empty in any state
   bool isempty() const
   {
     bool tf = false;
@@ -98,7 +111,8 @@ public:
       }
     return tf;
   }
-  
+
+  //! Returns the total number of policies, minus the number of states
   int dimension() const
   {
     int dim = 0;
@@ -107,9 +121,11 @@ public:
     
     return dim-policies.size()+1;
   }
-  
+
+  //! Returns a unique identifier for the product policy
   std::string hash() const;
 
+  //! Returns the number of states.
   int numStates() const {return policies.size();}
 }; // SGProductPolicy
 

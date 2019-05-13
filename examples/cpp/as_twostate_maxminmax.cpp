@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ int main ()
 
       try
       	{
-      	  solver.solve();
+      	  solver.solve_fixed();
       	}
       catch(SGException e)
       	{
@@ -124,7 +124,7 @@ int main ()
       SGSolver_MaxMinMax solver2(env,game);
       try
 	{
-	  solver2.solve_endogenous();
+	  solver2.solve();
 	}
       catch(SGException e)
 	{
@@ -137,49 +137,6 @@ int main ()
 
       SGSolution_MaxMinMax soln3;
       SGSolution_MaxMinMax::load(soln3,"as_twostate_maxminmax_endogenous.sln2");
-      // soln3 = soln2;
-
-      // cout << soln3.getIterations().size() << endl;
-
-      // for (auto iter = soln3.getIterations().cbegin();
-      // 	   iter != soln3.getIterations().cend();
-      // 	   iter++)
-      // 	{
-      // 	  cout << endl << iter->getIteration() << endl;
-      // 	  cout << "Threat tuple: " << iter->getThreatTuple() << endl;
-      // 	  // const list<SGStep> & steps = iter->getSteps();
-      // 	  // for (auto step = steps.cbegin(); step != steps.cend(); step++)
-      // 	  //   {
-      // 	  //     cout << step->getPivot()
-      // 	  // 	   << " " << step->getHyperplane().getNormal()
-      // 	  // 	   << endl;
-      // 	  //     for (int state = 0; state < numStates; state++)
-      // 	  // 	{
-      // 	  // 	  cout << step->getHyperplane().getLevels()[state] << " ";
-      // 	  // 	}
-      // 	  //     cout << endl;
-
-      // 	  //   }
-
-
-      // 	  cout << endl << "Actions from saved solution: " << endl;
-      // 	  for (int state = 0; state < numStates; state++)
-      // 	    {
-      // 	      for (auto ait = iter->getActions()[state].cbegin();
-      // 		   ait != iter->getActions()[state].cend();
-      // 		   ait++)
-      // 		{
-      // 		  cout << "(state,action)=(" << state << "," << ait->getAction() << "), "
-      // 		       << "numPoints = (" << ait->getPoints()[0].size()
-      // 		       << "," << ait->getPoints()[1].size() << ")"
-      // 		       << ", minIC: " << ait->getMinICPayoffs()
-      // 		       << ", points[0]: " << ait->getPoints()[0]
-      // 		       << endl;
-      // 		}
-      // 	    }
-      // 	}
-
-
     }
   catch (SGException e)
     {

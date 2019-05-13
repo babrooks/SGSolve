@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@
 
 #include "sg.hpp"
 
+//! N-player prisoners' contribution game
+/*!< This class implements a multi-player prisoners' dilemma with two
+   states and uniform transition probabilities. */
 class ContributionGame : public SGAbstractGame
 {
 public:
@@ -44,7 +47,7 @@ public:
     for (int p=0; p < numPlayers; p++)
       actionSum += actions[p];
 
-    // Payoff is 2*sum a_j - 3* a_i + 5*state.
+    // Payoff is 2*sum a_j - 3* a_i + 20*state.
     for (int p=0; p < numPlayers; p++)
       point[p] = 2.0*actionSum - 3.0*actions[p]
 	+ 20.0*static_cast<double>(state)/(static_cast<double>(numStates)-1.0);

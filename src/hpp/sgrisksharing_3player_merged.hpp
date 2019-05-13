@@ -24,6 +24,10 @@
 
 #include "sg.hpp"
 
+//! Two player version of the Kocherlakota (1996) risk sharing game
+/*!< This version of the game corresponds to the game in
+   RiskSharingGame_3Player, but where players 2 and 3 behave
+   cooperatively. */
 class RiskSharingGame_3Player_Merged : public SGAbstractGame
 {
 private:

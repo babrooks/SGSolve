@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -23,8 +23,10 @@
 #define SGABSTRACTGAME_HPP
 
 //! A virtual class for constructing games
-/*! This class can be derived from to create a template from which an
-    SGGame is constructed. For an example of how this is done, see
+/*! The SGGame class has a constructor that constructs an SGGame
+    object from any class that inherits SGAbstractGame. So you can
+    inherit from this class as a convenience for building SGGame
+    objects. For an example of how this is done, see
     risksharing.hpp. The user provides definitions of a payoffs method
     and a probability method that return the flow payoffs of the
     players and the transition probabilities between states,

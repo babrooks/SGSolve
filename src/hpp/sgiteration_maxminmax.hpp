@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
 
-//! Stores data on the behavior of SGApprox_MaxMinMax::generate()
-/*! This class records information on each cut made by the twist
-    algorithm. 
+//! Stores data on the behavior of SGSolver_MaxMinMax
+/*! This class records the status of the max-min-max algorithm after
+    each implementation of the max-min-max operator.
 
     \ingroup src
 */
@@ -41,8 +41,7 @@ private:
                                            supported at the current
                                            iteration */
   
-  //! The current threat tuple.
-  SGTuple threatTuple;
+  SGTuple threatTuple; /*!< The current threat tuple. */
 
   list<SGStep> steps; /*!< The steps in the iteration */
   
@@ -50,15 +49,12 @@ public:
   //! Default constructor
   SGIteration_MaxMinMax() {}
 
-  // //! Initializes a new SGIteration_MaxMinMax object with data on the current
-  // //! iteration
-  // /*! By default, the constructor will also copy the data in
-  //     SGApprox::actions, so that the user can later recover the test
-  //     directions that were available at the given iteration. If the
-  //     second argument is false, then these actions will not be
-  //     stored. For large games, storing the actions can take a large
-  //     amount of memory. */
-
+  //! Initializes a new SGIteration_MaxMinMax object with data on the current
+  //! iteration
+  /*! The constructor will copy the data in
+      SGSolver_MaxMinMax::actions, so that the user can later recover
+      the test directions that were available at each step. For large
+      games, storing the actions can take a large amount of memory. */
   SGIteration_MaxMinMax (const vector<list<SGAction_MaxMinMax> > & _actions,
 		  const SGTuple & _threatTuple):
     threatTuple{_threatTuple}
@@ -75,11 +71,11 @@ public:
       }
   }
 
+  //! Add an SGStep
   void push_back(const SGStep & step)
   {
     steps.push_back(step);
   }
-  
   //! Get method for the steps
   const list<SGStep> & getSteps() const { return steps; }
   //! Get method for the actions available at the current iteration.

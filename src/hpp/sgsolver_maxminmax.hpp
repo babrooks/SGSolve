@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -31,12 +31,11 @@
 #include "sgsolution_maxminmax.hpp"
 
 //! Class for solving stochastic games
-/*! This class contains parameters for the algorithm, the solve
-  method, as well as the data structure produced by solve. It
-  calculates the equilibrium payoff correspondence corresponding to an
-  SGGame object.
-
-  Version that implements ABS.
+/*! This class implements the max-min-max algorithm of Abreu, Brooks,
+  and Sannikov (2019) for two players. It contains the parameters for
+  the algorithm, the solve method, as well as the data structure
+  produced by solve. It calculates the equilibrium payoff
+  correspondence corresponding to an SGGame object.
 
   \ingroup src
  */
@@ -59,22 +58,25 @@ private:
   const int numStates; /*!< The number of states, copied from
                           SGApprox_V2::game. */
 
-  const vector< list<int> > & eqActions;
-  const vector< vector<SGPoint> > & payoffs;
-  const vector< vector< vector<double> > > & probabilities;
-  const vector< vector<int> > numActions;
-  const vector< int > numActions_totalByState;
+  const vector< list<int> > & eqActions; /*!< Constant refernece to
+                                            actions that are allowed
+                                            to be played in
+                                            equilibrium in the game. */
+  const vector< vector<SGPoint> > & payoffs; /*!< Constant reference to payoffs in the game. */
+  const vector< vector< vector<double> > > & probabilities; /*!< Constant reference to transition probabilities in the game. */
+  const vector< vector<int> > numActions; /*!< Number of actions in the game. */
+  const vector< int > numActions_totalByState; /*!< Total number of actions in each state. */
 
-  list<SGPoint> directions;
-  list< vector<double> > levels;
-  SGTuple threatTuple;
-  vector< list<SGAction_MaxMinMax> > actions;
+  list<SGPoint> directions; /*!< List of directions in which the algorithm bounds payoffs. */
+  list< vector<double> > levels; /*!< List of optimal levels attained in the corresponding directions. */
+  SGTuple threatTuple; /*!< The current threat payoffs. */
+  vector< list<SGAction_MaxMinMax> > actions; /*!< Actions that can still be played. */
   
-  SGPoint dueEast = SGPoint(1.0,0.0);
-  SGPoint dueNorth = SGPoint(0.0,1.0);
+  const SGPoint dueEast = SGPoint(1.0,0.0); /*!< The direction due east. */
+  const SGPoint dueNorth = SGPoint(0.0,1.0); /*!< The direction due north. */
 
-  int numIter;
-  double errorLevel;
+  int numIter; /*!< The number of iterations computed thus far. */
+  double errorLevel; /*!< The current error level. */
   
 public:
   //! Default constructor
@@ -95,7 +97,7 @@ public:
       met. Stores progress in the data member. 
 
       Fixed directions. */
-  void solve();
+  void solve_fixed();
 
   //! Solve routine
   /*! Initializes a new SGApproximation object and iteratively
@@ -103,11 +105,11 @@ public:
       met. Stores progress in the data member. 
 
       Generates directions endogenously. */
-  void solve_endogenous();
+  void solve();
 
   //! One iteration of the endogenous algorith.
   /*! Return the new error level. */
-  double iterate_endogenous();
+  double iterate();
 
   //! Compute approximate Hausdorff distance
 double pseudoHausdorff(const list<SGPoint> & newDirections,

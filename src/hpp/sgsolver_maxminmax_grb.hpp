@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include "sgexception.hpp"
 #include "gurobi_c++.h"
 
-//! Class that implements the ABS algorithm using Gurobi
+//! Class that implements a version of the max-min-max algorithm using Gurobi
 /*! This file has no associated cpp file, so that libsg does not have
   to link to Gurobi.
 

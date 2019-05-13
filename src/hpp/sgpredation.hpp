@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 
 #include "sg.hpp"
 
+//! A version of the predation game of Wiseman (2017) "When does
+//! predation dominate collusion"?
 class SGPredationGame : public SGAbstractGame
 {
 public:

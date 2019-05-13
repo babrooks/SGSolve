@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@
 class SGBaseAction
 {
 protected:
-  int numPlayers;
+  int numPlayers; /*!< Should be two or three in all current implementations. */
   int state; /*!< The state in which this action profile can be played. */
   int action; /*!< The index of the action profile. */
   SGPoint minIC; /*!< The minimum continuation value to support
@@ -73,8 +73,8 @@ protected:
   bool isNull; /*!< Flag to indicate that this is the place holder
                   "null" action. */
 
-  bool corner; /*!< Flag that indicates that the feasible set has a
-                  corner. */
+  bool corner; /*!< Flag that indicates that the minimum IC
+                  continuation value is feasible. */
   
   
 public:
@@ -150,6 +150,7 @@ public:
     assert(newPoints.size()<=numPlayers);
     points = newPoints;
   } // setPoints
+  //! Sets the points and tuples arrays
   void setPointsAndTuples(const vector<SGTuple> & newPoints,
 			  const vector< vector<int> > & newTuples)
   {
@@ -158,11 +159,15 @@ public:
     points = newPoints;
     tuples = newTuples;
   } // setPointsAndTuples
+  //! Sets the corner indicator
+  /*!< Sets the indicator for whether there is a point at which both
+     players constraints bind, when there are two players. */
   void setCorner(bool tf)
   {
     corner=tf;
   }
 
+  //! Returns whether or not the minimum IC payoff is feasible
   bool isCorner(const int p, const int k) const;
 
   //! Serializes the action using the boost::serialization library

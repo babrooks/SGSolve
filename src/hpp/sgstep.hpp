@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2018 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -28,6 +28,10 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
 
+//! A single step of the max-min-max algorithm
+/*!< This class records the computation of a single "pivot" of the
+   max-min-max algorithm, where we compute the optimum in a single
+   direction. Used by SGIteration_MaxMinMax. */
 class SGStep
 {
 private:
@@ -43,6 +47,7 @@ public:
   SGStep ()
   {} // default constructor
 
+  //! Constructor
   SGStep(const vector< list<SGAction_MaxMinMax>::const_iterator > & _actionTuple,
 	 const vector<SG::Regime> & _regimeTuple,
 	 const SGTuple & _pivot,

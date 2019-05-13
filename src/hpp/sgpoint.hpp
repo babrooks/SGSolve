@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -92,6 +92,7 @@ public:
   void plusWithWeight(const SGPoint & p,double w);
   
   // Operators
+  //! Access operator
   inline double& operator[](int player)
   {
     // // player = player % x.size(); // Wrap around
@@ -100,7 +101,7 @@ public:
 
     return x[player];
   }
-
+  //! Constant access operator
   inline const double& operator[](int player) const
   {
     // // player = player % x.size(); // Wrap around
@@ -109,11 +110,6 @@ public:
 
     return x[player];
   }
-
-  // //! Access operator.
-  // double& operator[](int player);
-  // //! Constant access operator.
-  // const double& operator[](int player) const;
   //! Assignment operator
   SGPoint& operator=(const SGPoint & rhs);
   //! Sets both coordinates equal to d.

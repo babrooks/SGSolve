@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -33,6 +33,9 @@
 /*! Same functionality as SGBaseAction, but includes additional
     methods for computing payoffs and a reference to a parent SGEnv
     object to control parameters for the computation.
+
+    This class is used by the pencil sharpening algorithm and has been
+    deprecated.
 
   \ingroup src
 */
@@ -98,7 +101,9 @@ public:
 
   //! Calculates sup norm distance between comparable points and trimmed points
   double distToTrimmed() const;
-  
+
+  //! Calculates binding continuation values.
+  /*! This code is deprecated. Was part of the pencil sharpening algorithm. */
   void calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
 				     const SGGame & game,
 				     const vector<SGTuple> & extremeTuples,

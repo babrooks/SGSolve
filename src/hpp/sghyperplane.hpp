@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -26,9 +26,12 @@
 #include "sgpoint.hpp"
 #include "sgexception.hpp"
 
-//! Tuple of SGPoint objects
-/*! Essentially a vector of SGPoint objects that supports arithmetic
-  operations. 
+//! Represents a hyperplane in \f$\mathbb{R}^N\f$
+/*! Consists of a normal direction and a vector of levels, one for
+    each state.
+
+    Used to represent half spaces in SGSolver_MaxMinMax and
+    SGSolver_MaxMinMax_3Player.
 
   \ingroup src
 */

@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 //! This example compares the runtimes of the pencil sharpening
 //! algorithm and generalized JYC.
-//! @example
+
 #include "sg.hpp"
 #include "sgsolver_jyc.hpp"
 #include "risksharing.hpp"

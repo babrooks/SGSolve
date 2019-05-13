@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 //
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ SGSolver_MaxMinMax::SGSolver_MaxMinMax(const SGEnv & _env,
 
 }
 
-void SGSolver_MaxMinMax::solve()
+void SGSolver_MaxMinMax::solve_fixed()
 {
   initialize();
   
@@ -215,7 +215,7 @@ void SGSolver_MaxMinMax::solve()
 
 } // solve
 
-void SGSolver_MaxMinMax::solve_endogenous()
+void SGSolver_MaxMinMax::solve()
 {
   initialize();
   
@@ -224,14 +224,14 @@ void SGSolver_MaxMinMax::solve_endogenous()
   while (errorLevel > env.getParam(SG::ERRORTOL)
 	 && numIter < env.getParam(SG::MAXITERATIONS) )
     {
-      iterate_endogenous();
+      iterate();
 
       cout << progressString() << endl;
     } // while --- main loop
 
   cout << "Converged!" << endl;
   
-} // solve_endogenous
+} // solve
 
 std::string SGSolver_MaxMinMax::progressString() const
 {
@@ -249,7 +249,7 @@ std::string SGSolver_MaxMinMax::progressString() const
 }
 
 
-double SGSolver_MaxMinMax::iterate_endogenous()
+double SGSolver_MaxMinMax::iterate()
 {
   SGTuple pivot = threatTuple;
   vector<double> penalties(numStates,env.getParam(SG::SUBGENFACTOR));
@@ -388,7 +388,7 @@ double SGSolver_MaxMinMax::iterate_endogenous()
   numIter++;
   return errorLevel;
   
-} // iterate_endogenous
+} // iterate
 
 double SGSolver_MaxMinMax::pseudoHausdorff(const list<SGPoint> & newDirections,
 					   const list<vector<double> > & newLevels) const

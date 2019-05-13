@@ -32,12 +32,11 @@
 #include "sgedgepolicy.hpp"
 
 //! Class for solving stochastic games
-/*! This class contains parameters for the algorithm, the solve
-  method, as well as the data structure produced by solve. It
-  calculates the equilibrium payoff correspondence corresponding to an
-  SGGame object.
-
-  Version that implements ABS for three players.
+/*! This class implements the max-min-max algorithm of Abreu, Brooks,
+  and Sannikov (2019) for three players. It contains the parameters
+  for the algorithm, the solve method, as well as the data structure
+  produced by solve. It calculates the equilibrium payoff
+  correspondence corresponding to an SGGame object.
 
   \ingroup src
  */
@@ -60,30 +59,35 @@ private:
   const int numStates; /*!< The number of states, copied from
                           SGApprox_V2::game. */
 
-  const vector< list<int> > & eqActions;
-  const vector< vector<SGPoint> > & payoffs;
-  const vector< vector< vector<double> > > & probabilities;
-  const vector< vector<int> > numActions;
-  const vector< int > numActions_totalByState;
+  const vector< list<int> > & eqActions; /*!< Constant refernece to
+                                            actions that are allowed
+                                            to be played in
+                                            equilibrium in the game. */
+  const vector< vector<SGPoint> > & payoffs; /*!< Constant reference to payoffs in the game. */
+  const vector< vector< vector<double> > > & probabilities; /*!< Constant reference to transition probabilities in the game. */
+  const vector< vector<int> > numActions; /*!< Number of actions in the game. */
+  const vector< int > numActions_totalByState; /*!< Total number of actions in each state. */
 
-  list<SGPoint> directions;
-  list< vector<double> > levels;
+  list<SGPoint> directions; /*!< List of directions in which the algorithm bounds payoffs. */
+  list< vector<double> > levels; /*!< List of optimal levels attained in the corresponding directions. */
+
   list<SGPoint> threatDirections;
-  SGTuple threatTuple;
-  vector< list<SGAction_MaxMinMax> > actions;
+  SGTuple threatTuple; /*!< The current threat payoffs. */
+  vector< list<SGAction_MaxMinMax> > actions; /*!< Actions that can still be played. */
   
-  SGPoint payoffLB;
-  SGPoint payoffUB;
+  const SGPoint dueEast = SGPoint(1.0,0.0); /*!< The direction due east. */
+  const SGPoint dueNorth = SGPoint(0.0,1.0); /*!< The direction due north. */
 
-  SGPoint dueEast = SGPoint(1.0,0.0);
-  SGPoint dueNorth = SGPoint(0.0,1.0);
+  int numIter; /*!< The number of iterations computed thus far. */
+  double errorLevel; /*!< The current error level. */
 
-  int numIter;
-  int numRedundDirs;
-  int numEndogDirs;
-  double errorLevel;
+  SGPoint payoffLB; /*!< Lower bound on payoffs across all states and actions. */
+  SGPoint payoffUB; /*!< Upper bound on payoffs across all states and actions. */
 
-  bool debugMode;
+  int numRedundDirs; /*!< Number of redundant directions dropped so far. */
+  int numEndogDirs; /*!< Number of endogenous directions added so far. */
+
+  bool debugMode; /*!< Indicator for whether the program is being debugged. */
   
 public:
   //! Default constructor
@@ -117,14 +121,6 @@ public:
       Generates directions endogenously. */
   void solve_endogenous();
 
-  // //! Hybrid solve routine
-  // /*! Initializes a new SGApproximation object and iteratively
-  //     generates it until one of the stopping criteria have been
-  //     met. Stores progress in the data member. 
-
-  //     Combines fixed/endogenous direction code. */
-  // void solve_hybrid();
-  
   //! One iteration of the endogenous algorithm.
   /*! Return the new error level. */
   double iterate_endogenous();

@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -31,10 +31,11 @@
 #include "sgsolution.hpp"
 
 //! Class for solving stochastic games
-/*! This class contains parameters for the algorithm, the solve
-  method, as well as the data structure produced by solve. It
-  calculates the equilibrium payoff correspondence corresponding to an
-  SGGame object.
+/*! This class implements the pencil-sharpening algorithm of Abreu,
+  Brooks, and Sannikov (2016). It contains parameters for the
+  algorithm, the solve method, as well as the data structure produced
+  by solve. It calculates the equilibrium payoff correspondence
+  corresponding to an SGGame object.
 
   \ingroup src
  */

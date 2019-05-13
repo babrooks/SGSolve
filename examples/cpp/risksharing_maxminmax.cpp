@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ int main()
     start = clock();
 
     SGSolver_MaxMinMax solver4(env,game);
-    solver4.solve();
+    solver4.solve_fixed();
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
@@ -75,7 +75,7 @@ int main()
     start = clock();
 
     SGSolver_MaxMinMax solver5(env,game);
-    solver5.solve_endogenous();
+    solver5.solve();
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
@@ -90,31 +90,21 @@ int main()
     ss << ".sln2";
     SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
     
-    
-    // start = clock();
-    // int numDirections = 100;
-    // SGSolver_JYC jycsolver(game,numDirections);
-    // jycsolver.solve();
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "JYC implementation time elapsed with " << numDirections
-    // 	 << " directions: "<< duration << " seconds" << endl;
+    start = clock();
+    int numDirections = 100;
+    SGSolver_JYC jycsolver(game,numDirections);
+    jycsolver.solve();
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << "JYC implementation time elapsed with " << numDirections
+    	 << " directions: "<< duration << " seconds" << endl;
 
-    // start = clock();
-    // numDirections = 200;
-    // SGJYCSolver jycsolver2(game,numDirections);
-    // jycsolver2.solve();
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "JYC implementation time elapsed with " << numDirections
-    // 	 << " directions: "<< duration << " seconds" << endl;
-    
-    // start = clock();
-    // SGSolver_MaxMinMax_GRB solver3(game);
-    // solver3.solve();
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "Gurobi implementation time elapsed: "<< duration << " seconds" << endl;
-    
-    
-    
+    start = clock();
+    numDirections = 200;
+    SGJYCSolver jycsolver2(game,numDirections);
+    jycsolver2.solve();
+    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+    cout << "JYC implementation time elapsed with " << numDirections
+    	 << " directions: "<< duration << " seconds" << endl;
   }
 
   return 0;

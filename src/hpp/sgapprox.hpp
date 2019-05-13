@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -40,6 +40,8 @@
   successively calling SGApprox::generate(), the
   approximation will be refined and asymptotically it will converge
   to the equilibrium payoff correspondence. 
+
+  Part of the pencil sharpening algorithm. 
   
   \ingroup src
 */
@@ -109,7 +111,7 @@ private:
                                       constraints were binding for the
                                       best direction. */
 
-  SGAction nullAction;
+  SGAction nullAction; /*!< Used to initialize the action tuple. */
 
   int westPoint; /*!< Index within SGApprox::extremeTuples of
                     the westernmost tuple on the previous
