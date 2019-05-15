@@ -50,7 +50,7 @@ int main()
     start = clock();
 
     SGSolver_MaxMinMax solver(env,game);
-    solver.solve_endogenous();
+    solver.solve();
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;

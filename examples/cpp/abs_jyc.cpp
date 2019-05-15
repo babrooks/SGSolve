@@ -24,7 +24,7 @@
 
 #include "sg.hpp"
 #include "sgsolver_jyc.hpp"
-#include "risksharing.hpp"
+#include "sgrisksharing.hpp"
 
 int main()
 {
@@ -77,7 +77,7 @@ int main()
 	    {
 	      for (int dir = 0; dir < numDirections; dir++)
 		{
-		  ofs << solver_jyc.getBounds()[state][dir] << " ";
+		  ofs << solver_jyc.getLevels()[state][dir] << " ";
 		}
 	      ofs << endl;
 	    } // for state
@@ -110,7 +110,7 @@ int main()
 		  for (int dir = 0; dir < numDirections; dir++)
 		    {
 		      if (solver_jyc.getDirections()[dir]*(iter->getPivot()[state])
-			  > solver_jyc.getBounds()[state][dir])
+			  > solver_jyc.getLevels()[state][dir])
 			{
 			  insideJYC = false;
 			  break;
@@ -140,7 +140,7 @@ int main()
 		  for (int dir = 0; dir < numDirections; dir++)
 		    {
 		      if (solver_jyc.getDirections()[dir]*(iter->getPivot()[state])
-			  < solver_jyc.getBounds()[state][dir])
+			  < solver_jyc.getLevels()[state][dir])
 			{
 			  cout << "Here I am! I'm at iteration "
 			       << iter->getIteration()

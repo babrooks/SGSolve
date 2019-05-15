@@ -100,7 +100,7 @@ int main()
 
     start = clock();
     numDirections = 200;
-    SGJYCSolver jycsolver2(game,numDirections);
+    SGSolver_JYC jycsolver2(game,numDirections);
     jycsolver2.solve();
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << "JYC implementation time elapsed with " << numDirections

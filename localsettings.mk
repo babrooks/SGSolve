@@ -19,66 +19,25 @@
 # ben@benjaminbrooks.net
 # Chicago, IL
 
-ifneq "$(wildcard /Users/benjaminbrooks/Applications/IBM/ILOG/CPLEX_Studio1262/cplex/bin/x86-64_osx/cplex )" "" 
- $(info Compiling on Bens macbook pro)
- GRBDIR=/Library/gurobi800/mac64
- GRBINCLDIR=$(GRBDIR)/include
- GRBLIBDIR=$(GRBDIR)/lib
- GRBNAME=gurobi80
+# Configured for Ben's macbook pro
+GRBDIR=/Library/gurobi800/mac64
+GRBINCLDIR=$(GRBDIR)/include
+GRBLIBDIR=$(GRBDIR)/lib
+GRBNAME=gurobi80
 
- STATIC=
- DYNAMIC=
+STATIC=
+DYNAMIC=
 
- AR=/usr/bin/ar
+AR=/usr/bin/ar
 RANLIB=/usr/bin/ranlib
 
- BOOSTINCLDIR=/usr/local/include/
- BOOSTDIR=/usr/local/lib/
+BOOSTINCLDIR=/usr/local/include/
+BOOSTDIR=/usr/local/lib/
 
- CXX=clang++ -O0 -w
+CXX=clang++ -O0 -w
 
- RMCMD=rm -rf 
+RMCMD=rm -rf 
 
-endif
-ifneq "$(wildcard /opt/ibm/ILOG/CPLEX_Studio1251/cplex/bin/x86-64_sles10_4.1/cplex )" "" 
- $(info Compiling on Bens desktop)
- GRBDIR=/opt/gurobi563/linux64
- GRBINCLDIR=$(GRBDIR)/include
- GRBLIBDIR=$(GRBDIR)/lib
- GRBNAME=gurobi56
-
- STATIC=-Wl,-Bstatic
- DYNAMIC=-Wl,-Bdynamic
-
- BOOSTINCLDIR=/usr/local/include/boost/serialization/
- BOOSTDIR=/usr/local/lib/
-
-AR=ar
-RANLIB=ranlib
-
- CXX=g++
-
- RMCMD=rm -rf 
-
-endif
-ifneq "$(wildcard C:\Users\babrooks\ )" "" 
- $(info Compiling on Bens windows laptop)
-
- STATIC=-Wl,-Bstatic
- DYNAMIC=-Wl,-Bdynamic
-
- BOOSTINCLDIR="C:/Program Files/boost/boost_1_60_0/boost/serialization/"
- BOOSTDIR="C:/Program Files/boost/boost_1_60_0/"
-
- CXX=g++
-
- AR=ar
-RANLIB=ranlib
- RMCMD=del 
-
-endif
-
-# General settings
 DEBUG=-g
 # DEBUG=-DNDEBUG -O
 

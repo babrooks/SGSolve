@@ -38,6 +38,7 @@ SGSolver_MaxMinMax::SGSolver_MaxMinMax(const SGEnv & _env,
 
 }
 
+
 void SGSolver_MaxMinMax::solve_fixed()
 {
   initialize();

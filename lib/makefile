@@ -1,5 +1,5 @@
 # This file is part of the SGSolve library for stochastic games
-# Copyright (C) 2016 Benjamin A. Brooks
+# Copyright (C) 2019 Benjamin A. Brooks
 # 
 # SGSolve free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 
 include ../localsettings.mk
 
-OBJFILES= sgexception.o sggame.o sgsolver.o sgutilities.o sgapprox.o sgpoint.o sgtuple.o sgaction.o sgaction_maxminmax.o sgenv.o sgsimulator.o sgiteration.o sghyperplane.o sgsolver_maxminmax.o sgsolver_maxminmax_3player.o sgpolicy.o sgedgepolicy.o sgbaseaction.o sgproductpolicy.o
-
-# removed  sgapprox_v2.o sgsolver_v2.o from objfiles
+OBJFILES= sgexception.o sggame.o sgsolver.o sgutilities.o sgapprox.o	\
+sgpoint.o sgtuple.o sgaction.o sgaction_maxminmax.o sgenv.o		\
+sgsimulator.o sgiteration.o sghyperplane.o sgsolver_maxminmax.o		\
+sgsolver_maxminmax_3player.o sgpolicy.o sgedgepolicy.o sgbaseaction.o	\
+sgproductpolicy.o
 
 all: libsg.a 
 

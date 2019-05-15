@@ -1,5 +1,5 @@
 # This file is part of the SGSolve library for stochastic games
-# Copyright (C) 2016 Benjamin A. Brooks
+# Copyright (C) 2019 Benjamin A. Brooks
 # 
 # SGSolve free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -21,46 +21,39 @@
 
 # Makefile for examples
 
-MAINS= as_twostate abreusannikov pd bos pd_twostate guitester risksharing finiteresource \
-	as_twostate_maxminmax predation threeplayertest 
-MAINSGRB=as_twostate_jyc kocherlakota2_jyc guitester_jyc  abs_jyc threeplayer as_twostate_maxminmax_grb \
-	risksharing_maxminmax contribution risksharing_3player risksharing_3player_merged
-GRBTEST=gurobibasistest
-QHULLMAINS=qhulltest
-QHULLGRBMAINS=threeplayer2
+# These use the pencil sharpening algorithm
+MAINSPS= as_twostate abreusannikov
+# These use max-min-max
+MAINSMM= pd bos pd_twostate as_twostate_maxminmax	\
+	risksharing_3player risksharing_3player_merged
+# These programs use gurobi
+MAINSGRB=as_twostate_jyc abs_jyc as_twostate_maxminmax_grb	\
+	contribution risksharing_maxminmax
 
 QHULLDIR=../../qhull
 
 include ../localsettings.mk
 
-all: libsg.a $(MAINS)
+.PHONY: all ps grb mm libsg.a clean
 
-$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgsolver_jyc.hpp $(HPPDIR)/sgsolver_maxminmax.hpp libsg.a
+all: libsg.a ps grb mm
+
+ps: $(MAINSPS)
+
+grb: $(MAINSGRB)
+
+mm: $(MAINSMM)
+
+$(MAINSGRB): % : $(EXAMPLEDIR)/%.cpp $(HPPDIR)/sgsolver_jyc.hpp $(HPPDIR)/sgsolver_maxminmax.hpp ../lib/libsg.a
 	$(CXX) $(CFLAGS) $< \
 	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
 	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) -lsg $(STATIC)	\
 	-lboost_serialization $(DYNAMIC) $(LDFLAGS) -o $@
 
-$(GRBTEST): % : $(EXAMPLEDIR)/%.cpp
-	$(CXX) $(CFLAGS) $< \
-	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
-	-lgurobi_c++ -l$(GRBNAME) -L$(LIBDIR) $(STATIC)	\
-	$(DYNAMIC) $(LDFLAGS) -o $@
-
-$(QHULLMAINS): % : $(EXAMPLEDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullstatic_r -lqhullcpp \
-	 $(LDFLAGS) -o $@
-
-$(QHULLGRBMAINS): % : $(EXAMPLEDIR)/%.cpp
-	$(CXX) $(CFLAGS) -I$(QHULLDIR)/src $< -L$(QHULLDIR)/lib/ -lqhullcpp -lqhullstatic_r \
-	-I$(GRBINCLDIR) -L$(GRBLIBDIR)	\
-	-lgurobi_c++ -l$(GRBNAME)  \
-	 $(LDFLAGS) -o $@
-
 libsg.a: 
 	make -C ../lib
 
-$(MAINS): % : $(EXAMPLEDIR)/%.cpp libsg.a $(HPPDIR)/*.hpp
+$(MAINSMM) $(MAINSPS): % : $(EXAMPLEDIR)/%.cpp ../lib/libsg.a $(HPPDIR)/*.hpp
 	$(CXX) $(CFLAGS) $< -L$(LIBDIR) -lsg \
 	$(STATIC) -lboost_serialization \
 	$(DYNAMIC) $(LDFLAGS) -o $@

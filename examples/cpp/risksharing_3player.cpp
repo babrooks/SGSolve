@@ -23,7 +23,6 @@
 //! @example
 #include "sg.hpp"
 #include "sgsolver_maxminmax_3player.hpp"
-#include "sgsolver_jyc.hpp"
 #include "sgrisksharing_3player.hpp"
 #include <ctime>
 
@@ -97,27 +96,6 @@ int main ()
       SGSolution_MaxMinMax soln = solver.getSolution();
       SGSolution_MaxMinMax::save(soln,ss.str().c_str());
 
-      // start=clock();
-      // SGSolver_JYC solver_jyc(game,200);
-      // solver_jyc.solve();
-      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      // cout << "JYC solver time elapsed: "<< duration << " seconds" << endl;
-      
-      // 	  start = clock();
-      // SGSolver_MaxMinMax_3Player solver2(env,game);
-      // try
-      // 	{
-      // 	  solver2.solve_endogenous();
-      // 	}
-      // catch(SGException e)
-      // 	{
-      // 	  cout << "Caught the following exception:" << endl
-      // 	       << e.what() << endl;
-      // 	}
-      // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      // cout << "Endog dir solver time elapsed: "<< duration << " seconds" << endl;
-      // SGSolution_MaxMinMax soln2 = solver2.getSolution();
-      // SGSolution_MaxMinMax::save(soln2,"./solutions/contribution_endog.sln2");
     }
   catch (SGException e)
     {
