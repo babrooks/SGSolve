@@ -22,7 +22,7 @@
 # Makefile for examples
 
 # These use the pencil sharpening algorithm
-MAINSPS= as_twostate abreusannikov
+MAINSPS= as_twostate abreusannikov risksharing
 # These use max-min-max
 MAINSMM= pd bos pd_twostate as_twostate_maxminmax	\
 	risksharing_3player risksharing_3player_merged

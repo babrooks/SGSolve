@@ -326,7 +326,7 @@ double SGSolver_MaxMinMax::iterate()
     } // while !passEast
 
   // Recompute the error level
-  // errorLevel = pseudoHausdorff(newDirections,newLevels);
+  errorLevel = pseudoHausdorff(newDirections,newLevels);
   
   if (env.getParam(SG::STOREITERATIONS)==2
       || (env.getParam(SG::STOREITERATIONS)==1
@@ -853,6 +853,10 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
       // payoff tuple (within the set of remaining actions) is an
       // APS payoff.
       bool foundFeasiblePlayer = false;
+
+      if (actions[state].empty())
+	throw(SGException(SG::NOACTIONS));
+      
       for (auto ait = actions[state].begin();
 	   ait != actions[state].end();
 	   ait++)

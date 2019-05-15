@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2018 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -56,6 +56,8 @@ private:
   QTextEdit * logTextEdit;
   //! Number of iterations
   int numIter;
+  //! Exception message caught by solver
+  QString exceptionMsg;
 
 public:
   //! Code for status at the end of the iteration.
@@ -84,6 +86,8 @@ public:
 
   //! Returns the status of the worker
   STATUS getStatus() const { return status; }
+  //! Returns the exception message (if one is caught)
+  const QString & getExceptionMsg() const { return exceptionMsg; }
 
 public slots:
 
@@ -94,7 +98,7 @@ public slots:
   {
     try
       {
-	if (solver.iterate_endogenous() > env.getParam(SG::ERRORTOL)
+	if (solver.iterate() > env.getParam(SG::ERRORTOL)
 	    && numIter < env.getParam(SG::MAXITERATIONS))
 	  {
 	    status = NOTCONVERGED;
@@ -111,10 +115,10 @@ public slots:
 	// Add the extreme tuples array to soln.
 	qDebug() << "solve failed" << endl;
 
+	exceptionMsg = QString(e.what());
+
 	status = FAILED;
 	emit resultReady(true);
-	
-	// emit exceptionCaught();
       }
   } // iterate
 

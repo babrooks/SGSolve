@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@
 #include "sgplotsettingshandler.hpp"
 #include "sg.hpp"
 #include "sgrisksharing.hpp"
-#include "sgpredation.hpp"
 #include "sgrisksharinghandler.hpp"
 #include "sglegend.hpp"
 

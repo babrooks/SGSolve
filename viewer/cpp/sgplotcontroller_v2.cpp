@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -103,11 +103,11 @@ bool SGPlotController_V2::setAction(int newAction)
       action = newAction;
       int newActionIndex = 0;
       while (currentIter->getActions()[state][newActionIndex].getAction()!=action
-	     && newActionIndex < currentIter->getActions()[state].size())
+	     && newActionIndex < currentIter->getActions()[state].size()-1)
 	newActionIndex++;
       actionIndex = newActionIndex;
       actionCombo->setCurrentIndex(newActionIndex+1);
-
+      
       return true;
     }
   return false;
@@ -115,10 +115,10 @@ bool SGPlotController_V2::setAction(int newAction)
 
 bool SGPlotController_V2::setActionIndex(int newActionIndex)
 {
-    if (solnLoaded
-            && state>=0
-            && newActionIndex>=-1
-            && newActionIndex <= currentIter->getActions()[state].size())
+  if (solnLoaded
+      && state>=0
+      && newActionIndex>=-1
+      && newActionIndex <= currentIter->getActions()[state].size())
     {
         actionIndex = newActionIndex;
         if (actionIndex>-1)
@@ -159,7 +159,8 @@ bool SGPlotController_V2::setIteration(int newIter)
       currentStep = currentIter->getSteps().cbegin();
 
       setState(0);
-      setAction(0);
+      setAction(0); // This triggers the replot by emitting an action
+		    // changed signal
 
       return true;
     }
@@ -238,9 +239,6 @@ void SGPlotController_V2::iterSliderUpdate(int value)
 
   synchronizeSliders();
 
-  // setState(currentIter->getBestState());
-  // setAction(currentIter->getBestAction());
-//  setState(0);
   setActionIndex(currentStep->getActionTuple()[state]);
 
   plotMode = Directions;
@@ -345,43 +343,12 @@ void SGPlotController_V2::changeMode(int newMode)
     }
   else if (newMode == 1)
     {
-      // mode = Final;
-      
-      // startIter = startOfLastRev;
-
-      // if (currentIter->getIteration() < startIter->getIteration())
-      // 	{
-      // 	  currentIter = soln->getIterations().end();
-      // 	  currentIter--;
-      // 	}
     }
 
-  // setSliderRanges(startIter->getIteration(),soln->getIterations().back().getIteration());
-  
-  // iterSlider->setValue(endIter->getIteration());
-  // iterSliderUpdate(endIter->getIteration());
 } // changeMode
 
 void SGPlotController_V2::changeAction(int newAction)
 {
   setActionIndex(newAction-1);
 }
-
-
-// void SGPlotController_V2::setSliderRanges(int start, int end)
-// {
-//   // Temporaily disconnect so we don't trigger plotSolution.
-//   bool iterSliderBlock = iterSlider->blockSignals(true);
-//   bool stepSliderBlock = stepSlider->blockSignals(true);
-  
-//   iterSlider->setRange(start,end);
-//   iterSlider->setValue(end);
-//   stepSlider->setRange(start,end);
-//   stepSlider->setValue(start);
-
-//   stepSlider->setEnabled(mode==Progress);
-  
-//   iterSlider->blockSignals(iterSliderBlock);
-//   stepSlider->blockSignals(stepSliderBlock);
-// } // setSliderRanges
 

@@ -42,7 +42,7 @@ public:
   virtual const char* what() const throw();
 
   //! Returns the type of the exception.
-  SG::EXCEPTION_TYPE getType()
+  SG::EXCEPTION_TYPE getType() const
   {
     return type;
   }

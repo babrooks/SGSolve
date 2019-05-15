@@ -1,5 +1,5 @@
 // This file is part of the SGSolve library for stochastic games
-// Copyright (C) 2016 Benjamin A. Brooks
+// Copyright (C) 2019 Benjamin A. Brooks
 // 
 // SGSolve free software: you can redistribute it and/or modify it
 // under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ SGMainWindow::SGMainWindow()
   tabWidget = new QTabWidget();
   tabWidget->addTab(gameTab,"Game");
   tabWidget->addTab(solutionTab,"Solution - Pencil Sharpening");
-  tabWidget->addTab(solutionTab2,"Solution - ABS 2018");
+  tabWidget->addTab(solutionTab2,"Solution - Max-Min-Max");
   tabWidget->addTab(logTab,"Log");
   mainLayout->addWidget(tabWidget);
 
@@ -546,7 +546,7 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 
   switch (solverWorker_v2->getStatus())
     {
-    case SGSolverWorker::NOTCONVERGED:
+    case SGSolverWorker_V2::NOTCONVERGED:
       
       if (cancelSolveFlag)
 	{
@@ -569,7 +569,7 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 	  return;
 	}
 
-    case SGSolverWorker::CONVERGED:
+    case SGSolverWorker_V2::CONVERGED:
       str = solverWorker_v2->getSolver().progressString();
       logTextEdit->append(QString(str.c_str()));
       logTextEdit->append(QString(""));
@@ -578,16 +578,17 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 
       break;
 
-    case SGSolverWorker::FAILED:
+    case SGSolverWorker_V2::FAILED:
       str = solverWorker_v2->getSolver().progressString();
       logTextEdit->append(QString(str.c_str()));
       logTextEdit->append(QString(""));
       logTextEdit->append(QString("Computation failed."));
+      logTextEdit->append(QString(solverWorker_v2->getExceptionMsg()));
 
       break;
       
     }
-
+  
   solutionHandler_V2->setSolution(solverWorker_v2->getSolution());
 
   int telapsed = timer.elapsed();
