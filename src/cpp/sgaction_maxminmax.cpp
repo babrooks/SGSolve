@@ -474,7 +474,7 @@ bool SGAction_MaxMinMax::supportable(const SGPoint & feasiblePoint ) const
     if (points[player].size()>0)
       return true;
 
-  if (feasiblePoint >= minIC - 1e-6)
+  if (feasiblePoint >= minIC - env->getParam(SG::ICTOL))
     return true;
 
   // cout << "s" << state << "a" << action

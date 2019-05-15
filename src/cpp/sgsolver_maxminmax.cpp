@@ -334,8 +334,6 @@ double SGSolver_MaxMinMax::iterate()
 	       || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
     soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
 
-  findFeasibleTuple(feasibleTuple,actions);
-      
   // Update the the threat tuple, directions, levels
   threatTuple = newThreatTuple;
   directions = newDirections;
@@ -375,6 +373,20 @@ double SGSolver_MaxMinMax::iterate()
 	  
 	  ait->updateTrim();
 
+	} // for ait
+	  
+    } // for state
+
+  findFeasibleTuple(feasibleTuple,actions);
+  
+  cout << "Feasible tuple: " << feasibleTuple << endl;
+      
+  for (int state = 0; state < numStates; state++)
+    {
+      for (auto ait = actions[state].begin();
+	   ait != actions[state].end();
+	   ++ait)
+	{
 	  // Delete the action if not supportable
 	  if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
 							   [ait->getAction()]))))
