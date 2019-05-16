@@ -32,7 +32,7 @@ QVariant SGPayoffTableModel::data(const QModelIndex & index,
 
       int action = (index.column() * game->getNumActions()[state][0]
 		    + index.row() );
-      
+
       return QVariant(QString::number(game->getPayoffs()[state][action][0])
 		      +QString(", ")
 		      +QString::number(game->getPayoffs()[state][action][1]));

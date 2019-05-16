@@ -298,7 +298,7 @@ bool SGGame::addAction(int state, int player, int position)
   
   for (int aj = 0; aj < numActions[state][1-player]; aj++)
     {
-      payoffs[state].insert(point,SGPoint(0,0));
+      payoffs[state].insert(point,SGPoint(2,0.0));
       probabilities[state].insert(probvec,newProbabilities);
 
       point += otherIncrement;
@@ -363,7 +363,7 @@ bool SGGame::addState(int position)
 		    vector<int>(2,1));
   numActions_total.insert(numActions_total.begin()+position,1);
   payoffs.insert(payoffs.begin()+position,
-		 vector<SGPoint>(1,SGPoint(0,0)));
+		 vector<SGPoint>(1,SGPoint(2,0.0)));
   probabilities.insert(probabilities.begin()+position,
 		       vector< vector<double> > (1, vector<double>(numStates,0)));
   probabilities[position].back()[position] = 1.0;
