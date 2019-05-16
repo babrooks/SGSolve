@@ -6,4 +6,4 @@ running "doxygen doxyconfig.txt" in the main SGSolve directory.
 
 Ben Brooks
 Chicago, IL
-February 4, 2016
+February 4, 2019
