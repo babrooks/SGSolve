@@ -40,7 +40,7 @@ SGGame::SGGame(const SGAbstractGame & game):
       for (int p = 0; p < numPlayers; p++)
 	numActions_total[state] *= numActions[state][p];
       
-      payoffs[state] = vector<SGPoint>(numActions_total[state]);
+      payoffs[state] = vector<SGPoint>(numActions_total[state],SGPoint(numPlayers,0.0));
       probabilities[state] = vector< vector<double> >(numActions_total[state],
 						      vector<double> (numStates,0));
       
@@ -59,8 +59,7 @@ SGGame::SGGame(const SGAbstractGame & game):
 	  //      << "prob sum: " << probSum << endl;
 	  assert(abs(probSum-1.0)<1e-6);
 
-	  if (game.isEquilibriumAction(state,action))
-	    eqActions[state].push_back(action);
+	  eqActions[state].push_back(game.isEquilibriumAction(state,action));
 	  
 	} // for action
     } // for state
@@ -72,7 +71,7 @@ SGGame::SGGame(double _delta,
 	       const vector< vector< vector<double> > > & _payoffs,
 	       const vector< vector< vector<double> > > & _probabilities):
   SGGame(_delta,_numStates,_numActions,_payoffs,_probabilities,
-	 vector<list<int> >(0),vector<bool>(2,false))
+	 vector<vector<bool> >(0),vector<bool>(2,false))
 {}
 
 SGGame::SGGame(double _delta,
@@ -82,7 +81,7 @@ SGGame::SGGame(double _delta,
 	       const vector< vector< vector<double> > > & _probabilities,
 	       const vector<bool> & _unconstrained):
   SGGame(2,_delta,_numStates,_numActions,_payoffs,_probabilities,
-	 vector<list<int> >(0),_unconstrained)
+	 vector<vector<bool> >(0),_unconstrained)
 {}
 
 SGGame::SGGame(double _delta,
@@ -90,7 +89,7 @@ SGGame::SGGame(double _delta,
 	       const vector< vector<int> > & _numActions,
 	       const vector< vector< vector<double> > > & _payoffs,
 	       const vector< vector< vector<double> > > & _probabilities,
-	       const vector< list<int> > & _eqActions,
+	       const vector< vector<bool> > & _eqActions,
 	       const vector<bool> & _unconstrained):
   SGGame(2,_delta,_numStates,_numActions,_payoffs,_probabilities,
 	 _eqActions,_unconstrained)
@@ -102,7 +101,7 @@ SGGame::SGGame(int _numPlayers,
 	       const vector< vector<int> > & _numActions,
 	       const vector< vector< vector<double> > > & _payoffs,
 	       const vector< vector< vector<double> > > & _probabilities,
-	       const vector< list<int> > & _eqActions,
+	       const vector< vector<bool> > & _eqActions,
 	       const vector<bool> & _unconstrained):
   numPlayers(_numPlayers),
   delta(_delta),
@@ -141,7 +140,7 @@ SGGame::SGGame(int _numPlayers,
 	  || _payoffs[state].size() != numActions_total[state])
 	throw(SGException(SG::INCONSISTENT_INPUTS));
       
-      payoffs.push_back(vector<SGPoint>(numActions_total[state]));
+      payoffs.push_back(vector<SGPoint>(numActions_total[state],SGPoint(numPlayers,0.0)));
 
       for (int action = 0; 
 	   action < numActions_total[state];
@@ -177,25 +176,24 @@ SGGame::SGGame(int _numPlayers,
 
   if (eqActions.size() != 0)
     {
-      for (int state = 0; state < numStates; state++)
-	{
-	  for (list<int>::const_iterator action
-		 = eqActions[state].begin();
-	       action != eqActions[state].end();
-	       action++)
-	    {
-	      if(*action<0 || *action>=numActions_total[state])
-		throw(SGException(SG::OUT_OF_BOUNDS));
-	    }
-	} // for state
+      // Deprecated
+      // for (int state = 0; state < numStates; state++)
+      // 	{
+      // 	  for (list<int>::const_iterator action
+      // 		 = eqActions[state].begin();
+      // 	       action != eqActions[state].end();
+      // 	       action++)
+      // 	    {
+      // 	      if(*action<0 || *action>=numActions_total[state])
+      // 		throw(SGException(SG::OUT_OF_BOUNDS));
+      // 	    }
+      // 	} // for state
     }
   else if (eqActions.size() == 0)
     {
       for (int state = 0; state < numStates; state++)
 	{
-	  eqActions.push_back(list<int>(0));
-	  for (int a = 0; a < numActions_total[state]; a++)
-	    eqActions[state].push_back(a);
+	  eqActions.push_back(vector<bool>(numActions_total[state],true));
 	} // for
     } 
 
@@ -295,14 +293,19 @@ bool SGGame::addAction(int state, int player, int position)
     = payoffs[state].begin()+position*ownIncrement;
   vector< vector<double> >::iterator probvec
     = probabilities[state].begin()+position*ownIncrement;
+  vector<bool>::iterator eqActionsvec
+    = eqActions[state].begin()+position*ownIncrement;
   
   for (int aj = 0; aj < numActions[state][1-player]; aj++)
     {
-      payoffs[state].insert(point,SGPoint(2,0.0));
+      payoffs[state].insert(point,SGPoint(numPlayers,0.0));
       probabilities[state].insert(probvec,newProbabilities);
+      if (!eqActions[state].empty())
+	eqActions[state].insert(eqActionsvec,true);
 
       point += otherIncrement;
       probvec += otherIncrement;
+      eqActionsvec += otherIncrement;
     }
 
   numActions[state][player] ++;
@@ -337,14 +340,20 @@ bool SGGame::removeAction(int state, int player, int position)
   vector< vector<double> >::iterator probvec
     = probabilities[state].end()-1
     - (numActions[state][player]-1-position)*ownIncrement;
+  vector<bool>::iterator eqActionsvec
+    = eqActions[state].end()-1
+    - (numActions[state][player]-1-position)*ownIncrement;
   
   for (int aj = 0; aj < numActions[state][1-player]; aj++)
     {
       payoffs[state].erase(point--);
       probabilities[state].erase(probvec--);
+      if (!eqActions[state].empty())
+	eqActions[state].erase(eqActionsvec--);
 
       point -= otherIncrement-1;
       probvec -= otherIncrement-1;
+      eqActionsvec -= otherIncrement-1;
     }
   
   numActions[state][player] --;
@@ -361,9 +370,10 @@ bool SGGame::addState(int position)
   numStates++;
   numActions.insert(numActions.begin()+position,
 		    vector<int>(2,1));
+  eqActions.insert(eqActions.begin()+position,vector<bool>(0));
   numActions_total.insert(numActions_total.begin()+position,1);
   payoffs.insert(payoffs.begin()+position,
-		 vector<SGPoint>(1,SGPoint(2,0.0)));
+		 vector<SGPoint>(1,SGPoint(numPlayers,0.0)));
   probabilities.insert(probabilities.begin()+position,
 		       vector< vector<double> > (1, vector<double>(numStates,0)));
   probabilities[position].back()[position] = 1.0;
@@ -393,6 +403,7 @@ bool SGGame::removeState(int state)
   numActions.erase(numActions.begin()+state);
   numActions_total.erase(numActions_total.begin()+state);
   payoffs.erase(payoffs.begin()+state);
+  eqActions.erase(eqActions.begin()+state);
   probabilities.erase(probabilities.begin()+state);
   
   for (int state = 0; state < numStates; state++)

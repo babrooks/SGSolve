@@ -47,7 +47,7 @@ private:
   double payoffBound = 0;
 
   //! Feasible actions
-  vector< list<int> > eqActions;
+  vector< vector<bool> > eqActions;
   vector<bool> feasibleActions;
   int numFeasibleActions;
 
@@ -246,12 +246,31 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
   env.set(GRB_IntParam_OutputFlag,0);
   GRBModel model(env);
 
+  vector<int> numEqActions(numStates,0);
+
   vector<int> actions, deviations;
   int deviation;
 
   numActions_grandTotal = 0;
   for (int s = 0; s < game.getNumStates(); s++)
-    numActions_grandTotal += eqActions[s].size();
+    {
+      if (eqActions[s].empty())
+	{
+	  numActions_grandTotal += numActions_total[s];
+	  numEqActions[s] = numActions_total[s];
+	}
+      else
+	{
+	  for (int a = 0; a < eqActions[s].size(); a++)
+	    {
+	      if (eqActions[s][a])
+		{
+		  numActions_grandTotal ++;
+		  numEqActions[s] ++;
+		}
+	    }
+	}
+    }
   feasibleActions = vector<bool>(numActions_grandTotal,true);
   numFeasibleActions = numActions_grandTotal;
 
@@ -261,12 +280,14 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
     int ga = 0;
     for (int s = 0; s < numStates; s++)
       {
-	for (list<int>::const_iterator a = eqActions[s].begin();
-	     a != eqActions[s].end(); a++)
+	for (int a = 0; a < numActions_total[s]; a++)
 	  {
-	    gaToS[ga] = s;
-	    gaToA[ga] = *a;
-	    ++ga;
+	    if (eqActions[s][a])
+	      {
+		gaToS[ga] = s;
+		gaToA[ga] = a;
+		++ga;
+	      }
 	  } // for a
       } // for s
   }
@@ -297,7 +318,7 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
   vector< vector<GRBConstr> > valueFnConstr (numStates);
   for (int s = 0; s < numStates; s++)
     {
-      valueFnConstr[s] = vector<GRBConstr> (eqActions[s].size());
+      valueFnConstr[s] = vector<GRBConstr> (numEqActions[s]);
     }
 
   vector<GRBLinExpr> recursiveContVal(numActions_grandTotal,0);
@@ -326,11 +347,13 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 
 	int actr = 0;
 	// Add feasibility constraints
-	for (list<int>::const_iterator a = eqActions[s].begin();
-	     a != eqActions[s].end(); a++)
+	for (int  a = 0; a < numActions_total[s]; a++)
 	  {
+	    if (!eqActions[s].empty() && !eqActions[s][a])
+	      continue;
+	    
 	    for (int sp = 0; sp < numStates; sp++)
-	      recursiveContVal[ga] += prob[s][*a][sp]*valueFn[sp];
+	      recursiveContVal[ga] += prob[s][a][sp]*valueFn[sp];
 
 	    GRBLinExpr APSContVal = 0;
 	    if (mode==SG_MAXMINMAX || mode==SG_APS)
@@ -338,7 +361,7 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 		// Calculate minIC for each player.
 		for (int p = 0; p < numPlayers; p++)
 		  {
-		    double minIC = SGAction::calculateMinIC(*a,s,p,
+		    double minIC = SGAction::calculateMinIC(a,s,p,
 							    game,threatTuple);
 		    APSContVal -= ICMult[p+2*ga]*minIC;
 		  }
@@ -353,7 +376,7 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 		    {
 		      double expBnd = 0;
 		      for (int sp = 0; sp < numStates; sp++)
-			expBnd += (*bnd)[sp] * prob[s][*a][sp];
+			expBnd += (*bnd)[sp] * prob[s][a][sp];
 		      
 		      APSContVal += expBnd * feasMult[ga+dirCtr*numActions_grandTotal];
 		    } // for bnd
@@ -390,7 +413,7 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 
 	    GRBLinExpr valueFnConstrRHS = 0;
 	    for (int p = 0; p < numPlayers; p++)
-	      valueFnConstrRHS += (1-delta)*payoffs[s][*a][p]*currDirVar[p];
+	      valueFnConstrRHS += (1-delta)*payoffs[s][a][p]*currDirVar[p];
 
 	    valueFnConstrRHS += delta*contVals[ga];
 	    
@@ -434,7 +457,6 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
   list< vector<double> > newBounds(0);
   list<SGPoint> newDirections(0);
   SGTuple newThreatTuple(numStates);
-  // vector<list<int> > newEqActions (eqActions);  
     
   bool passNorth = false;
   bool newQuadrant = true;
@@ -508,9 +530,10 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 		{
 		  int numOptA = 0;
 		  // cout << endl << "s = " << s;
-		  for (list<int>::const_iterator a = eqActions[s].begin();
-		       a != eqActions[s].end(); a++)
+		  for (int  a = 0; a < numActions_total[s]; a++)
 		    {
+		      if (!eqActions[s].empty() && !eqActions[s][a])
+			continue;
 		      // cout << " (a,vbasis)=(" << a
 		      // 	   << "," << valueFunSlacks[ga].get(GRB_IntAttr_VBasis) << ")";
 		      if (valueFunSlacks[ga].get(GRB_IntAttr_VBasis) == -1)
@@ -717,26 +740,6 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 
       ++ steps;
     } while (!passNorth);
-  
-  // {
-  //   int ga = 0;
-  //   for (int s = 0; s < numStates; s++)
-  //     {
-  // 	list<int>::const_iterator a = eqActions[s].begin();
-  // 	while (a != eqActions[s].end())
-  // 	  {
-  // 	    if (mode!=SG_FEASIBLE 
-  // 		&& (APSContValVar[ga].get(GRB_DoubleAttr_X)==-2*payoffBound) )
-  // 	      {
-  // 		eqActions[s].erase(a++);
-  // 	      }
-  // 	    else
-  // 	      ++a;
-  // 	    ++ga;
-  // 	  }
-  //     } // for s
-  // } // int ga 
-
   // cout << "Done with iteration!" << endl;
   // cout << "New threat tuple: " << newThreatTuple << endl;
   

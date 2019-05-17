@@ -55,8 +55,8 @@ public:
   {
     connect(controller,SIGNAL(solutionChanged()),
     	    this,SLOT(changeLayout()));
-    // connect(controller,SIGNAL(stateChanged()),
-    // 	    this,SLOT(changeLayout()));
+    connect(controller,SIGNAL(stateChanged()),
+    	    this,SLOT(changeLayout()));
   }
   
   //! Reimplement rowcount

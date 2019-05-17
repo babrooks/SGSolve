@@ -41,16 +41,17 @@ void SGApprox::initialize()
 
   actions = vector< list<SGAction> > (numStates);
 
-  const vector< list<int> > & eqActions = game.getEquilibriumActions();
+  const vector< vector<bool> > & eqActions = game.getEquilibriumActions();
   // Create the intersection arrays.
   for (state = 0; state < numStates; state++)
     {
       if (eqActions.size()==numStates && eqActions[state].size()>0)
 	{
-	  for (list<int>::const_iterator actionIter = eqActions[state].begin(); 
-	       actionIter != eqActions[state].end(); 
-	       ++actionIter)
-	    actions[state].push_back(SGAction(env,state,*actionIter));
+	  for (int a = 0; a < game.getNumActions_total()[state]; a++)
+	    {
+	      if (eqActions[state][a])
+		actions[state].push_back(SGAction(env,state,a));
+	    }
 	}
       else
 	for (action = 0; action < game.getNumActions_total()[state]; action++)

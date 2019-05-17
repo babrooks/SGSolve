@@ -41,8 +41,8 @@ int main ()
 
   int numDirections = 300;
 
-  bool dropRedundant = false;
-  bool addEndogenous = false;
+  bool dropRedundant = true;
+  bool addEndogenous = true;
   
   RiskSharingGame_3Player rg(delta,numEndowments,c2e);
 

@@ -90,7 +90,9 @@ SGSolutionHandler_V2::SGSolutionHandler_V2(QWidget * _parent):
             = new SGActionComboModel_V2(controller);
 
     stateCombo->setModel(stateComboModel);
+    stateCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     actionCombo->setModel(actionComboModel);
+    actionCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
     QPushButton * nextActionButton = new QPushButton("->");
     nextActionButton->setToolTip(tr("Next action"));
     QPushButton * prevActionButton = new QPushButton("<-");

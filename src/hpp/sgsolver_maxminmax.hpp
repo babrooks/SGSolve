@@ -58,7 +58,7 @@ private:
   const int numStates; /*!< The number of states, copied from
                           SGApprox_V2::game. */
 
-  const vector< list<int> > & eqActions; /*!< Constant refernece to
+  const vector< vector<bool> > & eqActions; /*!< Constant refernece to
                                             actions that are allowed
                                             to be played in
                                             equilibrium in the game. */

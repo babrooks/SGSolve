@@ -74,16 +74,17 @@ private:
                                                        profile a is
                                                        played in state
                                                        s. */
-  vector< list<int> > eqActions; /*!< Lists of action profiles that
-				   are allowed to be played in each
-				   state. By default, initialized to
-				   all action profiles. Allows one to,
-				   for example, look at strongly
-				   symmetric equilibria (by first
-				   excluding asymmetric action
-				   profiles from the lists). Players
-				   can always deviate to action
-				   profiles outside of this list. */
+  vector< vector<bool> > eqActions; /*!< Indicates which action profiles
+				   are allowed to be played on path in
+				   each state. By default, initialized
+				   to true for all action
+				   profiles. Allows one to, for
+				   example, look at strongly symmetric
+				   equilibria (by first excluding
+				   asymmetric action profiles from the
+				   lists). Players can always deviate
+				   to action profiles which are not
+				   allowed on path. */
 
   vector<bool> unconstrained; /*!< If unconstrained[i]=true, the
                                  algorithm will not impose incentive
@@ -156,7 +157,7 @@ public:
 	 const vector< vector<int> > & _numActions,
 	 const vector< vector< vector<double> > > & _payoffs,
 	 const vector< vector< vector<double> > > & _probabilities,
-	 const vector< list<int> > & _eqActions,
+	 const vector< vector<bool> > & _eqActions,
 	 const vector<bool> & _unconstrained);
 
   //! Constructor with custom numPlayers
@@ -167,7 +168,7 @@ public:
 	 const vector< vector<int> > & _numActions,
 	 const vector< vector< vector<double> > > & _payoffs,
 	 const vector< vector< vector<double> > > & _probabilities,
-	 const vector< list<int> > & _eqActions,
+	 const vector< vector<bool> > & _eqActions,
 	 const vector<bool> & _unconstrained);
   
   //! Returns SGGame::delta, the discount factor
@@ -190,7 +191,7 @@ public:
   const vector< vector<SGPoint> > & getPayoffs() const
   { return payoffs; }
   //! Returns a const reference to the equilibrium actions
-  const vector< list<int> > & getEquilibriumActions() const
+  const vector< vector<bool> > & getEquilibriumActions() const
   { return eqActions; }
   //! Sets the arguments equal to tight upper and lower bounds on the
   //! payoffs, respectively.

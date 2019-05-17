@@ -51,52 +51,13 @@ private:
 
 public:
   //! Constructor
-  SGActionComboModel_V2(SGPlotController_V2 * _controller):
-    controller(_controller)
-  {
-    connect(controller,SIGNAL(solutionChanged()),
-    	    this,SLOT(changeLayout()));
-     connect(controller,SIGNAL(stateChanged()),
-            this,SLOT(changeLayout()));
-  }
+  SGActionComboModel_V2(SGPlotController_V2 * _controller);
   
   //! Reimplement rowcount
-  int rowCount(const QModelIndex & parent) const
-  {
-    if (controller->hasSolution()
-            && state>-1)
-    {
-        qDebug() << "In row count: " << controller->getState() << " " << controller->getAction()
-                 <<  " " << controller->getCurrentIter()->getActions()[controller->getState()].size()+1
-                 << endl;
-        return controller->getCurrentIter()->getActions()[state].size()+1;
-    }
-    else
-        return 1;
-  } // rowCount
+  int rowCount(const QModelIndex & parent) const;
 
   //! Reimplement data
-  QVariant data(const QModelIndex & index, int role) const
-  {
-      if (index.row()>0 && state > -1)
-      {
-          int action = controller->getCurrentIter()->getActions()[state][index.row()-1].getAction();
-          qDebug() << "In data: " << controller->getState() << " " << controller->getAction() << endl;
-          const vector< int >& numActions = controller->getSolution()->getGame().getNumActions()[state];
-          QString dataString = QString("A")
-                  + QString::number(action)
-                  + QString(": (R")
-                  + QString::number(action%numActions[0])
-                  + QString(",C")
-                  + QString::number(action/numActions[0])
-                  + QString(")");
-          if (index.row() == controller->getCurrentStep().getActionTuple()[state]+1)
-              dataString += QString("*");
-          return dataString;
-      }
-      else if (index.row()==0)
-          return QString("-");
-  }
+  QVariant data(const QModelIndex & index, int role) const;
 
 public slots:
   //! Signals to the associated actionController to change the action
@@ -105,12 +66,7 @@ public slots:
       controller->setActionIndex(index-1);
   }
   //! Signals to gui to change the layout
-  void changeLayout()
-  {
-      emit layoutAboutToBeChanged();
-      state=controller->getState();
-      emit layoutChanged();
-  }
+  void changeLayout();
 
 }; // SGActionComboModel_V2
 

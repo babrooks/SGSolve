@@ -44,7 +44,7 @@ int main()
     // env.setParam(SG::STOREACTIONS,true);
     env.setParam(SG::ERRORTOL,1e-5);
 
-    env.setParam(SG::SUBGENFACTOR,1e-6);
+    env.setParam(SG::SUBGENFACTOR,0.0);
     if (env.getParam(SG::SUBGENFACTOR)>0)
       env.setParam(SG::ERRORTOL,
 		   env.getParam(SG::SUBGENFACTOR)/10);

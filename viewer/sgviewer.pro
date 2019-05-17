@@ -77,6 +77,7 @@ sgpayofftablemodel.cpp \
 sgplotsettings.cpp \
 sgsimulationhandler.cpp \
 sgsolutionhandler.cpp \
+sgactioncombomodel_v2.cpp \
 sgsolutionhandler_v2.cpp \
 sgplotcontroller.cpp \
 sgplotcontroller_v2.cpp \

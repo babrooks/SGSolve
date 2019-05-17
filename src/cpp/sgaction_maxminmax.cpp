@@ -115,7 +115,7 @@ bool SGAction_MaxMinMax::trim(const SGPoint& normal,
   //! Sets points equal to the trimmed points
 void SGAction_MaxMinMax::updateTrim() 
 {
-  points = trimmedPoints; 
+  points = trimmedPoints;
   for (int player = 0; player < numPlayers; player++)
     {
       if (points[player].size() == 0)
@@ -414,6 +414,9 @@ double SGAction_MaxMinMax::calculateMinIC(int action,int state,int player,
   indexToVector(action,playersActions,
 		game.getNumActions()[state]);
   playersDeviations = playersActions;
+
+  assert(state<game.getPayoffs().size());
+  assert(action<game.getPayoffs()[state].size());
   
   for (deviation = 0;
        deviation < game.getNumActions()[state][player];
@@ -477,9 +480,5 @@ bool SGAction_MaxMinMax::supportable(const SGPoint & feasiblePoint ) const
   if (feasiblePoint >= minIC - env->getParam(SG::ICTOL))
     return true;
 
-  // cout << "s" << state << "a" << action
-  //      << " is not supportable: minIC: " << minIC
-  //      << ", feasPnt: " << feasiblePoint << endl;
-  
   return false;
 }

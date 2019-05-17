@@ -247,6 +247,7 @@ double SGSolver_JYC::iterate()
   const vector< vector< vector<double> > > & prob = game.getProbabilities();
   const vector< vector<int> > & numActions = game.getNumActions();
   const vector< int > & numActions_total = game.getNumActions_total();
+  const vector< vector<bool> > & eqActions = game.getEquilibriumActions();
   int numStates = game.getNumStates();
   double delta = game.getDelta();
 
@@ -271,11 +272,12 @@ double SGSolver_JYC::iterate()
 			     -numeric_limits<double>::max()));
   for (int state = 0; state < numStates; state++)
     {
-      for (list<int>::const_iterator actionIter = game.getEquilibriumActions()[state].begin(); 
-	   actionIter != game.getEquilibriumActions()[state].end(); 
-	   ++actionIter)
+      for (int action = 0; action < numActions_total[state]; action++)
 	{
-	  int action = *actionIter;
+
+	  if (!eqActions[state].empty() && !eqActions[state][action])
+	    continue;
+	      
 	  indexToVector(action,actions,numActions[state]);
 	  
 	  deviations = actions;

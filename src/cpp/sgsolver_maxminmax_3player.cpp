@@ -1004,17 +1004,28 @@ void SGSolver_MaxMinMax_3Player::initialize()
   int numEqActions_grandTotal = 0;
   for (int state = 0; state < numStates; state++)
     {
-      for (auto ait = eqActions[state].cbegin();
-	   ait != eqActions[state].cend();
-	   ait++)
+      if (eqActions[state].size()>0)
 	{
-	  actions[state].push_back(SGAction_MaxMinMax(env,numPlayers,state,*ait));
-	  actions[state].back().calculateMinIC(game,threatTuple);
-	  actions[state].back().resetTrimmedPoints(payoffUB);
-	  actions[state].back().updateTrim();
-	  // actions[state].back().mergeDuplicatePoints(1e-8);
+	  for (int a=0; a<numActions_totalByState[state]; a++)
+	    {
+	      if (eqActions[state][a])
+		actions[state].push_back(SGAction_MaxMinMax(env,3,state,a));
+	    }
 	}
-      numEqActions_grandTotal += eqActions[state].size();
+      else
+	{
+	  for (int a=0; a<numActions_totalByState[state]; a++)
+	    actions[state].push_back(SGAction_MaxMinMax(env,3,state,a));
+	}
+      
+      for (auto ait = actions[state].begin(); ait != actions[state].end(); ait++)
+	{
+	  ait->calculateMinIC(game,threatTuple);
+	  ait->calculateMinIC(game,threatTuple);
+	  ait->resetTrimmedPoints(payoffUB);
+	  ait->updateTrim();
+	}
+      numEqActions_grandTotal += actions[state].size();
       int numActions_total = 1;
       for (int p = 0; p < numPlayers; p++)
 	numActions_total *= game.getNumActions()[state][p];

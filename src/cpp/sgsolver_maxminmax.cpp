@@ -76,6 +76,7 @@ void SGSolver_MaxMinMax::solve_fixed()
   SGTuple pivot = threatTuple;
   vector<double> penalties (numStates,env.getParam(SG::SUBGENFACTOR));
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
+  findFeasibleTuple(feasibleTuple,actions);
 
   SGIteration_MaxMinMax iter;
   
@@ -92,19 +93,18 @@ void SGSolver_MaxMinMax::solve_fixed()
       // Reset the trimmed points for the actions
       for (int state = 0; state < numStates; state++)
 	{
-	  for (auto ait = actions[state].begin();
-	       ait != actions[state].end();
-	       ++ait)
+	  auto ait = actions[state].begin();
+	  while (ait != actions[state].end())
 	    {
 	      ait->updateTrim();
 
-	      // WARNING: NO GUARANTEE THAT THIS POINT IS FEASIBLE
 	      if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
 							       [ait->getAction()]))))
 		{
 		  actions[state].erase(ait++);
 		  continue;
 		}
+	      ait++;
 	      
 	    } // for ait
 	} // for state
@@ -255,7 +255,8 @@ double SGSolver_MaxMinMax::iterate()
   SGTuple pivot = threatTuple;
   vector<double> penalties(numStates,env.getParam(SG::SUBGENFACTOR));
   SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
-
+  //findFeasibleTuple(feasibleTuple,actions);
+  
   SGIteration_MaxMinMax iter;
   
   // Clear the directions and levels
@@ -338,9 +339,10 @@ double SGSolver_MaxMinMax::iterate()
   threatTuple = newThreatTuple;
   directions = newDirections;
   levels = newLevels;
-      
-  // Recalculate minimum IC continuation payoffs
-  errorLevel = 0.0;
+
+  // TODO: Add another parameter to control convergence criterion
+  // // Recalculate minimum IC continuation payoffs
+  // errorLevel = 0.0;
   
   for (int state = 0; state < numStates; state++)
     {
@@ -369,7 +371,7 @@ double SGSolver_MaxMinMax::iterate()
 	      lvl++;
 	    } // for dir, lvl
 
-	  errorLevel = max(errorLevel,ait->distToTrimmed());
+	  // errorLevel = max(errorLevel,ait->distToTrimmed());
 	  
 	  ait->updateTrim();
 
@@ -377,15 +379,13 @@ double SGSolver_MaxMinMax::iterate()
 	  
     } // for state
 
-  findFeasibleTuple(feasibleTuple,actions);
+  feasibleTuple = threatTuple;
+  // findFeasibleTuple(feasibleTuple,actions);
   
-  cout << "Feasible tuple: " << feasibleTuple << endl;
-      
   for (int state = 0; state < numStates; state++)
     {
-      for (auto ait = actions[state].begin();
-	   ait != actions[state].end();
-	   ++ait)
+      auto ait = actions[state].begin();
+      while (ait != actions[state].end())
 	{
 	  // Delete the action if not supportable
 	  if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
@@ -394,7 +394,8 @@ double SGSolver_MaxMinMax::iterate()
 	      actions[state].erase(ait++);
 	      continue;
 	    }
-	} // for ait
+	  ++ait;
+	} // while ait
 	  
     } // for state
 
@@ -459,13 +460,24 @@ void SGSolver_MaxMinMax::initialize()
   
   for (int state = 0; state < numStates; state++)
     {
-      for (auto ait = eqActions[state].cbegin();
-	   ait != eqActions[state].cend();
-	   ait++)
+      if (eqActions[state].size()>0)
 	{
-	  actions[state].push_back(SGAction_MaxMinMax(env,state,*ait));
-	  actions[state].back().calculateMinIC(game,threatTuple);
-	  actions[state].back().resetTrimmedPoints();
+	  for (int a=0; a<numActions_totalByState[state]; a++)
+	    {
+	      if (eqActions[state][a])
+		actions[state].push_back(SGAction_MaxMinMax(env,state,a));
+	    }
+	}
+      else
+	{
+	  for (int a=0; a<numActions_totalByState[state]; a++)
+	    actions[state].push_back(SGAction_MaxMinMax(env,state,a));
+	}
+      
+      for (auto ait = actions[state].begin(); ait != actions[state].end(); ait++)
+	{
+	  ait->calculateMinIC(game,threatTuple);
+	  ait->resetTrimmedPoints();
 	  
 	  for (int dir = 0; dir < 4; dir ++)
 	    {
@@ -473,14 +485,13 @@ void SGSolver_MaxMinMax::initialize()
 	      SGPoint currDir = SGPoint(cos(theta),sin(theta));
 
 	      double level = max(currDir*payoffLB,currDir*payoffUB);
-	      actions[state].back().trim(currDir,level);
+	      ait->trim(currDir,level);
 	    } // for dir
 
-	  actions[state].back().updateTrim();
-	  
+	  ait->updateTrim();
 	}
     } // for state
-} // initialize_endogenous
+} // initialize
 
 void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 					vector<double> & penalties,
@@ -576,7 +587,7 @@ void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
 		  + delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
 
 	      if ( APSNotBinding // NB bestAPSPayoff has only been
-		   // set if bestAPSNotBinding ==
+		   // set if APSNotBinding ==
 		   // false
 		   || ( bestAPSPayoff*currDir - bindingPenalty
 			>= nonBindingPayoff*currDir - nonBindingPenalty ) ) 
