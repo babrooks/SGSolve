@@ -940,9 +940,8 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
   // Recalculate minimum IC continuation payoffs
   for (int state = 0; state < numStates; state++)
     {
-      for (auto ait = actions[state].begin();
-	   ait != actions[state].end();
-	   ++ait)
+      auto ait = actions[state].begin();
+      while (ait != actions[state].end())
 	{
 	  ait->calculateMinIC(game,threatTuple);
 	  ait->resetTrimmedPoints(payoffUB);
@@ -974,6 +973,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	      actions[state].erase(ait++);
 	      continue;
 	    }
+	  ++ait;
 	} // for ait
 	  
     } // for state
