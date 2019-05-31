@@ -229,6 +229,9 @@ public:
   bool addState(int position);
   //! Removes the given state.
   bool removeState(int state);
+
+  //! Check if transition probabilities sum to one
+  bool transitionProbsSumToOne() const;
   
   //! Static method for saving an SGGame object to the file filename.
   static void save(const SGGame & game, const char* filename)

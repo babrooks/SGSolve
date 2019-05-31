@@ -30,6 +30,7 @@ namespace SG
     {
       DEFAULT, /*!< No specific error */
       FAILED_OPEN, /*!< SGData was not able to open the given file. */
+      PROB_SUM_NOT1, /*!< Probabilities did not sum to 1. */
       TOO_MANY_PIVOT_UPDATES, /*!< Pivot did not converge within the
                                  allowed number of updates. */
       NO_ADMISSIBLE_DIRECTION, /*!< SGApprox::findBestDirection() was

@@ -423,10 +423,15 @@ void SGMainWindow::solveGame_V2()
 
 //      Needs to be updated to use a new solver worker.
 
+      if (!gameHandler->getGame().transitionProbsSumToOne())
+       throw(SGException(SG::PROB_SUM_NOT1));
+
      solverWorker_v2 = new SGSolverWorker_V2(*env,
                    gameHandler->getGame(),
                    logTextEdit);
      solverWorker_v2->moveToThread(&solverThread);
+
+
      connect(this,SIGNAL(startIteration_V2()),
          solverWorker_v2,SLOT(iterate()));
      connect(solverWorker_v2,SIGNAL(resultReady(bool)),

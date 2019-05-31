@@ -35,7 +35,6 @@ SGSolver_MaxMinMax::SGSolver_MaxMinMax(const SGEnv & _env,
   numActions(_game.getNumActions()),
   numActions_totalByState(_game.getNumActions_total())
 {
-
 }
 
 
@@ -214,12 +213,14 @@ void SGSolver_MaxMinMax::solve_fixed()
 
   cout << "Converged!" << endl;
 
-} // solve
+} // solve_fixed
 
 void SGSolver_MaxMinMax::solve()
 {
   initialize();
   
+  if (!game.transitionProbsSumToOne())
+    throw(SGException(SG::PROB_SUM_NOT1));
   // Main loop
 
   while (errorLevel > env.getParam(SG::ERRORTOL)

@@ -423,3 +423,22 @@ bool SGGame::setConstrained(const vector<bool> & _unconstrained)
   unconstrained = _unconstrained;
   return true;
 } // setConstrained
+
+
+bool SGGame::transitionProbsSumToOne() const
+{
+  for (int s = 0; s < probabilities.size(); s++)
+    {
+      for (int a = 0; a < probabilities[s].size(); a++)
+	{
+	  double probSum = 0.0;
+	  for (int sp = 0; sp < probabilities[s][a].size(); sp++)
+	    {
+	      probSum += probabilities[s][a][sp];
+	    }
+	  if (abs(probSum-1.0)>1e-7)
+	    return false;
+	}
+    }
+  return true;
+} // transitionProbsSumToOne

@@ -41,7 +41,8 @@ const char* SGException::what() const throw()
       return "You cannot divide by zero.";
     case SG::INCONSISTENT_INPUTS:
       return "Inputs are incompatible or inconsistent with one another, e.g., arrays that should be the same size are not.";
-
+    case SG::PROB_SUM_NOT1:
+      return "Transition probabilities do not sum to one.";
     case SG::SIMERROR:
       return "An error occurred within SGSimuator.";
     case SG::NOFEASIBLETUPLE:
