@@ -132,7 +132,8 @@ SGGameHandler::SGGameHandler():
                  QSizePolicy::Preferred);
   solveButton->resize(300,solveButton->height());
 
-  solveButton_V2 = new QPushButton(tr("&Solve with Max-Min-Max"));
+  // solveButton_V2 = new QPushButton(tr("&Solve with Max-Min-Max"));
+  solveButton_V2 = new QPushButton(tr("&Solve"));
   solveButton_V2->setSizePolicy(QSizePolicy::Fixed,
                  QSizePolicy::Preferred);
   solveButton_V2->resize(300,solveButton->height());
@@ -194,8 +195,9 @@ SGGameHandler::SGGameHandler():
   leftControlLayout->setSpacing(5);
 
   
-  rightControlLayout->addRow(feasibleCheckBox);
-  rightControlLayout->addRow(solveButton);
+  // rightControlLayout->addRow(feasibleCheckBox);
+  // rightControlLayout->addRow(solveButton);
+
   rightControlLayout->addRow(solveButton_V2);
   rightControlLayout->addRow(cancelButton);
   

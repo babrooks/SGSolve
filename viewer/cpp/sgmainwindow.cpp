@@ -47,7 +47,7 @@ SGMainWindow::SGMainWindow()
   QAction * saveGameAction = new QAction(tr("Save game"),this);
   QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
   QAction * quitAction = new QAction(tr("&Quit"),this);
-  fileMenu->addAction(loadSolutionAction);
+  // fileMenu->addAction(loadSolutionAction);
   fileMenu->addAction(loadSolutionAction_V2);
   fileMenu->addAction(loadGameAction);
   fileMenu->addSeparator();
@@ -55,8 +55,8 @@ SGMainWindow::SGMainWindow()
   fileMenu->addAction(saveGameAction);
   fileMenu->addSeparator();
   fileMenu->addAction(quitAction);
-  loadSolutionAction->setShortcut(tr("Ctrl+L"));
-  loadSolutionAction_V2->setShortcut(tr("Ctrl+Shift+L"));
+  // loadSolutionAction->setShortcut(tr("Ctrl+Shift+L"));
+  loadSolutionAction_V2->setShortcut(tr("Ctrl+L"));
   saveSolutionAction->setShortcut(tr("Ctrl+S"));
   loadGameAction->setShortcut(tr("Ctrl+G"));
   quitAction->setShortcut(tr("Alt+W"));
@@ -163,8 +163,9 @@ SGMainWindow::SGMainWindow()
   // Main widget
   tabWidget = new QTabWidget();
   tabWidget->addTab(gameTab,"Game");
-  tabWidget->addTab(solutionTab,"Solution - Pencil Sharpening");
-  tabWidget->addTab(solutionTab2,"Solution - Max-Min-Max");
+  // tabWidget->addTab(solutionTab,"Solution - Pencil Sharpening");
+  // tabWidget->addTab(solutionTab2,"Solution - Max-Min-Max");
+  tabWidget->addTab(solutionTab2,"Solution");
   tabWidget->addTab(logTab,"Log");
   mainLayout->addWidget(tabWidget);
 
@@ -212,7 +213,7 @@ void SGMainWindow::loadSolution()
       gameHandler->setGame(soln.getGame());
       solutionHandler->setSolution(soln);
       
-      tabWidget->setCurrentIndex(1);
+      tabWidget->setCurrentIndex(3);
 
       QFileInfo info(path);
       
@@ -259,7 +260,7 @@ void SGMainWindow::loadSolution_V2()
       gameHandler->setGame(soln.getGame());
       solutionHandler_V2->setSolution(soln);
       
-      tabWidget->setCurrentIndex(2);
+      tabWidget->setCurrentIndex(1);
 
       QString newWindowTitle(tr("SGViewer - "));
       newWindowTitle += info.fileName();
@@ -373,7 +374,7 @@ void SGMainWindow::quitProgram()
 
 void SGMainWindow::solveGame()
 {
-  tabWidget->setCurrentIndex(3);
+  tabWidget->setCurrentIndex(2);
 
   try
     {
@@ -402,6 +403,7 @@ void SGMainWindow::solveGame()
     }
   catch (exception & e)
     {
+      delete solverWorker;
       QMessageBox::critical(this,tr("Solver failed"),
                 tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
                 QMessageBox::Ok);
@@ -410,7 +412,7 @@ void SGMainWindow::solveGame()
 
 void SGMainWindow::solveGame_V2()
 {
-  tabWidget->setCurrentIndex(3);
+  tabWidget->setCurrentIndex(2);
 
   try
     {
@@ -446,9 +448,9 @@ void SGMainWindow::solveGame_V2()
     }
   catch (exception & e)
     {
-      QMessageBox::critical(this,tr("Solver failed"),
-                tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
-                QMessageBox::Ok);
+      logTextEdit -> append(QString("SGSolver was unable to solver your game. Caught the following exception: "));
+      logTextEdit -> append(QString(e.what()));
+      logTextEdit -> append(QString(""));
     }
 } // solveGame_V2
 
@@ -472,7 +474,7 @@ void SGMainWindow::iterationFinished(bool tf)
 	  logTextEdit->append(QString(""));
 	  logTextEdit->append(QString("Computation canceled."));
 
-	  tabWidget->setCurrentIndex(3);
+	  tabWidget->setCurrentIndex(2);
 	  
 	  break;
 	}
@@ -539,7 +541,7 @@ void SGMainWindow::iterationFinished(bool tf)
 	
   logTextEdit->append(timeString);
 
-  tabWidget->setCurrentIndex(1);
+  tabWidget->setCurrentIndex(3);
   
   delete solverWorker;
 
@@ -560,7 +562,7 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 	  logTextEdit->append(QString(""));
 	  logTextEdit->append(QString("Computation canceled."));
 
-	  tabWidget->setCurrentIndex(3);
+	  tabWidget->setCurrentIndex(2);
 	  
 	  break;
 	}
@@ -625,7 +627,7 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 	
   logTextEdit->append(timeString);
 
-  tabWidget->setCurrentIndex(2);
+  tabWidget->setCurrentIndex(1);
   
   delete solverWorker_v2;
 
