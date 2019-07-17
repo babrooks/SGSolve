@@ -309,7 +309,7 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 
   model.update();
 
-  SGPoint currDir(0,1);
+  SGPoint currDir(0.0,1.0);
   currDirVar[0].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
   currDirVar[1].set(GRB_DoubleAttr_LB,-GRB_INFINITY);
 
