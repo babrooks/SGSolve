@@ -1,0 +1,109 @@
+\hypertarget{classSGProbabilityTableModel}{}\section{S\+G\+Probability\+Table\+Model Class Reference}
+\label{classSGProbabilityTableModel}\index{S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}}
+
+
+Reimplements S\+G\+Payoff\+Table model to specialize to probabilities.  
+
+
+
+
+{\ttfamily \#include $<$sgprobabilitytablemodel.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Probability\+Table\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=217pt]{classSGProbabilityTableModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Probability\+Table\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=217pt]{classSGProbabilityTableModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGProbabilityTableModel_a31bfe886c2f733a547b2973e729a953c}{S\+G\+Probability\+Table\+Model} (\hyperlink{classSGGame}{S\+G\+Game} $\ast$\+\_\+game, int \+\_\+state, int \+\_\+next\+State)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+Q\+Variant \hyperlink{classSGProbabilityTableModel_a28e4eb8b523f04220d65dd92261759e4}{data} (const Q\+Model\+Index \&index, int role) const Q\+\_\+\+D\+E\+C\+L\+\_\+\+O\+V\+E\+R\+R\+I\+DE
+\begin{DoxyCompactList}\small\item\em Reimplements the data method. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGProbabilityTableModel_a79cad23bdbc109338f525caef8a8cf47}{set\+Data} (const Q\+Model\+Index \&index, const Q\+Variant \&value, int role)
+\begin{DoxyCompactList}\small\item\em Reimplements the set\+Data method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProbabilityTableModel_af3a2a8e9e73f51e455bc24dcae52e05a}\label{classSGProbabilityTableModel_af3a2a8e9e73f51e455bc24dcae52e05a}} 
+bool \hyperlink{classSGProbabilityTableModel_af3a2a8e9e73f51e455bc24dcae52e05a}{set\+Next\+State} (int new\+State)
+\begin{DoxyCompactList}\small\item\em Sets next\+State. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classSGProbabilityTableModel_af7619d3adeb71d6ff7f75f78f4b0e34f}{next\+State}
+\begin{DoxyCompactList}\small\item\em Tomorrow\textquotesingle{}s state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Reimplements S\+G\+Payoff\+Table model to specialize to probabilities. 
+
+An \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler} object contains one of these objects for each possible state tomorrow. The next\+State member indicates which state this object is associated with. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGProbabilityTableModel_a31bfe886c2f733a547b2973e729a953c}\label{classSGProbabilityTableModel_a31bfe886c2f733a547b2973e729a953c}} 
+\index{S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}!S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}}
+\index{S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}!S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}}
+\subsubsection{\texorpdfstring{S\+G\+Probability\+Table\+Model()}{SGProbabilityTableModel()}}
+{\footnotesize\ttfamily S\+G\+Probability\+Table\+Model\+::\+S\+G\+Probability\+Table\+Model (\begin{DoxyParamCaption}\item[{\hyperlink{classSGGame}{S\+G\+Game} $\ast$}]{\+\_\+game,  }\item[{int}]{\+\_\+state,  }\item[{int}]{\+\_\+next\+State }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Constructor takes an additional argument, which is the next\+State whose transition probabilities this model will interface to. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGProbabilityTableModel_a28e4eb8b523f04220d65dd92261759e4}\label{classSGProbabilityTableModel_a28e4eb8b523f04220d65dd92261759e4}} 
+\index{S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}!data@{data}}
+\index{data@{data}!S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}}
+\subsubsection{\texorpdfstring{data()}{data()}}
+{\footnotesize\ttfamily Q\+Variant S\+G\+Probability\+Table\+Model\+::data (\begin{DoxyParamCaption}\item[{const Q\+Model\+Index \&}]{index,  }\item[{int}]{role }\end{DoxyParamCaption}) const}
+
+
+
+Reimplements the data method. 
+
+Retrieves the probability of going to next\+State from state, when the action profile indicated by index is played. Retrieves the data using \hyperlink{classSGGame_a0d2fef107bd38ad4c848fd35b0ed5ddf}{S\+G\+Game\+::get\+Probabilities}. \mbox{\Hypertarget{classSGProbabilityTableModel_a79cad23bdbc109338f525caef8a8cf47}\label{classSGProbabilityTableModel_a79cad23bdbc109338f525caef8a8cf47}} 
+\index{S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}!set\+Data@{set\+Data}}
+\index{set\+Data@{set\+Data}!S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}}
+\subsubsection{\texorpdfstring{set\+Data()}{setData()}}
+{\footnotesize\ttfamily bool S\+G\+Probability\+Table\+Model\+::set\+Data (\begin{DoxyParamCaption}\item[{const Q\+Model\+Index \&}]{index,  }\item[{const Q\+Variant \&}]{value,  }\item[{int}]{role }\end{DoxyParamCaption})}
+
+
+
+Reimplements the set\+Data method. 
+
+Sets the transition probability from state to next\+State to value, using \hyperlink{classSGGame_afcc31eacca8f294d349905d52c9a5f64}{S\+G\+Game\+::set\+Probability}. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGProbabilityTableModel_af7619d3adeb71d6ff7f75f78f4b0e34f}\label{classSGProbabilityTableModel_af7619d3adeb71d6ff7f75f78f4b0e34f}} 
+\index{S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}!next\+State@{next\+State}}
+\index{next\+State@{next\+State}!S\+G\+Probability\+Table\+Model@{S\+G\+Probability\+Table\+Model}}
+\subsubsection{\texorpdfstring{next\+State}{nextState}}
+{\footnotesize\ttfamily int S\+G\+Probability\+Table\+Model\+::next\+State\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Tomorrow\textquotesingle{}s state. 
+
+This object interfaces with the probabilities of transitioning to next\+State tomorrow. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgprobabilitytablemodel.\+hpp\item 
+viewer/cpp/sgprobabilitytablemodel.\+cpp\end{DoxyCompactItemize}

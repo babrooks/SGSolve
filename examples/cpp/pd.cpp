@@ -77,10 +77,10 @@ int main ()
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution_MaxMinMax::save(solver.getSolution(),"sgtest.sln2");
+      SGSolution_MaxMinMax::save(solver.getSolution(),"./solutions/pd.sln2");
       cout << "Done!" << endl;
 
-      SGGame::save(game,"pd.sgm");
+      SGGame::save(game,"./games/pd.sgm");
     }
   catch (SGException e)
     {

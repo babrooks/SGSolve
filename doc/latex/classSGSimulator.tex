@@ -1,0 +1,160 @@
+\hypertarget{classSGSimulator}{}\section{S\+G\+Simulator Class Reference}
+\label{classSGSimulator}\index{S\+G\+Simulator@{S\+G\+Simulator}}
+
+
+Class for forward simulating equilibria.  
+
+
+
+
+{\ttfamily \#include $<$sgsimulator.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Simulator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{classSGSimulator__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulator_ad8e72623b6f2d9ecb46b5e5fe5f68d10}\label{classSGSimulator_ad8e72623b6f2d9ecb46b5e5fe5f68d10}} 
+\hyperlink{classSGSimulator_ad8e72623b6f2d9ecb46b5e5fe5f68d10}{S\+G\+Simulator} (const \hyperlink{classSGSolution}{S\+G\+Solution} \&\+\_\+soln)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_acff36ca01d87aec1817cd8ceecfbb1d1}\label{classSGSimulator_acff36ca01d87aec1817cd8ceecfbb1d1}} 
+const vector$<$ vector$<$ int $>$ $>$ \hyperlink{classSGSimulator_acff36ca01d87aec1817cd8ceecfbb1d1}{get\+Action\+Distr} () const
+\begin{DoxyCompactList}\small\item\em Returns the action frequency distributions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a0c60d6e663f83fff6f3818cc90412356}\label{classSGSimulator_a0c60d6e663f83fff6f3818cc90412356}} 
+const vector$<$ int $>$ \hyperlink{classSGSimulator_a0c60d6e663f83fff6f3818cc90412356}{get\+State\+Distr} () const
+\begin{DoxyCompactList}\small\item\em Returns the state frequency distribution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_aeafea7815915ec935ebb5dce827a7c85}\label{classSGSimulator_aeafea7815915ec935ebb5dce827a7c85}} 
+const vector$<$ int $>$ \hyperlink{classSGSimulator_aeafea7815915ec935ebb5dce827a7c85}{get\+Tuple\+Distr} () const
+\begin{DoxyCompactList}\small\item\em Returns the tuple frequency distribution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_aea3e4db4cbf23c1ae0afdee9c4ea670f}\label{classSGSimulator_aea3e4db4cbf23c1ae0afdee9c4ea670f}} 
+int \hyperlink{classSGSimulator_aea3e4db4cbf23c1ae0afdee9c4ea670f}{get\+Start\+Of\+Last\+Rev} () const
+\begin{DoxyCompactList}\small\item\em Returns the start of the last revolution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a990de1197b299b398c8fa6d22098b7da}\label{classSGSimulator_a990de1197b299b398c8fa6d22098b7da}} 
+int \hyperlink{classSGSimulator_a990de1197b299b398c8fa6d22098b7da}{get\+Num\+Iter} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of iterations for the current simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_afab1a623b20f64f81b4938840493f298}\label{classSGSimulator_afab1a623b20f64f81b4938840493f298}} 
+void \hyperlink{classSGSimulator_afab1a623b20f64f81b4938840493f298}{set\+Log\+Flag} (bool new\+Flag)
+\begin{DoxyCompactList}\small\item\em Mutator method for the log flag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_aa745e89e85fa5d8dc4a49ec3b116688d}\label{classSGSimulator_aa745e89e85fa5d8dc4a49ec3b116688d}} 
+const std\+::stringstream \& \hyperlink{classSGSimulator_aa745e89e85fa5d8dc4a49ec3b116688d}{get\+String\+Stream} () const
+\begin{DoxyCompactList}\small\item\em Returns the stringstream describing the first 200 periods. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_ab53d5b0fe325b256de0f5cd92b60a88e}\label{classSGSimulator_ab53d5b0fe325b256de0f5cd92b60a88e}} 
+const std\+::stringstream \& \hyperlink{classSGSimulator_ab53d5b0fe325b256de0f5cd92b60a88e}{get\+Transition\+Table\+String\+Stream} () const
+\begin{DoxyCompactList}\small\item\em Returns the stringstream describing the transition table. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a1997cb6546587e80102a430240315a14}\label{classSGSimulator_a1997cb6546587e80102a430240315a14}} 
+void \hyperlink{classSGSimulator_a1997cb6546587e80102a430240315a14}{initialize} ()
+\begin{DoxyCompactList}\small\item\em Initializes the transition table. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_ab2c60082ceca6857243a717350bec322}\label{classSGSimulator_ab2c60082ceca6857243a717350bec322}} 
+void \hyperlink{classSGSimulator_ab2c60082ceca6857243a717350bec322}{simulate} (int \+\_\+num\+Sim, int \+\_\+num\+Iter, int initial\+State, int initial\+Tuple)
+\begin{DoxyCompactList}\small\item\em Forward simulates the equilibrium. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a7d46973b0ed5bc9ef7ddfeebb58e4615}\label{classSGSimulator_a7d46973b0ed5bc9ef7ddfeebb58e4615}} 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGSimulator_a7d46973b0ed5bc9ef7ddfeebb58e4615}{get\+Long\+Run\+Payoffs} ()
+\begin{DoxyCompactList}\small\item\em Returns the long run action distribution. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulator_a1a2addd4b3694ed9435a3b598ad40392}\label{classSGSimulator_a1a2addd4b3694ed9435a3b598ad40392}} 
+typedef pair$<$ list$<$ \hyperlink{classSGIteration}{S\+G\+Iteration} $>$\+::const\+\_\+iterator, double $>$ {\bfseries transition\+Pair}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulator_a3aed249e020b601913d94f497328133e}\label{classSGSimulator_a3aed249e020b601913d94f497328133e}} 
+const \hyperlink{classSGSolution}{S\+G\+Solution} \& \hyperlink{classSGSimulator_a3aed249e020b601913d94f497328133e}{soln}
+\begin{DoxyCompactList}\small\item\em The associated \hyperlink{classSGSolution}{S\+G\+Solution} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a8623d7c828ff17a8c6ba60e304fdb786}\label{classSGSimulator_a8623d7c828ff17a8c6ba60e304fdb786}} 
+list$<$ \hyperlink{classSGIteration}{S\+G\+Iteration} $>$\+::const\+\_\+iterator \hyperlink{classSGSimulator_a8623d7c828ff17a8c6ba60e304fdb786}{start\+Of\+Last\+Rev}
+\begin{DoxyCompactList}\small\item\em Points to the beginning of the last revolution. \end{DoxyCompactList}\item 
+vector$<$ vector$<$ list$<$ transition\+Pair $>$ $>$ $>$ \hyperlink{classSGSimulator_a07d836b7d8fdcb2d07731f8c51505522}{transition\+Table}
+\begin{DoxyCompactList}\small\item\em The transition table. \end{DoxyCompactList}\item 
+vector$<$ vector$<$ int $>$ $>$ \hyperlink{classSGSimulator_a1fb1f41050dfe3067fc42723cdd8b6f2}{action\+Distr}
+\begin{DoxyCompactList}\small\item\em The distribution of actions in each state. \end{DoxyCompactList}\item 
+vector$<$ int $>$ \hyperlink{classSGSimulator_a36305f5ab359925508878fc86e2ba2fa}{tuple\+Distr}
+\item 
+vector$<$ int $>$ \hyperlink{classSGSimulator_ac66b6cef3d8ea07e3385b50f827216cf}{state\+Distr}
+\item 
+\mbox{\Hypertarget{classSGSimulator_a47c69f11d6f8f3b9a67c74eb7c31b813}\label{classSGSimulator_a47c69f11d6f8f3b9a67c74eb7c31b813}} 
+int \hyperlink{classSGSimulator_a47c69f11d6f8f3b9a67c74eb7c31b813}{num\+Sim}
+\begin{DoxyCompactList}\small\item\em The number of simulations to run. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_aad0eefe29ca6df736afb9ed31be28324}\label{classSGSimulator_aad0eefe29ca6df736afb9ed31be28324}} 
+int \hyperlink{classSGSimulator_aad0eefe29ca6df736afb9ed31be28324}{num\+Iter}
+\begin{DoxyCompactList}\small\item\em The number of periods for each simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a0db92027408d6b779bd391766d12673d}\label{classSGSimulator_a0db92027408d6b779bd391766d12673d}} 
+bool \hyperlink{classSGSimulator_a0db92027408d6b779bd391766d12673d}{log\+Flag}
+\begin{DoxyCompactList}\small\item\em True if saving log information to the stringstreams. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulator_a1093e2e6528ff92e68126289d9511d92}\label{classSGSimulator_a1093e2e6528ff92e68126289d9511d92}} 
+double \hyperlink{classSGSimulator_a1093e2e6528ff92e68126289d9511d92}{weight\+Tol}
+\begin{DoxyCompactList}\small\item\em Tolerance for computing the transition table. \end{DoxyCompactList}\item 
+std\+::stringstream \hyperlink{classSGSimulator_af2f15fbb5e900408947007367b650153}{ss}
+\item 
+\mbox{\Hypertarget{classSGSimulator_a9c28c996c061390940daa5529c577c2b}\label{classSGSimulator_a9c28c996c061390940daa5529c577c2b}} 
+std\+::stringstream \hyperlink{classSGSimulator_a9c28c996c061390940daa5529c577c2b}{transition\+Table\+SS}
+\begin{DoxyCompactList}\small\item\em Contains a text description of the transition table. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for forward simulating equilibria. 
+
+This class simulates an equilibrium based on a given \hyperlink{classSGSolution}{S\+G\+Solution} and initial state and an initial iteration from the final revolution. This iteration describes a basic equilibrium that maximizes in the given iteration\textquotesingle{}s current direction.
+
+In order to simulate, you first have to call the \hyperlink{classSGSimulator_a1997cb6546587e80102a430240315a14}{S\+G\+Simulator\+::initialize} method in order to construct the \char`\"{}transition table\char`\"{}. This table determines, for each iteration in the final revolution and for each state, which action generates the flow payoffs and which continuation equilibrium should be used. If incentive constraints are not binding, the continuation equilibrium is described by the same iteration. Otherwise, some constraint binds, and the transition table decomposes the continuation equilibrium as a lottery over basic equilibria corresponding to tuples on the last revolution. If only one player\textquotesingle{}s incentive constraint binds, then this decomposition is generically unique. If, however, more than one constraint binds or there is some non-\/genericity in payoffs, then the algorithm selects one decomposition arbitrarily.
+
+Having constructed the transition table, the equilibrium can be forward simulated using \hyperlink{classSGSimulator_ab2c60082ceca6857243a717350bec322}{S\+G\+Simulator\+::simulate}. The arguments to the simulate method are the number of periods for which to simulate, the initial state, and the initial tuple. When forward simulating, the class keeps track of the distributions of tuples (in the final revolution), states, and actions in each state. These can be retrieved using their various get methods. \hyperlink{classSGSimulator_a7d46973b0ed5bc9ef7ddfeebb58e4615}{S\+G\+Simulator\+::get\+Long\+Run\+Payoffs} will compute average payoffs for the players over the course of the simulation. The class will save a text version of the transition table in transition\+Table\+SS, and it will save a text version of the first 200 periods of the simulation in SS.
+
+T\+O\+DO\+: Refine the procedure for constructing the transition table when both incentive constraints bind.
+
+This code is part of the pencil-\/sharpening algorithm and has not been updated to the max-\/min-\/max algorithm. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGSimulator_a1fb1f41050dfe3067fc42723cdd8b6f2}\label{classSGSimulator_a1fb1f41050dfe3067fc42723cdd8b6f2}} 
+\index{S\+G\+Simulator@{S\+G\+Simulator}!action\+Distr@{action\+Distr}}
+\index{action\+Distr@{action\+Distr}!S\+G\+Simulator@{S\+G\+Simulator}}
+\subsubsection{\texorpdfstring{action\+Distr}{actionDistr}}
+{\footnotesize\ttfamily vector$<$ vector$<$int$>$ $>$ S\+G\+Simulator\+::action\+Distr\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The distribution of actions in each state. 
+
+action\+Distr\mbox{[}state\mbox{]}\mbox{[}action\mbox{]} is the frequency of that action in the corresponding state over the course of the simulation. \mbox{\Hypertarget{classSGSimulator_af2f15fbb5e900408947007367b650153}\label{classSGSimulator_af2f15fbb5e900408947007367b650153}} 
+\index{S\+G\+Simulator@{S\+G\+Simulator}!ss@{ss}}
+\index{ss@{ss}!S\+G\+Simulator@{S\+G\+Simulator}}
+\subsubsection{\texorpdfstring{ss}{ss}}
+{\footnotesize\ttfamily std\+::stringstream S\+G\+Simulator\+::ss\hspace{0.3cm}{\ttfamily [private]}}
+
+Contains a text description of the first 200 periods of the simulation. \mbox{\Hypertarget{classSGSimulator_ac66b6cef3d8ea07e3385b50f827216cf}\label{classSGSimulator_ac66b6cef3d8ea07e3385b50f827216cf}} 
+\index{S\+G\+Simulator@{S\+G\+Simulator}!state\+Distr@{state\+Distr}}
+\index{state\+Distr@{state\+Distr}!S\+G\+Simulator@{S\+G\+Simulator}}
+\subsubsection{\texorpdfstring{state\+Distr}{stateDistr}}
+{\footnotesize\ttfamily vector$<$int$>$ S\+G\+Simulator\+::state\+Distr\hspace{0.3cm}{\ttfamily [private]}}
+
+The frequency distribution of states over the course of the simulation. \mbox{\Hypertarget{classSGSimulator_a07d836b7d8fdcb2d07731f8c51505522}\label{classSGSimulator_a07d836b7d8fdcb2d07731f8c51505522}} 
+\index{S\+G\+Simulator@{S\+G\+Simulator}!transition\+Table@{transition\+Table}}
+\index{transition\+Table@{transition\+Table}!S\+G\+Simulator@{S\+G\+Simulator}}
+\subsubsection{\texorpdfstring{transition\+Table}{transitionTable}}
+{\footnotesize\ttfamily vector$<$ vector$<$ list$<$transition\+Pair$>$ $>$ $>$ S\+G\+Simulator\+::transition\+Table\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The transition table. 
+
+This table consists of, for each state and tuple, a list transition\+Table\mbox{[}tuple\mbox{]}\mbox{[}state\mbox{]} of transition\+Pair data points. Each pair consists of an iterator that points to some continuation iteration, and a double which represents the probability of transitioning to the corresponding continuation equilibrium. \mbox{\Hypertarget{classSGSimulator_a36305f5ab359925508878fc86e2ba2fa}\label{classSGSimulator_a36305f5ab359925508878fc86e2ba2fa}} 
+\index{S\+G\+Simulator@{S\+G\+Simulator}!tuple\+Distr@{tuple\+Distr}}
+\index{tuple\+Distr@{tuple\+Distr}!S\+G\+Simulator@{S\+G\+Simulator}}
+\subsubsection{\texorpdfstring{tuple\+Distr}{tupleDistr}}
+{\footnotesize\ttfamily vector$<$int$>$ S\+G\+Simulator\+::tuple\+Distr\hspace{0.3cm}{\ttfamily [private]}}
+
+The frequency distribution of tuples over the course of the simulation. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsimulator.\+hpp\item 
+src/cpp/sgsimulator.\+cpp\end{DoxyCompactItemize}

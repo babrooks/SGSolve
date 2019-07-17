@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classSGLegend.html" title="A class for displaying a legend for the solution plots. " alt="" coords="169,5,256,32"/>
+<area shape="rect" id="node3" href="$classSGPlotSettingsHandler.html" title="A widget for setting parameters of the algorithm. " alt="" coords="128,56,297,83"/>
+<area shape="rect" id="node4" href="$classSGRiskSharingHandler.html" title="A widget for setting parameters of the risk sharing game. " alt="" coords="129,107,297,133"/>
+<area shape="rect" id="node5" href="$classSGSettingsHandler.html" title="A widget for setting parameters of the algorithm. " alt="" coords="141,157,285,184"/>
+</map>

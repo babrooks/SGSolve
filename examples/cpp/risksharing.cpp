@@ -210,7 +210,8 @@ int main()
       catch (std::exception & e)
 	{
 	  SGSolution soln = solver->getSolution();
-	  SGSolution::save(soln,solnname.str().c_str());
+	  /* SGSolution::save(soln,solnname.str().c_str()); DELETE THIS */ 
+	  SGSolution::save(soln,"./solutions/risksharing.sln2");
 	  delete solver;
 	  cout << "SGException caught. Received following error: "
 	       << endl

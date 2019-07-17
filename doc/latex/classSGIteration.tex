@@ -1,0 +1,170 @@
+\hypertarget{classSGIteration}{}\section{S\+G\+Iteration Class Reference}
+\label{classSGIteration}\index{S\+G\+Iteration@{S\+G\+Iteration}}
+
+
+Stores data on the behavior of \hyperlink{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}{S\+G\+Approx\+::generate()}  
+
+
+
+
+{\ttfamily \#include $<$sgiteration.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Iteration\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classSGIteration__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIteration_aa47645b3a728b2ca55ad2e7d17c5c488}\label{classSGIteration_aa47645b3a728b2ca55ad2e7d17c5c488}} 
+\hyperlink{classSGIteration_aa47645b3a728b2ca55ad2e7d17c5c488}{S\+G\+Iteration} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGIteration_a4ac425cc85882c11443ef43601efd80b}{S\+G\+Iteration} (const \hyperlink{classSGApprox}{S\+G\+Approx} \&approx, bool store\+Actions=true)
+\item 
+\mbox{\Hypertarget{classSGIteration_a84d8aaef35b4a93f555cf1e0d8e5b964}\label{classSGIteration_a84d8aaef35b4a93f555cf1e0d8e5b964}} 
+int \hyperlink{classSGIteration_a84d8aaef35b4a93f555cf1e0d8e5b964}{get\+Iteration} () const
+\begin{DoxyCompactList}\small\item\em Get method for the iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_af8b2fc2937e7c81248009904ffd0c14b}\label{classSGIteration_af8b2fc2937e7c81248009904ffd0c14b}} 
+int \hyperlink{classSGIteration_af8b2fc2937e7c81248009904ffd0c14b}{get\+Revolution} () const
+\begin{DoxyCompactList}\small\item\em Get method for the revolution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_afd87a05e0df65e9361044f5cef1c5cc6}\label{classSGIteration_afd87a05e0df65e9361044f5cef1c5cc6}} 
+int \hyperlink{classSGIteration_afd87a05e0df65e9361044f5cef1c5cc6}{get\+Num\+Extreme\+Tuples} () const
+\begin{DoxyCompactList}\small\item\em Get method for the number of extreme tuples. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a4a9c13016c8f6ffd0238e95c0076011c}\label{classSGIteration_a4a9c13016c8f6ffd0238e95c0076011c}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGIteration_a4a9c13016c8f6ffd0238e95c0076011c}{get\+Pivot} () const
+\begin{DoxyCompactList}\small\item\em Get method for the current pivot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a684abe31e6b4a3bdf94be1b3fdc6cc66}\label{classSGIteration_a684abe31e6b4a3bdf94be1b3fdc6cc66}} 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGIteration_a684abe31e6b4a3bdf94be1b3fdc6cc66}{get\+Direction} () const
+\begin{DoxyCompactList}\small\item\em Get method for the current direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_afb42582d89f27f44d7e76a2f4ff8a684}\label{classSGIteration_afb42582d89f27f44d7e76a2f4ff8a684}} 
+const vector$<$ vector$<$ \hyperlink{classSGBaseAction}{S\+G\+Base\+Action} $>$ $>$ \& \hyperlink{classSGIteration_afb42582d89f27f44d7e76a2f4ff8a684}{get\+Actions} () const
+\begin{DoxyCompactList}\small\item\em Get method for the actions available at the current iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a68b79d82fca24ae8fd10ef1192d9a89e}\label{classSGIteration_a68b79d82fca24ae8fd10ef1192d9a89e}} 
+int \hyperlink{classSGIteration_a68b79d82fca24ae8fd10ef1192d9a89e}{get\+Best\+State} () const
+\begin{DoxyCompactList}\small\item\em Get method for the best state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a7ea9824327feae3242915ee676b66ae5}\label{classSGIteration_a7ea9824327feae3242915ee676b66ae5}} 
+int \hyperlink{classSGIteration_a7ea9824327feae3242915ee676b66ae5}{get\+Best\+Action} () const
+\begin{DoxyCompactList}\small\item\em Get method for the best action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a6495e67cc2fd614335416e50aa725955}\label{classSGIteration_a6495e67cc2fd614335416e50aa725955}} 
+\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \hyperlink{classSGIteration_a6495e67cc2fd614335416e50aa725955}{get\+Regime} () const
+\begin{DoxyCompactList}\small\item\em Get method for the regime corresponding to the best direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a2b8d87df8e7c5cc825938c0f57368c21}\label{classSGIteration_a2b8d87df8e7c5cc825938c0f57368c21}} 
+const vector$<$ int $>$ \& \hyperlink{classSGIteration_a2b8d87df8e7c5cc825938c0f57368c21}{get\+Action\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Get method for the action tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_aefc7abf8f1819c34acf04f313d8908d2}\label{classSGIteration_aefc7abf8f1819c34acf04f313d8908d2}} 
+const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \& \hyperlink{classSGIteration_aefc7abf8f1819c34acf04f313d8908d2}{get\+Regime\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Get method for the regime tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a1480e56c07b27be906de438b105945da}\label{classSGIteration_a1480e56c07b27be906de438b105945da}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGIteration_a1480e56c07b27be906de438b105945da}{get\+Threat\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Get method for the current threat tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a19860e6d2af702df4ce47e36d4d43ec5}\label{classSGIteration_a19860e6d2af702df4ce47e36d4d43ec5}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGIteration_a19860e6d2af702df4ce47e36d4d43ec5}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serialize the iteration using Boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classSGIteration_a44a4f9e3cb074181292ae816b2c28d9e}{iteration}
+\item 
+int \hyperlink{classSGIteration_a21cc5c4fc7c40ff444ac7e3743c13940}{revolution}
+\item 
+int \hyperlink{classSGIteration_a14ecfb94b3111911d9b0ef545f72e88d}{num\+Extreme\+Tuples}
+\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGIteration_abdae7d336968af3515e7d9590cbcc46d}{pivot}
+\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGIteration_ac35e7e3049cd60c695a366cb8f75db37}{direction}
+\item 
+vector$<$ vector$<$ \hyperlink{classSGBaseAction}{S\+G\+Base\+Action} $>$ $>$ \hyperlink{classSGIteration_a5b5fcd6440b8dbcc6a8ded9f81699337}{actions}
+\item 
+\mbox{\Hypertarget{classSGIteration_a16f16d027bab6baffeee1f4cadb3ce8f}\label{classSGIteration_a16f16d027bab6baffeee1f4cadb3ce8f}} 
+int \hyperlink{classSGIteration_a16f16d027bab6baffeee1f4cadb3ce8f}{best\+State}
+\begin{DoxyCompactList}\small\item\em The state that generated the best direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a71c4414688b49fe6205fe8d90febd5b5}\label{classSGIteration_a71c4414688b49fe6205fe8d90febd5b5}} 
+int \hyperlink{classSGIteration_a71c4414688b49fe6205fe8d90febd5b5}{best\+Action}
+\begin{DoxyCompactList}\small\item\em The action that generated the best direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a0dae9bbd62ac96335698290c2866efc8}\label{classSGIteration_a0dae9bbd62ac96335698290c2866efc8}} 
+\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \hyperlink{classSGIteration_a0dae9bbd62ac96335698290c2866efc8}{regime}
+\begin{DoxyCompactList}\small\item\em True if the best direction was non-\/binding. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_ade2d5d602a23f5a83a76283fa4dcec87}\label{classSGIteration_ade2d5d602a23f5a83a76283fa4dcec87}} 
+vector$<$ int $>$ \hyperlink{classSGIteration_ade2d5d602a23f5a83a76283fa4dcec87}{action\+Tuple}
+\begin{DoxyCompactList}\small\item\em The current action tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_a81c6328aac47bae67d8d7fdd175af738}\label{classSGIteration_a81c6328aac47bae67d8d7fdd175af738}} 
+vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \hyperlink{classSGIteration_a81c6328aac47bae67d8d7fdd175af738}{regime\+Tuple}
+\begin{DoxyCompactList}\small\item\em The states in which IC constraints are not binding. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration_acaf191aa3e5adddbf1052602c927d03f}\label{classSGIteration_acaf191aa3e5adddbf1052602c927d03f}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGIteration_acaf191aa3e5adddbf1052602c927d03f}{threat\+Tuple}
+\begin{DoxyCompactList}\small\item\em The current threat tuple. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIteration_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGIteration_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class \hyperlink{classSGIteration_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\+::serialization\+::access}
+\begin{DoxyCompactList}\small\item\em Serializes the \hyperlink{classSGIteration}{S\+G\+Iteration} object using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Stores data on the behavior of \hyperlink{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}{S\+G\+Approx\+::generate()} 
+
+This class records information on each cut made by the twist algorithm.
+
+Part of the pencil sharpening algorithm. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGIteration_a4ac425cc85882c11443ef43601efd80b}\label{classSGIteration_a4ac425cc85882c11443ef43601efd80b}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!S\+G\+Iteration@{S\+G\+Iteration}}
+\index{S\+G\+Iteration@{S\+G\+Iteration}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{S\+G\+Iteration()}{SGIteration()}}
+{\footnotesize\ttfamily S\+G\+Iteration\+::\+S\+G\+Iteration (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGApprox}{S\+G\+Approx} \&}]{approx,  }\item[{bool}]{store\+Actions = {\ttfamily true} }\end{DoxyParamCaption})}
+
+Initializes a new \hyperlink{classSGIteration}{S\+G\+Iteration} object with data on the current iteration
+
+By default, the constructor will also copy the data in \hyperlink{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}{S\+G\+Approx\+::actions}, so that the user can later recover the test directions that were available at the given iteration. If the second argument is false, then these actions will not be stored. For large games, storing the actions can take a large amount of memory. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGIteration_a5b5fcd6440b8dbcc6a8ded9f81699337}\label{classSGIteration_a5b5fcd6440b8dbcc6a8ded9f81699337}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!actions@{actions}}
+\index{actions@{actions}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{actions}{actions}}
+{\footnotesize\ttfamily vector$<$ vector$<$\hyperlink{classSGBaseAction}{S\+G\+Base\+Action}$>$ $>$ S\+G\+Iteration\+::actions\hspace{0.3cm}{\ttfamily [private]}}
+
+The actions that can be supported at the current iteration \mbox{\Hypertarget{classSGIteration_ac35e7e3049cd60c695a366cb8f75db37}\label{classSGIteration_ac35e7e3049cd60c695a366cb8f75db37}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!direction@{direction}}
+\index{direction@{direction}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{direction}{direction}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Iteration\+::direction\hspace{0.3cm}{\ttfamily [private]}}
+
+The shallowest admissible direction at the current revolution. \mbox{\Hypertarget{classSGIteration_a44a4f9e3cb074181292ae816b2c28d9e}\label{classSGIteration_a44a4f9e3cb074181292ae816b2c28d9e}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!iteration@{iteration}}
+\index{iteration@{iteration}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{iteration}{iteration}}
+{\footnotesize\ttfamily int S\+G\+Iteration\+::iteration\hspace{0.3cm}{\ttfamily [private]}}
+
+The value of \hyperlink{classSGApprox_a7ab53424f5933726a15001ff2885a4a9}{S\+G\+Approx\+::num\+Iterations}. \mbox{\Hypertarget{classSGIteration_a14ecfb94b3111911d9b0ef545f72e88d}\label{classSGIteration_a14ecfb94b3111911d9b0ef545f72e88d}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!num\+Extreme\+Tuples@{num\+Extreme\+Tuples}}
+\index{num\+Extreme\+Tuples@{num\+Extreme\+Tuples}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{num\+Extreme\+Tuples}{numExtremeTuples}}
+{\footnotesize\ttfamily int S\+G\+Iteration\+::num\+Extreme\+Tuples\hspace{0.3cm}{\ttfamily [private]}}
+
+The size of \hyperlink{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}{S\+G\+Approx\+::extreme\+Tuples}. \mbox{\Hypertarget{classSGIteration_abdae7d336968af3515e7d9590cbcc46d}\label{classSGIteration_abdae7d336968af3515e7d9590cbcc46d}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!pivot@{pivot}}
+\index{pivot@{pivot}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{pivot}{pivot}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} S\+G\+Iteration\+::pivot\hspace{0.3cm}{\ttfamily [private]}}
+
+The current value of \hyperlink{classSGApprox_a037c73ff2b6ff8a55fadf57bb0a6a546}{S\+G\+Approx\+::pivot}. \mbox{\Hypertarget{classSGIteration_a21cc5c4fc7c40ff444ac7e3743c13940}\label{classSGIteration_a21cc5c4fc7c40ff444ac7e3743c13940}} 
+\index{S\+G\+Iteration@{S\+G\+Iteration}!revolution@{revolution}}
+\index{revolution@{revolution}!S\+G\+Iteration@{S\+G\+Iteration}}
+\subsubsection{\texorpdfstring{revolution}{revolution}}
+{\footnotesize\ttfamily int S\+G\+Iteration\+::revolution\hspace{0.3cm}{\ttfamily [private]}}
+
+The value of \hyperlink{classSGApprox_a2bd0cab80a3f8d799fdc2841b65dd2c2}{S\+G\+Approx\+::num\+Revolutions}. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgiteration.\+hpp\item 
+src/cpp/sgiteration.\+cpp\end{DoxyCompactItemize}

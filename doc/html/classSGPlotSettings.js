@@ -1,0 +1,57 @@
+var classSGPlotSettings =
+[
+    [ "SGPenParam", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05", [
+      [ "StagePen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05affac25965ca6dc2759efb8ba0da593c7", null ],
+      [ "PivotPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05a3891d9b8ab8f5faa47a4e0e21459e36c", null ],
+      [ "ExpPivotPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05af7a46c60ad958bf6d8a96a2ae654c8ee", null ],
+      [ "ExpPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05acc1d1675883992120f300736995374e4", null ],
+      [ "PrevExpPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05a707ed3f16e1fd8d6d86dd1511041ac89", null ],
+      [ "ValuePen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05a5b71dd89c20e8ac2532da4cc4f2e32d9", null ],
+      [ "ICPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05ab54a2c0523d3fd5fff421f228e185edf", null ],
+      [ "BindingPayoffPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05a8a96162a22c16b1b0bfd26b548bf239d", null ],
+      [ "DirectionPen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05ada7b8825e485466b7556e04c39232a2d", null ],
+      [ "GenLinePen", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05a517be35b8a9a2285ce28966d13745c81", null ],
+      [ "NumPenParams", "classSGPlotSettings.html#ae655b3b1e012fcb780d4ed541a725f05ae7a8c34e7f4c4fce1bdde48dd0cc9275", null ]
+    ] ],
+    [ "SGPlotFeature", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245d", [
+      [ "StagePayoffs", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da0f6de65ea38549c7170379be8b7fadc3", null ],
+      [ "Pivot", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245daf09787449d8c1972e0700154514229b5", null ],
+      [ "ExpPivot", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da12869d473608e60b78889aeb89486f81", null ],
+      [ "PayoffSet", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245dadf497d2638dc6c0b9b41489d25d397ff", null ],
+      [ "ExpPayoffSet", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245dac6a44b357e47523ba205007905c4541a", null ],
+      [ "PrevExpPayoffSet", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245daae5f1abdc17dc6ce6438abbb60724e53", null ],
+      [ "ICBoundary", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da58e0dfb217c819737bba71561eb753ce", null ],
+      [ "BindingPayoffs", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da808e39d374bebbc9bf38e0e5311720db", null ],
+      [ "Direction", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da5be1d7af62aef0e5bda51a8f14ebf386", null ],
+      [ "GenLines", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245dad956cd11d31cfd2cecf92370faf31336", null ],
+      [ "GridLines", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da9cbed88e939f9b0725878744d34b30af", null ],
+      [ "ZeroLines", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da06ecb57fb036dff1ed0958ec5114043a", null ],
+      [ "UniformRanges", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da3a70699ceb8668dca691147064ddf2d7", null ],
+      [ "NumPlotFeatures", "classSGPlotSettings.html#a3e027e0bf85db5184d5d2fe9362e245da09302b803f62245a5970be752e2c0730", null ]
+    ] ],
+    [ "SGScatterParam", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39", [
+      [ "PivotStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39ab8d264a701ed2ca6166e92e0cdf63991", null ],
+      [ "ExpPivotStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39a6eb4e019cce93b053fc71f5f0c985001", null ],
+      [ "StageStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39a0aeea29a60b8abe3cb5b4855640e4672", null ],
+      [ "BindingPayoffStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39aed842dd53526c424aca181215b9032ec", null ],
+      [ "ICPayoffStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39a0cfe10428ecaa6b74114d7a5ee130f65", null ],
+      [ "PayoffStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39ae89c32232fd6abb95006926385521913", null ],
+      [ "TupleStyle", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39a60970593eeadf4972199bcedcca920eb", null ],
+      [ "NumScatterParams", "classSGPlotSettings.html#a76b5597519c9cc9fa3f7b3ee24c28d39a96bf176ff7e784ea230448a4f88e7c19", null ]
+    ] ],
+    [ "SGPlotSettings", "classSGPlotSettings.html#ac788d0490d12b5422f27631db51c4411", null ],
+    [ "disable", "classSGPlotSettings.html#af8b8b771f3897f7487e9dfbaf88a2a89", null ],
+    [ "disable", "classSGPlotSettings.html#a7d3f2e58941f5f76e193bf567a83b49b", null ],
+    [ "get", "classSGPlotSettings.html#abb2a031b4b0aeaa9a5c04bfeb99939d2", null ],
+    [ "get", "classSGPlotSettings.html#ac0163bf092eff5613834272e8535be20", null ],
+    [ "get", "classSGPlotSettings.html#ab6a9ce3dc76d6ad187487d17e5b759e0", null ],
+    [ "restoreDefault", "classSGPlotSettings.html#aed5e0cdec60f428e9aa3ae25172eaf8b", null ],
+    [ "restoreDefault", "classSGPlotSettings.html#abf35a7b6b2d9dad699527270ff334916", null ],
+    [ "restoreDefaults", "classSGPlotSettings.html#a1048c1e82e135c3c8bae919c1e47f09c", null ],
+    [ "set", "classSGPlotSettings.html#a962a48121fca1edf4acdd485d941fee3", null ],
+    [ "set", "classSGPlotSettings.html#a2d1695078c94a973dfb0b6fd9910c2a2", null ],
+    [ "set", "classSGPlotSettings.html#a150ebe4d84dbb7bcdc05385bc8091bac", null ],
+    [ "features", "classSGPlotSettings.html#af479e795f9fbc1bc1e2b98268f83a7c3", null ],
+    [ "pens", "classSGPlotSettings.html#aef45e112cea82b97bba0802b33b70ca0", null ],
+    [ "styles", "classSGPlotSettings.html#ac587d4f23d3beeb6506013f707cf8a3e", null ]
+];

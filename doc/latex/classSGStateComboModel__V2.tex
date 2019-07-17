@@ -1,0 +1,76 @@
+\hypertarget{classSGStateComboModel__V2}{}\section{S\+G\+State\+Combo\+Model\+\_\+\+V2 Class Reference}
+\label{classSGStateComboModel__V2}\index{S\+G\+State\+Combo\+Model\+\_\+\+V2@{S\+G\+State\+Combo\+Model\+\_\+\+V2}}
+
+
+Model for state\+Combo.  
+
+
+
+
+{\ttfamily \#include $<$sgstatecombomodel\+\_\+v2.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+State\+Combo\+Model\+\_\+\+V2\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=217pt]{classSGStateComboModel__V2__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+State\+Combo\+Model\+\_\+\+V2\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classSGStateComboModel__V2__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGStateComboModel__V2_a88d15de602377d88c1e1dfcc9f6e27e4}{change\+State} (int index)
+\item 
+\mbox{\Hypertarget{classSGStateComboModel__V2_a97f746bffa0ab0a312b9e059a381b5e7}\label{classSGStateComboModel__V2_a97f746bffa0ab0a312b9e059a381b5e7}} 
+void \hyperlink{classSGStateComboModel__V2_a97f746bffa0ab0a312b9e059a381b5e7}{change\+Layout} ()
+\begin{DoxyCompactList}\small\item\em Signals to the G\+UI to change the layout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGStateComboModel__V2_acfa818f60e57aadfbed7d49d50fce33a}\label{classSGStateComboModel__V2_acfa818f60e57aadfbed7d49d50fce33a}} 
+\hyperlink{classSGStateComboModel__V2_acfa818f60e57aadfbed7d49d50fce33a}{S\+G\+State\+Combo\+Model\+\_\+\+V2} (\hyperlink{classSGPlotController__V2}{S\+G\+Plot\+Controller\+\_\+\+V2} $\ast$\+\_\+controller)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGStateComboModel__V2_ad5ae18ea1853430e14ad95f210a85c84}\label{classSGStateComboModel__V2_ad5ae18ea1853430e14ad95f210a85c84}} 
+int \hyperlink{classSGStateComboModel__V2_ad5ae18ea1853430e14ad95f210a85c84}{row\+Count} (const Q\+Model\+Index \&parent) const
+\begin{DoxyCompactList}\small\item\em Reimplement rowcount. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGStateComboModel__V2_a508efaadca65a3aad0d1b97f9c0cb398}\label{classSGStateComboModel__V2_a508efaadca65a3aad0d1b97f9c0cb398}} 
+Q\+Variant \hyperlink{classSGStateComboModel__V2_a508efaadca65a3aad0d1b97f9c0cb398}{data} (const Q\+Model\+Index \&index, int role) const
+\begin{DoxyCompactList}\small\item\em Reimplement data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGStateComboModel__V2_a3dba3a97b834e0af00568862cb67653c}\label{classSGStateComboModel__V2_a3dba3a97b834e0af00568862cb67653c}} 
+\hyperlink{classSGPlotController__V2}{S\+G\+Plot\+Controller\+\_\+\+V2} $\ast$ \hyperlink{classSGStateComboModel__V2_a3dba3a97b834e0af00568862cb67653c}{controller}
+\begin{DoxyCompactList}\small\item\em The associated \hyperlink{classSGPlotController__V2}{S\+G\+Plot\+Controller\+\_\+\+V2} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Model for state\+Combo. 
+
+Model that interfaces between the state Q\+Combo\+Box and the underlying \hyperlink{classSGSolution}{S\+G\+Solution} object. This model automatically synchronizes the number and labels of the states with the \hyperlink{classSGSolution}{S\+G\+Solution}, and it indicates with an asterisk which state generated the best test direction for the current iteration. When a new solution is loaded, or when the current iteration is changed in the \hyperlink{classSGPlotController__V2}{S\+G\+Plot\+Controller\+\_\+\+V2}, the change\+Layout slot is triggered so that the state\+Combo is updated to reflect the true number of states and the identity of the best state. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGStateComboModel__V2_a88d15de602377d88c1e1dfcc9f6e27e4}\label{classSGStateComboModel__V2_a88d15de602377d88c1e1dfcc9f6e27e4}} 
+\index{S\+G\+State\+Combo\+Model\+\_\+\+V2@{S\+G\+State\+Combo\+Model\+\_\+\+V2}!change\+State@{change\+State}}
+\index{change\+State@{change\+State}!S\+G\+State\+Combo\+Model\+\_\+\+V2@{S\+G\+State\+Combo\+Model\+\_\+\+V2}}
+\subsubsection{\texorpdfstring{change\+State}{changeState}}
+{\footnotesize\ttfamily void S\+G\+State\+Combo\+Model\+\_\+\+V2\+::change\+State (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [slot]}}
+
+Tells the controller to change the state when the index of the combo box is updated. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgstatecombomodel\+\_\+v2.\+hpp\end{DoxyCompactItemize}

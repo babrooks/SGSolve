@@ -1,0 +1,138 @@
+\hypertarget{classSGSimulationHandler}{}\section{S\+G\+Simulation\+Handler Class Reference}
+\label{classSGSimulationHandler}\index{S\+G\+Simulation\+Handler@{S\+G\+Simulation\+Handler}}
+
+
+Widget for forward simulating an equilibrium.  
+
+
+
+
+{\ttfamily \#include $<$sgsimulationhandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Simulation\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=201pt]{classSGSimulationHandler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Simulation\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGSimulationHandler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a41ff94a3450b8b899cd56915a4415fd1}\label{classSGSimulationHandler_a41ff94a3450b8b899cd56915a4415fd1}} 
+\hyperlink{classSGSimulationHandler_a41ff94a3450b8b899cd56915a4415fd1}{S\+G\+Simulation\+Handler} (Q\+Widget $\ast$parent, const \hyperlink{classSGSolution}{S\+G\+Solution} \&\+\_\+soln, const \hyperlink{classSGPoint}{S\+G\+Point} \&\+\_\+point, int \+\_\+state)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_aed14fbcb2532d3a0f7ebe42e110c090e}\label{classSGSimulationHandler_aed14fbcb2532d3a0f7ebe42e110c090e}} 
+virtual \hyperlink{classSGSimulationHandler_aed14fbcb2532d3a0f7ebe42e110c090e}{$\sim$\+S\+G\+Simulation\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGSimulationHandler_a37b1504ddf71de0160cbac4f17788f8c}{simulate} ()
+\begin{DoxyCompactList}\small\item\em Triggers a new simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a4bf1ba537ca2d4faf364f0c6464d4c2d}\label{classSGSimulationHandler_a4bf1ba537ca2d4faf364f0c6464d4c2d}} 
+const \hyperlink{classSGSolution}{S\+G\+Solution} \& \hyperlink{classSGSimulationHandler_a4bf1ba537ca2d4faf364f0c6464d4c2d}{soln}
+\begin{DoxyCompactList}\small\item\em Constant reference to the associated \hyperlink{classSGSolution}{S\+G\+Solution} object. \end{DoxyCompactList}\item 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGSimulationHandler_afe0ae445ab03e1413aecf88542f57e89}{point}
+\begin{DoxyCompactList}\small\item\em Discounted payoffs in the simulated equilibrium. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a612f5235a97b2a4a615440ad70e6b7bb}\label{classSGSimulationHandler_a612f5235a97b2a4a615440ad70e6b7bb}} 
+const int \hyperlink{classSGSimulationHandler_a612f5235a97b2a4a615440ad70e6b7bb}{state}
+\begin{DoxyCompactList}\small\item\em Initial state for the simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_ae5fd342ff5b0d0dfcd726a00118ffc68}\label{classSGSimulationHandler_ae5fd342ff5b0d0dfcd726a00118ffc68}} 
+\hyperlink{classSGSimulator}{S\+G\+Simulator} \hyperlink{classSGSimulationHandler_ae5fd342ff5b0d0dfcd726a00118ffc68}{sim}
+\begin{DoxyCompactList}\small\item\em The associated \hyperlink{classSGSimulator}{S\+G\+Simulator} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a9a1a8438136f1d5aa165a0aeb6696f8b}\label{classSGSimulationHandler_a9a1a8438136f1d5aa165a0aeb6696f8b}} 
+int \hyperlink{classSGSimulationHandler_a9a1a8438136f1d5aa165a0aeb6696f8b}{initial\+Tuple}
+\begin{DoxyCompactList}\small\item\em The initial tuple for the simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a3505994e5e4f02a340b7927b6d3433c6}\label{classSGSimulationHandler_a3505994e5e4f02a340b7927b6d3433c6}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGSimulationHandler_a3505994e5e4f02a340b7927b6d3433c6}{sim\+Edit}
+\begin{DoxyCompactList}\small\item\em Displays the number of simulations to run. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_ab42965599854d67f7043d30aa4661667}\label{classSGSimulationHandler_ab42965599854d67f7043d30aa4661667}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGSimulationHandler_ab42965599854d67f7043d30aa4661667}{iteration\+Edit}
+\begin{DoxyCompactList}\small\item\em Displays the number of periods for which to simulate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a72359d29b018d9c0e5969476d6691bd3}\label{classSGSimulationHandler_a72359d29b018d9c0e5969476d6691bd3}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGSimulationHandler_a72359d29b018d9c0e5969476d6691bd3}{long\+Run\+Payoff\+Edit}
+\begin{DoxyCompactList}\small\item\em Displays the average payoffs over the course of the simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_aca7a15debc3506010a2d338521d3d11e}\label{classSGSimulationHandler_aca7a15debc3506010a2d338521d3d11e}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGSimulationHandler_aca7a15debc3506010a2d338521d3d11e}{time\+Edit}
+\begin{DoxyCompactList}\small\item\em Displays the time it took the simulation to run. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a29aa8ceb03ad06a27d2d6396541f1613}\label{classSGSimulationHandler_a29aa8ceb03ad06a27d2d6396541f1613}} 
+\hyperlink{classSGSimulationPlot}{S\+G\+Simulation\+Plot} $\ast$ \hyperlink{classSGSimulationHandler_a29aa8ceb03ad06a27d2d6396541f1613}{distr\+Plot}
+\begin{DoxyCompactList}\small\item\em Displays the distribution of tuples, states, and action profiles. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a3f1eaed863efcd76303c7b1cc45ca666}\label{classSGSimulationHandler_a3f1eaed863efcd76303c7b1cc45ca666}} 
+Q\+Text\+Edit $\ast$ \hyperlink{classSGSimulationHandler_a3f1eaed863efcd76303c7b1cc45ca666}{text\+Edit}
+\begin{DoxyCompactList}\small\item\em Displays the first 200 periods of the simulation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a82b37828124dadacb81fdc7aa6a3b435}\label{classSGSimulationHandler_a82b37828124dadacb81fdc7aa6a3b435}} 
+Q\+Text\+Edit $\ast$ \hyperlink{classSGSimulationHandler_a82b37828124dadacb81fdc7aa6a3b435}{transition\+Table\+Edit}
+\begin{DoxyCompactList}\small\item\em Displays the decomposition of extremal equilibria. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a909f0362d60b51f701ff89f67d9924f3}\label{classSGSimulationHandler_a909f0362d60b51f701ff89f67d9924f3}} 
+Q\+C\+P\+Bars $\ast$ \hyperlink{classSGSimulationHandler_a909f0362d60b51f701ff89f67d9924f3}{state\+Bars}
+\begin{DoxyCompactList}\small\item\em Bars displaying for the distribution of states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_ac2c24b41887a4522e21f6fe441a814ae}\label{classSGSimulationHandler_ac2c24b41887a4522e21f6fe441a814ae}} 
+Q\+C\+P\+Bars $\ast$ \hyperlink{classSGSimulationHandler_ac2c24b41887a4522e21f6fe441a814ae}{tuple\+Bars}
+\begin{DoxyCompactList}\small\item\em Bars displaying the distribution of tuples. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_ad1b07f72d1a78e159b3f83bbf5d7945e}\label{classSGSimulationHandler_ad1b07f72d1a78e159b3f83bbf5d7945e}} 
+vector$<$ Q\+C\+P\+Bars $\ast$ $>$ \hyperlink{classSGSimulationHandler_ad1b07f72d1a78e159b3f83bbf5d7945e}{action\+Bars}
+\begin{DoxyCompactList}\small\item\em Bars displaying the distributions of actions in each state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_afce6339f388f8ff681137f0a0343e652}\label{classSGSimulationHandler_afce6339f388f8ff681137f0a0343e652}} 
+Q\+C\+P\+Axis\+Rect $\ast$ \hyperlink{classSGSimulationHandler_afce6339f388f8ff681137f0a0343e652}{state\+Distr\+Rect}
+\begin{DoxyCompactList}\small\item\em The Q\+C\+P\+Axis\+Rect object associated with the state distributions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_ae964d001d8c66f69768cae6d448cbfb2}\label{classSGSimulationHandler_ae964d001d8c66f69768cae6d448cbfb2}} 
+Q\+C\+P\+Axis\+Rect $\ast$ \hyperlink{classSGSimulationHandler_ae964d001d8c66f69768cae6d448cbfb2}{tuple\+Distr\+Rect}
+\begin{DoxyCompactList}\small\item\em The Q\+C\+P\+Axis\+Rect object associated with the tuple distributions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSimulationHandler_a359a9970707cbf53f14ebb3f86fd9d0a}\label{classSGSimulationHandler_a359a9970707cbf53f14ebb3f86fd9d0a}} 
+vector$<$ Q\+C\+P\+Axis\+Rect $\ast$ $>$ \hyperlink{classSGSimulationHandler_a359a9970707cbf53f14ebb3f86fd9d0a}{action\+Distr\+Rects}
+\begin{DoxyCompactList}\small\item\em The Q\+C\+P\+Axis\+Rect objects associated with the action distributions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Widget for forward simulating an equilibrium. 
+
+This widget is constructed by \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler} when the user requests to simulate a particular equilibrium from the right-\/click context menu on one of the \hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} objects. This class constructs an \hyperlink{classSGSimulator}{S\+G\+Simulator} object from the S\+G\+Solve library, and it also constructs plots and text edits for viewing the output of the simulation. The user can then input the number of periods for which to simulate the equilibrium. The widget will then use \hyperlink{classSGSimulator}{S\+G\+Simulator} to run the simulation. The output is displayed in various formats. The first 200 periods of the simulation are displayed, along with the decomposition of all extremal equilibria into stage payoffs and a lottery over continuation equilibria. If there is more than one decomposition of the continuation value, one is selected arbitrarily. The widget also shows the distributions of tuples, states, actions, and average payoffs of the players over the course of the simulation. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSimulationHandler_a37b1504ddf71de0160cbac4f17788f8c}\label{classSGSimulationHandler_a37b1504ddf71de0160cbac4f17788f8c}} 
+\index{S\+G\+Simulation\+Handler@{S\+G\+Simulation\+Handler}!simulate@{simulate}}
+\index{simulate@{simulate}!S\+G\+Simulation\+Handler@{S\+G\+Simulation\+Handler}}
+\subsubsection{\texorpdfstring{simulate}{simulate}}
+{\footnotesize\ttfamily void S\+G\+Simulation\+Handler\+::simulate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Triggers a new simulation. 
+
+Causes the widget to run a new simulation for the number of periods in iterations\+Edit. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGSimulationHandler_afe0ae445ab03e1413aecf88542f57e89}\label{classSGSimulationHandler_afe0ae445ab03e1413aecf88542f57e89}} 
+\index{S\+G\+Simulation\+Handler@{S\+G\+Simulation\+Handler}!point@{point}}
+\index{point@{point}!S\+G\+Simulation\+Handler@{S\+G\+Simulation\+Handler}}
+\subsubsection{\texorpdfstring{point}{point}}
+{\footnotesize\ttfamily const \hyperlink{classSGPoint}{S\+G\+Point}\& S\+G\+Simulation\+Handler\+::point\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Discounted payoffs in the simulated equilibrium. 
+
+The widget will simulate an equilibrium that generates payoffs closest to this point. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsimulationhandler.\+hpp\item 
+viewer/cpp/sgsimulationhandler.\+cpp\end{DoxyCompactItemize}

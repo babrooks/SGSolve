@@ -1,0 +1,6 @@
+<map id="SGSimulationHandler" name="SGSimulationHandler">
+<area shape="rect" id="node3" href="$classSGPoint.html" title="A vector in . " alt="" coords="108,95,181,121"/>
+<area shape="rect" id="node4" href="$classSGSolution.html" title="Records the progress of SGSolver::solve(). " alt="" coords="205,5,298,32"/>
+<area shape="rect" id="node5" href="$classSGSimulator.html" title="Class for forward simulating equilibria. " alt="" coords="287,95,389,121"/>
+<area shape="rect" id="node6" href="$classSGSimulationPlot.html" title="A customized version of QCustomPlot. " alt="" coords="413,95,548,121"/>
+</map>

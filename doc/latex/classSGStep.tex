@@ -1,0 +1,96 @@
+\hypertarget{classSGStep}{}\section{S\+G\+Step Class Reference}
+\label{classSGStep}\index{S\+G\+Step@{S\+G\+Step}}
+
+
+A single step of the max-\/min-\/max algorithm.  
+
+
+
+
+{\ttfamily \#include $<$sgstep.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Step\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{classSGStep__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGStep_a62bc546fa89ae0c09a8cc49ed500022e}\label{classSGStep_a62bc546fa89ae0c09a8cc49ed500022e}} 
+\hyperlink{classSGStep_a62bc546fa89ae0c09a8cc49ed500022e}{S\+G\+Step} (const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$\+::const\+\_\+iterator $>$ \&\+\_\+action\+Tuple, const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&\+\_\+regime\+Tuple, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&\+\_\+pivot, const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&\+\_\+hyperplane, const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&actions)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGStep_ae546a7cfc2562b51fa980c39173cf459}\label{classSGStep_ae546a7cfc2562b51fa980c39173cf459}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \& {\bfseries get\+Pivot} () const
+\item 
+\mbox{\Hypertarget{classSGStep_ae5c0b344c3f2bba1b5f74960d6ad0738}\label{classSGStep_ae5c0b344c3f2bba1b5f74960d6ad0738}} 
+const vector$<$ int $>$ \& {\bfseries get\+Action\+Tuple} () const
+\item 
+\mbox{\Hypertarget{classSGStep_a8eed3d8860ee53b882cdf3b46dd19233}\label{classSGStep_a8eed3d8860ee53b882cdf3b46dd19233}} 
+const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \& {\bfseries get\+Regime\+Tuple} () const
+\item 
+\mbox{\Hypertarget{classSGStep_a05700c14bb802be3c69b73a616dcdff8}\label{classSGStep_a05700c14bb802be3c69b73a616dcdff8}} 
+const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \& {\bfseries get\+Hyperplane} () const
+\item 
+\mbox{\Hypertarget{classSGStep_a8a39fd55b2aeaa9162d056720f51a97e}\label{classSGStep_a8a39fd55b2aeaa9162d056720f51a97e}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGStep_a8a39fd55b2aeaa9162d056720f51a97e}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serialize the iteration using Boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGStep_adb0e98277220bdb428de1a6725f6ddd0}{pivot}
+\item 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \hyperlink{classSGStep_a72d5305fa558c5ef32118f83a6000e06}{hyperplane}
+\item 
+vector$<$ int $>$ \hyperlink{classSGStep_a227186eed93364254969bb15e7ae0e18}{action\+Tuple}
+\item 
+vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \hyperlink{classSGStep_ad17acaa7ac465c64b18c3a74fbf07d92}{regime\+Tuple}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGStep_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGStep_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class \hyperlink{classSGStep_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\+::serialization\+::access}
+\begin{DoxyCompactList}\small\item\em Serializes the \hyperlink{classSGStep}{S\+G\+Step} object using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A single step of the max-\/min-\/max algorithm. 
+
+$<$ This class records the computation of a single \char`\"{}pivot\char`\"{} of the max-\/min-\/max algorithm, where we compute the optimum in a single direction. Used by \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGStep_a227186eed93364254969bb15e7ae0e18}\label{classSGStep_a227186eed93364254969bb15e7ae0e18}} 
+\index{S\+G\+Step@{S\+G\+Step}!action\+Tuple@{action\+Tuple}}
+\index{action\+Tuple@{action\+Tuple}!S\+G\+Step@{S\+G\+Step}}
+\subsubsection{\texorpdfstring{action\+Tuple}{actionTuple}}
+{\footnotesize\ttfamily vector$<$int$>$ S\+G\+Step\+::action\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+The optimal actions. Note that these are given by indices in the actions array, not the primitive action in the game. \mbox{\Hypertarget{classSGStep_a72d5305fa558c5ef32118f83a6000e06}\label{classSGStep_a72d5305fa558c5ef32118f83a6000e06}} 
+\index{S\+G\+Step@{S\+G\+Step}!hyperplane@{hyperplane}}
+\index{hyperplane@{hyperplane}!S\+G\+Step@{S\+G\+Step}}
+\subsubsection{\texorpdfstring{hyperplane}{hyperplane}}
+{\footnotesize\ttfamily \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} S\+G\+Step\+::hyperplane\hspace{0.3cm}{\ttfamily [private]}}
+
+The hyperplanes that define the approximation. \mbox{\Hypertarget{classSGStep_adb0e98277220bdb428de1a6725f6ddd0}\label{classSGStep_adb0e98277220bdb428de1a6725f6ddd0}} 
+\index{S\+G\+Step@{S\+G\+Step}!pivot@{pivot}}
+\index{pivot@{pivot}!S\+G\+Step@{S\+G\+Step}}
+\subsubsection{\texorpdfstring{pivot}{pivot}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} S\+G\+Step\+::pivot\hspace{0.3cm}{\ttfamily [private]}}
+
+The pivot tuple. \mbox{\Hypertarget{classSGStep_ad17acaa7ac465c64b18c3a74fbf07d92}\label{classSGStep_ad17acaa7ac465c64b18c3a74fbf07d92}} 
+\index{S\+G\+Step@{S\+G\+Step}!regime\+Tuple@{regime\+Tuple}}
+\index{regime\+Tuple@{regime\+Tuple}!S\+G\+Step@{S\+G\+Step}}
+\subsubsection{\texorpdfstring{regime\+Tuple}{regimeTuple}}
+{\footnotesize\ttfamily vector$<$\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime}$>$ S\+G\+Step\+::regime\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+The optimal regimes. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgstep.\+hpp\end{DoxyCompactItemize}

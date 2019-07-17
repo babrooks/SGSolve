@@ -1,0 +1,227 @@
+\hypertarget{classSGTuple}{}\section{S\+G\+Tuple Class Reference}
+\label{classSGTuple}\index{S\+G\+Tuple@{S\+G\+Tuple}}
+
+
+Collaboration diagram for S\+G\+Tuple\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classSGTuple__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGTuple_a7159656a9fbec24b5b6c94dbfec1ffd1}\label{classSGTuple_a7159656a9fbec24b5b6c94dbfec1ffd1}} 
+\hyperlink{classSGTuple_a7159656a9fbec24b5b6c94dbfec1ffd1}{S\+G\+Tuple} (int num\+States)
+\begin{DoxyCompactList}\small\item\em Initializes tuple to \+\_\+num\+States zero-\/vectors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a37adecb17ef12a7c1a4cb14bb89ce59f}\label{classSGTuple_a37adecb17ef12a7c1a4cb14bb89ce59f}} 
+\hyperlink{classSGTuple_a37adecb17ef12a7c1a4cb14bb89ce59f}{S\+G\+Tuple} (int \+\_\+num\+States, const \hyperlink{classSGPoint}{S\+G\+Point} \&point)
+\begin{DoxyCompactList}\small\item\em Initializes tuple to \+\_\+num\+Points copies of point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a1aacff0823f75661729104f8d232fcbf}\label{classSGTuple_a1aacff0823f75661729104f8d232fcbf}} 
+\hyperlink{classSGTuple_a1aacff0823f75661729104f8d232fcbf}{S\+G\+Tuple} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for empty tuple. \end{DoxyCompactList}\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGTuple_a14d24373f31ea778f4beeff688b6e4d0}{expectation} (const vector$<$ double $>$ \&prob) const
+\begin{DoxyCompactList}\small\item\em Mathematical expectation. \end{DoxyCompactList}\item 
+double \hyperlink{classSGTuple_aadc035860158d0e57acbaef6c56265d9}{expectation} (const vector$<$ double $>$ \&prob, int player) const
+\begin{DoxyCompactList}\small\item\em Mathematical expectation for one player. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a90c1aa7927ebae91fd6f070e942781f1}\label{classSGTuple_a90c1aa7927ebae91fd6f070e942781f1}} 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGTuple_a90c1aa7927ebae91fd6f070e942781f1}{average} () const
+\begin{DoxyCompactList}\small\item\em Returns the average of the points in the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a020eddaa272676d59b678cf49ccbdeb5}\label{classSGTuple_a020eddaa272676d59b678cf49ccbdeb5}} 
+double \hyperlink{classSGTuple_a020eddaa272676d59b678cf49ccbdeb5}{average} (int player) const
+\begin{DoxyCompactList}\small\item\em Returns the average coordinate for a player in the tuple. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGTuple_a4f196f1674d10e9d6cbe3b20c56a2cbd}{strictly\+Less\+Than} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&tuple, int coordinate) const
+\begin{DoxyCompactList}\small\item\em Strictly less than. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_aaeba645544ab977deecebed16217a6f0}\label{classSGTuple_aaeba645544ab977deecebed16217a6f0}} 
+bool \hyperlink{classSGTuple_aaeba645544ab977deecebed16217a6f0}{any\+NaN} () const
+\begin{DoxyCompactList}\small\item\em Check if any of the entries are NaN. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a348c27be7bd4c7fd42341814d30b9d3f}\label{classSGTuple_a348c27be7bd4c7fd42341814d30b9d3f}} 
+void \hyperlink{classSGTuple_a348c27be7bd4c7fd42341814d30b9d3f}{round\+Tuple} (double tol)
+\begin{DoxyCompactList}\small\item\em Round off significant digits smaller than tol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ad041fb90000ce1031b75d0487a4eff9b}\label{classSGTuple_ad041fb90000ce1031b75d0487a4eff9b}} 
+double \hyperlink{classSGTuple_ad041fb90000ce1031b75d0487a4eff9b}{max} (int coordinate) const
+\begin{DoxyCompactList}\small\item\em Returns the maximum in a given coordinate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a1bc61069148ec787fc3fdc442020608d}\label{classSGTuple_a1bc61069148ec787fc3fdc442020608d}} 
+double \hyperlink{classSGTuple_a1bc61069148ec787fc3fdc442020608d}{min} (int coordinate) const
+\begin{DoxyCompactList}\small\item\em Returns the minimum in a given coordinate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a7cd93167a4d83dba5f909edca37c9b89}\label{classSGTuple_a7cd93167a4d83dba5f909edca37c9b89}} 
+double \hyperlink{classSGTuple_a7cd93167a4d83dba5f909edca37c9b89}{max} (int coordinate, int \&index) const
+\begin{DoxyCompactList}\small\item\em Max and puts argmax in index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_acfce1db3f9e968e3f1a4de6443d386d7}\label{classSGTuple_acfce1db3f9e968e3f1a4de6443d386d7}} 
+double \hyperlink{classSGTuple_acfce1db3f9e968e3f1a4de6443d386d7}{min} (int coordinate, int \&index) const
+\begin{DoxyCompactList}\small\item\em Min and puts argmin in index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ad81b7a615d86b6568bf95997312c4e71}\label{classSGTuple_ad81b7a615d86b6568bf95997312c4e71}} 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGTuple_ad81b7a615d86b6568bf95997312c4e71}{max} () const
+\begin{DoxyCompactList}\small\item\em Returns a point equal to the pointwise maximum. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ab06f15a8ad718857750661a752fb0bb7}\label{classSGTuple_ab06f15a8ad718857750661a752fb0bb7}} 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGTuple_ab06f15a8ad718857750661a752fb0bb7}{min} () const
+\begin{DoxyCompactList}\small\item\em Returns a point equal to the pointwise minimum. \end{DoxyCompactList}\item 
+void \hyperlink{classSGTuple_aa57ae522bea33db282722a1e2a33bd0d}{maxmin} (int coordinate, double \&\hyperlink{classSGTuple_ad041fb90000ce1031b75d0487a4eff9b}{max}, int \&max\+Index, double \&\hyperlink{classSGTuple_a1bc61069148ec787fc3fdc442020608d}{min}, int \&min\+Index) const
+\begin{DoxyCompactList}\small\item\em Max and min. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a5aae68fc99fd77e346ee712b634fc358}\label{classSGTuple_a5aae68fc99fd77e346ee712b634fc358}} 
+void \hyperlink{classSGTuple_a5aae68fc99fd77e346ee712b634fc358}{push\+\_\+back} (const \hyperlink{classSGPoint}{S\+G\+Point} \&point)
+\begin{DoxyCompactList}\small\item\em Adds a new point to the back of the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a5eec252277fa0f1007ce54dec61a6cdb}\label{classSGTuple_a5eec252277fa0f1007ce54dec61a6cdb}} 
+void \hyperlink{classSGTuple_a5eec252277fa0f1007ce54dec61a6cdb}{clear} ()
+\begin{DoxyCompactList}\small\item\em Sets the tuple equal to an empty tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ab25851a8056fad3f0ade6929230e7cc9}\label{classSGTuple_ab25851a8056fad3f0ade6929230e7cc9}} 
+void \hyperlink{classSGTuple_ab25851a8056fad3f0ade6929230e7cc9}{erase} (int start, int end)
+\begin{DoxyCompactList}\small\item\em Erases elements. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ab126c10a2f01cf27f9e41167c4a200b0}\label{classSGTuple_ab126c10a2f01cf27f9e41167c4a200b0}} 
+void \hyperlink{classSGTuple_ab126c10a2f01cf27f9e41167c4a200b0}{emplace} (int location, const \hyperlink{classSGPoint}{S\+G\+Point} \&point)
+\begin{DoxyCompactList}\small\item\em Adds an element at the location. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a1868a0be39ce36c14fccdde474623216}\label{classSGTuple_a1868a0be39ce36c14fccdde474623216}} 
+void \hyperlink{classSGTuple_a1868a0be39ce36c14fccdde474623216}{unique} (double tol)
+\begin{DoxyCompactList}\small\item\em Removes non-\/unique elements. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a3f4706837a5389733d8179d71257bcf4}\label{classSGTuple_a3f4706837a5389733d8179d71257bcf4}} 
+int \hyperlink{classSGTuple_a3f4706837a5389733d8179d71257bcf4}{size} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of points in the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a3dc5760a50667dd79be207bfe304d04d}\label{classSGTuple_a3dc5760a50667dd79be207bfe304d04d}} 
+\hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGTuple_a3dc5760a50667dd79be207bfe304d04d}{operator\mbox{[}$\,$\mbox{]}} (int state)
+\begin{DoxyCompactList}\small\item\em Random access operator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_acbf5413d481996d56c9fad235d54e5a8}\label{classSGTuple_acbf5413d481996d56c9fad235d54e5a8}} 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGTuple_acbf5413d481996d56c9fad235d54e5a8}{operator\mbox{[}$\,$\mbox{]}} (int state) const
+\begin{DoxyCompactList}\small\item\em Const random access operator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a1274463fbd40d837c0167252555156e0}\label{classSGTuple_a1274463fbd40d837c0167252555156e0}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_a1274463fbd40d837c0167252555156e0}{operator=} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&rhs)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_acf8c7d73d8f2704979ca44b0c755ecc7}\label{classSGTuple_acf8c7d73d8f2704979ca44b0c755ecc7}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_acf8c7d73d8f2704979ca44b0c755ecc7}{operator+=} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&rhs)
+\begin{DoxyCompactList}\small\item\em Augmented addition of tuples. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ae3c5e1bb4faf5fb652cdb8440133d2de}\label{classSGTuple_ae3c5e1bb4faf5fb652cdb8440133d2de}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_ae3c5e1bb4faf5fb652cdb8440133d2de}{operator-\/=} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&rhs)
+\begin{DoxyCompactList}\small\item\em Augmented subtraction of tuples. \end{DoxyCompactList}\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_af3e77720996ec599cdffea08f92355ae}{operator+=} (const \hyperlink{classSGPoint}{S\+G\+Point} \&rhs)
+\begin{DoxyCompactList}\small\item\em Augmented addition of tuple with a point. \end{DoxyCompactList}\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_a2e6d730692fe4e702e021044dd9889a8}{operator-\/=} (const \hyperlink{classSGPoint}{S\+G\+Point} \&rhs)
+\begin{DoxyCompactList}\small\item\em Augmented subtraction of tuple with a point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a26a157fe2e19fef59e17e58d1c0e99c1}\label{classSGTuple_a26a157fe2e19fef59e17e58d1c0e99c1}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_a26a157fe2e19fef59e17e58d1c0e99c1}{operator$\ast$=} (double d)
+\begin{DoxyCompactList}\small\item\em Scalar multiplication of the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a63277a0693207afb1ddbc048df29534a}\label{classSGTuple_a63277a0693207afb1ddbc048df29534a}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGTuple_a63277a0693207afb1ddbc048df29534a}{operator/=} (double d)
+\begin{DoxyCompactList}\small\item\em Scalar division of the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a13451a8948eaa36865993517231c3bb3}\label{classSGTuple_a13451a8948eaa36865993517231c3bb3}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_a13451a8948eaa36865993517231c3bb3}{operator+} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Adds corresponding elements of lhs and rhs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ab7d906640510ff7b5dd39702f363e244}\label{classSGTuple_ab7d906640510ff7b5dd39702f363e244}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_ab7d906640510ff7b5dd39702f363e244}{operator+} (const \hyperlink{classSGPoint}{S\+G\+Point} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Adds rhs to each element of lhs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a00d07a5bce8e129032f5cd118bbf234f}\label{classSGTuple_a00d07a5bce8e129032f5cd118bbf234f}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_a00d07a5bce8e129032f5cd118bbf234f}{operator-\/} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Subtracts corresponding elements of rhs from lhs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a1549de0dc6c3463000119d2b58b78d85}\label{classSGTuple_a1549de0dc6c3463000119d2b58b78d85}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_a1549de0dc6c3463000119d2b58b78d85}{operator-\/} (const \hyperlink{classSGPoint}{S\+G\+Point} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Subtracts rhs from each element of lhs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a82a8b8ef3ee0f1ae72d49ad98b43bc54}\label{classSGTuple_a82a8b8ef3ee0f1ae72d49ad98b43bc54}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGTuple_a82a8b8ef3ee0f1ae72d49ad98b43bc54}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serialize using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGTuple_a84f49c6d705bbe457e0e74e32316d25b}\label{classSGTuple_a84f49c6d705bbe457e0e74e32316d25b}} 
+static double \hyperlink{classSGTuple_a84f49c6d705bbe457e0e74e32316d25b}{distance} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&t0, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&t1)
+\begin{DoxyCompactList}\small\item\em Calculates the distance between t0 and t1 in the sup norm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \hyperlink{classSGTuple_a2d9f4a67e7230c46d189eb4472417255}{points}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGTuple_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGTuple_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class {\bfseries boost\+::serialization\+::access}
+\item 
+\mbox{\Hypertarget{classSGTuple_a774881a3412a621df63ed3454a2923a3}\label{classSGTuple_a774881a3412a621df63ed3454a2923a3}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_a774881a3412a621df63ed3454a2923a3}{operator$\ast$} (double d, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&point)
+\begin{DoxyCompactList}\small\item\em Left scalar multiplication of a tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ab4926e79ee6cfcb52928edfee5f7aea6}\label{classSGTuple_ab4926e79ee6cfcb52928edfee5f7aea6}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_ab4926e79ee6cfcb52928edfee5f7aea6}{operator$\ast$} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&point, double d)
+\begin{DoxyCompactList}\small\item\em Right scalar multiplication of a tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_a7862330b9a1f30c6d906bdff1fe3af32}\label{classSGTuple_a7862330b9a1f30c6d906bdff1fe3af32}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGTuple_a7862330b9a1f30c6d906bdff1fe3af32}{operator/} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&point, double d)
+\begin{DoxyCompactList}\small\item\em Right scalar division of a tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTuple_ab3a68f1151e2d11c7eca54a64c9d4a7b}\label{classSGTuple_ab3a68f1151e2d11c7eca54a64c9d4a7b}} 
+ostream \& \hyperlink{classSGTuple_ab3a68f1151e2d11c7eca54a64c9d4a7b}{operator$<$$<$} (ostream \&out, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&rhs)
+\begin{DoxyCompactList}\small\item\em Output formatted tuple to file stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGTuple_a14d24373f31ea778f4beeff688b6e4d0}\label{classSGTuple_a14d24373f31ea778f4beeff688b6e4d0}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!expectation@{expectation}}
+\index{expectation@{expectation}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{expectation()}{expectation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Tuple\+::expectation (\begin{DoxyParamCaption}\item[{const vector$<$ double $>$ \&}]{prob }\end{DoxyParamCaption}) const}
+
+
+
+Mathematical expectation. 
+
+Returns the weighted sum of the points in the tuple using the weights in prob. \mbox{\Hypertarget{classSGTuple_aadc035860158d0e57acbaef6c56265d9}\label{classSGTuple_aadc035860158d0e57acbaef6c56265d9}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!expectation@{expectation}}
+\index{expectation@{expectation}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{expectation()}{expectation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double S\+G\+Tuple\+::expectation (\begin{DoxyParamCaption}\item[{const vector$<$ double $>$ \&}]{prob,  }\item[{int}]{player }\end{DoxyParamCaption}) const}
+
+
+
+Mathematical expectation for one player. 
+
+Returns the weighted sum of the player coordinate of the \hyperlink{classSGPoint}{S\+G\+Point} objects in the tuple using the weights in prob. \mbox{\Hypertarget{classSGTuple_aa57ae522bea33db282722a1e2a33bd0d}\label{classSGTuple_aa57ae522bea33db282722a1e2a33bd0d}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!maxmin@{maxmin}}
+\index{maxmin@{maxmin}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{maxmin()}{maxmin()}}
+{\footnotesize\ttfamily void S\+G\+Tuple\+::maxmin (\begin{DoxyParamCaption}\item[{int}]{coordinate,  }\item[{double \&}]{max,  }\item[{int \&}]{max\+Index,  }\item[{double \&}]{min,  }\item[{int \&}]{min\+Index }\end{DoxyParamCaption}) const}
+
+
+
+Max and min. 
+
+Sets both the max, argmax, min, argmin in a given coordinate. \mbox{\Hypertarget{classSGTuple_af3e77720996ec599cdffea08f92355ae}\label{classSGTuple_af3e77720996ec599cdffea08f92355ae}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} \& S\+G\+Tuple\+::operator+= (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Augmented addition of tuple with a point. 
+
+Adds rhs to each element of the tuple. \mbox{\Hypertarget{classSGTuple_a2e6d730692fe4e702e021044dd9889a8}\label{classSGTuple_a2e6d730692fe4e702e021044dd9889a8}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{operator-\/=()}{operator-=()}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} \& S\+G\+Tuple\+::operator-\/= (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Augmented subtraction of tuple with a point. 
+
+Subtracts rhs from each element of the tuple. \mbox{\Hypertarget{classSGTuple_a4f196f1674d10e9d6cbe3b20c56a2cbd}\label{classSGTuple_a4f196f1674d10e9d6cbe3b20c56a2cbd}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!strictly\+Less\+Than@{strictly\+Less\+Than}}
+\index{strictly\+Less\+Than@{strictly\+Less\+Than}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{strictly\+Less\+Than()}{strictlyLessThan()}}
+{\footnotesize\ttfamily bool S\+G\+Tuple\+::strictly\+Less\+Than (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{tuple,  }\item[{int}]{coordinate }\end{DoxyParamCaption}) const}
+
+
+
+Strictly less than. 
+
+Returns true if the calling object is strictly less than tuple in the player coordinate. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGTuple_a2d9f4a67e7230c46d189eb4472417255}\label{classSGTuple_a2d9f4a67e7230c46d189eb4472417255}} 
+\index{S\+G\+Tuple@{S\+G\+Tuple}!points@{points}}
+\index{points@{points}!S\+G\+Tuple@{S\+G\+Tuple}}
+\subsubsection{\texorpdfstring{points}{points}}
+{\footnotesize\ttfamily vector$<$\hyperlink{classSGPoint}{S\+G\+Point}$>$ S\+G\+Tuple\+::points\hspace{0.3cm}{\ttfamily [private]}}
+
+Vector of \hyperlink{classSGTuple}{S\+G\+Tuple} objects. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgtuple.\+hpp\item 
+src/cpp/sgtuple.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classSGTableModel.html" title="Table models for SGViewer. " alt="" coords="212,5,325,32"/>
+<area shape="rect" id="node3" href="$classSGPayoffTableModel.html" title="Derived class for payoff table models. " alt="" coords="373,5,527,32"/>
+<area shape="rect" id="node4" href="$classSGProbabilityTableModel.html" title="Reimplements SGPayoffTable model to specialize to probabilities. " alt="" coords="575,5,757,32"/>
+</map>

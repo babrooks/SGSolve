@@ -105,11 +105,11 @@ int main ()
       cout << "Saving data... ";
       SGSolution soln = solver.getSolution();
       stringstream ss;
-      ss << "./solutions/sgtest.sln";
+      ss << "./solutions/as_twostate.sln"; // changed file name to as_twostate.sln from sgtest.sln
       SGSolution::save(soln,ss.str().c_str());
       cout << "Done!" << endl;
 
-      SGGame::save(game,"./games/as_twostate.sgm");
+      SGGame::save(game,"./games/as_twostate.sgm"); 
 
       SGSolution soln2;
       SGSolution::load(soln2,ss.str().c_str());

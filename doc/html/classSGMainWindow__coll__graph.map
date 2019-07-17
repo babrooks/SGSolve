@@ -1,0 +1,10 @@
+<map id="SGMainWindow" name="SGMainWindow">
+<area shape="rect" id="node3" href="$classSGSolverWorker__V2.html" title="Class for implementing the twist algorithm within SGViewer. " alt="" coords="156,119,307,145"/>
+<area shape="rect" id="node4" href="$classSGEnv.html" title="Manages parameters for algorithm behavior. " alt="" coords="5,145,69,172"/>
+<area shape="rect" id="node8" href="$classSGSettingsHandler.html" title="A widget for setting parameters of the algorithm. " alt="" coords="159,169,303,196"/>
+<area shape="rect" id="node10" href="$classSGSolverWorker.html" title="Class for implementing the twist algorithm within SGViewer. " alt="" coords="168,220,295,247"/>
+<area shape="rect" id="node5" href="$classSGSolutionHandler.html" title="Handles the widgets for displaying the solution. " alt="" coords="159,271,303,297"/>
+<area shape="rect" id="node6" href="$classSGGameHandler.html" title="This class handles the widgets for editing/displaying the game. " alt="" coords="166,321,297,348"/>
+<area shape="rect" id="node7" href="$classSGSolutionHandler__V2.html" title="Handles the widgets for displaying the solution. " alt="" coords="147,372,315,399"/>
+<area shape="rect" id="node9" href="$classSGPlotSettingsHandler.html" title="A widget for setting parameters of the algorithm. " alt="" coords="147,423,316,449"/>
+</map>

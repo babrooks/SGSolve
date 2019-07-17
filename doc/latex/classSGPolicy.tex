@@ -1,0 +1,93 @@
+\hypertarget{classSGPolicy}{}\section{S\+G\+Policy Class Reference}
+\label{classSGPolicy}\index{S\+G\+Policy@{S\+G\+Policy}}
+
+
+A policy for the max-\/min-\/max algorithm.  
+
+
+
+
+{\ttfamily \#include $<$sgpolicy.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPolicy_a69315c332cd0ba528afffeebedcfdde2}\label{classSGPolicy_a69315c332cd0ba528afffeebedcfdde2}} 
+\hyperlink{classSGPolicy_a69315c332cd0ba528afffeebedcfdde2}{S\+G\+Policy} (const S\+G\+Action\+Iter \&\+\_\+action, const \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \+\_\+regime, const int \+\_\+binding\+Player=-\/1, const int \+\_\+binding\+Point=-\/1)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPolicy_a82215868ccbb92fb37d49906ad0c1b97}\label{classSGPolicy_a82215868ccbb92fb37d49906ad0c1b97}} 
+const S\+G\+Action\+Iter \& \hyperlink{classSGPolicy_a82215868ccbb92fb37d49906ad0c1b97}{get\+Action} () const
+\begin{DoxyCompactList}\small\item\em Action get method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPolicy_a9938fc65d15bff073c227d9bb3c76da2}\label{classSGPolicy_a9938fc65d15bff073c227d9bb3c76da2}} 
+const \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \& \hyperlink{classSGPolicy_a9938fc65d15bff073c227d9bb3c76da2}{get\+Regime} () const
+\begin{DoxyCompactList}\small\item\em Regime get method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPolicy_aa0c3081c030f86b58d843e0b5ba21ba9}\label{classSGPolicy_aa0c3081c030f86b58d843e0b5ba21ba9}} 
+const int \hyperlink{classSGPolicy_aa0c3081c030f86b58d843e0b5ba21ba9}{get\+Binding\+Player} () const
+\begin{DoxyCompactList}\small\item\em Binding player get method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPolicy_aee9094f10fd8e15ac972528160a00ae1}\label{classSGPolicy_aee9094f10fd8e15ac972528160a00ae1}} 
+const int \hyperlink{classSGPolicy_aee9094f10fd8e15ac972528160a00ae1}{get\+Binding\+Point} () const
+\begin{DoxyCompactList}\small\item\em Binding point get method. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPolicy_a379522cfa56e755fc666050e51021a05}\label{classSGPolicy_a379522cfa56e755fc666050e51021a05}} 
+std\+::string \hyperlink{classSGPolicy_a379522cfa56e755fc666050e51021a05}{hash} () const
+\begin{DoxyCompactList}\small\item\em Returns a unique identifying string for the policy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPolicy_ac0878f9985f875caf3ff2bd728c42d4c}\label{classSGPolicy_ac0878f9985f875caf3ff2bd728c42d4c}} 
+bool \hyperlink{classSGPolicy_ac0878f9985f875caf3ff2bd728c42d4c}{is\+Equal} (const S\+G\+Action\+Iter \&\+\_\+action, const \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \&\+\_\+regime, const int \+\_\+binding\+Player=-\/1, const int \+\_\+binding\+Point=-\/1) const
+\begin{DoxyCompactList}\small\item\em Tests equality of two policies. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+S\+G\+Action\+Iter \hyperlink{classSGPolicy_ac029ee78aaba722161e90c5709aa73c2}{action}
+\item 
+\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \hyperlink{classSGPolicy_a4e83ce41ec77a683e43f612f3579bd97}{regime}
+\item 
+int \hyperlink{classSGPolicy_a1ff371b21f81c60ca360c28ed62d934d}{binding\+Player}
+\item 
+int \hyperlink{classSGPolicy_afcf15ede93b8107513712a58c501bffe}{binding\+Point}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPolicy_af95d16966d09f22494d19eae46d50258}\label{classSGPolicy_af95d16966d09f22494d19eae46d50258}} 
+bool {\bfseries operator$<$} (const \hyperlink{classSGPolicy}{S\+G\+Policy} \&, const \hyperlink{classSGPolicy}{S\+G\+Policy} \&)
+\item 
+\mbox{\Hypertarget{classSGPolicy_a8239205df7de7e5126fd23370498c077}\label{classSGPolicy_a8239205df7de7e5126fd23370498c077}} 
+ostream \& {\bfseries operator$<$$<$} (ostream \&out, const \hyperlink{classSGPolicy}{S\+G\+Policy} \&)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A policy for the max-\/min-\/max algorithm. 
+
+$<$ This class represents a policy in a single state. Part of the exact computation routine in \hyperlink{classSGSolver__MaxMinMax__3Player}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+3\+Player}. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGPolicy_ac029ee78aaba722161e90c5709aa73c2}\label{classSGPolicy_ac029ee78aaba722161e90c5709aa73c2}} 
+\index{S\+G\+Policy@{S\+G\+Policy}!action@{action}}
+\index{action@{action}!S\+G\+Policy@{S\+G\+Policy}}
+\subsubsection{\texorpdfstring{action}{action}}
+{\footnotesize\ttfamily S\+G\+Action\+Iter S\+G\+Policy\+::action\hspace{0.3cm}{\ttfamily [private]}}
+
+The action. \mbox{\Hypertarget{classSGPolicy_a1ff371b21f81c60ca360c28ed62d934d}\label{classSGPolicy_a1ff371b21f81c60ca360c28ed62d934d}} 
+\index{S\+G\+Policy@{S\+G\+Policy}!binding\+Player@{binding\+Player}}
+\index{binding\+Player@{binding\+Player}!S\+G\+Policy@{S\+G\+Policy}}
+\subsubsection{\texorpdfstring{binding\+Player}{bindingPlayer}}
+{\footnotesize\ttfamily int S\+G\+Policy\+::binding\+Player\hspace{0.3cm}{\ttfamily [private]}}
+
+The player with the binding incentive constraint if the regime is binding. \mbox{\Hypertarget{classSGPolicy_afcf15ede93b8107513712a58c501bffe}\label{classSGPolicy_afcf15ede93b8107513712a58c501bffe}} 
+\index{S\+G\+Policy@{S\+G\+Policy}!binding\+Point@{binding\+Point}}
+\index{binding\+Point@{binding\+Point}!S\+G\+Policy@{S\+G\+Policy}}
+\subsubsection{\texorpdfstring{binding\+Point}{bindingPoint}}
+{\footnotesize\ttfamily int S\+G\+Policy\+::binding\+Point\hspace{0.3cm}{\ttfamily [private]}}
+
+The index of the binding continuation value when the regime is binding. \mbox{\Hypertarget{classSGPolicy_a4e83ce41ec77a683e43f612f3579bd97}\label{classSGPolicy_a4e83ce41ec77a683e43f612f3579bd97}} 
+\index{S\+G\+Policy@{S\+G\+Policy}!regime@{regime}}
+\index{regime@{regime}!S\+G\+Policy@{S\+G\+Policy}}
+\subsubsection{\texorpdfstring{regime}{regime}}
+{\footnotesize\ttfamily \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} S\+G\+Policy\+::regime\hspace{0.3cm}{\ttfamily [private]}}
+
+The regime. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgpolicy.\+hpp\item 
+src/cpp/sgpolicy.\+cpp\end{DoxyCompactItemize}

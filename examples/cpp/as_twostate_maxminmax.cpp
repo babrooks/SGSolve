@@ -119,7 +119,7 @@ int main ()
 
       SGSolution_MaxMinMax soln = solver.getSolution();
 
-      SGSolution_MaxMinMax::save(soln,"as_twostate_maxminmax.sln2");
+      SGSolution_MaxMinMax::save(soln,"./solutions/as_twostate_maxminmax.sln2");  // edit send solutions folder
 
       SGSolver_MaxMinMax solver2(env,game);
       try
@@ -133,10 +133,10 @@ int main ()
 	}
 
       SGSolution_MaxMinMax soln2 = solver2.getSolution();
-      SGSolution_MaxMinMax::save(soln2,"as_twostate_maxminmax_endogenous.sln2");
+      SGSolution_MaxMinMax::save(soln2,"./solutions/as_twostate_maxminmax_endogenous.sln2"); //editsend solutions folder
 
       SGSolution_MaxMinMax soln3;
-      SGSolution_MaxMinMax::load(soln3,"as_twostate_maxminmax_endogenous.sln2");
+      SGSolution_MaxMinMax::load(soln3,"./solutions/as_twostate_maxminmax_endogenous.sln2"); //same as above
     }
   catch (SGException e)
     {

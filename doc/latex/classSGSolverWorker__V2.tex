@@ -1,0 +1,176 @@
+\hypertarget{classSGSolverWorker__V2}{}\section{S\+G\+Solver\+Worker\+\_\+\+V2 Class Reference}
+\label{classSGSolverWorker__V2}\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+
+
+Class for implementing the twist algorithm within S\+G\+Viewer.  
+
+
+
+
+{\ttfamily \#include $<$sgsolverworker\+\_\+v2.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Solver\+Worker\+\_\+\+V2\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{classSGSolverWorker__V2__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Solver\+Worker\+\_\+\+V2\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classSGSolverWorker__V2__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}{S\+T\+A\+T\+US} \{ \hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561aac3497bdaf25de1e84fba1d717d09aa9}{F\+A\+I\+L\+ED}, 
+\hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561a08c3f1a894b6925e658b5b8e0e84e921}{C\+O\+N\+V\+E\+R\+G\+ED}, 
+\hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561a28ac2db5d167e970a06341f9c934766d}{N\+O\+T\+C\+O\+N\+V\+E\+R\+G\+ED}
+ \}\begin{DoxyCompactList}\small\item\em Code for status at the end of the iteration. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGSolverWorker__V2_a3b7099cf8b559184743bca1eba3fa00e}{iterate} ()
+\begin{DoxyCompactList}\small\item\em Iterates. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_a5a2df3d8a1a53546222cc6586d49c777}\label{classSGSolverWorker__V2_a5a2df3d8a1a53546222cc6586d49c777}} 
+const \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} \& \hyperlink{classSGSolverWorker__V2_a5a2df3d8a1a53546222cc6586d49c777}{get\+Solution} () const
+\begin{DoxyCompactList}\small\item\em Returns the \hyperlink{classSGSolution}{S\+G\+Solution} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_a9d9ba096eec2eb0a693f3aac5cc6f058}\label{classSGSolverWorker__V2_a9d9ba096eec2eb0a693f3aac5cc6f058}} 
+const \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} \& \hyperlink{classSGSolverWorker__V2_a9d9ba096eec2eb0a693f3aac5cc6f058}{get\+Solver} () const
+\begin{DoxyCompactList}\small\item\em Returns the solver object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_ae80756d58e6da701235b0768c11bb30e}\label{classSGSolverWorker__V2_ae80756d58e6da701235b0768c11bb30e}} 
+void \hyperlink{classSGSolverWorker__V2_ae80756d58e6da701235b0768c11bb30e}{result\+Ready} (bool)
+\begin{DoxyCompactList}\small\item\em Signal that gets emitted when iteration finishes. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolverWorker__V2_a2c783d5df57142df724a1a5841e19f42}{exception\+Caught} ()
+\begin{DoxyCompactList}\small\item\em Signal that gets emitted when an exception is caught. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGSolverWorker__V2_a34d55eba6e02311b5b8d0d8371bf54c1}{S\+G\+Solver\+Worker\+\_\+\+V2} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, const \hyperlink{classSGGame}{S\+G\+Game} \&game, Q\+Text\+Edit $\ast$\+\_\+log\+Text\+Edit)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_acc4d1058989b8796c021026bb3d86333}\label{classSGSolverWorker__V2_acc4d1058989b8796c021026bb3d86333}} 
+\hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}{S\+T\+A\+T\+US} \hyperlink{classSGSolverWorker__V2_acc4d1058989b8796c021026bb3d86333}{get\+Status} () const
+\begin{DoxyCompactList}\small\item\em Returns the status of the worker. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_aea389c75d22cd0196369b4259d5ae431}\label{classSGSolverWorker__V2_aea389c75d22cd0196369b4259d5ae431}} 
+const Q\+String \& \hyperlink{classSGSolverWorker__V2_aea389c75d22cd0196369b4259d5ae431}{get\+Exception\+Msg} () const
+\begin{DoxyCompactList}\small\item\em Returns the exception message (if one is caught) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}{S\+G\+Solver\+Worker\+\_\+\+V2\+::\+S\+T\+A\+T\+US} \hyperlink{classSGSolverWorker__V2_a87eb50e8f1b9c3740cf92de43c995023}{status}
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_a6d12bc5ad9d95a17501b0837557e2579}\label{classSGSolverWorker__V2_a6d12bc5ad9d95a17501b0837557e2579}} 
+const \hyperlink{classSGEnv}{S\+G\+Env} \& \hyperlink{classSGSolverWorker__V2_a6d12bc5ad9d95a17501b0837557e2579}{env}
+\begin{DoxyCompactList}\small\item\em An environment object to hold settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_aaa01f1ac6a3c6839302c00c1bfdc96f6}\label{classSGSolverWorker__V2_aaa01f1ac6a3c6839302c00c1bfdc96f6}} 
+\hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} \hyperlink{classSGSolverWorker__V2_aaa01f1ac6a3c6839302c00c1bfdc96f6}{solver}
+\begin{DoxyCompactList}\small\item\em The main object for performing calculations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_a69b418eb2d71414fbc6f57fedbb9c243}\label{classSGSolverWorker__V2_a69b418eb2d71414fbc6f57fedbb9c243}} 
+Q\+Text\+Edit $\ast$ \hyperlink{classSGSolverWorker__V2_a69b418eb2d71414fbc6f57fedbb9c243}{log\+Text\+Edit}
+\begin{DoxyCompactList}\small\item\em A pointer to the text edit in which to report progress. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_a6d19ed64fc70a400897d1667d41f1207}\label{classSGSolverWorker__V2_a6d19ed64fc70a400897d1667d41f1207}} 
+int \hyperlink{classSGSolverWorker__V2_a6d19ed64fc70a400897d1667d41f1207}{num\+Iter}
+\begin{DoxyCompactList}\small\item\em Number of iterations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolverWorker__V2_aa335ad02f05d42b9b99e254ec7803113}\label{classSGSolverWorker__V2_aa335ad02f05d42b9b99e254ec7803113}} 
+Q\+String \hyperlink{classSGSolverWorker__V2_aa335ad02f05d42b9b99e254ec7803113}{exception\+Msg}
+\begin{DoxyCompactList}\small\item\em Exception message caught by solver. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for implementing the twist algorithm within S\+G\+Viewer. 
+
+If we just used the \hyperlink{classSGSolver}{S\+G\+Solver} class to solve the game, the algorithm would run continuously until convergence or an error. Since we want regular status updates and we want to print progress to the log window, we have to reimplement the solver routine.
+
+This class uses \hyperlink{classSGApprox}{S\+G\+Approx} to calculate the solution. The main program assigns this object to a separate thread to preserve responsiveness of the algorithm. After each iteration, control is returned to the main process, which prints a status update if a revolution has been completed and cancels the algorithm if the cancel flag has been thrown. Communication between the \hyperlink{classSGSolverWorker}{S\+G\+Solver\+Worker} and \hyperlink{classSGMainWindow}{S\+G\+Main\+Window} is facilitated by signals and slots. 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}\label{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}} 
+\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!S\+T\+A\+T\+US@{S\+T\+A\+T\+US}}
+\index{S\+T\+A\+T\+US@{S\+T\+A\+T\+US}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+\subsubsection{\texorpdfstring{S\+T\+A\+T\+US}{STATUS}}
+{\footnotesize\ttfamily enum \hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}{S\+G\+Solver\+Worker\+\_\+\+V2\+::\+S\+T\+A\+T\+US}}
+
+
+
+Code for status at the end of the iteration. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+A\+I\+L\+ED@{F\+A\+I\+L\+ED}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!F\+A\+I\+L\+ED@{F\+A\+I\+L\+ED}}}\mbox{\Hypertarget{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561aac3497bdaf25de1e84fba1d717d09aa9}\label{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561aac3497bdaf25de1e84fba1d717d09aa9}} 
+F\+A\+I\+L\+ED&Could not complete the iteration. An error occured. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+O\+N\+V\+E\+R\+G\+ED@{C\+O\+N\+V\+E\+R\+G\+ED}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!C\+O\+N\+V\+E\+R\+G\+ED@{C\+O\+N\+V\+E\+R\+G\+ED}}}\mbox{\Hypertarget{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561a08c3f1a894b6925e658b5b8e0e84e921}\label{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561a08c3f1a894b6925e658b5b8e0e84e921}} 
+C\+O\+N\+V\+E\+R\+G\+ED&Algorithm completed the iteration and has converged. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{N\+O\+T\+C\+O\+N\+V\+E\+R\+G\+ED@{N\+O\+T\+C\+O\+N\+V\+E\+R\+G\+ED}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!N\+O\+T\+C\+O\+N\+V\+E\+R\+G\+ED@{N\+O\+T\+C\+O\+N\+V\+E\+R\+G\+ED}}}\mbox{\Hypertarget{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561a28ac2db5d167e970a06341f9c934766d}\label{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561a28ac2db5d167e970a06341f9c934766d}} 
+N\+O\+T\+C\+O\+N\+V\+E\+R\+G\+ED&Algorithm completed the iteration but has not converged. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGSolverWorker__V2_a34d55eba6e02311b5b8d0d8371bf54c1}\label{classSGSolverWorker__V2_a34d55eba6e02311b5b8d0d8371bf54c1}} 
+\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+\subsubsection{\texorpdfstring{S\+G\+Solver\+Worker\+\_\+\+V2()}{SGSolverWorker\_V2()}}
+{\footnotesize\ttfamily S\+G\+Solver\+Worker\+\_\+\+V2\+::\+S\+G\+Solver\+Worker\+\_\+\+V2 (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env,  }\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{game,  }\item[{Q\+Text\+Edit $\ast$}]{\+\_\+log\+Text\+Edit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Initializes the solver object. Waits for instruction to begin iteration via the \hyperlink{classSGSolverWorker__V2_a3b7099cf8b559184743bca1eba3fa00e}{S\+G\+Solver\+Worker\+\_\+\+V2\+::iterate} slot. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSolverWorker__V2_a2c783d5df57142df724a1a5841e19f42}\label{classSGSolverWorker__V2_a2c783d5df57142df724a1a5841e19f42}} 
+\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!exception\+Caught@{exception\+Caught}}
+\index{exception\+Caught@{exception\+Caught}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+\subsubsection{\texorpdfstring{exception\+Caught}{exceptionCaught}}
+{\footnotesize\ttfamily void S\+G\+Solver\+Worker\+\_\+\+V2\+::exception\+Caught (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [signal]}}
+
+
+
+Signal that gets emitted when an exception is caught. 
+
+Not currently used. \mbox{\Hypertarget{classSGSolverWorker__V2_a3b7099cf8b559184743bca1eba3fa00e}\label{classSGSolverWorker__V2_a3b7099cf8b559184743bca1eba3fa00e}} 
+\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!iterate@{iterate}}
+\index{iterate@{iterate}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+\subsubsection{\texorpdfstring{iterate}{iterate}}
+{\footnotesize\ttfamily void S\+G\+Solver\+Worker\+\_\+\+V2\+::iterate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [slot]}}
+
+
+
+Iterates. 
+
+Runs one iteration of the twist algorithm and emits the result\+Ready signal. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGSolverWorker__V2_a87eb50e8f1b9c3740cf92de43c995023}\label{classSGSolverWorker__V2_a87eb50e8f1b9c3740cf92de43c995023}} 
+\index{S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}!status@{status}}
+\index{status@{status}!S\+G\+Solver\+Worker\+\_\+\+V2@{S\+G\+Solver\+Worker\+\_\+\+V2}}
+\subsubsection{\texorpdfstring{status}{status}}
+{\footnotesize\ttfamily enum \hyperlink{classSGSolverWorker__V2_a252099560187dceadfe97c1bd335c561}{S\+G\+Solver\+Worker\+\_\+\+V2\+::\+S\+T\+A\+T\+US}  S\+G\+Solver\+Worker\+\_\+\+V2\+::status}
+
+Current status. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsolverworker\+\_\+v2.\+hpp\end{DoxyCompactItemize}

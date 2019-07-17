@@ -1,0 +1,296 @@
+\hypertarget{classSGSolver__MaxMinMax}{}\section{S\+G\+Solver\+\_\+\+Max\+Min\+Max Class Reference}
+\label{classSGSolver__MaxMinMax}\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+
+
+Class for solving stochastic games.  
+
+
+
+
+{\ttfamily \#include $<$sgsolver\+\_\+maxminmax.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Solver\+\_\+\+Max\+Min\+Max\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGSolver__MaxMinMax__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a2f341c08f4eca886202cbcb02c690054}\label{classSGSolver__MaxMinMax_a2f341c08f4eca886202cbcb02c690054}} 
+\hyperlink{classSGSolver__MaxMinMax_a2f341c08f4eca886202cbcb02c690054}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGSolver__MaxMinMax_a840cb488bc710b26bfc458417bd5dc2d}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_afa0701d26f007ca8394f79eb38e4b389}\label{classSGSolver__MaxMinMax_afa0701d26f007ca8394f79eb38e4b389}} 
+\hyperlink{classSGSolver__MaxMinMax_afa0701d26f007ca8394f79eb38e4b389}{$\sim$\+S\+G\+Solver\+\_\+\+Max\+Min\+Max} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolver__MaxMinMax_a27b1ef962eb87c0495f2d0f733432c36}{solve\+\_\+fixed} ()
+\begin{DoxyCompactList}\small\item\em Solve routine. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}{solve} ()
+\begin{DoxyCompactList}\small\item\em Solve routine. \end{DoxyCompactList}\item 
+double \hyperlink{classSGSolver__MaxMinMax_ab8c5d13de6ad13e26a42f901d7e1d9c8}{iterate} ()
+\begin{DoxyCompactList}\small\item\em One iteration of the endogenous algorith. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a161656877ab57bd615d9cfb9358bd17d}\label{classSGSolver__MaxMinMax_a161656877ab57bd615d9cfb9358bd17d}} 
+double \hyperlink{classSGSolver__MaxMinMax_a161656877ab57bd615d9cfb9358bd17d}{pseudo\+Hausdorff} (const list$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \&new\+Directions, const list$<$ vector$<$ double $>$ $>$ \&new\+Levels) const
+\begin{DoxyCompactList}\small\item\em Compute approximate Hausdorff distance. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a16095a92d8f4875a37515596440a7ac3}\label{classSGSolver__MaxMinMax_a16095a92d8f4875a37515596440a7ac3}} 
+void \hyperlink{classSGSolver__MaxMinMax_a16095a92d8f4875a37515596440a7ac3}{initialize} ()
+\begin{DoxyCompactList}\small\item\em Initializes the solve routines. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a03b71a1552b65b0fd2ffe5946a11ff2a}\label{classSGSolver__MaxMinMax_a03b71a1552b65b0fd2ffe5946a11ff2a}} 
+std\+::string {\bfseries progress\+String} () const
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_ad4e7d8e969fc2446f141132c82eb7f73}\label{classSGSolver__MaxMinMax_ad4e7d8e969fc2446f141132c82eb7f73}} 
+void \hyperlink{classSGSolver__MaxMinMax_ad4e7d8e969fc2446f141132c82eb7f73}{optimize\+Policy} (\hyperlink{classSGTuple}{S\+G\+Tuple} \&pivot, vector$<$ double $>$ \&penalties, vector$<$ S\+G\+Action\+Iter $>$ \&action\+Tuple, vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&regime\+Tuple, const \hyperlink{classSGPoint}{S\+G\+Point} curr\+Dir, const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&\hyperlink{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}{actions}, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&feasible\+Tuple) const
+\begin{DoxyCompactList}\small\item\em Optimizes the policy for the given direction. \end{DoxyCompactList}\item 
+double \hyperlink{classSGSolver__MaxMinMax_a98888e37855b47fca85583d4238933b3}{sensitivity} (const \hyperlink{classSGTuple}{S\+G\+Tuple} \&pivot, const vector$<$ double $>$ \&penalties, const vector$<$ S\+G\+Action\+Iter $>$ \&action\+Tuple, const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&regime\+Tuple, const \hyperlink{classSGPoint}{S\+G\+Point} curr\+Dir, const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&\hyperlink{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}{actions}) const
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_ae6d741e78d80171428a81e9933ebf76f}\label{classSGSolver__MaxMinMax_ae6d741e78d80171428a81e9933ebf76f}} 
+void \hyperlink{classSGSolver__MaxMinMax_ae6d741e78d80171428a81e9933ebf76f}{find\+Feasible\+Tuple} (\hyperlink{classSGTuple}{S\+G\+Tuple} \&feasible\+Tuple, const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&\hyperlink{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}{actions}) const
+\begin{DoxyCompactList}\small\item\em Find a payoff tuple that is feasible for A\+PS. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a108b44872ab1a77b8013d898c19b2005}\label{classSGSolver__MaxMinMax_a108b44872ab1a77b8013d898c19b2005}} 
+void \hyperlink{classSGSolver__MaxMinMax_a108b44872ab1a77b8013d898c19b2005}{policy\+To\+Payoffs} (\hyperlink{classSGTuple}{S\+G\+Tuple} \&pivot, const vector$<$ S\+G\+Action\+Iter $>$ \&action\+Tuple, const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&regime\+Tuple) const
+\begin{DoxyCompactList}\small\item\em Converts a policy function to a payoff function using bellman iteration. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolver__MaxMinMax_a66a941fb8232a6cd7d017aab2bc34ed2}{policy\+To\+Penalties} (vector$<$ double $>$ \&penalties, const vector$<$ S\+G\+Action\+Iter $>$ \&action\+Tuple, const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&regime\+Tuple) const
+\item 
+const \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} \& \hyperlink{classSGSolver__MaxMinMax_ab8475d7043987a535dcadf3db3044aba}{get\+Solution} () const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_ac9845908149a8f166fb9b078bb0bdc80}\label{classSGSolver__MaxMinMax_ac9845908149a8f166fb9b078bb0bdc80}} 
+const \hyperlink{classSGEnv}{S\+G\+Env} \& \hyperlink{classSGSolver__MaxMinMax_ac9845908149a8f166fb9b078bb0bdc80}{env}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classSGEnv}{S\+G\+Env} object to hold parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a39a710babdb8e7579bdb7239d4ed6a1c}\label{classSGSolver__MaxMinMax_a39a710babdb8e7579bdb7239d4ed6a1c}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolver__MaxMinMax_a39a710babdb8e7579bdb7239d4ed6a1c}{game}
+\begin{DoxyCompactList}\small\item\em Constant reference to the game to be solved. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a3cdf8e6950ef52995d0d9290f8b4dc5b}\label{classSGSolver__MaxMinMax_a3cdf8e6950ef52995d0d9290f8b4dc5b}} 
+\hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} \hyperlink{classSGSolver__MaxMinMax_a3cdf8e6950ef52995d0d9290f8b4dc5b}{soln}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classSGSolution}{S\+G\+Solution} object used by \hyperlink{classSGApprox}{S\+G\+Approx} to store data. \end{DoxyCompactList}\item 
+const double \hyperlink{classSGSolver__MaxMinMax_a1ad819a8544d528f4d05877a451c8567}{delta}
+\item 
+const int \hyperlink{classSGSolver__MaxMinMax_a457fae4e376e1f21636629196495fa97}{num\+Players}
+\item 
+const int \hyperlink{classSGSolver__MaxMinMax_a13cbb5552061a0e1705cbfb7c53ab963}{num\+States}
+\item 
+const vector$<$ vector$<$ bool $>$ $>$ \& \hyperlink{classSGSolver__MaxMinMax_af7be1bbda2cf8271fffe8135109e0518}{eq\+Actions}
+\item 
+const vector$<$ vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ $>$ \& \hyperlink{classSGSolver__MaxMinMax_a0f462247c1e77dc832f148e6c1e6869a}{payoffs}
+\item 
+const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \& \hyperlink{classSGSolver__MaxMinMax_a7e0fe7fcc94931357a327bbb3efc6e85}{probabilities}
+\item 
+const vector$<$ vector$<$ int $>$ $>$ \hyperlink{classSGSolver__MaxMinMax_a58be6ea5885884e3dda5cdfcaf92236c}{num\+Actions}
+\item 
+const vector$<$ int $>$ \hyperlink{classSGSolver__MaxMinMax_a17e30f869dd8132126a07b31a5123ad5}{num\+Actions\+\_\+total\+By\+State}
+\item 
+list$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \hyperlink{classSGSolver__MaxMinMax_a8ec4678b23922c70408b49b571c1bd19}{directions}
+\item 
+list$<$ vector$<$ double $>$ $>$ \hyperlink{classSGSolver__MaxMinMax_a460070c82cf475efbe9925a04b3266ca}{levels}
+\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGSolver__MaxMinMax_a462ec472762a3b65b52d2b0973936e64}{threat\+Tuple}
+\item 
+vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \hyperlink{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}{actions}
+\item 
+const \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGSolver__MaxMinMax_a60d94f1084517a2e521328f18aa17608}{due\+East} = \hyperlink{classSGPoint}{S\+G\+Point}(1.\+0,0.\+0)
+\item 
+const \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGSolver__MaxMinMax_a147a1c72b0b6b4c07412141441ac433d}{due\+North} = \hyperlink{classSGPoint}{S\+G\+Point}(0.\+0,1.\+0)
+\item 
+int \hyperlink{classSGSolver__MaxMinMax_aa9e508ac0cf0175d2635a2fcc4bb207a}{num\+Iter}
+\item 
+double \hyperlink{classSGSolver__MaxMinMax_a9dd42927e8a20c84a19b6019d93146e1}{error\+Level}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for solving stochastic games. 
+
+This class implements the max-\/min-\/max algorithm of Abreu, Brooks, and Sannikov (2019) for two players. It contains the parameters for the algorithm, the solve method, as well as the data structure produced by solve. It calculates the equilibrium payoff correspondence corresponding to an \hyperlink{classSGGame}{S\+G\+Game} object. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{pd_twostate_8cpp-example}{pd\+\_\+twostate.\+cpp}, and \hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a840cb488bc710b26bfc458417bd5dc2d}\label{classSGSolver__MaxMinMax_a840cb488bc710b26bfc458417bd5dc2d}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{S\+G\+Solver\+\_\+\+Max\+Min\+Max()}{SGSolver\_MaxMinMax()}}
+{\footnotesize\ttfamily S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::\+S\+G\+Solver\+\_\+\+Max\+Min\+Max (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env,  }\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{\+\_\+game }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Creates a new \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} object and initializes it with the given game. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_ab8475d7043987a535dcadf3db3044aba}\label{classSGSolver__MaxMinMax_ab8475d7043987a535dcadf3db3044aba}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!get\+Solution@{get\+Solution}}
+\index{get\+Solution@{get\+Solution}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{get\+Solution()}{getSolution()}}
+{\footnotesize\ttfamily const \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max}\& S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::get\+Solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a constant reference to the \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} object storing the output of the computation. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{pd_twostate_8cpp-example}{pd\+\_\+twostate.\+cpp}, and \hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_ab8c5d13de6ad13e26a42f901d7e1d9c8}\label{classSGSolver__MaxMinMax_ab8c5d13de6ad13e26a42f901d7e1d9c8}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!iterate@{iterate}}
+\index{iterate@{iterate}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{iterate()}{iterate()}}
+{\footnotesize\ttfamily double S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::iterate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+One iteration of the endogenous algorith. 
+
+Return the new error level. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a66a941fb8232a6cd7d017aab2bc34ed2}\label{classSGSolver__MaxMinMax_a66a941fb8232a6cd7d017aab2bc34ed2}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!policy\+To\+Penalties@{policy\+To\+Penalties}}
+\index{policy\+To\+Penalties@{policy\+To\+Penalties}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{policy\+To\+Penalties()}{policyToPenalties()}}
+{\footnotesize\ttfamily void S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::policy\+To\+Penalties (\begin{DoxyParamCaption}\item[{vector$<$ double $>$ \&}]{penalties,  }\item[{const vector$<$ S\+G\+Action\+Iter $>$ \&}]{action\+Tuple,  }\item[{const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&}]{regime\+Tuple }\end{DoxyParamCaption}) const}
+
+Converts a policy function to the associated penalties using bellman iteration, when computing inner approximation \mbox{\Hypertarget{classSGSolver__MaxMinMax_a98888e37855b47fca85583d4238933b3}\label{classSGSolver__MaxMinMax_a98888e37855b47fca85583d4238933b3}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!sensitivity@{sensitivity}}
+\index{sensitivity@{sensitivity}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{sensitivity()}{sensitivity()}}
+{\footnotesize\ttfamily double S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::sensitivity (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{pivot,  }\item[{const vector$<$ double $>$ \&}]{penalties,  }\item[{const vector$<$ S\+G\+Action\+Iter $>$ \&}]{action\+Tuple,  }\item[{const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&}]{regime\+Tuple,  }\item[{const \hyperlink{classSGPoint}{S\+G\+Point}}]{curr\+Dir,  }\item[{const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&}]{actions }\end{DoxyParamCaption}) const}
+
+Find the next clockwise direction at which the optimal tuple changes \mbox{\Hypertarget{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}\label{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!solve@{solve}}
+\index{solve@{solve}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily void S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solve routine. 
+
+Initializes a new S\+G\+Approximation object and iteratively generates it until one of the stopping criteria have been met. Stores progress in the data member.
+
+Generates directions endogenously. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{pd_twostate_8cpp-example}{pd\+\_\+twostate.\+cpp}, and \hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_a27b1ef962eb87c0495f2d0f733432c36}\label{classSGSolver__MaxMinMax_a27b1ef962eb87c0495f2d0f733432c36}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!solve\+\_\+fixed@{solve\+\_\+fixed}}
+\index{solve\+\_\+fixed@{solve\+\_\+fixed}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{solve\+\_\+fixed()}{solve\_fixed()}}
+{\footnotesize\ttfamily void S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::solve\+\_\+fixed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solve routine. 
+
+Initializes a new S\+G\+Approximation object and iteratively generates it until one of the stopping criteria have been met. Stores progress in the data member.
+
+Fixed directions. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}\label{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!actions@{actions}}
+\index{actions@{actions}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{actions}{actions}}
+{\footnotesize\ttfamily vector$<$ list$<$\hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max}$>$ $>$ S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::actions\hspace{0.3cm}{\ttfamily [private]}}
+
+Actions that can still be played. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a1ad819a8544d528f4d05877a451c8567}\label{classSGSolver__MaxMinMax_a1ad819a8544d528f4d05877a451c8567}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!delta@{delta}}
+\index{delta@{delta}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{delta}{delta}}
+{\footnotesize\ttfamily const double S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::delta\hspace{0.3cm}{\ttfamily [private]}}
+
+The discount factor, copied from S\+G\+Approx\+\_\+\+V2\+::game. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a8ec4678b23922c70408b49b571c1bd19}\label{classSGSolver__MaxMinMax_a8ec4678b23922c70408b49b571c1bd19}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!directions@{directions}}
+\index{directions@{directions}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{directions}{directions}}
+{\footnotesize\ttfamily list$<$\hyperlink{classSGPoint}{S\+G\+Point}$>$ S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::directions\hspace{0.3cm}{\ttfamily [private]}}
+
+List of directions in which the algorithm bounds payoffs. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a60d94f1084517a2e521328f18aa17608}\label{classSGSolver__MaxMinMax_a60d94f1084517a2e521328f18aa17608}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!due\+East@{due\+East}}
+\index{due\+East@{due\+East}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{due\+East}{dueEast}}
+{\footnotesize\ttfamily const \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::due\+East = \hyperlink{classSGPoint}{S\+G\+Point}(1.\+0,0.\+0)\hspace{0.3cm}{\ttfamily [private]}}
+
+The direction due east. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a147a1c72b0b6b4c07412141441ac433d}\label{classSGSolver__MaxMinMax_a147a1c72b0b6b4c07412141441ac433d}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!due\+North@{due\+North}}
+\index{due\+North@{due\+North}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{due\+North}{dueNorth}}
+{\footnotesize\ttfamily const \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::due\+North = \hyperlink{classSGPoint}{S\+G\+Point}(0.\+0,1.\+0)\hspace{0.3cm}{\ttfamily [private]}}
+
+The direction due north. \mbox{\Hypertarget{classSGSolver__MaxMinMax_af7be1bbda2cf8271fffe8135109e0518}\label{classSGSolver__MaxMinMax_af7be1bbda2cf8271fffe8135109e0518}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!eq\+Actions@{eq\+Actions}}
+\index{eq\+Actions@{eq\+Actions}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{eq\+Actions}{eqActions}}
+{\footnotesize\ttfamily const vector$<$ vector$<$bool$>$ $>$\& S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::eq\+Actions\hspace{0.3cm}{\ttfamily [private]}}
+
+Constant refernece to actions that are allowed to be played in equilibrium in the game. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a9dd42927e8a20c84a19b6019d93146e1}\label{classSGSolver__MaxMinMax_a9dd42927e8a20c84a19b6019d93146e1}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!error\+Level@{error\+Level}}
+\index{error\+Level@{error\+Level}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{error\+Level}{errorLevel}}
+{\footnotesize\ttfamily double S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::error\+Level\hspace{0.3cm}{\ttfamily [private]}}
+
+The current error level. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a460070c82cf475efbe9925a04b3266ca}\label{classSGSolver__MaxMinMax_a460070c82cf475efbe9925a04b3266ca}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!levels@{levels}}
+\index{levels@{levels}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{levels}{levels}}
+{\footnotesize\ttfamily list$<$ vector$<$double$>$ $>$ S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::levels\hspace{0.3cm}{\ttfamily [private]}}
+
+List of optimal levels attained in the corresponding directions. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a58be6ea5885884e3dda5cdfcaf92236c}\label{classSGSolver__MaxMinMax_a58be6ea5885884e3dda5cdfcaf92236c}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!num\+Actions@{num\+Actions}}
+\index{num\+Actions@{num\+Actions}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{num\+Actions}{numActions}}
+{\footnotesize\ttfamily const vector$<$ vector$<$int$>$ $>$ S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::num\+Actions\hspace{0.3cm}{\ttfamily [private]}}
+
+Number of actions in the game. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a17e30f869dd8132126a07b31a5123ad5}\label{classSGSolver__MaxMinMax_a17e30f869dd8132126a07b31a5123ad5}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!num\+Actions\+\_\+total\+By\+State@{num\+Actions\+\_\+total\+By\+State}}
+\index{num\+Actions\+\_\+total\+By\+State@{num\+Actions\+\_\+total\+By\+State}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{num\+Actions\+\_\+total\+By\+State}{numActions\_totalByState}}
+{\footnotesize\ttfamily const vector$<$ int $>$ S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::num\+Actions\+\_\+total\+By\+State\hspace{0.3cm}{\ttfamily [private]}}
+
+Total number of actions in each state. \mbox{\Hypertarget{classSGSolver__MaxMinMax_aa9e508ac0cf0175d2635a2fcc4bb207a}\label{classSGSolver__MaxMinMax_aa9e508ac0cf0175d2635a2fcc4bb207a}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!num\+Iter@{num\+Iter}}
+\index{num\+Iter@{num\+Iter}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{num\+Iter}{numIter}}
+{\footnotesize\ttfamily int S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::num\+Iter\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of iterations computed thus far. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a457fae4e376e1f21636629196495fa97}\label{classSGSolver__MaxMinMax_a457fae4e376e1f21636629196495fa97}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!num\+Players@{num\+Players}}
+\index{num\+Players@{num\+Players}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{num\+Players}{numPlayers}}
+{\footnotesize\ttfamily const int S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::num\+Players\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of players, always 2. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a13cbb5552061a0e1705cbfb7c53ab963}\label{classSGSolver__MaxMinMax_a13cbb5552061a0e1705cbfb7c53ab963}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!num\+States@{num\+States}}
+\index{num\+States@{num\+States}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{num\+States}{numStates}}
+{\footnotesize\ttfamily const int S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::num\+States\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of states, copied from S\+G\+Approx\+\_\+\+V2\+::game. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a0f462247c1e77dc832f148e6c1e6869a}\label{classSGSolver__MaxMinMax_a0f462247c1e77dc832f148e6c1e6869a}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{payoffs}{payoffs}}
+{\footnotesize\ttfamily const vector$<$ vector$<$\hyperlink{classSGPoint}{S\+G\+Point}$>$ $>$\& S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::payoffs\hspace{0.3cm}{\ttfamily [private]}}
+
+Constant reference to payoffs in the game. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a7e0fe7fcc94931357a327bbb3efc6e85}\label{classSGSolver__MaxMinMax_a7e0fe7fcc94931357a327bbb3efc6e85}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!probabilities@{probabilities}}
+\index{probabilities@{probabilities}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{probabilities}{probabilities}}
+{\footnotesize\ttfamily const vector$<$ vector$<$ vector$<$double$>$ $>$ $>$\& S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::probabilities\hspace{0.3cm}{\ttfamily [private]}}
+
+Constant reference to transition probabilities in the game. \mbox{\Hypertarget{classSGSolver__MaxMinMax_a462ec472762a3b65b52d2b0973936e64}\label{classSGSolver__MaxMinMax_a462ec472762a3b65b52d2b0973936e64}} 
+\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}!threat\+Tuple@{threat\+Tuple}}
+\index{threat\+Tuple@{threat\+Tuple}!S\+G\+Solver\+\_\+\+Max\+Min\+Max@{S\+G\+Solver\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{threat\+Tuple}{threatTuple}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::threat\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+The current threat payoffs. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsolver\+\_\+maxminmax.\+hpp\item 
+src/cpp/sgsolver\+\_\+maxminmax.\+cpp\end{DoxyCompactItemize}

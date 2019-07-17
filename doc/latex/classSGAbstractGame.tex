@@ -1,0 +1,199 @@
+\hypertarget{classSGAbstractGame}{}\section{S\+G\+Abstract\+Game Class Reference}
+\label{classSGAbstractGame}\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+
+
+A virtual class for constructing games.  
+
+
+
+
+{\ttfamily \#include $<$sgabstractgame.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Abstract\+Game\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGAbstractGame__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGAbstractGame_a7a804027e8f7d5f718c78ffef6ef9195}\label{classSGAbstractGame_a7a804027e8f7d5f718c78ffef6ef9195}} 
+\hyperlink{classSGAbstractGame_a7a804027e8f7d5f718c78ffef6ef9195}{S\+G\+Abstract\+Game} (int \+\_\+num\+Players, double \+\_\+delta, int \+\_\+num\+States, vector$<$ vector$<$ int $>$ $>$ \+\_\+num\+Actions)
+\begin{DoxyCompactList}\small\item\em Constructor for the pure virtual class. \end{DoxyCompactList}\item 
+\hyperlink{classSGAbstractGame_aa4d3130442e99f23f0ec78526629f0b4}{S\+G\+Abstract\+Game} (double \+\_\+delta, int \+\_\+num\+States, vector$<$ vector$<$ int $>$ $>$ \+\_\+num\+Actions)
+\begin{DoxyCompactList}\small\item\em Constructor for the pure virtual class. \end{DoxyCompactList}\item 
+virtual \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGAbstractGame_a3fc1cd009d1813f44f1f219e7deb6eef}{payoffs} (int state, const vector$<$ int $>$ \&actions) const =0
+\begin{DoxyCompactList}\small\item\em The payoff function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{classSGAbstractGame_a416b31d5020b75de49447ce4f7783b98}{probability} (int state, const vector$<$ int $>$ \&actions, int statep) const =0
+\begin{DoxyCompactList}\small\item\em Transition probabilities. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classSGAbstractGame_a2cec8147c3055cfe6314da349d1a7344}{is\+Equilibrium\+Action} (int state, const vector$<$ int $>$ \&actions) const
+\item 
+virtual bool \hyperlink{classSGAbstractGame_abd2542c0b2db7ed40d307f7f0a53048b}{constrained} (int player) const
+\begin{DoxyCompactList}\small\item\em Returns true if the given player is incentive constrained. \end{DoxyCompactList}\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGAbstractGame_a0373c95c41562ed3ce95b3406961b1ee}{payoffs} (int state, int action) const
+\begin{DoxyCompactList}\small\item\em An overloaded version of payoffs that uses a linear action index. \end{DoxyCompactList}\item 
+double \hyperlink{classSGAbstractGame_a922ec5b744295bf7d367f4df20f65b9f}{probability} (int state, int action, int statep) const
+\item 
+bool \hyperlink{classSGAbstractGame_aa7b88a879bd7b7aa7e275c0e0e92a3d8}{is\+Equilibrium\+Action} (int state, int action) const
+\item 
+\mbox{\Hypertarget{classSGAbstractGame_a16365eddd0af879c92ec17b47941fdee}\label{classSGAbstractGame_a16365eddd0af879c92ec17b47941fdee}} 
+int \hyperlink{classSGAbstractGame_a16365eddd0af879c92ec17b47941fdee}{get\+Num\+Players} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of players. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAbstractGame_adadae7cc528721461df1ea217c8dbba0}\label{classSGAbstractGame_adadae7cc528721461df1ea217c8dbba0}} 
+double \hyperlink{classSGAbstractGame_adadae7cc528721461df1ea217c8dbba0}{get\+Delta} () const
+\begin{DoxyCompactList}\small\item\em Returns the discount factor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAbstractGame_a02cf2b1cd5f86c44116bccc9dd17cdf7}\label{classSGAbstractGame_a02cf2b1cd5f86c44116bccc9dd17cdf7}} 
+double \hyperlink{classSGAbstractGame_a02cf2b1cd5f86c44116bccc9dd17cdf7}{get\+Num\+States} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAbstractGame_a2ec57d2920b8f88a238899dd5e203f1a}\label{classSGAbstractGame_a2ec57d2920b8f88a238899dd5e203f1a}} 
+const vector$<$ vector$<$ int $>$ $>$ \hyperlink{classSGAbstractGame_a2ec57d2920b8f88a238899dd5e203f1a}{get\+Num\+Actions} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of actions array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ int $>$ \hyperlink{classSGAbstractGame_a1b1ab8f6b09aaef481ba8eab5934ac66}{index\+To\+Actions} (int index, int state) const
+\begin{DoxyCompactList}\small\item\em Converts a linear index to multiindex. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGAbstractGame_aaa793d0ed9adcb2b2e11b999432bfae8}\label{classSGAbstractGame_aaa793d0ed9adcb2b2e11b999432bfae8}} 
+int \hyperlink{classSGAbstractGame_aaa793d0ed9adcb2b2e11b999432bfae8}{num\+Players}
+\begin{DoxyCompactList}\small\item\em The number of players, always 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAbstractGame_a34c8905ac463bb2ec54aba4eb4ac376f}\label{classSGAbstractGame_a34c8905ac463bb2ec54aba4eb4ac376f}} 
+double \hyperlink{classSGAbstractGame_a34c8905ac463bb2ec54aba4eb4ac376f}{delta}
+\begin{DoxyCompactList}\small\item\em The discount factor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAbstractGame_a4d09150e3135b0abf07ae5319c12d1ef}\label{classSGAbstractGame_a4d09150e3135b0abf07ae5319c12d1ef}} 
+int \hyperlink{classSGAbstractGame_a4d09150e3135b0abf07ae5319c12d1ef}{num\+States}
+\begin{DoxyCompactList}\small\item\em The number of states. \end{DoxyCompactList}\item 
+vector$<$ vector$<$ int $>$ $>$ \hyperlink{classSGAbstractGame_a907a945ec0afb42dfeb164b4520879c5}{num\+Actions}
+\begin{DoxyCompactList}\small\item\em The numbers of actions in each state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A virtual class for constructing games. 
+
+The \hyperlink{classSGGame}{S\+G\+Game} class has a constructor that constructs an \hyperlink{classSGGame}{S\+G\+Game} object from any class that inherits \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game}. So you can inherit from this class as a convenience for building \hyperlink{classSGGame}{S\+G\+Game} objects. For an example of how this is done, see risksharing.\+hpp. The user provides definitions of a payoffs method and a probability method that return the flow payoffs of the players and the transition probabilities between states, respectively. The value in this is that the user can provide {\itshape rules} for how these quantities are generated, rather than having to generate {\itshape arrays} of these values for passing to the \hyperlink{classSGGame}{S\+G\+Game} constructor. See also \hyperlink{classSGGame_a935fc76700c675f842dc1666ffe2e8f7}{S\+G\+Game\+::\+S\+G\+Game}. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGAbstractGame_aa4d3130442e99f23f0ec78526629f0b4}\label{classSGAbstractGame_aa4d3130442e99f23f0ec78526629f0b4}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{S\+G\+Abstract\+Game()}{SGAbstractGame()}}
+{\footnotesize\ttfamily S\+G\+Abstract\+Game\+::\+S\+G\+Abstract\+Game (\begin{DoxyParamCaption}\item[{double}]{\+\_\+delta,  }\item[{int}]{\+\_\+num\+States,  }\item[{vector$<$ vector$<$ int $>$ $>$}]{\+\_\+num\+Actions }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor for the pure virtual class. 
+
+Grandfather in old code that is specialized to two players. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGAbstractGame_abd2542c0b2db7ed40d307f7f0a53048b}\label{classSGAbstractGame_abd2542c0b2db7ed40d307f7f0a53048b}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!constrained@{constrained}}
+\index{constrained@{constrained}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{constrained()}{constrained()}}
+{\footnotesize\ttfamily virtual bool S\+G\+Abstract\+Game\+::constrained (\begin{DoxyParamCaption}\item[{int}]{player }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Returns true if the given player is incentive constrained. 
+
+The default definition of this method always returns true, so that both players\textquotesingle{} behavior is subject to incentive constraints. By making this method return false for one or both players, the user can implement models in which players can commit to their actions. When both players are not constrained, the algorithm will compute the feasible payoff correspondence. \mbox{\Hypertarget{classSGAbstractGame_a1b1ab8f6b09aaef481ba8eab5934ac66}\label{classSGAbstractGame_a1b1ab8f6b09aaef481ba8eab5934ac66}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!index\+To\+Actions@{index\+To\+Actions}}
+\index{index\+To\+Actions@{index\+To\+Actions}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{index\+To\+Actions()}{indexToActions()}}
+{\footnotesize\ttfamily vector$<$int$>$ S\+G\+Abstract\+Game\+::index\+To\+Actions (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{int}]{state }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Converts a linear index to multiindex. 
+
+This function takes the linear index of an action pair in state s and returns a multiindex that gives each player\textquotesingle{}s action. \mbox{\Hypertarget{classSGAbstractGame_a2cec8147c3055cfe6314da349d1a7344}\label{classSGAbstractGame_a2cec8147c3055cfe6314da349d1a7344}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!is\+Equilibrium\+Action@{is\+Equilibrium\+Action}}
+\index{is\+Equilibrium\+Action@{is\+Equilibrium\+Action}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{is\+Equilibrium\+Action()}{isEquilibriumAction()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual bool S\+G\+Abstract\+Game\+::is\+Equilibrium\+Action (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Returns true if the given action pair can be played in equilibrium
+
+The default definition of this method always returns true, so that all action pairs can be played in equilibrium. By redefining this method, the user can create models in which only a subset of action pairs are played on the equilibrium path. 
+
+Reimplemented in \hyperlink{classRiskSharingGame_a7da6b669317562cd9df8dfc0f8226b4c}{Risk\+Sharing\+Game}, \hyperlink{classRiskSharingGame__3Player_a79f44b04c558ecd72cf0b464fdd8a317}{Risk\+Sharing\+Game\+\_\+3\+Player}, and \hyperlink{classRiskSharingGame__3Player__Merged_aeff4f08e00ef46bbdbb190c9c6c393a4}{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}.
+
+\mbox{\Hypertarget{classSGAbstractGame_aa7b88a879bd7b7aa7e275c0e0e92a3d8}\label{classSGAbstractGame_aa7b88a879bd7b7aa7e275c0e0e92a3d8}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!is\+Equilibrium\+Action@{is\+Equilibrium\+Action}}
+\index{is\+Equilibrium\+Action@{is\+Equilibrium\+Action}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{is\+Equilibrium\+Action()}{isEquilibriumAction()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool S\+G\+Abstract\+Game\+::is\+Equilibrium\+Action (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{int}]{action }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+An overloaded version of is\+Equilibrium\+Action that uses a linear action index
+
+This method converts the linear action index into an action pair and then returns the result of the user defined is\+Equilibrium\+Action method. \mbox{\Hypertarget{classSGAbstractGame_a3fc1cd009d1813f44f1f219e7deb6eef}\label{classSGAbstractGame_a3fc1cd009d1813f44f1f219e7deb6eef}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{payoffs()}{payoffs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Abstract\+Game\+::payoffs (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+The payoff function. 
+
+A class that is derived from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the payoffs method, which returns, for a given state and action pair, the flow payoffs that the players receive as an \hyperlink{classSGPoint}{S\+G\+Point}. 
+
+Implemented in \hyperlink{classRiskSharingGame_a2aed9769b6518ed68b0c595629fb0129}{Risk\+Sharing\+Game}, \hyperlink{classRiskSharingGame__3Player_ae4a07f7dc66f18eccd29bc7993c0472f}{Risk\+Sharing\+Game\+\_\+3\+Player}, \hyperlink{classRiskSharingGame__3Player__Merged_aa1d807770ff356fe1114d17966172fbd}{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}, and \hyperlink{classContributionGame_ab33daef685ec7b22c44dad283c2f88cd}{Contribution\+Game}.
+
+\mbox{\Hypertarget{classSGAbstractGame_a0373c95c41562ed3ce95b3406961b1ee}\label{classSGAbstractGame_a0373c95c41562ed3ce95b3406961b1ee}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{payoffs()}{payoffs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Abstract\+Game\+::payoffs (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{int}]{action }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+An overloaded version of payoffs that uses a linear action index. 
+
+This method converts the linear action index into an action pair and then returns the result of the user defined payoffs method. \mbox{\Hypertarget{classSGAbstractGame_a416b31d5020b75de49447ce4f7783b98}\label{classSGAbstractGame_a416b31d5020b75de49447ce4f7783b98}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!probability@{probability}}
+\index{probability@{probability}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{probability()}{probability()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual double S\+G\+Abstract\+Game\+::probability (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions,  }\item[{int}]{statep }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Transition probabilities. 
+
+A class that derives from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the probability method, which gives, for each state and action pair and new state, the probability of reaching the new state tomorrow when starting from the given state and when the given action pair is played. 
+
+Implemented in \hyperlink{classRiskSharingGame_aa9ae41ec3aec3342ffd2d16187746718}{Risk\+Sharing\+Game}, \hyperlink{classRiskSharingGame__3Player_a48f478394bae9cf7479519da9b18a987}{Risk\+Sharing\+Game\+\_\+3\+Player}, \hyperlink{classRiskSharingGame__3Player__Merged_a505d06e31a1cabde1c6fab8ac5af8409}{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}, and \hyperlink{classContributionGame_a7b5ca7f6f0119f5899784ceae570666d}{Contribution\+Game}.
+
+\mbox{\Hypertarget{classSGAbstractGame_a922ec5b744295bf7d367f4df20f65b9f}\label{classSGAbstractGame_a922ec5b744295bf7d367f4df20f65b9f}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!probability@{probability}}
+\index{probability@{probability}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{probability()}{probability()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double S\+G\+Abstract\+Game\+::probability (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{int}]{action,  }\item[{int}]{statep }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+An overloaded version of probability that uses a linear action index
+
+This method converts the linear action index into an action pair and then returns the result of the user defined probability method. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGAbstractGame_a907a945ec0afb42dfeb164b4520879c5}\label{classSGAbstractGame_a907a945ec0afb42dfeb164b4520879c5}} 
+\index{S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}!num\+Actions@{num\+Actions}}
+\index{num\+Actions@{num\+Actions}!S\+G\+Abstract\+Game@{S\+G\+Abstract\+Game}}
+\subsubsection{\texorpdfstring{num\+Actions}{numActions}}
+{\footnotesize\ttfamily vector$<$ vector$<$int$>$ $>$ S\+G\+Abstract\+Game\+::num\+Actions\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The numbers of actions in each state. 
+
+num\+Actions\mbox{[}s\mbox{]}\mbox{[}s\mbox{]} is the number of actions that player i can take in state s. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgabstractgame.\+hpp\end{DoxyCompactItemize}

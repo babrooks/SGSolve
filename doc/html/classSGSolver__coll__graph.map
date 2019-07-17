@@ -1,0 +1,5 @@
+<map id="SGSolver" name="SGSolver">
+<area shape="rect" id="node2" href="$classSGSolution.html" title="Records the progress of SGSolver::solve(). " alt="" coords="89,95,182,121"/>
+<area shape="rect" id="node3" href="$classSGGame.html" title="Describes a stochastic game. " alt="" coords="5,5,84,32"/>
+<area shape="rect" id="node4" href="$classSGEnv.html" title="Manages parameters for algorithm behavior. " alt="" coords="206,95,270,121"/>
+</map>

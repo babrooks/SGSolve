@@ -1,0 +1,268 @@
+\hypertarget{classSGGameHandler}{}\section{S\+G\+Game\+Handler Class Reference}
+\label{classSGGameHandler}\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+
+
+This class handles the widgets for editing/displaying the game.  
+
+
+
+
+{\ttfamily \#include $<$sggamehandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Game\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=178pt]{classSGGameHandler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Game\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classSGGameHandler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGGameHandler_a1497e55ccf5e4a21f22f0326b5ccc2cc}\label{classSGGameHandler_a1497e55ccf5e4a21f22f0326b5ccc2cc}} 
+void \hyperlink{classSGGameHandler_a1497e55ccf5e4a21f22f0326b5ccc2cc}{set\+Constrained} (int new\+State)
+\begin{DoxyCompactList}\small\item\em Changes whether or not feasible set will be calculated. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGGameHandler_a2fe607ec68529ca4200cacf2e29725f9}{S\+G\+Game\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGGameHandler_a98ffa14cea717acb76411e0caceddbf7}{$\sim$\+S\+G\+Game\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classSGGameHandler_a8ba6ee3d6e6648e1db7fe15d287b0277}{set\+Game} (const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game)
+\begin{DoxyCompactList}\small\item\em Replaces the current game with \+\_\+game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a025753e9a17a82897ecca05fc59950ca}\label{classSGGameHandler_a025753e9a17a82897ecca05fc59950ca}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGGameHandler_a025753e9a17a82897ecca05fc59950ca}{get\+Game} () const
+\begin{DoxyCompactList}\small\item\em Returns constant reference to the current game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_aeaf20cbbc2d1e2b6b3a6347f72fdfdfd}\label{classSGGameHandler_aeaf20cbbc2d1e2b6b3a6347f72fdfdfd}} 
+double \hyperlink{classSGGameHandler_aeaf20cbbc2d1e2b6b3a6347f72fdfdfd}{get\+Error\+Tol} () const
+\begin{DoxyCompactList}\small\item\em Returns the error tolerance. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a23d30f5539cd59117864d767a57db11e}\label{classSGGameHandler_a23d30f5539cd59117864d767a57db11e}} 
+Q\+V\+Box\+Layout $\ast$ \hyperlink{classSGGameHandler_a23d30f5539cd59117864d767a57db11e}{get\+Layout} () const
+\begin{DoxyCompactList}\small\item\em Returns the layout. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a8300ed57be8ed34010ef1f7cf0557067}\label{classSGGameHandler_a8300ed57be8ed34010ef1f7cf0557067}} 
+Q\+Push\+Button $\ast$ \hyperlink{classSGGameHandler_a8300ed57be8ed34010ef1f7cf0557067}{get\+Solve\+Button} () const
+\begin{DoxyCompactList}\small\item\em Returns the solve\+Button. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_af5af785b3b10ad782708fe8cfe93e371}\label{classSGGameHandler_af5af785b3b10ad782708fe8cfe93e371}} 
+Q\+Push\+Button $\ast$ \hyperlink{classSGGameHandler_af5af785b3b10ad782708fe8cfe93e371}{get\+Solve\+Button\+\_\+\+V2} () const
+\begin{DoxyCompactList}\small\item\em Returns the solve\+Button\+\_\+\+V2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a960e25dee1b13f27d4eb903f392e61e5}\label{classSGGameHandler_a960e25dee1b13f27d4eb903f392e61e5}} 
+Q\+Push\+Button $\ast$ \hyperlink{classSGGameHandler_a960e25dee1b13f27d4eb903f392e61e5}{get\+Cancel\+Button} () const
+\begin{DoxyCompactList}\small\item\em Returns the cancel\+Button. \end{DoxyCompactList}\item 
+void \hyperlink{classSGGameHandler_a70b3147a78c94d3b7884b096a3a3a352}{set\+State} (int state)
+\begin{DoxyCompactList}\small\item\em Changes the current state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGGameHandler_a806f46e7a60e2c17530e6786245f7455}\label{classSGGameHandler_a806f46e7a60e2c17530e6786245f7455}} 
+void \hyperlink{classSGGameHandler_a806f46e7a60e2c17530e6786245f7455}{current\+State\+Changed} (int newS)
+\begin{DoxyCompactList}\small\item\em Slot for changing the state. Calls set\+State. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a5e8650d00efcc8d41bfb04abb7edeb7b}\label{classSGGameHandler_a5e8650d00efcc8d41bfb04abb7edeb7b}} 
+void \hyperlink{classSGGameHandler_a5e8650d00efcc8d41bfb04abb7edeb7b}{state\+Added} ()
+\begin{DoxyCompactList}\small\item\em Adds a new state. Calls change\+Number\+Of\+States. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_aaf22c32b0431b81c05646e8acb2f6511}\label{classSGGameHandler_aaf22c32b0431b81c05646e8acb2f6511}} 
+void \hyperlink{classSGGameHandler_aaf22c32b0431b81c05646e8acb2f6511}{action1\+Added} ()
+\begin{DoxyCompactList}\small\item\em Action added for player 1. Calls action\+Added. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_abeb7b79db6493e8c2fdddb1e83b4dc01}\label{classSGGameHandler_abeb7b79db6493e8c2fdddb1e83b4dc01}} 
+void \hyperlink{classSGGameHandler_abeb7b79db6493e8c2fdddb1e83b4dc01}{action2\+Added} ()
+\begin{DoxyCompactList}\small\item\em Action added for player 2. Calls action\+Added. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a6ead4477a6bc36eb73f220159ea2fa91}\label{classSGGameHandler_a6ead4477a6bc36eb73f220159ea2fa91}} 
+void \hyperlink{classSGGameHandler_a6ead4477a6bc36eb73f220159ea2fa91}{action\+Added} (int player)
+\begin{DoxyCompactList}\small\item\em Adds a new action for the indicated player. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_afd1cf958d916d9b1ee4a5aac70bc13ca}\label{classSGGameHandler_afd1cf958d916d9b1ee4a5aac70bc13ca}} 
+void \hyperlink{classSGGameHandler_afd1cf958d916d9b1ee4a5aac70bc13ca}{state\+Removed} ()
+\begin{DoxyCompactList}\small\item\em Removes the current state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_ab3d00af463f833fd6417a754073494cc}\label{classSGGameHandler_ab3d00af463f833fd6417a754073494cc}} 
+void \hyperlink{classSGGameHandler_ab3d00af463f833fd6417a754073494cc}{action1\+Removed} ()
+\begin{DoxyCompactList}\small\item\em Action removed for player 1. Calls action\+Removed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_ac55ea0d4296a14684c2735dd1c69c22e}\label{classSGGameHandler_ac55ea0d4296a14684c2735dd1c69c22e}} 
+void \hyperlink{classSGGameHandler_ac55ea0d4296a14684c2735dd1c69c22e}{action2\+Removed} ()
+\begin{DoxyCompactList}\small\item\em Action removed for player 2. Calls action\+Removed. \end{DoxyCompactList}\item 
+void \hyperlink{classSGGameHandler_aed866fdb5315e2a593f659206eabbef3}{action\+Removed} (int player)
+\begin{DoxyCompactList}\small\item\em Removes action for the given player. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_abfc41eef3937a69a3fa9d355f8f8afbb}\label{classSGGameHandler_abfc41eef3937a69a3fa9d355f8f8afbb}} 
+void \hyperlink{classSGGameHandler_abfc41eef3937a69a3fa9d355f8f8afbb}{discount\+Factor\+Changed} (const Q\+String \&text)
+\begin{DoxyCompactList}\small\item\em Changes the discount factor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_aa556fc6fe75492c7e3eac05ccd54fe29}\label{classSGGameHandler_aa556fc6fe75492c7e3eac05ccd54fe29}} 
+void \hyperlink{classSGGameHandler_aa556fc6fe75492c7e3eac05ccd54fe29}{error\+Tol\+Changed} (const Q\+String \&text)
+\begin{DoxyCompactList}\small\item\em Changes the error tolerance. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a0dcae7330df350da70211c7db489234b}\label{classSGGameHandler_a0dcae7330df350da70211c7db489234b}} 
+void \hyperlink{classSGGameHandler_a0dcae7330df350da70211c7db489234b}{next\+State} ()
+\begin{DoxyCompactList}\small\item\em Advances current\+State to the next state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a24a4f716b7b80be52d7092575d92767e}\label{classSGGameHandler_a24a4f716b7b80be52d7092575d92767e}} 
+void \hyperlink{classSGGameHandler_a24a4f716b7b80be52d7092575d92767e}{prev\+State} ()
+\begin{DoxyCompactList}\small\item\em Decreases current\+State to the previous state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGGameHandler_af80ac7a33ba124153e2be5528dbce4b7}{initialize\+Models} ()
+\begin{DoxyCompactList}\small\item\em Delete old data models and create new ones. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_aef123beababcf909074f05772fbe88da}\label{classSGGameHandler_aef123beababcf909074f05772fbe88da}} 
+void \hyperlink{classSGGameHandler_aef123beababcf909074f05772fbe88da}{push\+Back\+Probability\+Table} (int newS)
+\begin{DoxyCompactList}\small\item\em Adds a new probability table model. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a1b0499f2c29bc69ee73b0b7fa0678858}\label{classSGGameHandler_a1b0499f2c29bc69ee73b0b7fa0678858}} 
+void \hyperlink{classSGGameHandler_a1b0499f2c29bc69ee73b0b7fa0678858}{pop\+Back\+Probability\+Table} ()
+\begin{DoxyCompactList}\small\item\em Removes last probability table model. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a7ea037a5ccc43686fad7f64944e65f82}\label{classSGGameHandler_a7ea037a5ccc43686fad7f64944e65f82}} 
+void \hyperlink{classSGGameHandler_a7ea037a5ccc43686fad7f64944e65f82}{change\+Number\+Of\+States} (int newS)
+\begin{DoxyCompactList}\small\item\em Adds/removes models to achieve correct number of states. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGGame}{S\+G\+Game} \hyperlink{classSGGameHandler_ac95a8d363c98979cbbd8fc63a112bf11}{game}
+\begin{DoxyCompactList}\small\item\em The game object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a43b882271dcb9673494a960d469cd2df}\label{classSGGameHandler_a43b882271dcb9673494a960d469cd2df}} 
+double \hyperlink{classSGGameHandler_a43b882271dcb9673494a960d469cd2df}{error\+Tol}
+\begin{DoxyCompactList}\small\item\em Error tolerance for measuring convergence. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a515fcf42da91b1181f9663c280caf48b}\label{classSGGameHandler_a515fcf42da91b1181f9663c280caf48b}} 
+\hyperlink{classSGPayoffTableModel}{S\+G\+Payoff\+Table\+Model} $\ast$ \hyperlink{classSGGameHandler_a515fcf42da91b1181f9663c280caf48b}{payoff\+Model}
+\begin{DoxyCompactList}\small\item\em The model for interfacing with payoffs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a4f7c265204b97594fe70e98ddc4fb559}\label{classSGGameHandler_a4f7c265204b97594fe70e98ddc4fb559}} 
+vector$<$ \hyperlink{classSGProbabilityTableModel}{S\+G\+Probability\+Table\+Model} $\ast$ $>$ \hyperlink{classSGGameHandler_a4f7c265204b97594fe70e98ddc4fb559}{probability\+Models}
+\begin{DoxyCompactList}\small\item\em Vector of models for interfacing with transition probabilities. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a2cf4dd4571399321e16d89d882d08715}\label{classSGGameHandler_a2cf4dd4571399321e16d89d882d08715}} 
+Q\+V\+Box\+Layout $\ast$ \hyperlink{classSGGameHandler_a2cf4dd4571399321e16d89d882d08715}{layout}
+\begin{DoxyCompactList}\small\item\em Layout for the game tab. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a2ea8dd4650b9ac752f26b575577def3b}\label{classSGGameHandler_a2ea8dd4650b9ac752f26b575577def3b}} 
+Q\+Push\+Button $\ast$ \hyperlink{classSGGameHandler_a2ea8dd4650b9ac752f26b575577def3b}{solve\+Button}
+\begin{DoxyCompactList}\small\item\em Button that triggers solve routine. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_afbb441f7d9e95ce509c0fc8198aac65b}\label{classSGGameHandler_afbb441f7d9e95ce509c0fc8198aac65b}} 
+Q\+Push\+Button $\ast$ \hyperlink{classSGGameHandler_afbb441f7d9e95ce509c0fc8198aac65b}{solve\+Button\+\_\+\+V2}
+\begin{DoxyCompactList}\small\item\em Button that triggers solve routine. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a667ac1db8acfa5b7aca6ace606e17e80}\label{classSGGameHandler_a667ac1db8acfa5b7aca6ace606e17e80}} 
+Q\+Push\+Button $\ast$ \hyperlink{classSGGameHandler_a667ac1db8acfa5b7aca6ace606e17e80}{cancel\+Button}
+\begin{DoxyCompactList}\small\item\em Button that cancels solve. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a4ac6ec9392bf0dbf0c1d7b5e9643e2a9}\label{classSGGameHandler_a4ac6ec9392bf0dbf0c1d7b5e9643e2a9}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGGameHandler_a4ac6ec9392bf0dbf0c1d7b5e9643e2a9}{delta\+Edit}
+\begin{DoxyCompactList}\small\item\em For editing the discount factor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_af781ae067fa7402743f2f494ab4ff20f}\label{classSGGameHandler_af781ae067fa7402743f2f494ab4ff20f}} 
+vector$<$ Q\+Line\+Edit $\ast$ $>$ \hyperlink{classSGGameHandler_af781ae067fa7402743f2f494ab4ff20f}{num\+Actions\+Edits}
+\begin{DoxyCompactList}\small\item\em Vector of edits for players\textquotesingle{} numbers of actions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_afb806d54a9d193c5ab8e3a1510001fba}\label{classSGGameHandler_afb806d54a9d193c5ab8e3a1510001fba}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGGameHandler_afb806d54a9d193c5ab8e3a1510001fba}{num\+States\+Edit}
+\begin{DoxyCompactList}\small\item\em Edit for number of states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_aec404b883f476d06e7d19dd3a1ea7336}\label{classSGGameHandler_aec404b883f476d06e7d19dd3a1ea7336}} 
+Q\+Line\+Edit $\ast$ \hyperlink{classSGGameHandler_aec404b883f476d06e7d19dd3a1ea7336}{error\+Tol\+Edit}
+\begin{DoxyCompactList}\small\item\em Edit for controlling error tolerance. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_af722a69ea2f4a6a5c56171a2126aac5c}\label{classSGGameHandler_af722a69ea2f4a6a5c56171a2126aac5c}} 
+Q\+Combo\+Box $\ast$ \hyperlink{classSGGameHandler_af722a69ea2f4a6a5c56171a2126aac5c}{current\+State\+Combo}
+\begin{DoxyCompactList}\small\item\em Drop down menu for selecting a state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a5c40be01364eb863bc087776648be235}\label{classSGGameHandler_a5c40be01364eb863bc087776648be235}} 
+Q\+Table\+View $\ast$ \hyperlink{classSGGameHandler_a5c40be01364eb863bc087776648be235}{payoff\+Table\+View}
+\begin{DoxyCompactList}\small\item\em Table for displaying stage payoffs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a2e6f4e94869b83d54badeb5c5f1f8e64}\label{classSGGameHandler_a2e6f4e94869b83d54badeb5c5f1f8e64}} 
+vector$<$ \hyperlink{classSGTableView}{S\+G\+Table\+View} $\ast$ $>$ \hyperlink{classSGGameHandler_a2e6f4e94869b83d54badeb5c5f1f8e64}{probability\+Table\+Views}
+\begin{DoxyCompactList}\small\item\em Vector of tables for displaying transition probabilities. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a4c3c643906ccdf6283666007c4f8a49e}\label{classSGGameHandler_a4c3c643906ccdf6283666007c4f8a49e}} 
+Q\+V\+Box\+Layout $\ast$ \hyperlink{classSGGameHandler_a4c3c643906ccdf6283666007c4f8a49e}{probability\+Table\+Layout}
+\begin{DoxyCompactList}\small\item\em Layout for holding transition probability tables. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGameHandler_a6ec21010dfb89d193762bf8c8d443394}\label{classSGGameHandler_a6ec21010dfb89d193762bf8c8d443394}} 
+Q\+Check\+Box $\ast$ \hyperlink{classSGGameHandler_a6ec21010dfb89d193762bf8c8d443394}{feasible\+Check\+Box}
+\begin{DoxyCompactList}\small\item\em Check box for whether or not to calculate feasible set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class handles the widgets for editing/displaying the game. 
+
+All of the widgets in the game tab and their slots are members of this class. It also contains the pointer to the \hyperlink{classSGGame}{S\+G\+Game}, and handles the interfaces to the game objects.
+
+The class contains table models for editing the game, which interface with the respective data using the \hyperlink{classSGGame}{S\+G\+Game} class\textquotesingle{}s interface methods.
+
+For a more detailed description, see viewergametabsec. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGGameHandler_a2fe607ec68529ca4200cacf2e29725f9}\label{classSGGameHandler_a2fe607ec68529ca4200cacf2e29725f9}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{S\+G\+Game\+Handler()}{SGGameHandler()}}
+{\footnotesize\ttfamily S\+G\+Game\+Handler\+::\+S\+G\+Game\+Handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Constructs edits and buttons, connects signals/slots, calls \hyperlink{classSGGameHandler_af80ac7a33ba124153e2be5528dbce4b7}{S\+G\+Game\+Handler\+::initialize\+Models}. \mbox{\Hypertarget{classSGGameHandler_a98ffa14cea717acb76411e0caceddbf7}\label{classSGGameHandler_a98ffa14cea717acb76411e0caceddbf7}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!````~S\+G\+Game\+Handler@{$\sim$\+S\+G\+Game\+Handler}}
+\index{````~S\+G\+Game\+Handler@{$\sim$\+S\+G\+Game\+Handler}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{$\sim$\+S\+G\+Game\+Handler()}{~SGGameHandler()}}
+{\footnotesize\ttfamily S\+G\+Game\+Handler\+::$\sim$\+S\+G\+Game\+Handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Destroys probability table views, models, etc. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGGameHandler_aed866fdb5315e2a593f659206eabbef3}\label{classSGGameHandler_aed866fdb5315e2a593f659206eabbef3}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!action\+Removed@{action\+Removed}}
+\index{action\+Removed@{action\+Removed}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{action\+Removed}{actionRemoved}}
+{\footnotesize\ttfamily void S\+G\+Game\+Handler\+::action\+Removed (\begin{DoxyParamCaption}\item[{int}]{player }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Removes action for the given player. 
+
+Will remove the action that is currently selected in the payoff table, if one is selected. \mbox{\Hypertarget{classSGGameHandler_af80ac7a33ba124153e2be5528dbce4b7}\label{classSGGameHandler_af80ac7a33ba124153e2be5528dbce4b7}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!initialize\+Models@{initialize\+Models}}
+\index{initialize\+Models@{initialize\+Models}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{initialize\+Models()}{initializeModels()}}
+{\footnotesize\ttfamily void S\+G\+Game\+Handler\+::initialize\+Models (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Delete old data models and create new ones. 
+
+Called in constructor and whenever game changes. \mbox{\Hypertarget{classSGGameHandler_a8ba6ee3d6e6648e1db7fe15d287b0277}\label{classSGGameHandler_a8ba6ee3d6e6648e1db7fe15d287b0277}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!set\+Game@{set\+Game}}
+\index{set\+Game@{set\+Game}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{set\+Game()}{setGame()}}
+{\footnotesize\ttfamily void S\+G\+Game\+Handler\+::set\+Game (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{\+\_\+game }\end{DoxyParamCaption})}
+
+
+
+Replaces the current game with \+\_\+game. 
+
+Calls initialize\+Models to reinitialize references for table models. \mbox{\Hypertarget{classSGGameHandler_a70b3147a78c94d3b7884b096a3a3a352}\label{classSGGameHandler_a70b3147a78c94d3b7884b096a3a3a352}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!set\+State@{set\+State}}
+\index{set\+State@{set\+State}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{set\+State()}{setState()}}
+{\footnotesize\ttfamily void S\+G\+Game\+Handler\+::set\+State (\begin{DoxyParamCaption}\item[{int}]{state }\end{DoxyParamCaption})}
+
+
+
+Changes the current state. 
+
+Switches all of the models over to new state and updates table views. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGGameHandler_ac95a8d363c98979cbbd8fc63a112bf11}\label{classSGGameHandler_ac95a8d363c98979cbbd8fc63a112bf11}} 
+\index{S\+G\+Game\+Handler@{S\+G\+Game\+Handler}!game@{game}}
+\index{game@{game}!S\+G\+Game\+Handler@{S\+G\+Game\+Handler}}
+\subsubsection{\texorpdfstring{game}{game}}
+{\footnotesize\ttfamily \hyperlink{classSGGame}{S\+G\+Game} S\+G\+Game\+Handler\+::game\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The game object. 
+
+This is the game that is represented in the game tab. Note that this can be a different game than the one that is associated with the solution in the solution tab. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sggamehandler.\+hpp\item 
+viewer/cpp/sggamehandler.\+cpp\end{DoxyCompactItemize}

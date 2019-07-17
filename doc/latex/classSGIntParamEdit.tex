@@ -1,0 +1,65 @@
+\hypertarget{classSGIntParamEdit}{}\section{S\+G\+Int\+Param\+Edit Class Reference}
+\label{classSGIntParamEdit}\index{S\+G\+Int\+Param\+Edit@{S\+G\+Int\+Param\+Edit}}
+
+
+Class for changing integer parameters.  
+
+
+
+
+{\ttfamily \#include $<$sgsettingshandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Int\+Param\+Edit\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{classSGIntParamEdit__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Int\+Param\+Edit\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classSGIntParamEdit__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIntParamEdit_a3029714bc0bb212195a197eb7a2e68bb}\label{classSGIntParamEdit_a3029714bc0bb212195a197eb7a2e68bb}} 
+\hyperlink{classSGIntParamEdit_a3029714bc0bb212195a197eb7a2e68bb}{S\+G\+Int\+Param\+Edit} (Q\+Widget $\ast$parent, \hyperlink{classSGEnv}{S\+G\+Env} $\ast$\+\_\+env, \hyperlink{namespaceSG_a031898e6fc0fa14d8590f85da9715f37}{S\+G\+::\+I\+N\+T\+\_\+\+P\+A\+R\+AM} \+\_\+param)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIntParamEdit_a15b46d944e6908ec0e1516419f522954}\label{classSGIntParamEdit_a15b46d944e6908ec0e1516419f522954}} 
+void \hyperlink{classSGIntParamEdit_a15b46d944e6908ec0e1516419f522954}{change\+Param} (const Q\+String \&text)
+\begin{DoxyCompactList}\small\item\em Slot called when the Q\+Line\+Edit is edited. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIntParamEdit_ac9e1dba5585ebc921169deee8373a9c9}\label{classSGIntParamEdit_ac9e1dba5585ebc921169deee8373a9c9}} 
+void \hyperlink{classSGIntParamEdit_ac9e1dba5585ebc921169deee8373a9c9}{reset\+Param} ()
+\begin{DoxyCompactList}\small\item\em Slot called when resetting to default values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIntParamEdit_aa1ab1c2b663dc61f85a1c137dac64841}\label{classSGIntParamEdit_aa1ab1c2b663dc61f85a1c137dac64841}} 
+\hyperlink{namespaceSG_a031898e6fc0fa14d8590f85da9715f37}{S\+G\+::\+I\+N\+T\+\_\+\+P\+A\+R\+AM} \hyperlink{classSGIntParamEdit_aa1ab1c2b663dc61f85a1c137dac64841}{param}
+\begin{DoxyCompactList}\small\item\em The int parameter associated with this edit. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIntParamEdit_a0ecae58e72b1779e5fb99409e53f2797}\label{classSGIntParamEdit_a0ecae58e72b1779e5fb99409e53f2797}} 
+\hyperlink{classSGEnv}{S\+G\+Env} $\ast$ \hyperlink{classSGIntParamEdit_a0ecae58e72b1779e5fb99409e53f2797}{env}
+\begin{DoxyCompactList}\small\item\em The associated \hyperlink{classSGEnv}{S\+G\+Env} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for changing integer parameters. 
+
+A customized version of Q\+Line\+Edit for modifying int parameters in an \hyperlink{classSGEnv}{S\+G\+Env} object that is used by the \hyperlink{classSGSettingsHandler}{S\+G\+Settings\+Handler}. It has a private members which are the particular \hyperlink{namespaceSG_a031898e6fc0fa14d8590f85da9715f37}{S\+G\+::\+I\+N\+T\+\_\+\+P\+A\+R\+AM} that is associated with this edit and a pointer to an associated \hyperlink{classSGEnv}{S\+G\+Env} object. There are also mutator methods for setting the parameter value and resetting to the default value of the given parameter. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsettingshandler.\+hpp\end{DoxyCompactItemize}

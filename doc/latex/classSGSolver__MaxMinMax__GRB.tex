@@ -1,0 +1,167 @@
+\hypertarget{classSGSolver__MaxMinMax__GRB}{}\section{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+\+G\+RB Class Reference}
+\label{classSGSolver__MaxMinMax__GRB}\index{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+\+G\+RB@{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+\+G\+RB}}
+
+
+Class that implements a version of the max-\/min-\/max algorithm using Gurobi.  
+
+
+
+
+{\ttfamily \#include $<$sgsolver\+\_\+maxminmax\+\_\+grb.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+\+G\+RB\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{classSGSolver__MaxMinMax__GRB__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a5abb38704065b644693b39fc670618da}\label{classSGSolver__MaxMinMax__GRB_a5abb38704065b644693b39fc670618da}} 
+enum {\bfseries S\+G\+Regime\+Status} \{ {\bfseries S\+G\+\_\+\+R\+E\+C\+U\+R\+S\+I\+VE}, 
+{\bfseries S\+G\+\_\+\+F\+I\+X\+ED}
+ \}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_ab64c70bfacff74dd01a331ab41fb3cf1}\label{classSGSolver__MaxMinMax__GRB_ab64c70bfacff74dd01a331ab41fb3cf1}} 
+enum {\bfseries S\+G\+Quadrant} \{ {\bfseries S\+G\+\_\+\+N\+O\+R\+T\+H\+E\+A\+ST}, 
+{\bfseries S\+G\+\_\+\+S\+O\+U\+T\+H\+E\+A\+ST}, 
+{\bfseries S\+G\+\_\+\+S\+O\+U\+T\+H\+W\+E\+ST}, 
+{\bfseries S\+G\+\_\+\+N\+O\+R\+T\+H\+W\+E\+ST}
+ \}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a8cec9c6b4227da7833f90adff3f78ed7}\label{classSGSolver__MaxMinMax__GRB_a8cec9c6b4227da7833f90adff3f78ed7}} 
+enum {\bfseries S\+G\+Solver\+Mode} \{ {\bfseries S\+G\+\_\+\+F\+E\+A\+S\+I\+B\+LE}, 
+{\bfseries S\+G\+\_\+\+M\+A\+X\+M\+I\+N\+M\+AX}, 
+{\bfseries S\+G\+\_\+\+A\+PS}
+ \}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a3e356705cd16fcc26d9987b0ac6d14c0}\label{classSGSolver__MaxMinMax__GRB_a3e356705cd16fcc26d9987b0ac6d14c0}} 
+enum {\bfseries S\+G\+I\+C\+Status} \{ {\bfseries S\+G\+\_\+\+N\+O\+NE}, 
+{\bfseries S\+G\+\_\+\+B\+I\+N\+D\+I\+N\+G0}, 
+{\bfseries S\+G\+\_\+\+B\+I\+N\+D\+I\+N\+G1}, 
+{\bfseries S\+G\+\_\+\+B\+I\+N\+D\+I\+N\+G01}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a93a0fb79cacc98677c690ef5cc7ee957}\label{classSGSolver__MaxMinMax__GRB_a93a0fb79cacc98677c690ef5cc7ee957}} 
+\hyperlink{classSGSolver__MaxMinMax__GRB_a93a0fb79cacc98677c690ef5cc7ee957}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+\+G\+RB} (const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_aa63bb9271d140074068867bf7d0bd324}\label{classSGSolver__MaxMinMax__GRB_aa63bb9271d140074068867bf7d0bd324}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolver__MaxMinMax__GRB_aa63bb9271d140074068867bf7d0bd324}{get\+Game} () const
+\begin{DoxyCompactList}\small\item\em Returns the current game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_afa3a335debfcb367a46674bb3603af3b}\label{classSGSolver__MaxMinMax__GRB_afa3a335debfcb367a46674bb3603af3b}} 
+const list$<$ vector$<$ double $>$ $>$ \& \hyperlink{classSGSolver__MaxMinMax__GRB_afa3a335debfcb367a46674bb3603af3b}{get\+Bounds} () const
+\begin{DoxyCompactList}\small\item\em Returns payoff bounds. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a2b6afce012cf78c940598572c70fc267}\label{classSGSolver__MaxMinMax__GRB_a2b6afce012cf78c940598572c70fc267}} 
+const list$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \& \hyperlink{classSGSolver__MaxMinMax__GRB_a2b6afce012cf78c940598572c70fc267}{get\+Directions} () const
+\begin{DoxyCompactList}\small\item\em Return directions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a2d430095d9f4eed1f776fcff2f28b2f6}\label{classSGSolver__MaxMinMax__GRB_a2d430095d9f4eed1f776fcff2f28b2f6}} 
+int \hyperlink{classSGSolver__MaxMinMax__GRB_a2d430095d9f4eed1f776fcff2f28b2f6}{get\+Num\+Directions} () const
+\begin{DoxyCompactList}\small\item\em Return num\+Directions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a18ce49bafd6d592c5b889d2e37d34215}\label{classSGSolver__MaxMinMax__GRB_a18ce49bafd6d592c5b889d2e37d34215}} 
+void \hyperlink{classSGSolver__MaxMinMax__GRB_a18ce49bafd6d592c5b889d2e37d34215}{solve} ()
+\begin{DoxyCompactList}\small\item\em Solve routine. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a53c7768ce8fae4ae40fa8c02946349f3}\label{classSGSolver__MaxMinMax__GRB_a53c7768ce8fae4ae40fa8c02946349f3}} 
+void \hyperlink{classSGSolver__MaxMinMax__GRB_a53c7768ce8fae4ae40fa8c02946349f3}{initialize} ()
+\begin{DoxyCompactList}\small\item\em Initializes the solver. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a11e74dc20f359766064a68e6f710a457}\label{classSGSolver__MaxMinMax__GRB_a11e74dc20f359766064a68e6f710a457}} 
+double \hyperlink{classSGSolver__MaxMinMax__GRB_a11e74dc20f359766064a68e6f710a457}{iterate} (const S\+G\+Solver\+Mode mode, int \&steps)
+\begin{DoxyCompactList}\small\item\em Runs one iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a572564a0d6933cbab39c488e2bdf6754}\label{classSGSolver__MaxMinMax__GRB_a572564a0d6933cbab39c488e2bdf6754}} 
+void {\bfseries add\+Bounding\+Hyperplane} (\hyperlink{classSGPoint}{S\+G\+Point} \&curr\+Dir, G\+R\+B\+Constr \&x\+Constr, G\+R\+B\+Constr \&y\+Constr, G\+R\+B\+Var $\ast$value\+Fn, int num\+States, list$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \&new\+Directions, list$<$ vector$<$ double $>$ $>$ \&new\+Bounds, G\+R\+B\+Model \&model, const bool add\+Direction)
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a69ad4bb88098ca13192063f3a513f6c0}\label{classSGSolver__MaxMinMax__GRB_a69ad4bb88098ca13192063f3a513f6c0}} 
+void {\bfseries print\+Iteration} (ofstream \&ofs, int num\+Iter)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a255f5b992318f32044437144456cc3f2}\label{classSGSolver__MaxMinMax__GRB_a255f5b992318f32044437144456cc3f2}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolver__MaxMinMax__GRB_a255f5b992318f32044437144456cc3f2}{game}
+\begin{DoxyCompactList}\small\item\em Const reference to the game being solved. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a1e9f4d61d5fdf270b6e73d5b490f412d}\label{classSGSolver__MaxMinMax__GRB_a1e9f4d61d5fdf270b6e73d5b490f412d}} 
+double \hyperlink{classSGSolver__MaxMinMax__GRB_a1e9f4d61d5fdf270b6e73d5b490f412d}{min\+Rotation} = -\/3.\+14159$\ast$1e-\/4
+\begin{DoxyCompactList}\small\item\em Minimum rotation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a0f392ec79175ee7196cbac9997a9c6a2}\label{classSGSolver__MaxMinMax__GRB_a0f392ec79175ee7196cbac9997a9c6a2}} 
+double \hyperlink{classSGSolver__MaxMinMax__GRB_a0f392ec79175ee7196cbac9997a9c6a2}{payoff\+Bound} = 0
+\begin{DoxyCompactList}\small\item\em Payoff bound. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_ac18a54a857000d450af1cc3bb3ae2875}\label{classSGSolver__MaxMinMax__GRB_ac18a54a857000d450af1cc3bb3ae2875}} 
+vector$<$ vector$<$ bool $>$ $>$ \hyperlink{classSGSolver__MaxMinMax__GRB_ac18a54a857000d450af1cc3bb3ae2875}{eq\+Actions}
+\begin{DoxyCompactList}\small\item\em Feasible actions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_af0cede224a1af4e468ab07d0703dad52}\label{classSGSolver__MaxMinMax__GRB_af0cede224a1af4e468ab07d0703dad52}} 
+vector$<$ bool $>$ {\bfseries feasible\+Actions}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a74172d7ebc68670f23118fd42c0dba4a}\label{classSGSolver__MaxMinMax__GRB_a74172d7ebc68670f23118fd42c0dba4a}} 
+int {\bfseries num\+Feasible\+Actions}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a00d68f1980b5aeb9c09e514005f7fee3}\label{classSGSolver__MaxMinMax__GRB_a00d68f1980b5aeb9c09e514005f7fee3}} 
+int {\bfseries num\+Actions\+\_\+grand\+Total}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a5bbc0ff6e2848e6f5b421b892dbb7587}\label{classSGSolver__MaxMinMax__GRB_a5bbc0ff6e2848e6f5b421b892dbb7587}} 
+vector$<$ int $>$ {\bfseries ga\+ToS}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_aa53a05bbda9134e16ef32c0fa1ec2520}\label{classSGSolver__MaxMinMax__GRB_aa53a05bbda9134e16ef32c0fa1ec2520}} 
+vector$<$ int $>$ {\bfseries ga\+ToA}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a81fef4ee08dc58f5281bb7e42da717df}\label{classSGSolver__MaxMinMax__GRB_a81fef4ee08dc58f5281bb7e42da717df}} 
+list$<$ vector$<$ double $>$ $>$ \hyperlink{classSGSolver__MaxMinMax__GRB_a81fef4ee08dc58f5281bb7e42da717df}{bounds}
+\begin{DoxyCompactList}\small\item\em Payoff bounds. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a9f3d30641de444fced77a47227b019b3}\label{classSGSolver__MaxMinMax__GRB_a9f3d30641de444fced77a47227b019b3}} 
+list$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \hyperlink{classSGSolver__MaxMinMax__GRB_a9f3d30641de444fced77a47227b019b3}{directions}
+\begin{DoxyCompactList}\small\item\em List of gradients in which to bound the correspondence. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_ac7b0a808eaa13b835702ab4255697473}\label{classSGSolver__MaxMinMax__GRB_ac7b0a808eaa13b835702ab4255697473}} 
+\hyperlink{classSGTuple}{S\+G\+Tuple} {\bfseries threat\+Tuple}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a70deb0251347be75832bc2965ecf5088}\label{classSGSolver__MaxMinMax__GRB_a70deb0251347be75832bc2965ecf5088}} 
+int \hyperlink{classSGSolver__MaxMinMax__GRB_a70deb0251347be75832bc2965ecf5088}{num\+Directions}
+\begin{DoxyCompactList}\small\item\em Number of gradients. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a387c932e6473bcf1b17e5703dddef301}\label{classSGSolver__MaxMinMax__GRB_a387c932e6473bcf1b17e5703dddef301}} 
+const vector$<$ vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ $>$ \& \hyperlink{classSGSolver__MaxMinMax__GRB_a387c932e6473bcf1b17e5703dddef301}{payoffs}
+\begin{DoxyCompactList}\small\item\em Game elements. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a48e8b438a3a3165eac8db7f74588b3fe}\label{classSGSolver__MaxMinMax__GRB_a48e8b438a3a3165eac8db7f74588b3fe}} 
+const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \& {\bfseries prob}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a6bcecc33a075a1ad4e6da6120045480d}\label{classSGSolver__MaxMinMax__GRB_a6bcecc33a075a1ad4e6da6120045480d}} 
+const vector$<$ vector$<$ int $>$ $>$ \& {\bfseries num\+Actions}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_aac169d7f44b0d6d73ff00b8b3642c9bb}\label{classSGSolver__MaxMinMax__GRB_aac169d7f44b0d6d73ff00b8b3642c9bb}} 
+const vector$<$ int $>$ \& {\bfseries num\+Actions\+\_\+total}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_af06472af2198fd1dfff018aee40da0ca}\label{classSGSolver__MaxMinMax__GRB_af06472af2198fd1dfff018aee40da0ca}} 
+const int {\bfseries num\+States}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_ae6bd1e6a5998bc514aac57c1e9cff8ed}\label{classSGSolver__MaxMinMax__GRB_ae6bd1e6a5998bc514aac57c1e9cff8ed}} 
+const double {\bfseries delta}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a80d09909bc21d4cd6afc5fbd71279a38}\label{classSGSolver__MaxMinMax__GRB_a80d09909bc21d4cd6afc5fbd71279a38}} 
+const int {\bfseries num\+Players}
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_abce31689aec99e00c4f93f29c8b0826e}\label{classSGSolver__MaxMinMax__GRB_abce31689aec99e00c4f93f29c8b0826e}} 
+const double {\bfseries regime\+Change\+Tol} = 1e-\/9
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a30d481a7ff078d544f499aba9aec80c3}\label{classSGSolver__MaxMinMax__GRB_a30d481a7ff078d544f499aba9aec80c3}} 
+const double {\bfseries pseudo\+Constr\+Tol} = 1e-\/3
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_a255f1ab898f5dd561796767181e5e5f2}\label{classSGSolver__MaxMinMax__GRB_a255f1ab898f5dd561796767181e5e5f2}} 
+const double {\bfseries conv\+Tol} = 1e-\/6
+\item 
+\mbox{\Hypertarget{classSGSolver__MaxMinMax__GRB_ac0a8c214e860f98cfe23e7acb9d6e730}\label{classSGSolver__MaxMinMax__GRB_ac0a8c214e860f98cfe23e7acb9d6e730}} 
+const int {\bfseries max\+Iter} = 1e3
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that implements a version of the max-\/min-\/max algorithm using Gurobi. 
+
+This file has no associated cpp file, so that libsg does not have to link to Gurobi. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsolver\+\_\+maxminmax\+\_\+grb.\+hpp\end{DoxyCompactItemize}

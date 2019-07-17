@@ -1,0 +1,205 @@
+\hypertarget{classSGSolutionHandler}{}\section{S\+G\+Solution\+Handler Class Reference}
+\label{classSGSolutionHandler}\index{S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}}
+
+
+Handles the widgets for displaying the solution.  
+
+
+
+
+{\ttfamily \#include $<$sgsolutionhandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Solution\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{classSGSolutionHandler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Solution\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGSolutionHandler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ac1138f5e4b98e30bb55b7e524767a0cb}\label{classSGSolutionHandler_ac1138f5e4b98e30bb55b7e524767a0cb}} 
+void \hyperlink{classSGSolutionHandler_ac1138f5e4b98e30bb55b7e524767a0cb}{inspect\+Point} (\hyperlink{classSGPoint}{S\+G\+Point} point, int state, bool is\+Detail\+Plot)
+\begin{DoxyCompactList}\small\item\em Inspect point slot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ae4edd65c1f83ef7a63ab53c454bfd9be}\label{classSGSolutionHandler_ae4edd65c1f83ef7a63ab53c454bfd9be}} 
+void \hyperlink{classSGSolutionHandler_ae4edd65c1f83ef7a63ab53c454bfd9be}{simulate\+Equilibrium} (\hyperlink{classSGPoint}{S\+G\+Point} point, int state, bool is\+Detail\+Plot)
+\begin{DoxyCompactList}\small\item\em Simulate equilibrium slot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a0ba9f2ac4408be0d36638f3d49a3b05c}\label{classSGSolutionHandler_a0ba9f2ac4408be0d36638f3d49a3b05c}} 
+void \hyperlink{classSGSolutionHandler_a0ba9f2ac4408be0d36638f3d49a3b05c}{replot\+Slot} ()
+\begin{DoxyCompactList}\small\item\em Replot slot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a2c66e5c3343a056cda2efaa85aebddf9}\label{classSGSolutionHandler_a2c66e5c3343a056cda2efaa85aebddf9}} 
+void {\bfseries next\+Action\+Signal} ()
+\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a7d652517a4d43d5fe09e1c5dfe96ffdb}\label{classSGSolutionHandler_a7d652517a4d43d5fe09e1c5dfe96ffdb}} 
+void {\bfseries prev\+Action\+Signal} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGSolutionHandler_ae1158f6e80ba8cc08c6d3e23f2bd1fbd}{S\+G\+Solution\+Handler} (Q\+Widget $\ast$\hyperlink{classSGSolutionHandler_acad6ff1e5871e5956d56ef11160c5659}{parent}=0)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ad5aa37af7bae522a094e4b4eb855345c}\label{classSGSolutionHandler_ad5aa37af7bae522a094e4b4eb855345c}} 
+void \hyperlink{classSGSolutionHandler_ad5aa37af7bae522a094e4b4eb855345c}{set\+Solution} (const \hyperlink{classSGSolution}{S\+G\+Solution} \&new\+Soln)
+\begin{DoxyCompactList}\small\item\em Sets the solution to new\+Soln. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a2152b235fb8ab5ecdf0216ac3f519d2b}\label{classSGSolutionHandler_a2152b235fb8ab5ecdf0216ac3f519d2b}} 
+const \hyperlink{classSGSolution}{S\+G\+Solution} \& \hyperlink{classSGSolutionHandler_a2152b235fb8ab5ecdf0216ac3f519d2b}{get\+Solution} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to the solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a3bed74aae3faea743be69ec5486b63ca}\label{classSGSolutionHandler_a3bed74aae3faea743be69ec5486b63ca}} 
+Q\+V\+Box\+Layout $\ast$ \hyperlink{classSGSolutionHandler_a3bed74aae3faea743be69ec5486b63ca}{get\+Layout} () const
+\begin{DoxyCompactList}\small\item\em Returns the layout. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a2304a413d545b5a2653fdba5d414ef40}\label{classSGSolutionHandler_a2304a413d545b5a2653fdba5d414ef40}} 
+Q\+Action $\ast$ \hyperlink{classSGSolutionHandler_a2304a413d545b5a2653fdba5d414ef40}{get\+Detailed\+Titles\+Action} () const
+\begin{DoxyCompactList}\small\item\em Returns the detailed titles action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a56e01e9d69bd5f6d8bb1c478295570b0}\label{classSGSolutionHandler_a56e01e9d69bd5f6d8bb1c478295570b0}} 
+Q\+Action $\ast$ \hyperlink{classSGSolutionHandler_a56e01e9d69bd5f6d8bb1c478295570b0}{get\+Equalize\+Axes\+Action} () const
+\begin{DoxyCompactList}\small\item\em Returns the equalize axes action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a4ecac9faa12c6c6f3bdfeb5120511358}\label{classSGSolutionHandler_a4ecac9faa12c6c6f3bdfeb5120511358}} 
+void \hyperlink{classSGSolutionHandler_a4ecac9faa12c6c6f3bdfeb5120511358}{move\+Backwards} ()
+\begin{DoxyCompactList}\small\item\em Decrements the iteration through the \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a6a4d44d13270b683319bf3c06ae4d32f}\label{classSGSolutionHandler_a6a4d44d13270b683319bf3c06ae4d32f}} 
+void \hyperlink{classSGSolutionHandler_a6a4d44d13270b683319bf3c06ae4d32f}{move\+Forwards} ()
+\begin{DoxyCompactList}\small\item\em Increments the iteration through the \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a24ed3c504b27308286c04078444e6082}\label{classSGSolutionHandler_a24ed3c504b27308286c04078444e6082}} 
+void \hyperlink{classSGSolutionHandler_a24ed3c504b27308286c04078444e6082}{prev\+Action} ()
+\begin{DoxyCompactList}\small\item\em Decrements the action profile through the \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ac2aab461d3ded6d0f30dcef0b83bffdd}\label{classSGSolutionHandler_ac2aab461d3ded6d0f30dcef0b83bffdd}} 
+void \hyperlink{classSGSolutionHandler_ac2aab461d3ded6d0f30dcef0b83bffdd}{next\+Action} ()
+\begin{DoxyCompactList}\small\item\em Increments the action profile through the \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a1096133ea0ff25fb447a0d56cdb29688}\label{classSGSolutionHandler_a1096133ea0ff25fb447a0d56cdb29688}} 
+void \hyperlink{classSGSolutionHandler_a1096133ea0ff25fb447a0d56cdb29688}{plot\+Solution} ()
+\begin{DoxyCompactList}\small\item\em Plots the solution from start to end. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ae33873ed4d757ba34f7031526790a2e1}\label{classSGSolutionHandler_ae33873ed4d757ba34f7031526790a2e1}} 
+void \hyperlink{classSGSolutionHandler_ae33873ed4d757ba34f7031526790a2e1}{plot\+Solution} (\hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} $\ast$plot, int state, bool add\+Squares)
+\begin{DoxyCompactList}\small\item\em Plots the solution for a particular state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a48f0430bc242ab6caa5e5b915c0085df}\label{classSGSolutionHandler_a48f0430bc242ab6caa5e5b915c0085df}} 
+Q\+String \hyperlink{classSGSolutionHandler_a48f0430bc242ab6caa5e5b915c0085df}{generate\+Plot\+Title} (int state, int action, bool add\+Iter\+Rev)
+\begin{DoxyCompactList}\small\item\em Generates title for the detail plot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_aec8de85edd3f104f5a1e2b896a58d0b0}\label{classSGSolutionHandler_aec8de85edd3f104f5a1e2b896a58d0b0}} 
+Q\+C\+P\+Range \hyperlink{classSGSolutionHandler_aec8de85edd3f104f5a1e2b896a58d0b0}{get\+Bounds} (const Q\+Vector$<$ double $>$ \&x) const
+\begin{DoxyCompactList}\small\item\em Gets bounds for the plots. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a86d0a38bc3afbe289ddb0844d02f69bb}\label{classSGSolutionHandler_a86d0a38bc3afbe289ddb0844d02f69bb}} 
+void \hyperlink{classSGSolutionHandler_a86d0a38bc3afbe289ddb0844d02f69bb}{add\+Point} (const \hyperlink{classSGPoint}{S\+G\+Point} \&point, Q\+Custom\+Plot $\ast$plot, const Q\+C\+P\+Scatter\+Style \&style)
+\begin{DoxyCompactList}\small\item\em Adds a point to the indicated graph in the indicated scatter style. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_aa1220e94bb920a7d67276385510ba5f8}\label{classSGSolutionHandler_aa1220e94bb920a7d67276385510ba5f8}} 
+Q\+C\+P\+Curve $\ast$ \hyperlink{classSGSolutionHandler_aa1220e94bb920a7d67276385510ba5f8}{vector\+To\+Q\+C\+P\+Curve} (\hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} $\ast$plot, const \hyperlink{classSGPoint}{S\+G\+Point} \&point, const \hyperlink{classSGPoint}{S\+G\+Point} \&dir)
+\begin{DoxyCompactList}\small\item\em Converts point,dir into a Q\+C\+P\+Curve associated with the given plot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a6ecc89647ccab2bea37cb994eb1764c2}\label{classSGSolutionHandler_a6ecc89647ccab2bea37cb994eb1764c2}} 
+Q\+C\+P\+Item\+Line $\ast$ \hyperlink{classSGSolutionHandler_a6ecc89647ccab2bea37cb994eb1764c2}{sg\+To\+Q\+C\+P\+Item\+Line} (\hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} $\ast$plot, const \hyperlink{classSGPoint}{S\+G\+Point} \&point, const \hyperlink{classSGPoint}{S\+G\+Point} \&dir)
+\begin{DoxyCompactList}\small\item\em Converts point,dir into a Q\+C\+P\+Item\+Line associated with the given plot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGSolution}{S\+G\+Solution} \hyperlink{classSGSolutionHandler_a9d13b2690f62b56e3457e0b9a5dfea0d}{soln}
+\begin{DoxyCompactList}\small\item\em Solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ac3572b35e3e3f637b4542a8ff280291f}\label{classSGSolutionHandler_ac3572b35e3e3f637b4542a8ff280291f}} 
+\hyperlink{classSGPlotController}{S\+G\+Plot\+Controller} $\ast$ \hyperlink{classSGSolutionHandler_ac3572b35e3e3f637b4542a8ff280291f}{controller}
+\begin{DoxyCompactList}\small\item\em A pointer to the associated plot controller. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_acad6ff1e5871e5956d56ef11160c5659}\label{classSGSolutionHandler_acad6ff1e5871e5956d56ef11160c5659}} 
+Q\+Widget $\ast$ \hyperlink{classSGSolutionHandler_acad6ff1e5871e5956d56ef11160c5659}{parent}
+\begin{DoxyCompactList}\small\item\em The parent widget, which is an \hyperlink{classSGMainWindow}{S\+G\+Main\+Window} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a898a83847430d5a15b66b6ffec934aaf}\label{classSGSolutionHandler_a898a83847430d5a15b66b6ffec934aaf}} 
+double \hyperlink{classSGSolutionHandler_a898a83847430d5a15b66b6ffec934aaf}{payoff\+Bound}
+\begin{DoxyCompactList}\small\item\em A bound on the size of payoffs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a51a229e0dad9a61b720fcd80b89492ef}\label{classSGSolutionHandler_a51a229e0dad9a61b720fcd80b89492ef}} 
+bool \hyperlink{classSGSolutionHandler_a51a229e0dad9a61b720fcd80b89492ef}{soln\+Loaded}
+\begin{DoxyCompactList}\small\item\em True if a solution has been loaded. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a58a074e937c0806aea01159d3afc0234}\label{classSGSolutionHandler_a58a074e937c0806aea01159d3afc0234}} 
+\hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} $\ast$ \hyperlink{classSGSolutionHandler_a58a074e937c0806aea01159d3afc0234}{detail\+Plot}
+\begin{DoxyCompactList}\small\item\em Left hand plot that shows construction of a point. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} $\ast$ $>$ \hyperlink{classSGSolutionHandler_acdd63bfa69bbffd3dadc4bec4b1b7948}{state\+Plots}
+\begin{DoxyCompactList}\small\item\em Vector of state plots. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ac56eec3a339cc52a4792d338113dd469}\label{classSGSolutionHandler_ac56eec3a339cc52a4792d338113dd469}} 
+\hyperlink{classSGPlotSettings}{S\+G\+Plot\+Settings} \hyperlink{classSGSolutionHandler_ac56eec3a339cc52a4792d338113dd469}{plot\+Settings}
+\begin{DoxyCompactList}\small\item\em Plot settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a98537ae234250e1c6d6b285a47bcb494}\label{classSGSolutionHandler_a98537ae234250e1c6d6b285a47bcb494}} 
+Q\+V\+Box\+Layout $\ast$ \hyperlink{classSGSolutionHandler_a98537ae234250e1c6d6b285a47bcb494}{layout}
+\begin{DoxyCompactList}\small\item\em Master layout for the solution handler. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a92d6a7c150dc74f15813300e8a3e3505}\label{classSGSolutionHandler_a92d6a7c150dc74f15813300e8a3e3505}} 
+Q\+Grid\+Layout $\ast$ \hyperlink{classSGSolutionHandler_a92d6a7c150dc74f15813300e8a3e3505}{state\+Plots\+Layout}
+\begin{DoxyCompactList}\small\item\em Layout holding the state plots. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a96449b0e5785c0de1ce9797df2f3dab1}\label{classSGSolutionHandler_a96449b0e5785c0de1ce9797df2f3dab1}} 
+Q\+Action $\ast$ \hyperlink{classSGSolutionHandler_a96449b0e5785c0de1ce9797df2f3dab1}{detailed\+Titles\+Action}
+\begin{DoxyCompactList}\small\item\em Action to toggle detailed titles. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_ae3756fd911beba2ce1482c3d439ce40e}\label{classSGSolutionHandler_ae3756fd911beba2ce1482c3d439ce40e}} 
+Q\+Action $\ast$ \hyperlink{classSGSolutionHandler_ae3756fd911beba2ce1482c3d439ce40e}{equalize\+Axes\+Action}
+\begin{DoxyCompactList}\small\item\em Action for equalizing axes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolutionHandler_a99750347e515bb8b7469e018226868cb}\label{classSGSolutionHandler_a99750347e515bb8b7469e018226868cb}} 
+\hyperlink{classSGSimulationHandler}{S\+G\+Simulation\+Handler} $\ast$ \hyperlink{classSGSolutionHandler_a99750347e515bb8b7469e018226868cb}{sim\+Handler}
+\begin{DoxyCompactList}\small\item\em Pointer to simulation handler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles the widgets for displaying the solution. 
+
+This class contains all of the widgets on the solution tab for displaying the \hyperlink{classSGSolution}{S\+G\+Solution} generated by the \hyperlink{classSGSolver}{S\+G\+Solver}. This class sets up the widgets for viewing and controlling the view of the solution, and it directly implements the plotting routines. The specification of what to plot is controlled by a member \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller}.
+
+Specifically, \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler} constructs plots for the trajectory of the pivot in each state, which are the state\+Plots, and it constructs a detail\+Plot which shows the behavior of the algorithm at a particular iteration or a particular equilibrium.
+
+There are two modes for the solution. In \char`\"{}\+Progress\char`\"{} mode, the program will display the progress of the algorithm from a starting iteration to a final iteration, and the detail plot will show how the next direction is selected at the last iteration. The start and end are controlled by Q\+Scroll\+Bars. By default, detail\+Plot will show the test directions for the best action, but the user can display test directions for other actions using Q\+Combo\+Boxes.
+
+In \char`\"{}\+Final\char`\"{} mode, the program just shows the pivots on the last revolution, which is basically the true equilibrium payoff correspondence.
+
+The sliders and combo boxes communicate with and are controlled by a member \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller} object, which aggregates all of the user-\/provided specifications into a compact set of parameters that are used by \hyperlink{classSGSolutionHandler_a1096133ea0ff25fb447a0d56cdb29688}{S\+G\+Solution\+Handler\+::plot\+Solution()} to construct the plots.
+
+See also viewersolutionsec. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGSolutionHandler_ae1158f6e80ba8cc08c6d3e23f2bd1fbd}\label{classSGSolutionHandler_ae1158f6e80ba8cc08c6d3e23f2bd1fbd}} 
+\index{S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}!S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}}
+\index{S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}!S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}}
+\subsubsection{\texorpdfstring{S\+G\+Solution\+Handler()}{SGSolutionHandler()}}
+{\footnotesize\ttfamily S\+G\+Solution\+Handler\+::\+S\+G\+Solution\+Handler (\begin{DoxyParamCaption}\item[{Q\+Widget $\ast$}]{parent = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Constructs the widgets and the layout, connects signals and slots. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGSolutionHandler_a9d13b2690f62b56e3457e0b9a5dfea0d}\label{classSGSolutionHandler_a9d13b2690f62b56e3457e0b9a5dfea0d}} 
+\index{S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}!soln@{soln}}
+\index{soln@{soln}!S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}}
+\subsubsection{\texorpdfstring{soln}{soln}}
+{\footnotesize\ttfamily \hyperlink{classSGSolution}{S\+G\+Solution} S\+G\+Solution\+Handler\+::soln\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Solution. 
+
+Stores all of the information related to the result of the computation. \mbox{\Hypertarget{classSGSolutionHandler_acdd63bfa69bbffd3dadc4bec4b1b7948}\label{classSGSolutionHandler_acdd63bfa69bbffd3dadc4bec4b1b7948}} 
+\index{S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}!state\+Plots@{state\+Plots}}
+\index{state\+Plots@{state\+Plots}!S\+G\+Solution\+Handler@{S\+G\+Solution\+Handler}}
+\subsubsection{\texorpdfstring{state\+Plots}{statePlots}}
+{\footnotesize\ttfamily vector$<$\hyperlink{classSGCustomPlot}{S\+G\+Custom\+Plot} $\ast$$>$ S\+G\+Solution\+Handler\+::state\+Plots\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Vector of state plots. 
+
+One plot for each state, shows the trajectory of the pivot for that state. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsolutionhandler.\+hpp\item 
+viewer/cpp/sgsolutionhandler.\+cpp\end{DoxyCompactItemize}

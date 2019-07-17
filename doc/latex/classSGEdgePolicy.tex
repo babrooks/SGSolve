@@ -1,0 +1,132 @@
+\hypertarget{classSGEdgePolicy}{}\section{S\+G\+Edge\+Policy Class Reference}
+\label{classSGEdgePolicy}\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+
+
+Class for iterating edges of a product policy.  
+
+
+
+
+{\ttfamily \#include $<$sgedgepolicy.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Edge\+Policy\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{classSGEdgePolicy__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGEdgePolicy_a72828530fdfd5e6d849dadd07ac44724}{S\+G\+Edge\+Policy} (const \hyperlink{classSGProductPolicy}{S\+G\+Product\+Policy} \&\+\_\+master)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_abb6eb7cff5ea1a9f7007627cbc48a50c}\label{classSGEdgePolicy_abb6eb7cff5ea1a9f7007627cbc48a50c}} 
+const vector$<$ S\+G\+Policy\+Set\+::const\+\_\+iterator $>$ \& \hyperlink{classSGEdgePolicy_abb6eb7cff5ea1a9f7007627cbc48a50c}{get\+Policies} () const
+\begin{DoxyCompactList}\small\item\em Returns the current policy, as a vector of iterators. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_aa055206fa96e03f47547c1fcaaf7d19c}\label{classSGEdgePolicy_aa055206fa96e03f47547c1fcaaf7d19c}} 
+const S\+G\+Policy\+Set\+::const\+\_\+iterator \& \hyperlink{classSGEdgePolicy_aa055206fa96e03f47547c1fcaaf7d19c}{get\+Sub\+Policy} () const
+\begin{DoxyCompactList}\small\item\em Returns the current substitution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_a967bd25525188460c0c4ab4881ed23f9}\label{classSGEdgePolicy_a967bd25525188460c0c4ab4881ed23f9}} 
+bool \hyperlink{classSGEdgePolicy_a967bd25525188460c0c4ab4881ed23f9}{increment\+Base\+Policy} ()
+\begin{DoxyCompactList}\small\item\em Increments the base policy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_a07eb755f0281023ad7fc76190b33a83f}\label{classSGEdgePolicy_a07eb755f0281023ad7fc76190b33a83f}} 
+bool \hyperlink{classSGEdgePolicy_a07eb755f0281023ad7fc76190b33a83f}{increment\+Sub\+Policy} ()
+\begin{DoxyCompactList}\small\item\em Increments the substitution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_a9ba9e008e8f581ed48b700ab51cc237a}\label{classSGEdgePolicy_a9ba9e008e8f581ed48b700ab51cc237a}} 
+const int \hyperlink{classSGEdgePolicy_a9ba9e008e8f581ed48b700ab51cc237a}{get\+Base\+State} () const
+\begin{DoxyCompactList}\small\item\em Returns the base state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_a3e4ee651697b056738b6c8675b0c066d}\label{classSGEdgePolicy_a3e4ee651697b056738b6c8675b0c066d}} 
+const int \hyperlink{classSGEdgePolicy_a3e4ee651697b056738b6c8675b0c066d}{get\+Sub\+State} () const
+\begin{DoxyCompactList}\small\item\em Returns the substitution state. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classSGEdgePolicy_ae106e1a7ebf78b0896316e16ca9c6063}{hash} () const
+\begin{DoxyCompactList}\small\item\em Generates a unique identifier for the edge. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEdgePolicy_a508ce3538972a16ecbaaff0362b785e2}\label{classSGEdgePolicy_a508ce3538972a16ecbaaff0362b785e2}} 
+bool \hyperlink{classSGEdgePolicy_a508ce3538972a16ecbaaff0362b785e2}{operator++} ()
+\begin{DoxyCompactList}\small\item\em Increment the edge by either advancing the substitution or the base policy. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classSGProductPolicy}{S\+G\+Product\+Policy} \& \hyperlink{classSGEdgePolicy_a78e0d811ff7c8847af1f84de160f8ec9}{master}
+\item 
+vector$<$ S\+G\+Policy\+Set\+::const\+\_\+iterator $>$ \hyperlink{classSGEdgePolicy_a4e18fb2c342c4349a89a2a47b5dc9f18}{policies}
+\item 
+S\+G\+Policy\+Set\+::const\+\_\+iterator \hyperlink{classSGEdgePolicy_a2b008e2ce91f6c95130af3efc5915e7f}{sub\+Policy}
+\item 
+int \hyperlink{classSGEdgePolicy_a28dccfb7e5195256e2ca6ababb03b45f}{base\+State}
+\item 
+int \hyperlink{classSGEdgePolicy_af12e8542627470a6c50abc6925512737}{sub\+State}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for iterating edges of a product policy. 
+
+$<$ This code is used by \hyperlink{classSGSolver__MaxMinMax__3Player}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+3\+Player} for exact computation of the max-\/min-\/max operator when there are three players. Given a \char`\"{}master\char`\"{} product policy, which represents a face of $\tilde{B}({\bf W})$, this class will iterate through all edges of face. These edges correspond to (i) a selection of a policy in the product policy and (ii) a substitution. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGEdgePolicy_a72828530fdfd5e6d849dadd07ac44724}\label{classSGEdgePolicy_a72828530fdfd5e6d849dadd07ac44724}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{S\+G\+Edge\+Policy()}{SGEdgePolicy()}}
+{\footnotesize\ttfamily S\+G\+Edge\+Policy\+::\+S\+G\+Edge\+Policy (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGProductPolicy}{S\+G\+Product\+Policy} \&}]{\+\_\+master }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Class for iterating edges of a product policy. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGEdgePolicy_ae106e1a7ebf78b0896316e16ca9c6063}\label{classSGEdgePolicy_ae106e1a7ebf78b0896316e16ca9c6063}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!hash@{hash}}
+\index{hash@{hash}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily std\+::string S\+G\+Edge\+Policy\+::hash (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Generates a unique identifier for the edge. 
+
+$<$ This identifier is used in tracking which edges have been visited. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGEdgePolicy_a28dccfb7e5195256e2ca6ababb03b45f}\label{classSGEdgePolicy_a28dccfb7e5195256e2ca6ababb03b45f}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!base\+State@{base\+State}}
+\index{base\+State@{base\+State}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{base\+State}{baseState}}
+{\footnotesize\ttfamily int S\+G\+Edge\+Policy\+::base\+State\hspace{0.3cm}{\ttfamily [private]}}
+
+The state in which we are currently iterating the policies, as we work our way through the product policy. \mbox{\Hypertarget{classSGEdgePolicy_a78e0d811ff7c8847af1f84de160f8ec9}\label{classSGEdgePolicy_a78e0d811ff7c8847af1f84de160f8ec9}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!master@{master}}
+\index{master@{master}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{master}{master}}
+{\footnotesize\ttfamily const \hyperlink{classSGProductPolicy}{S\+G\+Product\+Policy}\& S\+G\+Edge\+Policy\+::master\hspace{0.3cm}{\ttfamily [private]}}
+
+The product policy describing the face. \mbox{\Hypertarget{classSGEdgePolicy_a4e18fb2c342c4349a89a2a47b5dc9f18}\label{classSGEdgePolicy_a4e18fb2c342c4349a89a2a47b5dc9f18}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!policies@{policies}}
+\index{policies@{policies}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{policies}{policies}}
+{\footnotesize\ttfamily vector$<$S\+G\+Policy\+Set\+::const\+\_\+iterator$>$ S\+G\+Edge\+Policy\+::policies\hspace{0.3cm}{\ttfamily [private]}}
+
+The vector of policies that makes up the current edge. \mbox{\Hypertarget{classSGEdgePolicy_a2b008e2ce91f6c95130af3efc5915e7f}\label{classSGEdgePolicy_a2b008e2ce91f6c95130af3efc5915e7f}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!sub\+Policy@{sub\+Policy}}
+\index{sub\+Policy@{sub\+Policy}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{sub\+Policy}{subPolicy}}
+{\footnotesize\ttfamily S\+G\+Policy\+Set\+::const\+\_\+iterator S\+G\+Edge\+Policy\+::sub\+Policy\hspace{0.3cm}{\ttfamily [private]}}
+
+The substituted policy. \mbox{\Hypertarget{classSGEdgePolicy_af12e8542627470a6c50abc6925512737}\label{classSGEdgePolicy_af12e8542627470a6c50abc6925512737}} 
+\index{S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}!sub\+State@{sub\+State}}
+\index{sub\+State@{sub\+State}!S\+G\+Edge\+Policy@{S\+G\+Edge\+Policy}}
+\subsubsection{\texorpdfstring{sub\+State}{subState}}
+{\footnotesize\ttfamily int S\+G\+Edge\+Policy\+::sub\+State\hspace{0.3cm}{\ttfamily [private]}}
+
+State in which the policy is substituted. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgedgepolicy.\+hpp\item 
+src/cpp/sgedgepolicy.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,119 @@
+\hypertarget{classRiskSharingGame__3Player}{}\section{Risk\+Sharing\+Game\+\_\+3\+Player Class Reference}
+\label{classRiskSharingGame__3Player}\index{Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}}
+
+
+Three player version of the Kocherlakota (1996) risk sharing game.  
+
+
+
+
+{\ttfamily \#include $<$sgrisksharing\+\_\+3player.\+hpp$>$}
+
+
+
+Inheritance diagram for Risk\+Sharing\+Game\+\_\+3\+Player\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRiskSharingGame__3Player__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Risk\+Sharing\+Game\+\_\+3\+Player\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRiskSharingGame__3Player__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_aa04f71baa89e13f2411c27ec51d5ad44}\label{classRiskSharingGame__3Player_aa04f71baa89e13f2411c27ec51d5ad44}} 
+{\bfseries Risk\+Sharing\+Game\+\_\+3\+Player} (double \hyperlink{classSGAbstractGame_a34c8905ac463bb2ec54aba4eb4ac376f}{delta}, int \+\_\+num\+Endowments, int \+\_\+c2e)
+\item 
+virtual \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classRiskSharingGame__3Player_ae4a07f7dc66f18eccd29bc7993c0472f}{payoffs} (int state, const vector$<$ int $>$ \&actions) const
+\begin{DoxyCompactList}\small\item\em The payoff function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{classRiskSharingGame__3Player_a48f478394bae9cf7479519da9b18a987}{probability} (int e, const vector$<$ int $>$ \&actions, int ep) const
+\begin{DoxyCompactList}\small\item\em Transition probabilities. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classRiskSharingGame__3Player_a79f44b04c558ecd72cf0b464fdd8a317}{is\+Equilibrium\+Action} (int state, const vector$<$ int $>$ \&actions) const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_ab3687b044f23019a5c66b05675ecd963}\label{classRiskSharingGame__3Player_ab3687b044f23019a5c66b05675ecd963}} 
+int {\bfseries num\+Endowments}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a3572e0f51a0cd11fbc34db0f6d323ab5}\label{classRiskSharingGame__3Player_a3572e0f51a0cd11fbc34db0f6d323ab5}} 
+int {\bfseries c2e}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a8ea60c87e78bbcafaf3dbbd8fd7b5712}\label{classRiskSharingGame__3Player_a8ea60c87e78bbcafaf3dbbd8fd7b5712}} 
+vector$<$ vector$<$ int $>$ $>$ {\bfseries E}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a27081a99338c5dc81faa8ca74d15ba32}\label{classRiskSharingGame__3Player_a27081a99338c5dc81faa8ca74d15ba32}} 
+double {\bfseries e\+Incr}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a2615654d1b8aee618d9f8c1e99e56c33}\label{classRiskSharingGame__3Player_a2615654d1b8aee618d9f8c1e99e56c33}} 
+double {\bfseries c\+Incr}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a11819cbe897fd8246c70ae2295a32e6a}\label{classRiskSharingGame__3Player_a11819cbe897fd8246c70ae2295a32e6a}} 
+vector$<$ int $>$ {\bfseries num\+Actions\+\_\+total}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player_ab42d33f21d8b835aacdc9f2d3813bad0}\label{classRiskSharingGame__3Player_ab42d33f21d8b835aacdc9f2d3813bad0}} 
+vector$<$ vector$<$ int $>$ $>$ {\bfseries transfer\+List}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Three player version of the Kocherlakota (1996) risk sharing game. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a79f44b04c558ecd72cf0b464fdd8a317}\label{classRiskSharingGame__3Player_a79f44b04c558ecd72cf0b464fdd8a317}} 
+\index{Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}!is\+Equilibrium\+Action@{is\+Equilibrium\+Action}}
+\index{is\+Equilibrium\+Action@{is\+Equilibrium\+Action}!Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}}
+\subsubsection{\texorpdfstring{is\+Equilibrium\+Action()}{isEquilibriumAction()}}
+{\footnotesize\ttfamily virtual bool Risk\+Sharing\+Game\+\_\+3\+Player\+::is\+Equilibrium\+Action (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Returns true if the given action pair can be played in equilibrium
+
+The default definition of this method always returns true, so that all action pairs can be played in equilibrium. By redefining this method, the user can create models in which only a subset of action pairs are played on the equilibrium path. 
+
+Reimplemented from \hyperlink{classSGAbstractGame_a2cec8147c3055cfe6314da349d1a7344}{S\+G\+Abstract\+Game}.
+
+\mbox{\Hypertarget{classRiskSharingGame__3Player_ae4a07f7dc66f18eccd29bc7993c0472f}\label{classRiskSharingGame__3Player_ae4a07f7dc66f18eccd29bc7993c0472f}} 
+\index{Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}}
+\subsubsection{\texorpdfstring{payoffs()}{payoffs()}}
+{\footnotesize\ttfamily virtual \hyperlink{classSGPoint}{S\+G\+Point} Risk\+Sharing\+Game\+\_\+3\+Player\+::payoffs (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+The payoff function. 
+
+A class that is derived from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the payoffs method, which returns, for a given state and action pair, the flow payoffs that the players receive as an \hyperlink{classSGPoint}{S\+G\+Point}. 
+
+Implements \hyperlink{classSGAbstractGame_a3fc1cd009d1813f44f1f219e7deb6eef}{S\+G\+Abstract\+Game}.
+
+\mbox{\Hypertarget{classRiskSharingGame__3Player_a48f478394bae9cf7479519da9b18a987}\label{classRiskSharingGame__3Player_a48f478394bae9cf7479519da9b18a987}} 
+\index{Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}!probability@{probability}}
+\index{probability@{probability}!Risk\+Sharing\+Game\+\_\+3\+Player@{Risk\+Sharing\+Game\+\_\+3\+Player}}
+\subsubsection{\texorpdfstring{probability()}{probability()}}
+{\footnotesize\ttfamily virtual double Risk\+Sharing\+Game\+\_\+3\+Player\+::probability (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions,  }\item[{int}]{statep }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Transition probabilities. 
+
+A class that derives from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the probability method, which gives, for each state and action pair and new state, the probability of reaching the new state tomorrow when starting from the given state and when the given action pair is played. 
+
+Implements \hyperlink{classSGAbstractGame_a416b31d5020b75de49447ce4f7783b98}{S\+G\+Abstract\+Game}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgrisksharing\+\_\+3player.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,295 @@
+\hypertarget{classSGPlotController}{}\section{S\+G\+Plot\+Controller Class Reference}
+\label{classSGPlotController}\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+
+
+Handles the plot settings for \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler}.  
+
+
+
+
+{\ttfamily \#include $<$sgplotcontroller.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Plot\+Controller\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=177pt]{classSGPlotController__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Plot\+Controller\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=333pt]{classSGPlotController__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}{Plot\+Mode} \{ \hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1aaace992b25a6ae65d522747ea10690c7}{Directions}, 
+\hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1af4b6cf87b680d5b00b0939d0d9744043}{Generation}
+ \}\begin{DoxyCompactList}\small\item\em Plot mode for the detail\+Plot. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95c}{Solution\+Mode} \{ \hyperlink{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95cac93156b79a026d54b4b692977da89e87}{Progress}, 
+\hyperlink{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95ca20f484d13a178c3ac5e886b798efa791}{Final}
+ \}\begin{DoxyCompactList}\small\item\em Solution mode. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotController_aded7c120acb427ad77d4e57ce79f4e0d}\label{classSGPlotController_aded7c120acb427ad77d4e57ce79f4e0d}} 
+void \hyperlink{classSGPlotController_aded7c120acb427ad77d4e57ce79f4e0d}{change\+Mode} (int new\+Mode)
+\begin{DoxyCompactList}\small\item\em Toggles the solution mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ae34ccf38225310038155d3f815e98793}\label{classSGPlotController_ae34ccf38225310038155d3f815e98793}} 
+void \hyperlink{classSGPlotController_ae34ccf38225310038155d3f815e98793}{iter\+Slider\+Update} (int value)
+\begin{DoxyCompactList}\small\item\em Slot when the iter and start sliders are moved. \end{DoxyCompactList}\item 
+void \hyperlink{classSGPlotController_a30efaeb2ec5cb752d6354f05447b287a}{set\+Slider\+Ranges} (int start, int end)
+\item 
+\mbox{\Hypertarget{classSGPlotController_a353dbab68b537e6443e7141a3e20f383}\label{classSGPlotController_a353dbab68b537e6443e7141a3e20f383}} 
+void \hyperlink{classSGPlotController_a353dbab68b537e6443e7141a3e20f383}{prev\+Action} ()
+\begin{DoxyCompactList}\small\item\em Decrements the action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a3ccda5aca5a19194fb5699e62a6307d5}\label{classSGPlotController_a3ccda5aca5a19194fb5699e62a6307d5}} 
+void \hyperlink{classSGPlotController_a3ccda5aca5a19194fb5699e62a6307d5}{next\+Action} ()
+\begin{DoxyCompactList}\small\item\em Increments the action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a4aab087b3ee5e3da82652510bba54048}\label{classSGPlotController_a4aab087b3ee5e3da82652510bba54048}} 
+void \hyperlink{classSGPlotController_a4aab087b3ee5e3da82652510bba54048}{change\+Action} (int new\+Action)
+\begin{DoxyCompactList}\small\item\em Sets the action. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotController_a8f7d30a1e5aaf22cd7e891f6a70518eb}\label{classSGPlotController_a8f7d30a1e5aaf22cd7e891f6a70518eb}} 
+void \hyperlink{classSGPlotController_a8f7d30a1e5aaf22cd7e891f6a70518eb}{solution\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Signal to the state and action models that the solution changed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a5dae7775721c060e8d953a7f86e4aedf}\label{classSGPlotController_a5dae7775721c060e8d953a7f86e4aedf}} 
+void \hyperlink{classSGPlotController_a5dae7775721c060e8d953a7f86e4aedf}{action\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Signal to the solution\+Handler that the action changed. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ae24292f1d18e5eb5debb56e4e186c953}\label{classSGPlotController_ae24292f1d18e5eb5debb56e4e186c953}} 
+void \hyperlink{classSGPlotController_ae24292f1d18e5eb5debb56e4e186c953}{iteration\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Signal to solution\+Handler that the iteration changed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotController_ac69ac7f2655141d6ed05b30216066885}\label{classSGPlotController_ac69ac7f2655141d6ed05b30216066885}} 
+\hyperlink{classSGPlotController_ac69ac7f2655141d6ed05b30216066885}{S\+G\+Plot\+Controller} (Q\+Combo\+Box $\ast$\+\_\+state\+Combo, Q\+Combo\+Box $\ast$\+\_\+action\+Combo, Q\+Scroll\+Bar $\ast$\+\_\+iter\+Slider, Q\+Scroll\+Bar $\ast$\+\_\+start\+Slider, Q\+Combo\+Box $\ast$\+\_\+solution\+Mode\+Combo)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_af4d02a19c7a3a29959f2c7e02826831e}\label{classSGPlotController_af4d02a19c7a3a29959f2c7e02826831e}} 
+int \hyperlink{classSGPlotController_af4d02a19c7a3a29959f2c7e02826831e}{get\+State} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ab80599d82f9d4823c376c52f845e7f6e}\label{classSGPlotController_ab80599d82f9d4823c376c52f845e7f6e}} 
+int \hyperlink{classSGPlotController_ab80599d82f9d4823c376c52f845e7f6e}{get\+Action} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a7981d2ad2ce8c37a0acf8d0855a309c8}\label{classSGPlotController_a7981d2ad2ce8c37a0acf8d0855a309c8}} 
+int \hyperlink{classSGPlotController_a7981d2ad2ce8c37a0acf8d0855a309c8}{get\+Action\+Index} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current action index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a3feedf398c637ccc61da156098c97f5c}\label{classSGPlotController_a3feedf398c637ccc61da156098c97f5c}} 
+int \hyperlink{classSGPlotController_a3feedf398c637ccc61da156098c97f5c}{get\+Iteration} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current iteration number. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a7e98684c6af2fd4c6502cf528c8e4dc5}\label{classSGPlotController_a7e98684c6af2fd4c6502cf528c8e4dc5}} 
+\hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}{Plot\+Mode} \hyperlink{classSGPlotController_a7e98684c6af2fd4c6502cf528c8e4dc5}{get\+Plot\+Mode} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current plot mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a7dcba17b7cb912f96da1965a669127fe}\label{classSGPlotController_a7dcba17b7cb912f96da1965a669127fe}} 
+\hyperlink{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95c}{Solution\+Mode} \hyperlink{classSGPlotController_a7dcba17b7cb912f96da1965a669127fe}{get\+Mode} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current solution mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a857f9b6260f024bad00e68a5cc0e8edd}\label{classSGPlotController_a857f9b6260f024bad00e68a5cc0e8edd}} 
+const \hyperlink{classSGIteration}{S\+G\+Iteration} \& \hyperlink{classSGPlotController_a857f9b6260f024bad00e68a5cc0e8edd}{get\+Current\+Iter} () const
+\begin{DoxyCompactList}\small\item\em Access method for the current \hyperlink{classSGIteration}{S\+G\+Iteration} pointer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a47600a28556e4701cc94d0c5e54a438f}\label{classSGPlotController_a47600a28556e4701cc94d0c5e54a438f}} 
+const \hyperlink{classSGIteration}{S\+G\+Iteration} \& \hyperlink{classSGPlotController_a47600a28556e4701cc94d0c5e54a438f}{get\+Start\+Iter} () const
+\begin{DoxyCompactList}\small\item\em Access method for the start \hyperlink{classSGIteration}{S\+G\+Iteration} pointer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ab58cbd98d25e98ecd905b9c2ba2c2c6b}\label{classSGPlotController_ab58cbd98d25e98ecd905b9c2ba2c2c6b}} 
+const \hyperlink{classSGIteration}{S\+G\+Iteration} \& \hyperlink{classSGPlotController_ab58cbd98d25e98ecd905b9c2ba2c2c6b}{get\+End\+Iter} () const
+\begin{DoxyCompactList}\small\item\em Access method for the end \hyperlink{classSGIteration}{S\+G\+Iteration} pointer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ae00c2c6453213013a890f0723ef3e168}\label{classSGPlotController_ae00c2c6453213013a890f0723ef3e168}} 
+const \hyperlink{classSGIteration}{S\+G\+Iteration} \& \hyperlink{classSGPlotController_ae00c2c6453213013a890f0723ef3e168}{get\+Start\+Of\+Last\+Rev} () const
+\begin{DoxyCompactList}\small\item\em Access method for the \hyperlink{classSGIteration}{S\+G\+Iteration} pointer that starts the last revolution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_aaf368cb6f7e3893fa165c40ef3b17f50}\label{classSGPlotController_aaf368cb6f7e3893fa165c40ef3b17f50}} 
+int \hyperlink{classSGPlotController_aaf368cb6f7e3893fa165c40ef3b17f50}{get\+Start\+Slider\+Position} () const
+\begin{DoxyCompactList}\small\item\em Returns the position of the start\+Slider. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a21e04610454ab6936d782931d5fd35c5}\label{classSGPlotController_a21e04610454ab6936d782931d5fd35c5}} 
+bool \hyperlink{classSGPlotController_a21e04610454ab6936d782931d5fd35c5}{has\+Solution} () const
+\begin{DoxyCompactList}\small\item\em Returns true if a solution has been loaded. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ab6da5d8489ad707cf6d6c460517f303f}\label{classSGPlotController_ab6da5d8489ad707cf6d6c460517f303f}} 
+const \hyperlink{classSGSolution}{S\+G\+Solution} $\ast$ \hyperlink{classSGPlotController_ab6da5d8489ad707cf6d6c460517f303f}{get\+Solution} () const
+\begin{DoxyCompactList}\small\item\em Returns the current solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a1a2c3716912d030a1ed7259c62c402f1}\label{classSGPlotController_a1a2c3716912d030a1ed7259c62c402f1}} 
+void \hyperlink{classSGPlotController_a1a2c3716912d030a1ed7259c62c402f1}{set\+Solution} (\hyperlink{classSGSolution}{S\+G\+Solution} $\ast$new\+Soln)
+\begin{DoxyCompactList}\small\item\em Sets the solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a5026032dbc00ff3aa4abd05ea6401755}\label{classSGPlotController_a5026032dbc00ff3aa4abd05ea6401755}} 
+bool \hyperlink{classSGPlotController_a5026032dbc00ff3aa4abd05ea6401755}{set\+State} (int new\+State)
+\begin{DoxyCompactList}\small\item\em Sets the current state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a4608e92513c0c0b1a75c682625567900}\label{classSGPlotController_a4608e92513c0c0b1a75c682625567900}} 
+void \hyperlink{classSGPlotController_a4608e92513c0c0b1a75c682625567900}{set\+Plot\+Mode} (\hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}{Plot\+Mode} new\+Mode)
+\begin{DoxyCompactList}\small\item\em Sets the plot mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_af6873a0f903bce322494c24dcec765d0}\label{classSGPlotController_af6873a0f903bce322494c24dcec765d0}} 
+bool \hyperlink{classSGPlotController_af6873a0f903bce322494c24dcec765d0}{set\+Action\+Index} (int new\+Action\+Index)
+\begin{DoxyCompactList}\small\item\em Sets the current action index. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ac08b1b71fea0d7b96a947a71c402ccae}\label{classSGPlotController_ac08b1b71fea0d7b96a947a71c402ccae}} 
+bool \hyperlink{classSGPlotController_ac08b1b71fea0d7b96a947a71c402ccae}{set\+Action} (int new\+Action)
+\begin{DoxyCompactList}\small\item\em Sets the current action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_aa77fca25b62a8206d3ddc1fa7cd16eac}\label{classSGPlotController_aa77fca25b62a8206d3ddc1fa7cd16eac}} 
+bool \hyperlink{classSGPlotController_aa77fca25b62a8206d3ddc1fa7cd16eac}{set\+Iteration} (int new\+Iter)
+\begin{DoxyCompactList}\small\item\em Sets the current iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a45da9096f5457484fb8bc5c63c8b7fc5}\label{classSGPlotController_a45da9096f5457484fb8bc5c63c8b7fc5}} 
+void \hyperlink{classSGPlotController_a45da9096f5457484fb8bc5c63c8b7fc5}{move\+Forwards} ()
+\begin{DoxyCompactList}\small\item\em Increments the current iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a918ec5fac2839b4a328289962e0ac441}\label{classSGPlotController_a918ec5fac2839b4a328289962e0ac441}} 
+void \hyperlink{classSGPlotController_a918ec5fac2839b4a328289962e0ac441}{move\+Backwards} ()
+\begin{DoxyCompactList}\small\item\em Decrements the current iteration. \end{DoxyCompactList}\item 
+void \hyperlink{classSGPlotController_a3b0857d4b4c40bbac853ded334573fa0}{set\+Current\+Iteration} (\hyperlink{classSGPoint}{S\+G\+Point} point, int \hyperlink{classSGPlotController_aaef95a25f39e465b01cc92770d93bd2d}{state})
+\item 
+void \hyperlink{classSGPlotController_a2d4971bb9f2f6116ce314d146a43bb08}{synchronize\+Sliders} ()
+\begin{DoxyCompactList}\small\item\em Synchronizes sliders with controls. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotController_aaef95a25f39e465b01cc92770d93bd2d}\label{classSGPlotController_aaef95a25f39e465b01cc92770d93bd2d}} 
+int \hyperlink{classSGPlotController_aaef95a25f39e465b01cc92770d93bd2d}{state}
+\begin{DoxyCompactList}\small\item\em Current state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ab7e15498eb6bc5e88deafb2eb1ecaa33}\label{classSGPlotController_ab7e15498eb6bc5e88deafb2eb1ecaa33}} 
+int \hyperlink{classSGPlotController_ab7e15498eb6bc5e88deafb2eb1ecaa33}{action}
+\begin{DoxyCompactList}\small\item\em Current action. \end{DoxyCompactList}\item 
+int \hyperlink{classSGPlotController_a0baff45708bb3bf9fd976975cd0d6ac4}{action\+Index}
+\item 
+\mbox{\Hypertarget{classSGPlotController_ad6886fa2d62aec157332c07d8f91b145}\label{classSGPlotController_ad6886fa2d62aec157332c07d8f91b145}} 
+int \hyperlink{classSGPlotController_ad6886fa2d62aec157332c07d8f91b145}{iteration}
+\begin{DoxyCompactList}\small\item\em The current iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_abc03425a174aa18b8d8994bc60ad2aa1}\label{classSGPlotController_abc03425a174aa18b8d8994bc60ad2aa1}} 
+\hyperlink{classSGSolution}{S\+G\+Solution} $\ast$ \hyperlink{classSGPlotController_abc03425a174aa18b8d8994bc60ad2aa1}{soln}
+\begin{DoxyCompactList}\small\item\em The current solution object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_addb72091bb689c8942522b4c54a4d4cf}\label{classSGPlotController_addb72091bb689c8942522b4c54a4d4cf}} 
+\hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}{Plot\+Mode} \hyperlink{classSGPlotController_addb72091bb689c8942522b4c54a4d4cf}{plot\+Mode}
+\begin{DoxyCompactList}\small\item\em The current plot mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a8fdf83cc3dcef50537e142e7f8905668}\label{classSGPlotController_a8fdf83cc3dcef50537e142e7f8905668}} 
+\hyperlink{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95c}{Solution\+Mode} \hyperlink{classSGPlotController_a8fdf83cc3dcef50537e142e7f8905668}{mode}
+\begin{DoxyCompactList}\small\item\em The current solution mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_ae8f9f11e6f060c818603935a3c71e6f9}\label{classSGPlotController_ae8f9f11e6f060c818603935a3c71e6f9}} 
+list$<$ \hyperlink{classSGIteration}{S\+G\+Iteration} $>$\+::const\+\_\+iterator \hyperlink{classSGPlotController_ae8f9f11e6f060c818603935a3c71e6f9}{start\+Iter}
+\begin{DoxyCompactList}\small\item\em Points to the first \hyperlink{classSGIteration}{S\+G\+Iteration} object from which to plot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_afbca0fc2e4ecd8dae64559697b78ef91}\label{classSGPlotController_afbca0fc2e4ecd8dae64559697b78ef91}} 
+list$<$ \hyperlink{classSGIteration}{S\+G\+Iteration} $>$\+::const\+\_\+iterator \hyperlink{classSGPlotController_afbca0fc2e4ecd8dae64559697b78ef91}{end\+Iter}
+\begin{DoxyCompactList}\small\item\em Points to the last \hyperlink{classSGIteration}{S\+G\+Iteration} object to which to plot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a4a174717197d238b483488a72f11e1eb}\label{classSGPlotController_a4a174717197d238b483488a72f11e1eb}} 
+list$<$ \hyperlink{classSGIteration}{S\+G\+Iteration} $>$\+::const\+\_\+iterator \hyperlink{classSGPlotController_a4a174717197d238b483488a72f11e1eb}{current\+Iter}
+\begin{DoxyCompactList}\small\item\em Points to the current S\+Giteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_aad63498d4578179dcf705070668d5480}\label{classSGPlotController_aad63498d4578179dcf705070668d5480}} 
+list$<$ \hyperlink{classSGIteration}{S\+G\+Iteration} $>$\+::const\+\_\+iterator \hyperlink{classSGPlotController_aad63498d4578179dcf705070668d5480}{start\+Of\+Last\+Rev}
+\begin{DoxyCompactList}\small\item\em Points to the \hyperlink{classSGIteration}{S\+G\+Iteration} that starts the last revolution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a6123551bcba7707373c316617e21b70e}\label{classSGPlotController_a6123551bcba7707373c316617e21b70e}} 
+bool \hyperlink{classSGPlotController_a6123551bcba7707373c316617e21b70e}{soln\+Loaded}
+\begin{DoxyCompactList}\small\item\em Indicates when an \hyperlink{classSGSolution}{S\+G\+Solution} object has been loaded. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a63ba05fcb3f660bf9fdd5fb42a0df05b}\label{classSGPlotController_a63ba05fcb3f660bf9fdd5fb42a0df05b}} 
+Q\+Combo\+Box $\ast$ \hyperlink{classSGPlotController_a63ba05fcb3f660bf9fdd5fb42a0df05b}{state\+Combo}
+\begin{DoxyCompactList}\small\item\em Points to the state\+Combo Q\+Combo\+Box selector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_aa0963a19f195b384a33ba3e8d6993423}\label{classSGPlotController_aa0963a19f195b384a33ba3e8d6993423}} 
+Q\+Combo\+Box $\ast$ \hyperlink{classSGPlotController_aa0963a19f195b384a33ba3e8d6993423}{action\+Combo}
+\begin{DoxyCompactList}\small\item\em Points to the action\+Combo Q\+Combo\+Box selector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_abb1605bd670c9850af648c1a9f39f2a3}\label{classSGPlotController_abb1605bd670c9850af648c1a9f39f2a3}} 
+Q\+Combo\+Box $\ast$ \hyperlink{classSGPlotController_abb1605bd670c9850af648c1a9f39f2a3}{solution\+Mode\+Combo}
+\begin{DoxyCompactList}\small\item\em Points to the solution\+Mode Q\+Combo\+Box selector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotController_a063783e3acc1d60734baed900e58fb42}\label{classSGPlotController_a063783e3acc1d60734baed900e58fb42}} 
+Q\+Scroll\+Bar $\ast$ \hyperlink{classSGPlotController_a063783e3acc1d60734baed900e58fb42}{iter\+Slider}
+\begin{DoxyCompactList}\small\item\em Points to the iter\+Slider Q\+Scroll\+Bar for selecting the current iteration. \end{DoxyCompactList}\item 
+Q\+Scroll\+Bar $\ast$ \hyperlink{classSGPlotController_a399d56ae9da6dac78110e9b70e842ffe}{start\+Slider}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles the plot settings for \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler}. 
+
+This class intermediates between the controllers (iter\+Slider, state\+Combo, action\+Combo) and the plotting methods in the S\+G\+S\+Solution\+Handler (i.\+e., plot\+Solution(...)).
+
+See also viewersolutionsec. 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}\label{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!Plot\+Mode@{Plot\+Mode}}
+\index{Plot\+Mode@{Plot\+Mode}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{Plot\+Mode}{PlotMode}}
+{\footnotesize\ttfamily enum \hyperlink{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1}{S\+G\+Plot\+Controller\+::\+Plot\+Mode}}
+
+
+
+Plot mode for the detail\+Plot. 
+
+Indicates whether to plot all of the test directions (Directions) or just plot the way the current pivot is generated (Generation). \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Directions@{Directions}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!Directions@{Directions}}}\mbox{\Hypertarget{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1aaace992b25a6ae65d522747ea10690c7}\label{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1aaace992b25a6ae65d522747ea10690c7}} 
+Directions&Plot the test directions. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Generation@{Generation}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!Generation@{Generation}}}\mbox{\Hypertarget{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1af4b6cf87b680d5b00b0939d0d9744043}\label{classSGPlotController_a04993344b70e1ac27322f54e43f5bce1af4b6cf87b680d5b00b0939d0d9744043}} 
+Generation&Plot how the payoffs are generated. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95c}\label{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95c}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!Solution\+Mode@{Solution\+Mode}}
+\index{Solution\+Mode@{Solution\+Mode}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{Solution\+Mode}{SolutionMode}}
+{\footnotesize\ttfamily enum \hyperlink{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95c}{S\+G\+Plot\+Controller\+::\+Solution\+Mode}}
+
+
+
+Solution mode. 
+
+Indicates whether or not to plot all of the iterations from a user-\/defined start point to the current iteration (Progress) or just plot all of the iterations on the last revolution (Final). \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Progress@{Progress}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!Progress@{Progress}}}\mbox{\Hypertarget{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95cac93156b79a026d54b4b692977da89e87}\label{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95cac93156b79a026d54b4b692977da89e87}} 
+Progress&Plot the progress of the algorithm. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Final@{Final}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!Final@{Final}}}\mbox{\Hypertarget{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95ca20f484d13a178c3ac5e886b798efa791}\label{classSGPlotController_a7b1cebc57af82edfcbd1d2841ffad95ca20f484d13a178c3ac5e886b798efa791}} 
+Final&Plot the last revolution (the true correspondence) \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGPlotController_a3b0857d4b4c40bbac853ded334573fa0}\label{classSGPlotController_a3b0857d4b4c40bbac853ded334573fa0}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!set\+Current\+Iteration@{set\+Current\+Iteration}}
+\index{set\+Current\+Iteration@{set\+Current\+Iteration}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{set\+Current\+Iteration()}{setCurrentIteration()}}
+{\footnotesize\ttfamily void S\+G\+Plot\+Controller\+::set\+Current\+Iteration (\begin{DoxyParamCaption}\item[{\hyperlink{classSGPoint}{S\+G\+Point}}]{point,  }\item[{int}]{state }\end{DoxyParamCaption})}
+
+Sets the current iteration to be the one where the pivot in the given state is closest to point. \mbox{\Hypertarget{classSGPlotController_a30efaeb2ec5cb752d6354f05447b287a}\label{classSGPlotController_a30efaeb2ec5cb752d6354f05447b287a}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!set\+Slider\+Ranges@{set\+Slider\+Ranges}}
+\index{set\+Slider\+Ranges@{set\+Slider\+Ranges}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{set\+Slider\+Ranges}{setSliderRanges}}
+{\footnotesize\ttfamily void S\+G\+Plot\+Controller\+::set\+Slider\+Ranges (\begin{DoxyParamCaption}\item[{int}]{start,  }\item[{int}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [slot]}}
+
+Slot used to set up the sliders when changing between Progress and Final modes. \mbox{\Hypertarget{classSGPlotController_a2d4971bb9f2f6116ce314d146a43bb08}\label{classSGPlotController_a2d4971bb9f2f6116ce314d146a43bb08}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!synchronize\+Sliders@{synchronize\+Sliders}}
+\index{synchronize\+Sliders@{synchronize\+Sliders}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{synchronize\+Sliders()}{synchronizeSliders()}}
+{\footnotesize\ttfamily void S\+G\+Plot\+Controller\+::synchronize\+Sliders (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Synchronizes sliders with controls. 
+
+Sets start\+Iter and current\+Iter to be equal to the values indicated in the respective sliders. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGPlotController_a0baff45708bb3bf9fd976975cd0d6ac4}\label{classSGPlotController_a0baff45708bb3bf9fd976975cd0d6ac4}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!action\+Index@{action\+Index}}
+\index{action\+Index@{action\+Index}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{action\+Index}{actionIndex}}
+{\footnotesize\ttfamily int S\+G\+Plot\+Controller\+::action\+Index\hspace{0.3cm}{\ttfamily [private]}}
+
+Index of the current action within the list of actions in current\+Iter-\/$>$actions\mbox{[}state\mbox{]} \mbox{\Hypertarget{classSGPlotController_a399d56ae9da6dac78110e9b70e842ffe}\label{classSGPlotController_a399d56ae9da6dac78110e9b70e842ffe}} 
+\index{S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}!start\+Slider@{start\+Slider}}
+\index{start\+Slider@{start\+Slider}!S\+G\+Plot\+Controller@{S\+G\+Plot\+Controller}}
+\subsubsection{\texorpdfstring{start\+Slider}{startSlider}}
+{\footnotesize\ttfamily Q\+Scroll\+Bar$\ast$ S\+G\+Plot\+Controller\+::start\+Slider\hspace{0.3cm}{\ttfamily [private]}}
+
+Points to the start\+Slider Q\+Scroll\+Bar for selecting the start iteration when the solution mode is Progress. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgplotcontroller.\+hpp\item 
+viewer/cpp/sgplotcontroller.\+cpp\end{DoxyCompactItemize}

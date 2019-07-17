@@ -1,0 +1,83 @@
+\hypertarget{classSGPlotSettingsHandler}{}\section{S\+G\+Plot\+Settings\+Handler Class Reference}
+\label{classSGPlotSettingsHandler}\index{S\+G\+Plot\+Settings\+Handler@{S\+G\+Plot\+Settings\+Handler}}
+
+
+A widget for setting parameters of the algorithm.  
+
+
+
+
+{\ttfamily \#include $<$sgplotsettingshandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Plot\+Settings\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{classSGPlotSettingsHandler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Plot\+Settings\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{classSGPlotSettingsHandler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettingsHandler_a3fff365dabc487195fee2d5999db9edd}\label{classSGPlotSettingsHandler_a3fff365dabc487195fee2d5999db9edd}} 
+void \hyperlink{classSGPlotSettingsHandler_a3fff365dabc487195fee2d5999db9edd}{close\+Plot\+Settings\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Signals to \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler} to delete this widget. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotSettingsHandler_a2bbbfd94bd4ce4745a3e99129ff9dbc3}\label{classSGPlotSettingsHandler_a2bbbfd94bd4ce4745a3e99129ff9dbc3}} 
+void \hyperlink{classSGPlotSettingsHandler_a2bbbfd94bd4ce4745a3e99129ff9dbc3}{restore\+Default\+Signal} ()
+\begin{DoxyCompactList}\small\item\em Signals all of the edits and check boxes to reset to default values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettingsHandler_a946a8123eae0929b6dedb2d36d102ce8}\label{classSGPlotSettingsHandler_a946a8123eae0929b6dedb2d36d102ce8}} 
+\hyperlink{classSGPlotSettingsHandler_a946a8123eae0929b6dedb2d36d102ce8}{S\+G\+Plot\+Settings\+Handler} (Q\+Widget $\ast$parent, \hyperlink{classSGPlotSettings}{S\+G\+Plot\+Settings} $\ast$\+\_\+plot\+Settings)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotSettingsHandler_ade913c6e411f2a3ae0e5b50071ff4363}\label{classSGPlotSettingsHandler_ade913c6e411f2a3ae0e5b50071ff4363}} 
+virtual \hyperlink{classSGPlotSettingsHandler_ade913c6e411f2a3ae0e5b50071ff4363}{$\sim$\+S\+G\+Plot\+Settings\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettingsHandler_af614edb5dd9ae2a3932b727a2257cff7}\label{classSGPlotSettingsHandler_af614edb5dd9ae2a3932b727a2257cff7}} 
+void \hyperlink{classSGPlotSettingsHandler_af614edb5dd9ae2a3932b727a2257cff7}{close\+Window} ()
+\begin{DoxyCompactList}\small\item\em Closes the window by sending signal to \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler}. \end{DoxyCompactList}\item 
+void \hyperlink{classSGPlotSettingsHandler_a72b4008028a0aed28789c8151c38447e}{restore\+Defaults} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettingsHandler_ad7e80d0c4f6353045dd64f9b253164c4}\label{classSGPlotSettingsHandler_ad7e80d0c4f6353045dd64f9b253164c4}} 
+\hyperlink{classSGPlotSettings}{S\+G\+Plot\+Settings} $\ast$ \hyperlink{classSGPlotSettingsHandler_ad7e80d0c4f6353045dd64f9b253164c4}{plot\+Settings}
+\begin{DoxyCompactList}\small\item\em Pointer to the associated \hyperlink{classSGEnv}{S\+G\+Env} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A widget for setting parameters of the algorithm. 
+
+This widget is created from the Tools-\/$>$Settings menu in the main S\+G\+Viewer window, and it allows for the editing of algorithm parameters in the \hyperlink{classSGEnv}{S\+G\+Env} object that is used for the computation. It uses edits that are derived from the Q\+Line\+Edit and Q\+Check\+Box, one for each parameter, that directly synchronize the entered values with those in the associated \hyperlink{classSGEnv}{S\+G\+Env}. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGPlotSettingsHandler_a72b4008028a0aed28789c8151c38447e}\label{classSGPlotSettingsHandler_a72b4008028a0aed28789c8151c38447e}} 
+\index{S\+G\+Plot\+Settings\+Handler@{S\+G\+Plot\+Settings\+Handler}!restore\+Defaults@{restore\+Defaults}}
+\index{restore\+Defaults@{restore\+Defaults}!S\+G\+Plot\+Settings\+Handler@{S\+G\+Plot\+Settings\+Handler}}
+\subsubsection{\texorpdfstring{restore\+Defaults}{restoreDefaults}}
+{\footnotesize\ttfamily void S\+G\+Plot\+Settings\+Handler\+::restore\+Defaults (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [slot]}}
+
+Restores default parameter values in the \hyperlink{classSGEnv}{S\+G\+Env} object and signals edits/boxes to reset. Signals all of the edits and check boxes to reset to default values. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgplotsettingshandler.\+hpp\item 
+viewer/cpp/sgplotsettingshandler.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,127 @@
+\hypertarget{classRiskSharingGame__3Player__Merged}{}\section{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged Class Reference}
+\label{classRiskSharingGame__3Player__Merged}\index{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}}
+
+
+Two player version of the Kocherlakota (1996) risk sharing game.  
+
+
+
+
+{\ttfamily \#include $<$sgrisksharing\+\_\+3player\+\_\+merged.\+hpp$>$}
+
+
+
+Inheritance diagram for Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRiskSharingGame__3Player__Merged__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classRiskSharingGame__3Player__Merged__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a32094245f4ee1427cb306705b03249d9}\label{classRiskSharingGame__3Player__Merged_a32094245f4ee1427cb306705b03249d9}} 
+{\bfseries Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged} (double \hyperlink{classSGAbstractGame_a34c8905ac463bb2ec54aba4eb4ac376f}{delta}, int \+\_\+num\+Endowments, int \+\_\+c2e)
+\item 
+virtual \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classRiskSharingGame__3Player__Merged_aa1d807770ff356fe1114d17966172fbd}{payoffs} (int state, const vector$<$ int $>$ \&actions) const
+\begin{DoxyCompactList}\small\item\em The payoff function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{classRiskSharingGame__3Player__Merged_a505d06e31a1cabde1c6fab8ac5af8409}{probability} (int e, const vector$<$ int $>$ \&actions, int ep) const
+\begin{DoxyCompactList}\small\item\em Transition probabilities. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classRiskSharingGame__3Player__Merged_aeff4f08e00ef46bbdbb190c9c6c393a4}{is\+Equilibrium\+Action} (int state, const vector$<$ int $>$ \&actions) const
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a9d26ce7c0e2d6734f6501ae82d173e96}\label{classRiskSharingGame__3Player__Merged_a9d26ce7c0e2d6734f6501ae82d173e96}} 
+double {\bfseries consumption} (int e, int t) const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a99abe786dd53923789d99e86791affd3}\label{classRiskSharingGame__3Player__Merged_a99abe786dd53923789d99e86791affd3}} 
+int {\bfseries num\+Endowments}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a6e775a19ff8f5141b2e7b8575885401d}\label{classRiskSharingGame__3Player__Merged_a6e775a19ff8f5141b2e7b8575885401d}} 
+int {\bfseries c2e}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_acb4be7edf1f8e280748b8c1bd6992a10}\label{classRiskSharingGame__3Player__Merged_acb4be7edf1f8e280748b8c1bd6992a10}} 
+vector$<$ double $>$ {\bfseries E}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a0f2acb80b7834d796c61fb956934a91f}\label{classRiskSharingGame__3Player__Merged_a0f2acb80b7834d796c61fb956934a91f}} 
+double {\bfseries e\+Incr}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a711d6e50ccd05e36c01f961d2690abae}\label{classRiskSharingGame__3Player__Merged_a711d6e50ccd05e36c01f961d2690abae}} 
+double {\bfseries c\+Incr}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a98326dd60feff58d3fd575c96f99600d}\label{classRiskSharingGame__3Player__Merged_a98326dd60feff58d3fd575c96f99600d}} 
+vector$<$ int $>$ {\bfseries num\+Actions\+\_\+total}
+\item 
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a979d06cb01dbb5a1babe63220961bf27}\label{classRiskSharingGame__3Player__Merged_a979d06cb01dbb5a1babe63220961bf27}} 
+double {\bfseries prob\+Denom}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Two player version of the Kocherlakota (1996) risk sharing game. 
+
+$<$ This version of the game corresponds to the game in \hyperlink{classRiskSharingGame__3Player}{Risk\+Sharing\+Game\+\_\+3\+Player}, but where players 2 and 3 behave cooperatively. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_aeff4f08e00ef46bbdbb190c9c6c393a4}\label{classRiskSharingGame__3Player__Merged_aeff4f08e00ef46bbdbb190c9c6c393a4}} 
+\index{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}!is\+Equilibrium\+Action@{is\+Equilibrium\+Action}}
+\index{is\+Equilibrium\+Action@{is\+Equilibrium\+Action}!Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}}
+\subsubsection{\texorpdfstring{is\+Equilibrium\+Action()}{isEquilibriumAction()}}
+{\footnotesize\ttfamily virtual bool Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged\+::is\+Equilibrium\+Action (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Returns true if the given action pair can be played in equilibrium
+
+The default definition of this method always returns true, so that all action pairs can be played in equilibrium. By redefining this method, the user can create models in which only a subset of action pairs are played on the equilibrium path. 
+
+Reimplemented from \hyperlink{classSGAbstractGame_a2cec8147c3055cfe6314da349d1a7344}{S\+G\+Abstract\+Game}.
+
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_aa1d807770ff356fe1114d17966172fbd}\label{classRiskSharingGame__3Player__Merged_aa1d807770ff356fe1114d17966172fbd}} 
+\index{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}}
+\subsubsection{\texorpdfstring{payoffs()}{payoffs()}}
+{\footnotesize\ttfamily virtual \hyperlink{classSGPoint}{S\+G\+Point} Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged\+::payoffs (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+The payoff function. 
+
+A class that is derived from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the payoffs method, which returns, for a given state and action pair, the flow payoffs that the players receive as an \hyperlink{classSGPoint}{S\+G\+Point}. 
+
+Implements \hyperlink{classSGAbstractGame_a3fc1cd009d1813f44f1f219e7deb6eef}{S\+G\+Abstract\+Game}.
+
+\mbox{\Hypertarget{classRiskSharingGame__3Player__Merged_a505d06e31a1cabde1c6fab8ac5af8409}\label{classRiskSharingGame__3Player__Merged_a505d06e31a1cabde1c6fab8ac5af8409}} 
+\index{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}!probability@{probability}}
+\index{probability@{probability}!Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged@{Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged}}
+\subsubsection{\texorpdfstring{probability()}{probability()}}
+{\footnotesize\ttfamily virtual double Risk\+Sharing\+Game\+\_\+3\+Player\+\_\+\+Merged\+::probability (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions,  }\item[{int}]{statep }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Transition probabilities. 
+
+A class that derives from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the probability method, which gives, for each state and action pair and new state, the probability of reaching the new state tomorrow when starting from the given state and when the given action pair is played. 
+
+Implements \hyperlink{classSGAbstractGame_a416b31d5020b75de49447ce4f7783b98}{S\+G\+Abstract\+Game}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgrisksharing\+\_\+3player\+\_\+merged.\+hpp\end{DoxyCompactItemize}

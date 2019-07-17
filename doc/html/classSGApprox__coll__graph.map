@@ -1,0 +1,12 @@
+<map id="SGApprox" name="SGApprox">
+<area shape="rect" id="node2" href="$classSGPoint.html" title="A vector in . " alt="" coords="1096,27,1169,53"/>
+<area shape="rect" id="node3" href="$classstd_1_1list_3_01SGAction_01_4.html" title="std::list\&lt; SGAction \&gt;" alt="" coords="716,201,875,228"/>
+<area shape="rect" id="node10" href="$classstd_1_1vector_3_01list_3_01SGAction_01_4_01_4.html" title="std::vector\&lt; list\&lt;\l SGAction \&gt; \&gt;" alt="" coords="1064,182,1201,223"/>
+<area shape="rect" id="node4" href="$classSGAction.html" title="Enhanced version of SGBaseAction. " alt="" coords="509,201,591,228"/>
+<area shape="rect" id="node11" href="$classstd_1_1vector_3_01const_01SGAction_01_5_01_4.html" title="std::vector\&lt; const\l SGAction * \&gt;" alt="" coords="899,294,1040,335"/>
+<area shape="rect" id="node5" href="$classSGEnv.html" title="Manages parameters for algorithm behavior. " alt="" coords="241,128,305,155"/>
+<area shape="rect" id="node6" href="$classstd_1_1vector_3_01SGTuple_01_4.html" title="std::vector\&lt; SGTuple \&gt;" alt="" coords="187,368,360,395"/>
+<area shape="rect" id="node7" href="$classSGTuple.html" title="SGTuple" alt="" coords="5,408,80,435"/>
+<area shape="rect" id="node8" href="$classSGSolution.html" title="Records the progress of SGSolver::solve(). " alt="" coords="1086,480,1179,507"/>
+<area shape="rect" id="node9" href="$classSGGame.html" title="Describes a stochastic game. " alt="" coords="756,505,835,532"/>
+</map>

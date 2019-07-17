@@ -1,0 +1,216 @@
+\hypertarget{classSGAction__MaxMinMax}{}\section{S\+G\+Action\+\_\+\+Max\+Min\+Max Class Reference}
+\label{classSGAction__MaxMinMax}\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+
+
+Enhanced version of \hyperlink{classSGBaseAction}{S\+G\+Base\+Action}.  
+
+
+
+
+{\ttfamily \#include $<$sgaction\+\_\+maxminmax.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Action\+\_\+\+Max\+Min\+Max\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classSGAction__MaxMinMax__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Action\+\_\+\+Max\+Min\+Max\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGAction__MaxMinMax__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a4735732a1624affa09ac6ad1e2477431}\label{classSGAction__MaxMinMax_a4735732a1624affa09ac6ad1e2477431}} 
+\hyperlink{classSGAction__MaxMinMax_a4735732a1624affa09ac6ad1e2477431}{S\+G\+Action\+\_\+\+Max\+Min\+Max} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGAction__MaxMinMax_a1183e22784f865a0478679874a77425e}{S\+G\+Action\+\_\+\+Max\+Min\+Max} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGAction__MaxMinMax_a51894e40e19b3ec7d90b120f4fada9ed}{S\+G\+Action\+\_\+\+Max\+Min\+Max} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, int \+\_\+state, int \+\_\+action)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGAction__MaxMinMax_a7d01d987f83c851e19d3620a27a4d8b0}{S\+G\+Action\+\_\+\+Max\+Min\+Max} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, int \+\_\+num\+Players, int \+\_\+state, int \+\_\+action)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \hyperlink{classSGAction__MaxMinMax_ae7e17727071ae5257c6f28bb5eeb1972}{reset\+Trimmed\+Points} ()
+\begin{DoxyCompactList}\small\item\em Resets the trimmed points for two players. \end{DoxyCompactList}\item 
+void \hyperlink{classSGAction__MaxMinMax_a76943bc1614a4e3abe153ca6b12faf7c}{reset\+Trimmed\+Points} (const \hyperlink{classSGPoint}{S\+G\+Point} \&payoff\+UB)
+\begin{DoxyCompactList}\small\item\em Resets the trimmed points for three players. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_abb81ccc819f0f17cb90c64dad7af3d41}\label{classSGAction__MaxMinMax_abb81ccc819f0f17cb90c64dad7af3d41}} 
+void \hyperlink{classSGAction__MaxMinMax_abb81ccc819f0f17cb90c64dad7af3d41}{update\+Trim} ()
+\begin{DoxyCompactList}\small\item\em Sets points equal to the trimmed points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a882cc59e96c325d7339cf28ee6bf63a5}\label{classSGAction__MaxMinMax_a882cc59e96c325d7339cf28ee6bf63a5}} 
+double \hyperlink{classSGAction__MaxMinMax_a882cc59e96c325d7339cf28ee6bf63a5}{dist\+To\+Trimmed} () const
+\begin{DoxyCompactList}\small\item\em Calculates the distance between points and trimmed\+Points in the sup norm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a6a7c5c65a4b8c80e919dbb0039a3831c}\label{classSGAction__MaxMinMax_a6a7c5c65a4b8c80e919dbb0039a3831c}} 
+bool \hyperlink{classSGAction__MaxMinMax_a6a7c5c65a4b8c80e919dbb0039a3831c}{intersect\+Half\+Space} (const \hyperlink{classSGPoint}{S\+G\+Point} \&normal, const double level, int player, \hyperlink{classSGTuple}{S\+G\+Tuple} \&segment, \hyperlink{classSGTuple}{S\+G\+Tuple} \&segment\+Dirs)
+\begin{DoxyCompactList}\small\item\em Intersects the segment with a half space. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_ada49ec584361e9ec63b16f22f8d57468}\label{classSGAction__MaxMinMax_ada49ec584361e9ec63b16f22f8d57468}} 
+bool \hyperlink{classSGAction__MaxMinMax_ada49ec584361e9ec63b16f22f8d57468}{intersect\+Polygon\+Half\+Space} (const \hyperlink{classSGPoint}{S\+G\+Point} \&normal, const double level, int player, \hyperlink{classSGTuple}{S\+G\+Tuple} \&ext\+Pnts, \hyperlink{classSGTuple}{S\+G\+Tuple} \&ext\+Pnt\+Dirs)
+\begin{DoxyCompactList}\small\item\em Intersects the IC polygon with a half space. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGAction__MaxMinMax_a15466a06d5b9bdce97eaa20f9fa94371}{trim} (const \hyperlink{classSGPoint}{S\+G\+Point} \&normal, double level)
+\begin{DoxyCompactList}\small\item\em Trims the trimmed\+Points using intersect\+Ray\+Segment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a436f348d7f24cd28a029f25e94aadf8a}\label{classSGAction__MaxMinMax_a436f348d7f24cd28a029f25e94aadf8a}} 
+void \hyperlink{classSGAction__MaxMinMax_a436f348d7f24cd28a029f25e94aadf8a}{merge\+Duplicate\+Points} (const double tol)
+\begin{DoxyCompactList}\small\item\em Merges duplicates up to the given tolerance. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a38b72633733d68122a63ee366eb11e64}\label{classSGAction__MaxMinMax_a38b72633733d68122a63ee366eb11e64}} 
+void \hyperlink{classSGAction__MaxMinMax_a38b72633733d68122a63ee366eb11e64}{calculate\+Min\+IC} (const \hyperlink{classSGGame}{S\+G\+Game} \&game, const vector$<$ bool $>$ \&update, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&threat\+Tuple)
+\begin{DoxyCompactList}\small\item\em Calculates the minimum incentive compatible continuation payoff. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a446205895c561c6f54388b63a4a5e39c}\label{classSGAction__MaxMinMax_a446205895c561c6f54388b63a4a5e39c}} 
+void \hyperlink{classSGAction__MaxMinMax_a446205895c561c6f54388b63a4a5e39c}{calculate\+Min\+IC} (const \hyperlink{classSGGame}{S\+G\+Game} \&game, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&threat\+Tuple)
+\begin{DoxyCompactList}\small\item\em Calculates the minimum incentive compatible continuation payoff. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_ae64c1a8a37df28b0df8ca9b7ea1a51b9}\label{classSGAction__MaxMinMax_ae64c1a8a37df28b0df8ca9b7ea1a51b9}} 
+const vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \& \hyperlink{classSGAction__MaxMinMax_ae64c1a8a37df28b0df8ca9b7ea1a51b9}{get\+Trimmed\+Points} () const
+\begin{DoxyCompactList}\small\item\em Get method for trimmed points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a92231e303ea20977d0aa7339c60d9c08}\label{classSGAction__MaxMinMax_a92231e303ea20977d0aa7339c60d9c08}} 
+const vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \& \hyperlink{classSGAction__MaxMinMax_a92231e303ea20977d0aa7339c60d9c08}{get\+Trimmed\+Bndry\+Dirs} () const
+\begin{DoxyCompactList}\small\item\em Get method for trimmed points. \end{DoxyCompactList}\item 
+const \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGAction__MaxMinMax_a2d4762138486ac532de10879eaa2008f}{get\+Bndry\+Dir} (const int player, const int point) const
+\begin{DoxyCompactList}\small\item\em Get boundary direction for 3 players. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a93a9b06f1189763352928ec3c700168f}\label{classSGAction__MaxMinMax_a93a9b06f1189763352928ec3c700168f}} 
+bool {\bfseries supportable} (const \hyperlink{classSGPoint}{S\+G\+Point} \&feasible\+Point) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \hyperlink{classSGAction__MaxMinMax_ab91331990288c649ba911c0eda28df3f}{calculate\+Min\+IC} (int \hyperlink{classSGBaseAction_af293adc10da2dbb5a388a2fbcca0c67c}{action}, int \hyperlink{classSGBaseAction_a2301bf142f93f7d3ddedd44676d10c6a}{state}, int player, const \hyperlink{classSGGame}{S\+G\+Game} \&game, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&threat\+Tuple)
+\begin{DoxyCompactList}\small\item\em Calculates the IC constraint. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classSGEnv}{S\+G\+Env} $\ast$ \hyperlink{classSGAction__MaxMinMax_a02879e7551a4d8f89d4dece73df79e8e}{env}
+\item 
+vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \hyperlink{classSGAction__MaxMinMax_aff074b8925e0e4efbe729a1fa760b574}{trimmed\+Points}
+\item 
+vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \hyperlink{classSGAction__MaxMinMax_a775fcd57afc142655d881205242b05b6}{trimmed\+Bndry\+Dirs}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Enhanced version of \hyperlink{classSGBaseAction}{S\+G\+Base\+Action}. 
+
+Same functionality as \hyperlink{classSGBaseAction}{S\+G\+Base\+Action}, but includes additional methods for computing payoffs and a reference to a parent \hyperlink{classSGEnv}{S\+G\+Env} object to control parameters for the computation.
+
+This class is used by \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} to implement the max-\/min-\/max algorithm. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a1183e22784f865a0478679874a77425e}\label{classSGAction__MaxMinMax_a1183e22784f865a0478679874a77425e}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{S\+G\+Action\+\_\+\+Max\+Min\+Max()}{SGAction\_MaxMinMax()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily S\+G\+Action\+\_\+\+Max\+Min\+Max\+::\+S\+G\+Action\+\_\+\+Max\+Min\+Max (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Constructs a null action associated with the given \hyperlink{classSGEnv}{S\+G\+Env}. \mbox{\Hypertarget{classSGAction__MaxMinMax_a51894e40e19b3ec7d90b120f4fada9ed}\label{classSGAction__MaxMinMax_a51894e40e19b3ec7d90b120f4fada9ed}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{S\+G\+Action\+\_\+\+Max\+Min\+Max()}{SGAction\_MaxMinMax()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily S\+G\+Action\+\_\+\+Max\+Min\+Max\+::\+S\+G\+Action\+\_\+\+Max\+Min\+Max (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env,  }\item[{int}]{\+\_\+state,  }\item[{int}]{\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Grandfather in old two player code. \mbox{\Hypertarget{classSGAction__MaxMinMax_a7d01d987f83c851e19d3620a27a4d8b0}\label{classSGAction__MaxMinMax_a7d01d987f83c851e19d3620a27a4d8b0}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{S\+G\+Action\+\_\+\+Max\+Min\+Max()}{SGAction\_MaxMinMax()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily S\+G\+Action\+\_\+\+Max\+Min\+Max\+::\+S\+G\+Action\+\_\+\+Max\+Min\+Max (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env,  }\item[{int}]{\+\_\+num\+Players,  }\item[{int}]{\+\_\+state,  }\item[{int}]{\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Constructs an action for the given state and action index in the given environment. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGAction__MaxMinMax_ab91331990288c649ba911c0eda28df3f}\label{classSGAction__MaxMinMax_ab91331990288c649ba911c0eda28df3f}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!calculate\+Min\+IC@{calculate\+Min\+IC}}
+\index{calculate\+Min\+IC@{calculate\+Min\+IC}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{calculate\+Min\+I\+C()}{calculateMinIC()}}
+{\footnotesize\ttfamily double S\+G\+Action\+\_\+\+Max\+Min\+Max\+::calculate\+Min\+IC (\begin{DoxyParamCaption}\item[{int}]{action,  }\item[{int}]{state,  }\item[{int}]{player,  }\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{game,  }\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{threat\+Tuple }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Calculates the IC constraint. 
+
+Calculates the minimum incentive compatible expected continuation value for the given action, relative to the given threat tuple and for the given \hyperlink{classSGGame}{S\+G\+Game}. \mbox{\Hypertarget{classSGAction__MaxMinMax_a2d4762138486ac532de10879eaa2008f}\label{classSGAction__MaxMinMax_a2d4762138486ac532de10879eaa2008f}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!get\+Bndry\+Dir@{get\+Bndry\+Dir}}
+\index{get\+Bndry\+Dir@{get\+Bndry\+Dir}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{get\+Bndry\+Dir()}{getBndryDir()}}
+{\footnotesize\ttfamily const \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Action\+\_\+\+Max\+Min\+Max\+::get\+Bndry\+Dir (\begin{DoxyParamCaption}\item[{const int}]{player,  }\item[{const int}]{point }\end{DoxyParamCaption}) const}
+
+
+
+Get boundary direction for 3 players. 
+
+$<$ Returns the cross product of the boundary directions at the given point, i.\+e., the direction along an edge of the boundary that points into the feasible and IC region. Only works for three players. \mbox{\Hypertarget{classSGAction__MaxMinMax_ae7e17727071ae5257c6f28bb5eeb1972}\label{classSGAction__MaxMinMax_ae7e17727071ae5257c6f28bb5eeb1972}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!reset\+Trimmed\+Points@{reset\+Trimmed\+Points}}
+\index{reset\+Trimmed\+Points@{reset\+Trimmed\+Points}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{reset\+Trimmed\+Points()}{resetTrimmedPoints()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void S\+G\+Action\+\_\+\+Max\+Min\+Max\+::reset\+Trimmed\+Points (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Resets the trimmed points for two players. 
+
+$<$ Sets the trimmed points to rays that point from the minimum incentive compatible continuation value along the positive coordinate axes. \mbox{\Hypertarget{classSGAction__MaxMinMax_a76943bc1614a4e3abe153ca6b12faf7c}\label{classSGAction__MaxMinMax_a76943bc1614a4e3abe153ca6b12faf7c}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!reset\+Trimmed\+Points@{reset\+Trimmed\+Points}}
+\index{reset\+Trimmed\+Points@{reset\+Trimmed\+Points}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{reset\+Trimmed\+Points()}{resetTrimmedPoints()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void S\+G\+Action\+\_\+\+Max\+Min\+Max\+::reset\+Trimmed\+Points (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{payoff\+UB }\end{DoxyParamCaption})}
+
+
+
+Resets the trimmed points for three players. 
+
+$<$ Sets the trimmed points to a large box in the coordinate plane between the minimum incentive compatible payoff and the payoff upper bound. \mbox{\Hypertarget{classSGAction__MaxMinMax_a15466a06d5b9bdce97eaa20f9fa94371}\label{classSGAction__MaxMinMax_a15466a06d5b9bdce97eaa20f9fa94371}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!trim@{trim}}
+\index{trim@{trim}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{trim()}{trim()}}
+{\footnotesize\ttfamily bool S\+G\+Action\+\_\+\+Max\+Min\+Max\+::trim (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{normal,  }\item[{double}]{level }\end{DoxyParamCaption})}
+
+
+
+Trims the trimmed\+Points using intersect\+Ray\+Segment. 
+
+$<$ Returns true if the action was actually trimmed. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGAction__MaxMinMax_a02879e7551a4d8f89d4dece73df79e8e}\label{classSGAction__MaxMinMax_a02879e7551a4d8f89d4dece73df79e8e}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!env@{env}}
+\index{env@{env}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{env}{env}}
+{\footnotesize\ttfamily const \hyperlink{classSGEnv}{S\+G\+Env}$\ast$ S\+G\+Action\+\_\+\+Max\+Min\+Max\+::env\hspace{0.3cm}{\ttfamily [private]}}
+
+Pointer to the parent environment. \mbox{\Hypertarget{classSGAction__MaxMinMax_a775fcd57afc142655d881205242b05b6}\label{classSGAction__MaxMinMax_a775fcd57afc142655d881205242b05b6}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!trimmed\+Bndry\+Dirs@{trimmed\+Bndry\+Dirs}}
+\index{trimmed\+Bndry\+Dirs@{trimmed\+Bndry\+Dirs}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{trimmed\+Bndry\+Dirs}{trimmedBndryDirs}}
+{\footnotesize\ttfamily vector$<$\hyperlink{classSGTuple}{S\+G\+Tuple}$>$ S\+G\+Action\+\_\+\+Max\+Min\+Max\+::trimmed\+Bndry\+Dirs\hspace{0.3cm}{\ttfamily [private]}}
+
+Stores the boundary directions for the trimmed points. \mbox{\Hypertarget{classSGAction__MaxMinMax_aff074b8925e0e4efbe729a1fa760b574}\label{classSGAction__MaxMinMax_aff074b8925e0e4efbe729a1fa760b574}} 
+\index{S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}!trimmed\+Points@{trimmed\+Points}}
+\index{trimmed\+Points@{trimmed\+Points}!S\+G\+Action\+\_\+\+Max\+Min\+Max@{S\+G\+Action\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{trimmed\+Points}{trimmedPoints}}
+{\footnotesize\ttfamily vector$<$\hyperlink{classSGTuple}{S\+G\+Tuple}$>$ S\+G\+Action\+\_\+\+Max\+Min\+Max\+::trimmed\+Points\hspace{0.3cm}{\ttfamily [private]}}
+
+Stores the \char`\"{}trimmed\char`\"{} points before updating. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgaction\+\_\+maxminmax.\+hpp\item 
+src/cpp/sgaction\+\_\+maxminmax.\+cpp\end{DoxyCompactItemize}

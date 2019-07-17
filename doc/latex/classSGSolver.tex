@@ -1,0 +1,91 @@
+\hypertarget{classSGSolver}{}\section{S\+G\+Solver Class Reference}
+\label{classSGSolver}\index{S\+G\+Solver@{S\+G\+Solver}}
+
+
+Class for solving stochastic games.  
+
+
+
+
+{\ttfamily \#include $<$sgsolver.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Solver\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{classSGSolver__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver_ac768d9149f5f3859be36ea21a50a888f}\label{classSGSolver_ac768d9149f5f3859be36ea21a50a888f}} 
+\hyperlink{classSGSolver_ac768d9149f5f3859be36ea21a50a888f}{S\+G\+Solver} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGSolver_afb38b33644c2768446f3a247f02dd643}{S\+G\+Solver} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver_ae1d3f7acdcc65956a1539ed09c44e49c}\label{classSGSolver_ae1d3f7acdcc65956a1539ed09c44e49c}} 
+\hyperlink{classSGSolver_ae1d3f7acdcc65956a1539ed09c44e49c}{$\sim$\+S\+G\+Solver} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}{solve} ()
+\begin{DoxyCompactList}\small\item\em Solve routine. \end{DoxyCompactList}\item 
+const \hyperlink{classSGSolution}{S\+G\+Solution} \& \hyperlink{classSGSolver_aeab5f94c8cc185aa08678ec4f1f859d4}{get\+Solution} () const
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver_a7a4fded3697541a40dbbab06f733e648}\label{classSGSolver_a7a4fded3697541a40dbbab06f733e648}} 
+const \hyperlink{classSGEnv}{S\+G\+Env} \& \hyperlink{classSGSolver_a7a4fded3697541a40dbbab06f733e648}{env}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classSGEnv}{S\+G\+Env} object to hold parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver_ad9b23110fabeeb58f19729017d56c792}\label{classSGSolver_ad9b23110fabeeb58f19729017d56c792}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolver_ad9b23110fabeeb58f19729017d56c792}{game}
+\begin{DoxyCompactList}\small\item\em Constant reference to the game to be solved. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver_ac2b29f9d4f8a5fde16e07c68c349367c}\label{classSGSolver_ac2b29f9d4f8a5fde16e07c68c349367c}} 
+\hyperlink{classSGSolution}{S\+G\+Solution} \hyperlink{classSGSolver_ac2b29f9d4f8a5fde16e07c68c349367c}{soln}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classSGSolution}{S\+G\+Solution} object used by \hyperlink{classSGApprox}{S\+G\+Approx} to store data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for solving stochastic games. 
+
+This class implements the pencil-\/sharpening algorithm of Abreu, Brooks, and Sannikov (2016). It contains parameters for the algorithm, the solve method, as well as the data structure produced by solve. It calculates the equilibrium payoff correspondence corresponding to an \hyperlink{classSGGame}{S\+G\+Game} object. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGSolver_afb38b33644c2768446f3a247f02dd643}\label{classSGSolver_afb38b33644c2768446f3a247f02dd643}} 
+\index{S\+G\+Solver@{S\+G\+Solver}!S\+G\+Solver@{S\+G\+Solver}}
+\index{S\+G\+Solver@{S\+G\+Solver}!S\+G\+Solver@{S\+G\+Solver}}
+\subsubsection{\texorpdfstring{S\+G\+Solver()}{SGSolver()}}
+{\footnotesize\ttfamily S\+G\+Solver\+::\+S\+G\+Solver (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env,  }\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{\+\_\+game }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Creates a new \hyperlink{classSGSolver}{S\+G\+Solver} object and initializes it with the given game. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSolver_aeab5f94c8cc185aa08678ec4f1f859d4}\label{classSGSolver_aeab5f94c8cc185aa08678ec4f1f859d4}} 
+\index{S\+G\+Solver@{S\+G\+Solver}!get\+Solution@{get\+Solution}}
+\index{get\+Solution@{get\+Solution}!S\+G\+Solver@{S\+G\+Solver}}
+\subsubsection{\texorpdfstring{get\+Solution()}{getSolution()}}
+{\footnotesize\ttfamily const \hyperlink{classSGSolution}{S\+G\+Solution}\& S\+G\+Solver\+::get\+Solution (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a constant reference to the \hyperlink{classSGSolution}{S\+G\+Solution} object storing the output of the computation. \mbox{\Hypertarget{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}\label{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}} 
+\index{S\+G\+Solver@{S\+G\+Solver}!solve@{solve}}
+\index{solve@{solve}!S\+G\+Solver@{S\+G\+Solver}}
+\subsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily void S\+G\+Solver\+::solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solve routine. 
+
+Initializes a new S\+G\+Approximation object and iteratively generates it until one of the stopping criteria have been met. Stores progress in the data member. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsolver.\+hpp\item 
+src/cpp/sgsolver.\+cpp\end{DoxyCompactItemize}

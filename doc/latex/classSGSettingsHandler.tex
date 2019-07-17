@@ -1,0 +1,83 @@
+\hypertarget{classSGSettingsHandler}{}\section{S\+G\+Settings\+Handler Class Reference}
+\label{classSGSettingsHandler}\index{S\+G\+Settings\+Handler@{S\+G\+Settings\+Handler}}
+
+
+A widget for setting parameters of the algorithm.  
+
+
+
+
+{\ttfamily \#include $<$sgsettingshandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Settings\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{classSGSettingsHandler__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Settings\+Handler\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{classSGSettingsHandler__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSettingsHandler_aca692bb3755deb5ef9a60c4c7fc54385}\label{classSGSettingsHandler_aca692bb3755deb5ef9a60c4c7fc54385}} 
+void \hyperlink{classSGSettingsHandler_aca692bb3755deb5ef9a60c4c7fc54385}{close\+Settings\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Signals to \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler} to delete this widget. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSettingsHandler_a618f1f8869fc978b80d3c31a76426df9}\label{classSGSettingsHandler_a618f1f8869fc978b80d3c31a76426df9}} 
+void \hyperlink{classSGSettingsHandler_a618f1f8869fc978b80d3c31a76426df9}{restore\+Default\+Signal} ()
+\begin{DoxyCompactList}\small\item\em Signals all of the edits and check boxes to reset to default values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSettingsHandler_a78a84bb8e78f27e8e3c92d7ee37b9085}\label{classSGSettingsHandler_a78a84bb8e78f27e8e3c92d7ee37b9085}} 
+\hyperlink{classSGSettingsHandler_a78a84bb8e78f27e8e3c92d7ee37b9085}{S\+G\+Settings\+Handler} (Q\+Widget $\ast$parent, \hyperlink{classSGEnv}{S\+G\+Env} $\ast$\+\_\+env)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSettingsHandler_a45045c6c753ac23f0a6104e6d2b35500}\label{classSGSettingsHandler_a45045c6c753ac23f0a6104e6d2b35500}} 
+virtual \hyperlink{classSGSettingsHandler_a45045c6c753ac23f0a6104e6d2b35500}{$\sim$\+S\+G\+Settings\+Handler} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSettingsHandler_ac029c286082f366d9502edbf4bbb6db4}\label{classSGSettingsHandler_ac029c286082f366d9502edbf4bbb6db4}} 
+void \hyperlink{classSGSettingsHandler_ac029c286082f366d9502edbf4bbb6db4}{close\+Window} ()
+\begin{DoxyCompactList}\small\item\em Closes the window by sending signal to \hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler}. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSettingsHandler_a3d119fdf3a3f1c29e8293940613c8b3f}{restore\+Defaults} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSettingsHandler_ab01218eaff9a9219155aff6b0c237f46}\label{classSGSettingsHandler_ab01218eaff9a9219155aff6b0c237f46}} 
+\hyperlink{classSGEnv}{S\+G\+Env} $\ast$ \hyperlink{classSGSettingsHandler_ab01218eaff9a9219155aff6b0c237f46}{env}
+\begin{DoxyCompactList}\small\item\em Pointer to the associated \hyperlink{classSGEnv}{S\+G\+Env} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A widget for setting parameters of the algorithm. 
+
+This widget is created from the Tools-\/$>$Settings menu in the main S\+G\+Viewer window, and it allows for the editing of algorithm parameters in the \hyperlink{classSGEnv}{S\+G\+Env} object that is used for the computation. It uses edits that are derived from the Q\+Line\+Edit and Q\+Check\+Box, one for each parameter, that directly synchronize the entered values with those in the associated \hyperlink{classSGEnv}{S\+G\+Env}. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSettingsHandler_a3d119fdf3a3f1c29e8293940613c8b3f}\label{classSGSettingsHandler_a3d119fdf3a3f1c29e8293940613c8b3f}} 
+\index{S\+G\+Settings\+Handler@{S\+G\+Settings\+Handler}!restore\+Defaults@{restore\+Defaults}}
+\index{restore\+Defaults@{restore\+Defaults}!S\+G\+Settings\+Handler@{S\+G\+Settings\+Handler}}
+\subsubsection{\texorpdfstring{restore\+Defaults}{restoreDefaults}}
+{\footnotesize\ttfamily void S\+G\+Settings\+Handler\+::restore\+Defaults (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [slot]}}
+
+Restores default parameter values in the \hyperlink{classSGEnv}{S\+G\+Env} object and signals edits/boxes to reset. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsettingshandler.\+hpp\item 
+viewer/cpp/sgsettingshandler.\+cpp\end{DoxyCompactItemize}

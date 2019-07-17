@@ -1,0 +1,115 @@
+\hypertarget{risksharing_maxminmax_8cpp-example}{}\section{risksharing\+\_\+maxminmax.\+cpp}
+
+\begin{DoxyCodeInclude}
+\textcolor{comment}{// This file is part of the SGSolve library for stochastic games}
+\textcolor{comment}{// Copyright (C) 2019 Benjamin A. Brooks}
+\textcolor{comment}{// }
+\textcolor{comment}{// SGSolve free software: you can redistribute it and/or modify it}
+\textcolor{comment}{// under the terms of the GNU General Public License as published by}
+\textcolor{comment}{// the Free Software Foundation, either version 3 of the License, or}
+\textcolor{comment}{// (at your option) any later version.}
+\textcolor{comment}{// }
+\textcolor{comment}{// SGSolve is distributed in the hope that it will be useful, but}
+\textcolor{comment}{// WITHOUT ANY WARRANTY; without even the implied warranty of}
+\textcolor{comment}{// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU}
+\textcolor{comment}{// General Public License for more details.}
+\textcolor{comment}{// }
+\textcolor{comment}{// You should have received a copy of the GNU General Public License}
+\textcolor{comment}{// along with this program.  If not, see}
+\textcolor{comment}{// <http://www.gnu.org/licenses/>.}
+\textcolor{comment}{// }
+\textcolor{comment}{// Benjamin A. Brooks}
+\textcolor{comment}{// ben@benjaminbrooks.net}
+\textcolor{comment}{// Chicago, IL}
+
+\textcolor{preprocessor}{#include "sgrisksharing.hpp"}
+\textcolor{preprocessor}{#include "sgsolver.hpp"}
+\textcolor{preprocessor}{#include "sgsolver\_jyc.hpp"}
+\textcolor{preprocessor}{#include "sgsolver\_maxminmax\_grb.hpp"}
+\textcolor{preprocessor}{#include "sgsolver\_maxminmax.hpp"}
+\textcolor{preprocessor}{#include <ctime>}
+
+\textcolor{keywordtype}{int} main()
+\{
+  \textcolor{keywordtype}{double} delta = 0.7;
+  \textcolor{keywordtype}{int} numEndowments = 2;
+  \textcolor{keywordtype}{int} c2e = 200;
+  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
+
+  \{
+    \textcolor{keywordtype}{double} persistence = 0;
+    \hyperlink{classRiskSharingGame}{RiskSharingGame} rsg(delta,numEndowments,
+            c2e,persistence,endowmentMode);
+    \hyperlink{classSGEnv}{SGEnv} env;
+    env.\hyperlink{classSGEnv_adfa101d39534519c80b33a78454b01e2}{setParam}(\hyperlink{namespaceSG_a031898e6fc0fa14d8590f85da9715f37a68cb47214b02cf2b8a4f78fff84fd42c}{SG::STOREITERATIONS},2);
+    \textcolor{comment}{// env.setParam(SG::STOREACTIONS,true);}
+    env.\hyperlink{classSGEnv_adfa101d39534519c80b33a78454b01e2}{setParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6a4ff6bda06382b2a99be750c840ffb7c5}{SG::ERRORTOL},1e-5);
+
+    env.\hyperlink{classSGEnv_adfa101d39534519c80b33a78454b01e2}{setParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6ac010a025bb49cc646ecac1a7e8606a40}{SG::SUBGENFACTOR},0.0);
+    \textcolor{keywordflow}{if} (env.\hyperlink{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}{getParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6ac010a025bb49cc646ecac1a7e8606a40}{SG::SUBGENFACTOR})>0)
+      env.\hyperlink{classSGEnv_adfa101d39534519c80b33a78454b01e2}{setParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6a4ff6bda06382b2a99be750c840ffb7c5}{SG::ERRORTOL},
+           env.\hyperlink{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}{getParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6ac010a025bb49cc646ecac1a7e8606a40}{SG::SUBGENFACTOR})/10);
+    \hyperlink{classSGGame}{SGGame} game(rsg);
+
+    clock\_t start;
+    \textcolor{keywordtype}{double} duration;
+
+    \textcolor{comment}{// start = clock();}
+    \textcolor{comment}{// SGSolver solver1(env,game);}
+    \textcolor{comment}{// solver1.solve();}
+    \textcolor{comment}{// duration = ( clock() - start ) / (double) CLOCKS\_PER\_SEC;}
+    \textcolor{comment}{// cout << "Twist time elapsed: "<< duration << " seconds" << endl;}
+    \textcolor{comment}{// // SGSolution soln = solver1.getSolution();}
+    \textcolor{comment}{// // SGSolution::save(soln,"risksharing\_v1.sln");}
+
+    start = clock();
+
+    \hyperlink{classSGSolver__MaxMinMax}{SGSolver\_MaxMinMax} solver4(env,game);
+    solver4.\hyperlink{classSGSolver__MaxMinMax_a27b1ef962eb87c0495f2d0f733432c36}{solve\_fixed}();
+
+    duration = ( clock() - start ) / (\textcolor{keywordtype}{double}) CLOCKS\_PER\_SEC;
+    cout << fixed << \textcolor{stringliteral}{"Fixed direction time elapsed: "}<< duration << \textcolor{stringliteral}{" seconds"} << endl;
+
+    \hyperlink{classSGSolution__MaxMinMax}{SGSolution\_MaxMinMax} soln2 = solver4.\hyperlink{classSGSolver__MaxMinMax_ab8475d7043987a535dcadf3db3044aba}{getSolution}();
+    \hyperlink{classSGSolution__MaxMinMax_a1965d607757c0b8be41f1a68f0d29438}{SGSolution\_MaxMinMax::save}(soln2,\textcolor{stringliteral}{"
+      ./solutions/risksharing\_maxminmax\_fixed.sln2"});
+
+    start = clock();
+
+    \hyperlink{classSGSolver__MaxMinMax}{SGSolver\_MaxMinMax} solver5(env,game);
+    solver5.\hyperlink{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}{solve}();
+
+    duration = ( clock() - start ) / (\textcolor{keywordtype}{double}) CLOCKS\_PER\_SEC;
+    cout << fixed << \textcolor{stringliteral}{"Endogenous direction time elapsed: "}<< duration << \textcolor{stringliteral}{" seconds"} << endl;
+
+    \hyperlink{classSGSolution__MaxMinMax}{SGSolution\_MaxMinMax} soln3 = solver5.\hyperlink{classSGSolver__MaxMinMax_ab8475d7043987a535dcadf3db3044aba}{getSolution}();
+    stringstream ss;
+    ss << \textcolor{stringliteral}{"./solutions/risksharing\_nume="} << numEndowments
+       << \textcolor{stringliteral}{"\_c2e="} << c2e
+       << \textcolor{stringliteral}{"\_delta="} << delta;
+    \textcolor{keywordflow}{if} (env.\hyperlink{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}{getParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6ac010a025bb49cc646ecac1a7e8606a40}{SG::SUBGENFACTOR})>0)
+      ss << \textcolor{stringliteral}{"\_sgf="} << env.\hyperlink{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}{getParam}(\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6ac010a025bb49cc646ecac1a7e8606a40}{SG::SUBGENFACTOR});
+    ss << \textcolor{stringliteral}{".sln2"};
+    \hyperlink{classSGSolution__MaxMinMax_a1965d607757c0b8be41f1a68f0d29438}{SGSolution\_MaxMinMax::save}(soln3,ss.str().c\_str());
+    
+    start = clock();
+    \textcolor{keywordtype}{int} numDirections = 100;
+    \hyperlink{classSGSolver__JYC}{SGSolver\_JYC} jycsolver(game,numDirections);
+    jycsolver.\hyperlink{classSGSolver__JYC_ae6e82b53a3c81ef437f60a29c37f81a1}{solve}();
+    duration = ( clock() - start ) / (\textcolor{keywordtype}{double}) CLOCKS\_PER\_SEC;
+    cout << \textcolor{stringliteral}{"JYC implementation time elapsed with "} << numDirections
+         << \textcolor{stringliteral}{" directions: "}<< duration << \textcolor{stringliteral}{" seconds"} << endl;
+
+    start = clock();
+    numDirections = 200;
+    \hyperlink{classSGSolver__JYC}{SGSolver\_JYC} jycsolver2(game,numDirections);
+    jycsolver2.\hyperlink{classSGSolver__JYC_ae6e82b53a3c81ef437f60a29c37f81a1}{solve}();
+    duration = ( clock() - start ) / (\textcolor{keywordtype}{double}) CLOCKS\_PER\_SEC;
+    cout << \textcolor{stringliteral}{"JYC implementation time elapsed with "} << numDirections
+         << \textcolor{stringliteral}{" directions: "}<< duration << \textcolor{stringliteral}{" seconds"} << endl;
+  \}
+
+  \textcolor{keywordflow}{return} 0;
+\}
+\end{DoxyCodeInclude}
+ 

@@ -1,0 +1,259 @@
+\hypertarget{classSGCustomPlot}{}\section{S\+G\+Custom\+Plot Class Reference}
+\label{classSGCustomPlot}\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+
+
+A customized version of Q\+Custom\+Plot.  
+
+
+
+
+{\ttfamily \#include $<$sgcustomplot.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Custom\+Plot\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classSGCustomPlot__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Custom\+Plot\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classSGCustomPlot__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGCustomPlot_a23f808cae1e818047ef19fb2f81b2640}\label{classSGCustomPlot_a23f808cae1e818047ef19fb2f81b2640}} 
+void \hyperlink{classSGCustomPlot_a23f808cae1e818047ef19fb2f81b2640}{inspect\+Point} (\hyperlink{classSGPoint}{S\+G\+Point} point, int \hyperlink{classSGCustomPlot_ac17b8dfc3d9579e6286efa060ca55ab0}{state}, bool \hyperlink{classSGCustomPlot_a216325e80035b2042215a6ad9cd82202}{is\+Detail\+Plot})
+\begin{DoxyCompactList}\small\item\em Signal to inspect the given point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_ab8369e075314ff6d557f433b25b6852c}\label{classSGCustomPlot_ab8369e075314ff6d557f433b25b6852c}} 
+void \hyperlink{classSGCustomPlot_ab8369e075314ff6d557f433b25b6852c}{simulate\+Equilibrium} (\hyperlink{classSGPoint}{S\+G\+Point} point, int \hyperlink{classSGCustomPlot_ac17b8dfc3d9579e6286efa060ca55ab0}{state}, bool \hyperlink{classSGCustomPlot_a216325e80035b2042215a6ad9cd82202}{is\+Detail\+Plot})
+\begin{DoxyCompactList}\small\item\em Signal to simulate the given equilibrium forwards. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGCustomPlot_a5a4641a2110a34cb967b5de276f5f457}\label{classSGCustomPlot_a5a4641a2110a34cb967b5de276f5f457}} 
+\hyperlink{classSGCustomPlot_a5a4641a2110a34cb967b5de276f5f457}{S\+G\+Custom\+Plot} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGCustomPlot_a95ebb2e31d5aa9bcbd850bb99c5e6d95}{S\+G\+Custom\+Plot} (int \+\_\+state, bool \+\_\+is\+Detail\+Plot)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a9ef7a8ce9d52fab259120958b3596622}\label{classSGCustomPlot_a9ef7a8ce9d52fab259120958b3596622}} 
+Q\+C\+P\+Plot\+Title $\ast$ \hyperlink{classSGCustomPlot_a9ef7a8ce9d52fab259120958b3596622}{get\+Title} ()
+\begin{DoxyCompactList}\small\item\em Returns the title. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a318a8971c236a0f675bdc28bebdecc12}\label{classSGCustomPlot_a318a8971c236a0f675bdc28bebdecc12}} 
+void \hyperlink{classSGCustomPlot_a318a8971c236a0f675bdc28bebdecc12}{adjust\+Ranges} ()
+\begin{DoxyCompactList}\small\item\em Updates ranges when window is resized. \end{DoxyCompactList}\item 
+void \hyperlink{classSGCustomPlot_ad20fcf8ce5db4628acdddae73238301c}{set\+Ranges} (const Q\+C\+P\+Range \&xrange, const Q\+C\+P\+Range \&yrange)
+\begin{DoxyCompactList}\small\item\em Sets the nominal ranges. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_abc4224d3185bed305f40646626e30625}\label{classSGCustomPlot_abc4224d3185bed305f40646626e30625}} 
+const Q\+C\+P\+Range \& \hyperlink{classSGCustomPlot_abc4224d3185bed305f40646626e30625}{get\+Nominal\+X\+Range} () const
+\begin{DoxyCompactList}\small\item\em Returns the nominal X range. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a52e0a60a726ebd157839b013af068420}\label{classSGCustomPlot_a52e0a60a726ebd157839b013af068420}} 
+const Q\+C\+P\+Range \& \hyperlink{classSGCustomPlot_a52e0a60a726ebd157839b013af068420}{get\+Nominal\+Y\+Range} () const
+\begin{DoxyCompactList}\small\item\em Returns the nominal Y range. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_ae69a5b83aab673e813bc48c9e5b8a0bd}\label{classSGCustomPlot_ae69a5b83aab673e813bc48c9e5b8a0bd}} 
+void \hyperlink{classSGCustomPlot_ae69a5b83aab673e813bc48c9e5b8a0bd}{equalize\+Axes\+Scales} ()
+\begin{DoxyCompactList}\small\item\em Normalize ranges. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a7583d7141ffd1a751f01f22b23c50e5a}\label{classSGCustomPlot_a7583d7141ffd1a751f01f22b23c50e5a}} 
+void \hyperlink{classSGCustomPlot_a7583d7141ffd1a751f01f22b23c50e5a}{set\+State} (int new\+State)
+\begin{DoxyCompactList}\small\item\em Sets the state associated with the plot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a5a23324945745f0af195e25b70814637}\label{classSGCustomPlot_a5a23324945745f0af195e25b70814637}} 
+int \hyperlink{classSGCustomPlot_a5a23324945745f0af195e25b70814637}{get\+State} () const
+\begin{DoxyCompactList}\small\item\em Gets the state associated with the plot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGCustomPlot_a4f1dee38be23b4b3fbe46cab9c6db6d7}{resize\+Event} (Q\+Resize\+Event $\ast$event)
+\begin{DoxyCompactList}\small\item\em Reimplement resize\+Event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGCustomPlot_a9e8312d8b4cc19d53bc8790b71f3e8ed}{Show\+Context\+Menu} (const Q\+Point \&pos)
+\begin{DoxyCompactList}\small\item\em Slot for showing context menu. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_ab63f0da26acab2aa7295d44c9a3d5203}\label{classSGCustomPlot_ab63f0da26acab2aa7295d44c9a3d5203}} 
+void \hyperlink{classSGCustomPlot_ab63f0da26acab2aa7295d44c9a3d5203}{point\+Inspected} ()
+\begin{DoxyCompactList}\small\item\em Point inspected. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a6068b1ffa202245fa8eeb594e6860bb9}\label{classSGCustomPlot_a6068b1ffa202245fa8eeb594e6860bb9}} 
+void {\bfseries simulation\+Requested} ()
+\item 
+\mbox{\Hypertarget{classSGCustomPlot_a9108592865d386c9fafaeac1b813848c}\label{classSGCustomPlot_a9108592865d386c9fafaeac1b813848c}} 
+void \hyperlink{classSGCustomPlot_a9108592865d386c9fafaeac1b813848c}{save\+P\+DF} ()
+\begin{DoxyCompactList}\small\item\em Saves graph as a P\+DF. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a18f01b1582f9b0415f4b32841846c8dc}\label{classSGCustomPlot_a18f01b1582f9b0415f4b32841846c8dc}} 
+void \hyperlink{classSGCustomPlot_a18f01b1582f9b0415f4b32841846c8dc}{save\+P\+NG} ()
+\begin{DoxyCompactList}\small\item\em Saves graph as a P\+NG. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual int \hyperlink{classSGCustomPlot_ad60d048905082b37f4a15bd1644f8717}{height\+For\+Width} (int w) const
+\begin{DoxyCompactList}\small\item\em Reimplement height\+For\+Width. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classSGCustomPlot_a560baf18b0aa2e31631c603abfa74d47}{has\+Height\+For\+Width} () const
+\begin{DoxyCompactList}\small\item\em Reimplement has\+Heigh\+For\+Width. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a2779f4bb4a1b5504c9e4f58bd545df24}\label{classSGCustomPlot_a2779f4bb4a1b5504c9e4f58bd545df24}} 
+virtual Q\+Size \hyperlink{classSGCustomPlot_a2779f4bb4a1b5504c9e4f58bd545df24}{minimum\+Size\+Hint} () const
+\begin{DoxyCompactList}\small\item\em Custom minimum size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGCustomPlot_ac17b8dfc3d9579e6286efa060ca55ab0}\label{classSGCustomPlot_ac17b8dfc3d9579e6286efa060ca55ab0}} 
+int \hyperlink{classSGCustomPlot_ac17b8dfc3d9579e6286efa060ca55ab0}{state}
+\begin{DoxyCompactList}\small\item\em Indicates the state that this plot is associated with. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a216325e80035b2042215a6ad9cd82202}\label{classSGCustomPlot_a216325e80035b2042215a6ad9cd82202}} 
+bool \hyperlink{classSGCustomPlot_a216325e80035b2042215a6ad9cd82202}{is\+Detail\+Plot}
+\begin{DoxyCompactList}\small\item\em Indicates if this is the detail plot. \end{DoxyCompactList}\item 
+Q\+C\+P\+Plot\+Title $\ast$ \hyperlink{classSGCustomPlot_a230237a7692e75bfe15e250342bfd801}{title}
+\item 
+Q\+C\+P\+Range \hyperlink{classSGCustomPlot_a255402d40b328430c649c878ee593b11}{nominal\+X\+Range}
+\item 
+Q\+C\+P\+Range \hyperlink{classSGCustomPlot_a4d7a4961ec0e095a9c3582060bc9cbd2}{nominal\+Y\+Range}
+\item 
+Q\+C\+P\+Range \hyperlink{classSGCustomPlot_a96f63b86fe49372586cb6be908d88bc4}{real\+X\+Range}
+\item 
+Q\+C\+P\+Range \hyperlink{classSGCustomPlot_aeffca93d0d63a439e3c3bf35d18fa698}{real\+Y\+Range}
+\item 
+Q\+String \hyperlink{classSGCustomPlot_a9051f043c91f3e59fbc1c2a818c76687}{path}
+\begin{DoxyCompactList}\small\item\em Save file path. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a73fd511ad74d3db5433f51f8a75a5f92}\label{classSGCustomPlot_a73fd511ad74d3db5433f51f8a75a5f92}} 
+Q\+Action $\ast$ \hyperlink{classSGCustomPlot_a73fd511ad74d3db5433f51f8a75a5f92}{inspect\+Point\+Action}
+\begin{DoxyCompactList}\small\item\em Inspect a point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_aa33a8ed74cad0d2e0ef1b1d4e2af6a31}\label{classSGCustomPlot_aa33a8ed74cad0d2e0ef1b1d4e2af6a31}} 
+Q\+Action $\ast$ \hyperlink{classSGCustomPlot_aa33a8ed74cad0d2e0ef1b1d4e2af6a31}{simulate\+Action}
+\begin{DoxyCompactList}\small\item\em Action for forward simulating. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_ac20df7cd696ea2b61c78606589f5e726}\label{classSGCustomPlot_ac20df7cd696ea2b61c78606589f5e726}} 
+Q\+Action $\ast$ \hyperlink{classSGCustomPlot_ac20df7cd696ea2b61c78606589f5e726}{save\+P\+N\+G\+Action}
+\begin{DoxyCompactList}\small\item\em Pointer to the Q\+Action for saving P\+NG files. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_a9df5c584b4b967e80d3a56b0e2f7fef1}\label{classSGCustomPlot_a9df5c584b4b967e80d3a56b0e2f7fef1}} 
+Q\+Action $\ast$ \hyperlink{classSGCustomPlot_a9df5c584b4b967e80d3a56b0e2f7fef1}{save\+P\+D\+F\+Action}
+\begin{DoxyCompactList}\small\item\em Pointer to the Q\+Action for saving P\+DF files. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGCustomPlot_ac3903a96504ec5d4e4a5c76e1fe602c7}\label{classSGCustomPlot_ac3903a96504ec5d4e4a5c76e1fe602c7}} 
+Q\+Point \hyperlink{classSGCustomPlot_ac3903a96504ec5d4e4a5c76e1fe602c7}{last\+Context\+Pos}
+\begin{DoxyCompactList}\small\item\em Stores the last location at which a context menu was requested. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A customized version of Q\+Custom\+Plot. 
+
+This class inherits from Q\+Custom\+Plot and adds functionality for controling ranges to maintain the desired aspect ratio. It also adds functionality for right-\/clicking on the plot to bring up a context menu. This menu has various options, some of which pertain to the payoffs closest to where the user clicked. In particular, there are signals for saving copys of the plots, for \char`\"{}inspecting\char`\"{} a given payoff vector, and for initializing the \hyperlink{classSGSimulationHandler}{S\+G\+Simulation\+Handler} to forward simulate the equilibrium that generates the given payoffs. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGCustomPlot_a95ebb2e31d5aa9bcbd850bb99c5e6d95}\label{classSGCustomPlot_a95ebb2e31d5aa9bcbd850bb99c5e6d95}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{S\+G\+Custom\+Plot()}{SGCustomPlot()}}
+{\footnotesize\ttfamily S\+G\+Custom\+Plot\+::\+S\+G\+Custom\+Plot (\begin{DoxyParamCaption}\item[{int}]{\+\_\+state,  }\item[{bool}]{\+\_\+is\+Detail\+Plot }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Sets the state and whether or not is the detail\+Plot. Also initializes the plot and connect slots to actions. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGCustomPlot_a560baf18b0aa2e31631c603abfa74d47}\label{classSGCustomPlot_a560baf18b0aa2e31631c603abfa74d47}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!has\+Height\+For\+Width@{has\+Height\+For\+Width}}
+\index{has\+Height\+For\+Width@{has\+Height\+For\+Width}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{has\+Height\+For\+Width()}{hasHeightForWidth()}}
+{\footnotesize\ttfamily virtual bool S\+G\+Custom\+Plot\+::has\+Height\+For\+Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+Reimplement has\+Heigh\+For\+Width. 
+
+Indicates that height\+For\+Width has been reimplemented. \mbox{\Hypertarget{classSGCustomPlot_ad60d048905082b37f4a15bd1644f8717}\label{classSGCustomPlot_ad60d048905082b37f4a15bd1644f8717}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!height\+For\+Width@{height\+For\+Width}}
+\index{height\+For\+Width@{height\+For\+Width}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{height\+For\+Width()}{heightForWidth()}}
+{\footnotesize\ttfamily virtual int S\+G\+Custom\+Plot\+::height\+For\+Width (\begin{DoxyParamCaption}\item[{int}]{w }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [virtual]}}
+
+
+
+Reimplement height\+For\+Width. 
+
+Suggests a square aspect ratio. \mbox{\Hypertarget{classSGCustomPlot_a4f1dee38be23b4b3fbe46cab9c6db6d7}\label{classSGCustomPlot_a4f1dee38be23b4b3fbe46cab9c6db6d7}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!resize\+Event@{resize\+Event}}
+\index{resize\+Event@{resize\+Event}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{resize\+Event()}{resizeEvent()}}
+{\footnotesize\ttfamily void S\+G\+Custom\+Plot\+::resize\+Event (\begin{DoxyParamCaption}\item[{Q\+Resize\+Event $\ast$}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Reimplement resize\+Event. 
+
+Calls adjust ranges before calling Q\+Custom\+Plot\+::resize\+Event. \mbox{\Hypertarget{classSGCustomPlot_ad20fcf8ce5db4628acdddae73238301c}\label{classSGCustomPlot_ad20fcf8ce5db4628acdddae73238301c}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!set\+Ranges@{set\+Ranges}}
+\index{set\+Ranges@{set\+Ranges}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{set\+Ranges()}{setRanges()}}
+{\footnotesize\ttfamily void S\+G\+Custom\+Plot\+::set\+Ranges (\begin{DoxyParamCaption}\item[{const Q\+C\+P\+Range \&}]{xrange,  }\item[{const Q\+C\+P\+Range \&}]{yrange }\end{DoxyParamCaption})}
+
+
+
+Sets the nominal ranges. 
+
+Constructor. \mbox{\Hypertarget{classSGCustomPlot_a9e8312d8b4cc19d53bc8790b71f3e8ed}\label{classSGCustomPlot_a9e8312d8b4cc19d53bc8790b71f3e8ed}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!Show\+Context\+Menu@{Show\+Context\+Menu}}
+\index{Show\+Context\+Menu@{Show\+Context\+Menu}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{Show\+Context\+Menu}{ShowContextMenu}}
+{\footnotesize\ttfamily void S\+G\+Custom\+Plot\+::\+Show\+Context\+Menu (\begin{DoxyParamCaption}\item[{const Q\+Point \&}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Slot for showing context menu. 
+
+Creates a context menu and shows the actions for saving P\+D\+F/\+P\+NG files. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGCustomPlot_a255402d40b328430c649c878ee593b11}\label{classSGCustomPlot_a255402d40b328430c649c878ee593b11}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!nominal\+X\+Range@{nominal\+X\+Range}}
+\index{nominal\+X\+Range@{nominal\+X\+Range}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{nominal\+X\+Range}{nominalXRange}}
+{\footnotesize\ttfamily Q\+C\+P\+Range S\+G\+Custom\+Plot\+::nominal\+X\+Range\hspace{0.3cm}{\ttfamily [private]}}
+
+Nominal X range. \mbox{\Hypertarget{classSGCustomPlot_a4d7a4961ec0e095a9c3582060bc9cbd2}\label{classSGCustomPlot_a4d7a4961ec0e095a9c3582060bc9cbd2}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!nominal\+Y\+Range@{nominal\+Y\+Range}}
+\index{nominal\+Y\+Range@{nominal\+Y\+Range}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{nominal\+Y\+Range}{nominalYRange}}
+{\footnotesize\ttfamily Q\+C\+P\+Range S\+G\+Custom\+Plot\+::nominal\+Y\+Range\hspace{0.3cm}{\ttfamily [private]}}
+
+Nominal Y range. \mbox{\Hypertarget{classSGCustomPlot_a9051f043c91f3e59fbc1c2a818c76687}\label{classSGCustomPlot_a9051f043c91f3e59fbc1c2a818c76687}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!path@{path}}
+\index{path@{path}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{path}{path}}
+{\footnotesize\ttfamily Q\+String S\+G\+Custom\+Plot\+::path\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Save file path. 
+
+$<$ Stores the last location used to save a picture. \mbox{\Hypertarget{classSGCustomPlot_a96f63b86fe49372586cb6be908d88bc4}\label{classSGCustomPlot_a96f63b86fe49372586cb6be908d88bc4}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!real\+X\+Range@{real\+X\+Range}}
+\index{real\+X\+Range@{real\+X\+Range}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{real\+X\+Range}{realXRange}}
+{\footnotesize\ttfamily Q\+C\+P\+Range S\+G\+Custom\+Plot\+::real\+X\+Range\hspace{0.3cm}{\ttfamily [private]}}
+
+Real X range. \mbox{\Hypertarget{classSGCustomPlot_aeffca93d0d63a439e3c3bf35d18fa698}\label{classSGCustomPlot_aeffca93d0d63a439e3c3bf35d18fa698}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!real\+Y\+Range@{real\+Y\+Range}}
+\index{real\+Y\+Range@{real\+Y\+Range}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{real\+Y\+Range}{realYRange}}
+{\footnotesize\ttfamily Q\+C\+P\+Range S\+G\+Custom\+Plot\+::real\+Y\+Range\hspace{0.3cm}{\ttfamily [private]}}
+
+Real Y range. \mbox{\Hypertarget{classSGCustomPlot_a230237a7692e75bfe15e250342bfd801}\label{classSGCustomPlot_a230237a7692e75bfe15e250342bfd801}} 
+\index{S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}!title@{title}}
+\index{title@{title}!S\+G\+Custom\+Plot@{S\+G\+Custom\+Plot}}
+\subsubsection{\texorpdfstring{title}{title}}
+{\footnotesize\ttfamily Q\+C\+P\+Plot\+Title$\ast$ S\+G\+Custom\+Plot\+::title\hspace{0.3cm}{\ttfamily [private]}}
+
+The graph title. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgcustomplot.\+hpp\item 
+viewer/cpp/sgcustomplot.\+cpp\end{DoxyCompactItemize}

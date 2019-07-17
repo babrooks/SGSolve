@@ -1,0 +1,68 @@
+\hypertarget{classSGTableView}{}\section{S\+G\+Table\+View Class Reference}
+\label{classSGTableView}\index{S\+G\+Table\+View@{S\+G\+Table\+View}}
+
+
+Specialized table view for S\+G\+Viewer.  
+
+
+
+
+{\ttfamily \#include $<$sgtableview.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Table\+View\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=160pt]{classSGTableView__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Table\+View\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=160pt]{classSGTableView__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGTableView_a2e0b0f4185cd89e132ae16ba606fe359}\label{classSGTableView_a2e0b0f4185cd89e132ae16ba606fe359}} 
+\hyperlink{classSGTableView_a2e0b0f4185cd89e132ae16ba606fe359}{S\+G\+Table\+View} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableView_af1be121b0cde3efdf81007fa76671592}\label{classSGTableView_af1be121b0cde3efdf81007fa76671592}} 
+int \hyperlink{classSGTableView_af1be121b0cde3efdf81007fa76671592}{size\+Hint\+For\+Column} (int col) const
+\begin{DoxyCompactList}\small\item\em Reimplement column size to be slightly smaller. \end{DoxyCompactList}\item 
+Q\+Size \hyperlink{classSGTableView_aa43840054c859a9c6e459f03a63e41a5}{minimum\+Size\+Hint} () const
+\begin{DoxyCompactList}\small\item\em Reimplement minimum\+Size\+Hint. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableView_aa90fb3ccaf73c2ef9bdfd37014111521}\label{classSGTableView_aa90fb3ccaf73c2ef9bdfd37014111521}} 
+Q\+Size \hyperlink{classSGTableView_aa90fb3ccaf73c2ef9bdfd37014111521}{size\+Hint} () const
+\begin{DoxyCompactList}\small\item\em Hint is equal to minimum size so table wont grow. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Specialized table view for S\+G\+Viewer. 
+
+Reimplements various sizing methods and configures the size policy and selection mode. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGTableView_aa43840054c859a9c6e459f03a63e41a5}\label{classSGTableView_aa43840054c859a9c6e459f03a63e41a5}} 
+\index{S\+G\+Table\+View@{S\+G\+Table\+View}!minimum\+Size\+Hint@{minimum\+Size\+Hint}}
+\index{minimum\+Size\+Hint@{minimum\+Size\+Hint}!S\+G\+Table\+View@{S\+G\+Table\+View}}
+\subsubsection{\texorpdfstring{minimum\+Size\+Hint()}{minimumSizeHint()}}
+{\footnotesize\ttfamily Q\+Size S\+G\+Table\+View\+::minimum\+Size\+Hint (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reimplement minimum\+Size\+Hint. 
+
+Recommends a size so that the table is just larger than what is required to show all of the cells. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgtableview.\+hpp\end{DoxyCompactItemize}

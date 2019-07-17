@@ -1,0 +1,81 @@
+\hypertarget{classSGEnv}{}\section{S\+G\+Env Class Reference}
+\label{classSGEnv}\index{S\+G\+Env@{S\+G\+Env}}
+
+
+Manages parameters for algorithm behavior.  
+
+
+
+
+{\ttfamily \#include $<$sgenv.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGEnv_ac7fe265f0baba4e498c36bd67a0bbc97}{S\+G\+Env} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_adfa101d39534519c80b33a78454b01e2}\label{classSGEnv_adfa101d39534519c80b33a78454b01e2}} 
+void \hyperlink{classSGEnv_adfa101d39534519c80b33a78454b01e2}{set\+Param} (\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6}{S\+G\+::\+D\+B\+L\+\_\+\+P\+A\+R\+AM} param, double value)
+\begin{DoxyCompactList}\small\item\em Method for setting double parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_a94d5a63cc1023e86e239b203c86dca8d}\label{classSGEnv_a94d5a63cc1023e86e239b203c86dca8d}} 
+void \hyperlink{classSGEnv_a94d5a63cc1023e86e239b203c86dca8d}{set\+Param} (\hyperlink{namespaceSG_a0b164afe6c58be3386d9e3f6e857b673}{S\+G\+::\+B\+O\+O\+L\+\_\+\+P\+A\+R\+AM} param, bool value)
+\begin{DoxyCompactList}\small\item\em Method for setting boolean parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_ab34537d887371f2f1e1af3d13f2c0d0a}\label{classSGEnv_ab34537d887371f2f1e1af3d13f2c0d0a}} 
+void \hyperlink{classSGEnv_ab34537d887371f2f1e1af3d13f2c0d0a}{set\+Param} (\hyperlink{namespaceSG_a031898e6fc0fa14d8590f85da9715f37}{S\+G\+::\+I\+N\+T\+\_\+\+P\+A\+R\+AM} param, int value)
+\begin{DoxyCompactList}\small\item\em Method for setting integer parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}\label{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}} 
+double \hyperlink{classSGEnv_ae3b508ceaf8d9aec513dde852ba67579}{get\+Param} (\hyperlink{namespaceSG_ac2f86c953fcec4419ac86538d9d314b6}{S\+G\+::\+D\+B\+L\+\_\+\+P\+A\+R\+AM} param) const
+\begin{DoxyCompactList}\small\item\em Method for getting double parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_a13c98e1199f9a26375b525276650f954}\label{classSGEnv_a13c98e1199f9a26375b525276650f954}} 
+bool \hyperlink{classSGEnv_a13c98e1199f9a26375b525276650f954}{get\+Param} (\hyperlink{namespaceSG_a0b164afe6c58be3386d9e3f6e857b673}{S\+G\+::\+B\+O\+O\+L\+\_\+\+P\+A\+R\+AM} param) const
+\begin{DoxyCompactList}\small\item\em Method for getting boolean parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_abf98a7ee14af5678e72577cdbc2d6fd3}\label{classSGEnv_abf98a7ee14af5678e72577cdbc2d6fd3}} 
+int \hyperlink{classSGEnv_abf98a7ee14af5678e72577cdbc2d6fd3}{get\+Param} (\hyperlink{namespaceSG_a031898e6fc0fa14d8590f85da9715f37}{S\+G\+::\+I\+N\+T\+\_\+\+P\+A\+R\+AM} param) const
+\begin{DoxyCompactList}\small\item\em Method for getting integer parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_a77e0bf7bafe7b9d6da890ccd6d1db624}\label{classSGEnv_a77e0bf7bafe7b9d6da890ccd6d1db624}} 
+void \hyperlink{classSGEnv_a77e0bf7bafe7b9d6da890ccd6d1db624}{restore\+Defaults} ()
+\begin{DoxyCompactList}\small\item\em Method for restoring default values for all parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_abc39cb53702f831728fa577be5f09b97}\label{classSGEnv_abc39cb53702f831728fa577be5f09b97}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGEnv_abc39cb53702f831728fa577be5f09b97}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serializes the action using the boost\+::serialization library. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGEnv_af5b5de418e3c1a84ee8a6af8ac4e4b9b}\label{classSGEnv_af5b5de418e3c1a84ee8a6af8ac4e4b9b}} 
+vector$<$ double $>$ \hyperlink{classSGEnv_af5b5de418e3c1a84ee8a6af8ac4e4b9b}{double\+Params}
+\begin{DoxyCompactList}\small\item\em Double parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_a2a4034a806454ea25a88f2fcf9610c50}\label{classSGEnv_a2a4034a806454ea25a88f2fcf9610c50}} 
+vector$<$ bool $>$ \hyperlink{classSGEnv_a2a4034a806454ea25a88f2fcf9610c50}{bool\+Params}
+\begin{DoxyCompactList}\small\item\em Bool parameters. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGEnv_a2b0bb12821ee9147615be6e887f93ed1}\label{classSGEnv_a2b0bb12821ee9147615be6e887f93ed1}} 
+vector$<$ int $>$ \hyperlink{classSGEnv_a2b0bb12821ee9147615be6e887f93ed1}{int\+Params}
+\begin{DoxyCompactList}\small\item\em Int parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Manages parameters for algorithm behavior. 
+
+This class contains parameters for the algorithm.
+
+T\+O\+DO\+: Add more checks on the correctness of passed parameter values. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{pd_twostate_8cpp-example}{pd\+\_\+twostate.\+cpp}, and \hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGEnv_ac7fe265f0baba4e498c36bd67a0bbc97}\label{classSGEnv_ac7fe265f0baba4e498c36bd67a0bbc97}} 
+\index{S\+G\+Env@{S\+G\+Env}!S\+G\+Env@{S\+G\+Env}}
+\index{S\+G\+Env@{S\+G\+Env}!S\+G\+Env@{S\+G\+Env}}
+\subsubsection{\texorpdfstring{S\+G\+Env()}{SGEnv()}}
+{\footnotesize\ttfamily S\+G\+Env\+::\+S\+G\+Env (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Creates a new \hyperlink{classSGEnv}{S\+G\+Env} object and initializes with default parameter values. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgenv.\+hpp\item 
+src/cpp/sgenv.\+cpp\end{DoxyCompactItemize}

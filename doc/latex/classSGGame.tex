@@ -1,0 +1,312 @@
+\hypertarget{classSGGame}{}\section{S\+G\+Game Class Reference}
+\label{classSGGame}\index{S\+G\+Game@{S\+G\+Game}}
+
+
+Describes a stochastic game.  
+
+
+
+
+{\ttfamily \#include $<$sggame.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Game\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classSGGame__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGGame_a935fc76700c675f842dc1666ffe2e8f7}\label{classSGGame_a935fc76700c675f842dc1666ffe2e8f7}} 
+\hyperlink{classSGGame_a935fc76700c675f842dc1666ffe2e8f7}{S\+G\+Game} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGGame_a0b85bb1b3a04539bef72dadc7e170b2f}{S\+G\+Game} (const \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} \&game)
+\begin{DoxyCompactList}\small\item\em Converts an \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} into a \hyperlink{classSGGame}{S\+G\+Game}. \end{DoxyCompactList}\item 
+\hyperlink{classSGGame_ad881fb3f3db38d4b7c2ea0beb7181fc0}{S\+G\+Game} (double \+\_\+delta, int \+\_\+num\+States, const vector$<$ vector$<$ int $>$ $>$ \&\+\_\+num\+Actions, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+payoffs, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+probabilities)
+\begin{DoxyCompactList}\small\item\em Constructor excluding eq\+Actions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_ad4d48551202bda3c56f8860a24f04260}\label{classSGGame_ad4d48551202bda3c56f8860a24f04260}} 
+\hyperlink{classSGGame_ad4d48551202bda3c56f8860a24f04260}{S\+G\+Game} (double \+\_\+delta, int \+\_\+num\+States, const vector$<$ vector$<$ int $>$ $>$ \&\+\_\+num\+Actions, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+payoffs, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+probabilities, const vector$<$ bool $>$ \&\+\_\+unconstrained)
+\begin{DoxyCompactList}\small\item\em Constructor customizing unconstrained. \end{DoxyCompactList}\item 
+\hyperlink{classSGGame_abf23f0bd27cc79e44bdae273ef8a7735}{S\+G\+Game} (double \+\_\+delta, int \+\_\+num\+States, const vector$<$ vector$<$ int $>$ $>$ \&\+\_\+num\+Actions, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+payoffs, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+probabilities, const vector$<$ vector$<$ bool $>$ $>$ \&\+\_\+eq\+Actions, const vector$<$ bool $>$ \&\+\_\+unconstrained)
+\begin{DoxyCompactList}\small\item\em Constructor customizing equilibrium actions. \end{DoxyCompactList}\item 
+\hyperlink{classSGGame_af6715eb62a0133849bbe9fe60fe113ab}{S\+G\+Game} (int \+\_\+num\+Players, double \+\_\+delta, int \+\_\+num\+States, const vector$<$ vector$<$ int $>$ $>$ \&\+\_\+num\+Actions, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+payoffs, const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&\+\_\+probabilities, const vector$<$ vector$<$ bool $>$ $>$ \&\+\_\+eq\+Actions, const vector$<$ bool $>$ \&\+\_\+unconstrained)
+\begin{DoxyCompactList}\small\item\em Constructor with custom num\+Players. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_aefa61117ee6c117c297791f976b36324}\label{classSGGame_aefa61117ee6c117c297791f976b36324}} 
+double \hyperlink{classSGGame_aefa61117ee6c117c297791f976b36324}{get\+Delta} () const
+\begin{DoxyCompactList}\small\item\em Returns \hyperlink{classSGGame_a5031fc31f8009c19901c0930224e0465}{S\+G\+Game\+::delta}, the discount factor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_aaecc5512e85b0c360d4c462d3f84eae0}\label{classSGGame_aaecc5512e85b0c360d4c462d3f84eae0}} 
+int \hyperlink{classSGGame_aaecc5512e85b0c360d4c462d3f84eae0}{get\+Num\+Players} () const
+\begin{DoxyCompactList}\small\item\em Returns \hyperlink{classSGGame_a6f02e3f92db6a3c5d2d9076dcb7b6d61}{S\+G\+Game\+::num\+Players}, the number of players. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_a1cbb93f4557f71df9d7bffcfeb8ff51c}\label{classSGGame_a1cbb93f4557f71df9d7bffcfeb8ff51c}} 
+int \hyperlink{classSGGame_a1cbb93f4557f71df9d7bffcfeb8ff51c}{get\+Num\+States} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_acfd5f0817645a9adf9474552aca4f62e}\label{classSGGame_acfd5f0817645a9adf9474552aca4f62e}} 
+const vector$<$ vector$<$ int $>$ $>$ \& \hyperlink{classSGGame_acfd5f0817645a9adf9474552aca4f62e}{get\+Num\+Actions} () const
+\begin{DoxyCompactList}\small\item\em Sets the argument \+\_\+num\+Actions equal to \hyperlink{classSGGame_acebe94d195ffb67f92925bcd4c26d1a9}{S\+G\+Game\+::num\+Actions}. \end{DoxyCompactList}\item 
+const vector$<$ int $>$ \& \hyperlink{classSGGame_a22f9effebebb711e2f174c4a95a49420}{get\+Num\+Actions\+\_\+total} () const
+\item 
+\mbox{\Hypertarget{classSGGame_a0d2fef107bd38ad4c848fd35b0ed5ddf}\label{classSGGame_a0d2fef107bd38ad4c848fd35b0ed5ddf}} 
+const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \& \hyperlink{classSGGame_a0d2fef107bd38ad4c848fd35b0ed5ddf}{get\+Probabilities} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to probabilities. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_a37036f4f8389a68c53b12eb75c1eb7af}\label{classSGGame_a37036f4f8389a68c53b12eb75c1eb7af}} 
+const vector$<$ vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ $>$ \& \hyperlink{classSGGame_a37036f4f8389a68c53b12eb75c1eb7af}{get\+Payoffs} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to the payoffs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_a5cbb8386739f0ddcb6bc1666dcba3b7b}\label{classSGGame_a5cbb8386739f0ddcb6bc1666dcba3b7b}} 
+const vector$<$ vector$<$ bool $>$ $>$ \& \hyperlink{classSGGame_a5cbb8386739f0ddcb6bc1666dcba3b7b}{get\+Equilibrium\+Actions} () const
+\begin{DoxyCompactList}\small\item\em Returns a const reference to the equilibrium actions. \end{DoxyCompactList}\item 
+void \hyperlink{classSGGame_a32293b2ba26d2a8cd264e3b9e7559d22}{get\+Payoff\+Bounds} (\hyperlink{classSGPoint}{S\+G\+Point} \&UB, \hyperlink{classSGPoint}{S\+G\+Point} \&LB) const
+\item 
+\mbox{\Hypertarget{classSGGame_aa32846060a1f8a9b9fc0419a1c1c0510}\label{classSGGame_aa32846060a1f8a9b9fc0419a1c1c0510}} 
+const vector$<$ bool $>$ \& \hyperlink{classSGGame_aa32846060a1f8a9b9fc0419a1c1c0510}{get\+Constrained} () const
+\begin{DoxyCompactList}\small\item\em Returns the unconstrained vector. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGGame_ad5879878c647da7040940469b56b9595}{set\+Discount\+Factor} (double new\+Delta)
+\begin{DoxyCompactList}\small\item\em Set discount factor. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGGame_a36b2269c87d27ab3e0278ad44b6bbddc}{set\+Payoff} (int state, int action, int player, double payoff)
+\begin{DoxyCompactList}\small\item\em Set payoffs. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGGame_afcc31eacca8f294d349905d52c9a5f64}{set\+Probability} (int state, int action, int new\+State, double prob)
+\begin{DoxyCompactList}\small\item\em Set probability. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_a5526a6eb4c4fbb9bc6ff3334e411fbf1}\label{classSGGame_a5526a6eb4c4fbb9bc6ff3334e411fbf1}} 
+bool \hyperlink{classSGGame_a5526a6eb4c4fbb9bc6ff3334e411fbf1}{set\+Constrained} (const vector$<$ bool $>$ \&\+\_\+unconstrained)
+\begin{DoxyCompactList}\small\item\em Sets whether or not players are incentive constrained. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGGame_a2b3ddf3f5dfca8514cba1933205c5ec3}{add\+Action} (int state, int player, int position)
+\begin{DoxyCompactList}\small\item\em Adds a new action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_a97999290a05ab0427fd36d0a2a737944}\label{classSGGame_a97999290a05ab0427fd36d0a2a737944}} 
+bool \hyperlink{classSGGame_a97999290a05ab0427fd36d0a2a737944}{remove\+Action} (int state, int player, int action)
+\begin{DoxyCompactList}\small\item\em Removes the given action. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGGame_a0e4ea56b9e9787dca697782cbedc76d6}{add\+State} (int position)
+\begin{DoxyCompactList}\small\item\em Adds a new state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_ae4930c4311ee2f7a814400e3e50123a8}\label{classSGGame_ae4930c4311ee2f7a814400e3e50123a8}} 
+bool \hyperlink{classSGGame_ae4930c4311ee2f7a814400e3e50123a8}{remove\+State} (int state)
+\begin{DoxyCompactList}\small\item\em Removes the given state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_a4bf2a75864749594145cbd2194ebadd4}\label{classSGGame_a4bf2a75864749594145cbd2194ebadd4}} 
+bool \hyperlink{classSGGame_a4bf2a75864749594145cbd2194ebadd4}{transition\+Probs\+Sum\+To\+One} () const
+\begin{DoxyCompactList}\small\item\em Check if transition probabilities sum to one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGGame_aaccf18a3663ec99360e5b6e64f2bf6e2}\label{classSGGame_aaccf18a3663ec99360e5b6e64f2bf6e2}} 
+static void \hyperlink{classSGGame_aaccf18a3663ec99360e5b6e64f2bf6e2}{save} (const \hyperlink{classSGGame}{S\+G\+Game} \&game, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Static method for saving an \hyperlink{classSGGame}{S\+G\+Game} object to the file filename. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGGame_ac1dc35b84318448efc37b80afe210170}\label{classSGGame_ac1dc35b84318448efc37b80afe210170}} 
+static void \hyperlink{classSGGame_ac1dc35b84318448efc37b80afe210170}{load} (\hyperlink{classSGGame}{S\+G\+Game} \&game, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Static method for loading an \hyperlink{classSGGame}{S\+G\+Game} object from the file filename. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGGame_a383c8f7ec881befac40d6e45c7e1b775}\label{classSGGame_a383c8f7ec881befac40d6e45c7e1b775}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGGame_a383c8f7ec881befac40d6e45c7e1b775}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serializes the game using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{classSGGame_a5031fc31f8009c19901c0930224e0465}{delta}
+\item 
+int \hyperlink{classSGGame_a6f02e3f92db6a3c5d2d9076dcb7b6d61}{num\+Players}
+\item 
+int \hyperlink{classSGGame_ae7b105b2fe9ee277d38e518223dd0482}{num\+States}
+\item 
+vector$<$ vector$<$ int $>$ $>$ \hyperlink{classSGGame_acebe94d195ffb67f92925bcd4c26d1a9}{num\+Actions}
+\item 
+vector$<$ int $>$ \hyperlink{classSGGame_a3b219a37177b5b8b38737f570e419429}{num\+Actions\+\_\+total}
+\item 
+vector$<$ vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ $>$ \hyperlink{classSGGame_aad28dd39c6359e772286a938a948634c}{payoffs}
+\item 
+vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \hyperlink{classSGGame_a167a281b11d524cb4a11dbaff3e9de68}{probabilities}
+\item 
+vector$<$ vector$<$ bool $>$ $>$ \hyperlink{classSGGame_aacb0878b1e95ef3ff42cb88ac617c0b8}{eq\+Actions}
+\item 
+vector$<$ bool $>$ \hyperlink{classSGGame_a528852e11bd68322535d7f24a41eca20}{unconstrained}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGGame_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGGame_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class {\bfseries boost\+::serialization\+::access}
+\item 
+\mbox{\Hypertarget{classSGGame_a8b0e5d2bebfed7e7e032366bb49bc5f1}\label{classSGGame_a8b0e5d2bebfed7e7e032366bb49bc5f1}} 
+class {\bfseries S\+G\+Solver}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Describes a stochastic game. 
+
+This class contains members that describe a stochastic game. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{pd_twostate_8cpp-example}{pd\+\_\+twostate.\+cpp}, and \hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGGame_a0b85bb1b3a04539bef72dadc7e170b2f}\label{classSGGame_a0b85bb1b3a04539bef72dadc7e170b2f}} 
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{S\+G\+Game()}{SGGame()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily S\+G\+Game\+::\+S\+G\+Game (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} \&}]{game }\end{DoxyParamCaption})}
+
+
+
+Converts an \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} into a \hyperlink{classSGGame}{S\+G\+Game}. 
+
+The user can derive their own class from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game}, and then pass the derived object to the \hyperlink{classSGGame}{S\+G\+Game} constructor. This constructor essentially copies the data from the user defined payoffs and probability methods into arrays. Storing this data in arrays provides for faster access by \hyperlink{classSGApprox}{S\+G\+Approx} and it allows the game to be serialized. See risksharing.\+hpp and risksharing.\+cpp for an example. \mbox{\Hypertarget{classSGGame_ad881fb3f3db38d4b7c2ea0beb7181fc0}\label{classSGGame_ad881fb3f3db38d4b7c2ea0beb7181fc0}} 
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{S\+G\+Game()}{SGGame()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily S\+G\+Game\+::\+S\+G\+Game (\begin{DoxyParamCaption}\item[{double}]{\+\_\+delta,  }\item[{int}]{\+\_\+num\+States,  }\item[{const vector$<$ vector$<$ int $>$ $>$ \&}]{\+\_\+num\+Actions,  }\item[{const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&}]{\+\_\+payoffs,  }\item[{const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&}]{\+\_\+probabilities }\end{DoxyParamCaption})}
+
+
+
+Constructor excluding eq\+Actions. 
+
+$<$ Initializes a game object with all actions being permissible. \mbox{\Hypertarget{classSGGame_abf23f0bd27cc79e44bdae273ef8a7735}\label{classSGGame_abf23f0bd27cc79e44bdae273ef8a7735}} 
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{S\+G\+Game()}{SGGame()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily S\+G\+Game\+::\+S\+G\+Game (\begin{DoxyParamCaption}\item[{double}]{\+\_\+delta,  }\item[{int}]{\+\_\+num\+States,  }\item[{const vector$<$ vector$<$ int $>$ $>$ \&}]{\+\_\+num\+Actions,  }\item[{const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&}]{\+\_\+payoffs,  }\item[{const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&}]{\+\_\+probabilities,  }\item[{const vector$<$ vector$<$ bool $>$ $>$ \&}]{\+\_\+eq\+Actions,  }\item[{const vector$<$ bool $>$ \&}]{\+\_\+unconstrained }\end{DoxyParamCaption})}
+
+
+
+Constructor customizing equilibrium actions. 
+
+$<$ If \+\_\+eq\+Actions is an empty vector, the constructor will initialize it so that all action profiles are allowed. Otherwise, we restrict attention to equilibria in which action profiles in \+\_\+eq\+Actions are used. \mbox{\Hypertarget{classSGGame_af6715eb62a0133849bbe9fe60fe113ab}\label{classSGGame_af6715eb62a0133849bbe9fe60fe113ab}} 
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\index{S\+G\+Game@{S\+G\+Game}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{S\+G\+Game()}{SGGame()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily S\+G\+Game\+::\+S\+G\+Game (\begin{DoxyParamCaption}\item[{int}]{\+\_\+num\+Players,  }\item[{double}]{\+\_\+delta,  }\item[{int}]{\+\_\+num\+States,  }\item[{const vector$<$ vector$<$ int $>$ $>$ \&}]{\+\_\+num\+Actions,  }\item[{const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&}]{\+\_\+payoffs,  }\item[{const vector$<$ vector$<$ vector$<$ double $>$ $>$ $>$ \&}]{\+\_\+probabilities,  }\item[{const vector$<$ vector$<$ bool $>$ $>$ \&}]{\+\_\+eq\+Actions,  }\item[{const vector$<$ bool $>$ \&}]{\+\_\+unconstrained }\end{DoxyParamCaption})}
+
+
+
+Constructor with custom num\+Players. 
+
+$<$ All other constructors eventually call this constructor. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGGame_a2b3ddf3f5dfca8514cba1933205c5ec3}\label{classSGGame_a2b3ddf3f5dfca8514cba1933205c5ec3}} 
+\index{S\+G\+Game@{S\+G\+Game}!add\+Action@{add\+Action}}
+\index{add\+Action@{add\+Action}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{add\+Action()}{addAction()}}
+{\footnotesize\ttfamily bool S\+G\+Game\+::add\+Action (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{int}]{player,  }\item[{int}]{position }\end{DoxyParamCaption})}
+
+
+
+Adds a new action. 
+
+Adds a new action for the given state and player just after the action at index position. The new action has payoffs initialized to zero, and state remains the same with probability 1. \mbox{\Hypertarget{classSGGame_a0e4ea56b9e9787dca697782cbedc76d6}\label{classSGGame_a0e4ea56b9e9787dca697782cbedc76d6}} 
+\index{S\+G\+Game@{S\+G\+Game}!add\+State@{add\+State}}
+\index{add\+State@{add\+State}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{add\+State()}{addState()}}
+{\footnotesize\ttfamily bool S\+G\+Game\+::add\+State (\begin{DoxyParamCaption}\item[{int}]{position }\end{DoxyParamCaption})}
+
+
+
+Adds a new state. 
+
+Inserts a new state after the index position. The new state has one action for each player with payoffs of zero, and the state is absorbing. \mbox{\Hypertarget{classSGGame_a22f9effebebb711e2f174c4a95a49420}\label{classSGGame_a22f9effebebb711e2f174c4a95a49420}} 
+\index{S\+G\+Game@{S\+G\+Game}!get\+Num\+Actions\+\_\+total@{get\+Num\+Actions\+\_\+total}}
+\index{get\+Num\+Actions\+\_\+total@{get\+Num\+Actions\+\_\+total}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{get\+Num\+Actions\+\_\+total()}{getNumActions\_total()}}
+{\footnotesize\ttfamily const vector$<$int$>$\& S\+G\+Game\+::get\+Num\+Actions\+\_\+total (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a constant reference to the total number of actions in each state \mbox{\Hypertarget{classSGGame_a32293b2ba26d2a8cd264e3b9e7559d22}\label{classSGGame_a32293b2ba26d2a8cd264e3b9e7559d22}} 
+\index{S\+G\+Game@{S\+G\+Game}!get\+Payoff\+Bounds@{get\+Payoff\+Bounds}}
+\index{get\+Payoff\+Bounds@{get\+Payoff\+Bounds}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{get\+Payoff\+Bounds()}{getPayoffBounds()}}
+{\footnotesize\ttfamily void S\+G\+Game\+::get\+Payoff\+Bounds (\begin{DoxyParamCaption}\item[{\hyperlink{classSGPoint}{S\+G\+Point} \&}]{UB,  }\item[{\hyperlink{classSGPoint}{S\+G\+Point} \&}]{LB }\end{DoxyParamCaption}) const}
+
+Sets the arguments equal to tight upper and lower bounds on the payoffs, respectively. \mbox{\Hypertarget{classSGGame_ad5879878c647da7040940469b56b9595}\label{classSGGame_ad5879878c647da7040940469b56b9595}} 
+\index{S\+G\+Game@{S\+G\+Game}!set\+Discount\+Factor@{set\+Discount\+Factor}}
+\index{set\+Discount\+Factor@{set\+Discount\+Factor}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{set\+Discount\+Factor()}{setDiscountFactor()}}
+{\footnotesize\ttfamily bool S\+G\+Game\+::set\+Discount\+Factor (\begin{DoxyParamCaption}\item[{double}]{new\+Delta }\end{DoxyParamCaption})}
+
+
+
+Set discount factor. 
+
+Method for setting the discount factor. \mbox{\Hypertarget{classSGGame_a36b2269c87d27ab3e0278ad44b6bbddc}\label{classSGGame_a36b2269c87d27ab3e0278ad44b6bbddc}} 
+\index{S\+G\+Game@{S\+G\+Game}!set\+Payoff@{set\+Payoff}}
+\index{set\+Payoff@{set\+Payoff}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{set\+Payoff()}{setPayoff()}}
+{\footnotesize\ttfamily bool S\+G\+Game\+::set\+Payoff (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{int}]{action,  }\item[{int}]{player,  }\item[{double}]{payoff }\end{DoxyParamCaption})}
+
+
+
+Set payoffs. 
+
+Method for setting payoffs for the given player, action, and state. \mbox{\Hypertarget{classSGGame_afcc31eacca8f294d349905d52c9a5f64}\label{classSGGame_afcc31eacca8f294d349905d52c9a5f64}} 
+\index{S\+G\+Game@{S\+G\+Game}!set\+Probability@{set\+Probability}}
+\index{set\+Probability@{set\+Probability}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{set\+Probability()}{setProbability()}}
+{\footnotesize\ttfamily bool S\+G\+Game\+::set\+Probability (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{int}]{action,  }\item[{int}]{new\+State,  }\item[{double}]{prob }\end{DoxyParamCaption})}
+
+
+
+Set probability. 
+
+Sets the transition probability from state to new\+State when action is played. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGGame_a5031fc31f8009c19901c0930224e0465}\label{classSGGame_a5031fc31f8009c19901c0930224e0465}} 
+\index{S\+G\+Game@{S\+G\+Game}!delta@{delta}}
+\index{delta@{delta}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{delta}{delta}}
+{\footnotesize\ttfamily double S\+G\+Game\+::delta\hspace{0.3cm}{\ttfamily [private]}}
+
+The discount factor. \mbox{\Hypertarget{classSGGame_aacb0878b1e95ef3ff42cb88ac617c0b8}\label{classSGGame_aacb0878b1e95ef3ff42cb88ac617c0b8}} 
+\index{S\+G\+Game@{S\+G\+Game}!eq\+Actions@{eq\+Actions}}
+\index{eq\+Actions@{eq\+Actions}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{eq\+Actions}{eqActions}}
+{\footnotesize\ttfamily vector$<$ vector$<$bool$>$ $>$ S\+G\+Game\+::eq\+Actions\hspace{0.3cm}{\ttfamily [private]}}
+
+Indicates which action profiles are allowed to be played on path in each state. By default, initialized to true for all action profiles. Allows one to, for example, look at strongly symmetric equilibria (by first excluding asymmetric action profiles from the lists). Players can always deviate to action profiles which are not allowed on path. \mbox{\Hypertarget{classSGGame_acebe94d195ffb67f92925bcd4c26d1a9}\label{classSGGame_acebe94d195ffb67f92925bcd4c26d1a9}} 
+\index{S\+G\+Game@{S\+G\+Game}!num\+Actions@{num\+Actions}}
+\index{num\+Actions@{num\+Actions}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{num\+Actions}{numActions}}
+{\footnotesize\ttfamily vector$<$ vector$<$int$>$ $>$ S\+G\+Game\+::num\+Actions\hspace{0.3cm}{\ttfamily [private]}}
+
+Gives the number of each player\textquotesingle{}s actions in each state. In particular, player i has num\+Actions\mbox{[}s\mbox{]}\mbox{[}i\mbox{]} actions in state s. Should note that a pair (a1,a2) is mapped into an action profile using the formula a=a1+a2$\ast$num\+Actions\mbox{[}s\mbox{]}\mbox{[}a1\mbox{]}, and generalized to n$>$2. \mbox{\Hypertarget{classSGGame_a3b219a37177b5b8b38737f570e419429}\label{classSGGame_a3b219a37177b5b8b38737f570e419429}} 
+\index{S\+G\+Game@{S\+G\+Game}!num\+Actions\+\_\+total@{num\+Actions\+\_\+total}}
+\index{num\+Actions\+\_\+total@{num\+Actions\+\_\+total}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{num\+Actions\+\_\+total}{numActions\_total}}
+{\footnotesize\ttfamily vector$<$int$>$ S\+G\+Game\+::num\+Actions\+\_\+total\hspace{0.3cm}{\ttfamily [private]}}
+
+Total number of action profiles for each state. \mbox{\Hypertarget{classSGGame_a6f02e3f92db6a3c5d2d9076dcb7b6d61}\label{classSGGame_a6f02e3f92db6a3c5d2d9076dcb7b6d61}} 
+\index{S\+G\+Game@{S\+G\+Game}!num\+Players@{num\+Players}}
+\index{num\+Players@{num\+Players}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{num\+Players}{numPlayers}}
+{\footnotesize\ttfamily int S\+G\+Game\+::num\+Players\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of players. \mbox{\Hypertarget{classSGGame_ae7b105b2fe9ee277d38e518223dd0482}\label{classSGGame_ae7b105b2fe9ee277d38e518223dd0482}} 
+\index{S\+G\+Game@{S\+G\+Game}!num\+States@{num\+States}}
+\index{num\+States@{num\+States}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{num\+States}{numStates}}
+{\footnotesize\ttfamily int S\+G\+Game\+::num\+States\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of states, must be at least 1. \mbox{\Hypertarget{classSGGame_aad28dd39c6359e772286a938a948634c}\label{classSGGame_aad28dd39c6359e772286a938a948634c}} 
+\index{S\+G\+Game@{S\+G\+Game}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{payoffs}{payoffs}}
+{\footnotesize\ttfamily vector$<$ vector$<$\hyperlink{classSGPoint}{S\+G\+Point}$>$ $>$ S\+G\+Game\+::payoffs\hspace{0.3cm}{\ttfamily [private]}}
+
+Gives the payoffs of the players as a function of the action profile. In particular, payoffs\mbox{[}s\mbox{]}\mbox{[}a\mbox{]}\mbox{[}i\mbox{]} are player i\textquotesingle{}s payoffs in state s when action profile a is played. \mbox{\Hypertarget{classSGGame_a167a281b11d524cb4a11dbaff3e9de68}\label{classSGGame_a167a281b11d524cb4a11dbaff3e9de68}} 
+\index{S\+G\+Game@{S\+G\+Game}!probabilities@{probabilities}}
+\index{probabilities@{probabilities}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{probabilities}{probabilities}}
+{\footnotesize\ttfamily vector$<$ vector$<$ vector$<$double$>$ $>$ $>$ S\+G\+Game\+::probabilities\hspace{0.3cm}{\ttfamily [private]}}
+
+State transition probabilities\+: probabilities\mbox{[}s\mbox{]}\mbox{[}a\mbox{]}\mbox{[}s\textquotesingle{}\mbox{]} is the probability of transitioning to state s\textquotesingle{} when action profile a is played in state s. \mbox{\Hypertarget{classSGGame_a528852e11bd68322535d7f24a41eca20}\label{classSGGame_a528852e11bd68322535d7f24a41eca20}} 
+\index{S\+G\+Game@{S\+G\+Game}!unconstrained@{unconstrained}}
+\index{unconstrained@{unconstrained}!S\+G\+Game@{S\+G\+Game}}
+\subsubsection{\texorpdfstring{unconstrained}{unconstrained}}
+{\footnotesize\ttfamily vector$<$bool$>$ S\+G\+Game\+::unconstrained\hspace{0.3cm}{\ttfamily [private]}}
+
+If unconstrained\mbox{[}i\mbox{]}=true, the algorithm will not impose incentive compatibility as a constraint for player i. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sggame.\+hpp\item 
+src/cpp/sggame.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['action',['action',['../classSGBaseAction.html#af293adc10da2dbb5a388a2fbcca0c67c',1,'SGBaseAction::action()'],['../classSGPolicy.html#ac029ee78aaba722161e90c5709aa73c2',1,'SGPolicy::action()'],['../classSGPlotController.html#ab7e15498eb6bc5e88deafb2eb1ecaa33',1,'SGPlotController::action()'],['../classSGPlotController__V2.html#ae49d050ad5897758dc074eb562ca9c33',1,'SGPlotController_V2::action()']]],
+  ['action1added',['action1Added',['../classSGGameHandler.html#aaf22c32b0431b81c05646e8acb2f6511',1,'SGGameHandler']]],
+  ['action1removed',['action1Removed',['../classSGGameHandler.html#ab3d00af463f833fd6417a754073494cc',1,'SGGameHandler']]],
+  ['action2added',['action2Added',['../classSGGameHandler.html#abeb7b79db6493e8c2fdddb1e83b4dc01',1,'SGGameHandler']]],
+  ['action2removed',['action2Removed',['../classSGGameHandler.html#ac55ea0d4296a14684c2735dd1c69c22e',1,'SGGameHandler']]],
+  ['actionadded',['actionAdded',['../classSGGameHandler.html#a6ead4477a6bc36eb73f220159ea2fa91',1,'SGGameHandler']]],
+  ['actionbars',['actionBars',['../classSGSimulationHandler.html#ad1b07f72d1a78e159b3f83bbf5d7945e',1,'SGSimulationHandler']]],
+  ['actionchanged',['actionChanged',['../classSGActionComboModel.html#a66d596fb4ca91f5f4fe3f8d42ce12634',1,'SGActionComboModel::actionChanged()'],['../classSGActionComboModel__V2.html#ad72d58c73cce1e08a710381ee991c7de',1,'SGActionComboModel_V2::actionChanged()'],['../classSGPlotController.html#a5dae7775721c060e8d953a7f86e4aedf',1,'SGPlotController::actionChanged()'],['../classSGPlotController__V2.html#a4a6d19fa34127439f4997f379abd9604',1,'SGPlotController_V2::actionChanged()']]],
+  ['actioncombo',['actionCombo',['../classSGPlotController.html#aa0963a19f195b384a33ba3e8d6993423',1,'SGPlotController::actionCombo()'],['../classSGPlotController__V2.html#a82df7670748638185baae0955993c1b9',1,'SGPlotController_V2::actionCombo()']]],
+  ['actiondistr',['actionDistr',['../classSGSimulator.html#a1fb1f41050dfe3067fc42723cdd8b6f2',1,'SGSimulator']]],
+  ['actiondistrrects',['actionDistrRects',['../classSGSimulationHandler.html#a359a9970707cbf53f14ebb3f86fd9d0a',1,'SGSimulationHandler']]],
+  ['actionindex',['actionIndex',['../classSGPlotController.html#a0baff45708bb3bf9fd976975cd0d6ac4',1,'SGPlotController::actionIndex()'],['../classSGPlotController__V2.html#a09f1c5963dd97f8f62f42ccad8f87a2a',1,'SGPlotController_V2::actionIndex()']]],
+  ['actionremoved',['actionRemoved',['../classSGGameHandler.html#aed866fdb5315e2a593f659206eabbef3',1,'SGGameHandler']]],
+  ['actions',['actions',['../classSGApprox.html#a0fccecf0f5dbe7e9288e47182f180879',1,'SGApprox::actions()'],['../classSGIteration.html#a5b5fcd6440b8dbcc6a8ded9f81699337',1,'SGIteration::actions()'],['../classSGIteration__MaxMinMax.html#a0f6a9b1c5590ba858e154f365c09b472',1,'SGIteration_MaxMinMax::actions()'],['../classSGSolver__MaxMinMax.html#ad1a4bf22aaa58dd05c7bc7a24d9c1805',1,'SGSolver_MaxMinMax::actions()'],['../classSGSolver__MaxMinMax__3Player.html#ace3cdb3d3a60e9c43d0a23e8d716080a',1,'SGSolver_MaxMinMax_3Player::actions()']]],
+  ['actiontuple',['actionTuple',['../classSGApprox.html#a507eb6895c5a99c5d1efba8107989187',1,'SGApprox::actionTuple()'],['../classSGIteration.html#ade2d5d602a23f5a83a76283fa4dcec87',1,'SGIteration::actionTuple()'],['../classSGStep.html#a227186eed93364254969bb15e7ae0e18',1,'SGStep::actionTuple()']]],
+  ['addaction',['addAction',['../classSGGame.html#a2b3ddf3f5dfca8514cba1933205c5ec3',1,'SGGame']]],
+  ['addpoint',['addPoint',['../classSGSolutionHandler.html#a86d0a38bc3afbe289ddb0844d02f69bb',1,'SGSolutionHandler::addPoint()'],['../classSGSolutionHandler__V2.html#afd8b72f0443e0148fd6157120229ea77',1,'SGSolutionHandler_V2::addPoint()']]],
+  ['addstate',['addState',['../classSGGame.html#a0e4ea56b9e9787dca697782cbedc76d6',1,'SGGame']]],
+  ['adjustranges',['adjustRanges',['../classSGCustomPlot.html#a318a8971c236a0f675bdc28bebdecc12',1,'SGCustomPlot']]],
+  ['angle',['angle',['../classSGPoint.html#afee4ccc1595350274c32a60fc1862b2c',1,'SGPoint']]],
+  ['anynan',['anyNaN',['../classSGPoint.html#a11ecb343379efcef9ed3c2f9bb8cb8e6',1,'SGPoint::anyNaN()'],['../classSGTuple.html#aaeba645544ab977deecebed16217a6f0',1,'SGTuple::anyNaN()']]],
+  ['approx',['approx',['../classSGSolverWorker.html#a88eb710c33fce95e9d1dd1f53b5fd694',1,'SGSolverWorker']]],
+  ['attr',['attr',['../classSGIntAttrEdit.html#ac7a5de9b8735b5f0d1f39759c833fd4f',1,'SGIntAttrEdit::attr()'],['../classSGDblAttrEdit.html#ad64b0b1fc2a05de5fc89d2d3dceeadf9',1,'SGDblAttrEdit::attr()']]],
+  ['average',['average',['../classSGTuple.html#a90c1aa7927ebae91fd6f070e942781f1',1,'SGTuple::average() const'],['../classSGTuple.html#a020eddaa272676d59b678cf49ccbdeb5',1,'SGTuple::average(int player) const']]]
+];

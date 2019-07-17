@@ -1,0 +1,257 @@
+\hypertarget{classSGMainWindow}{}\section{S\+G\+Main\+Window Class Reference}
+\label{classSGMainWindow}\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+
+
+Main window for S\+G\+Viewer.  
+
+
+
+
+{\ttfamily \#include $<$sgmainwindow.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Main\+Window\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{classSGMainWindow__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Main\+Window\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGMainWindow__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGMainWindow_a1abe4b80ca1554d9863e53323e91847e}\label{classSGMainWindow_a1abe4b80ca1554d9863e53323e91847e}} 
+void \hyperlink{classSGMainWindow_a1abe4b80ca1554d9863e53323e91847e}{start\+Iteration} ()
+\begin{DoxyCompactList}\small\item\em Signal for S\+G\+Solver\+Thread to start next iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a155a779b9a5baace6092787bea27d459}\label{classSGMainWindow_a155a779b9a5baace6092787bea27d459}} 
+void \hyperlink{classSGMainWindow_a155a779b9a5baace6092787bea27d459}{start\+Iteration\+\_\+\+V2} ()
+\begin{DoxyCompactList}\small\item\em Signal for S\+G\+Solver\+Thread to start next iteration, V2. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGMainWindow_af2c1eed12335e81fbbf403557d410d28}{S\+G\+Main\+Window} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGMainWindow_a38e9f6d5431f6b92c898089582b7d124}{$\sim$\+S\+G\+Main\+Window} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGMainWindow_a18bba6bdcde9ec59d0b0cd383b03980c}\label{classSGMainWindow_a18bba6bdcde9ec59d0b0cd383b03980c}} 
+virtual void \hyperlink{classSGMainWindow_a18bba6bdcde9ec59d0b0cd383b03980c}{key\+Press\+Event} (Q\+Key\+Event $\ast$event)
+\begin{DoxyCompactList}\small\item\em Handles keyboard shortcuts. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGMainWindow_a74ae1cc511290e9d4818ba2880970ce6}\label{classSGMainWindow_a74ae1cc511290e9d4818ba2880970ce6}} 
+void \hyperlink{classSGMainWindow_a74ae1cc511290e9d4818ba2880970ce6}{load\+Solution} ()
+\begin{DoxyCompactList}\small\item\em Triggers a solution load. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a2f015bd10f6562f30efbafab51de82b6}\label{classSGMainWindow_a2f015bd10f6562f30efbafab51de82b6}} 
+void \hyperlink{classSGMainWindow_a2f015bd10f6562f30efbafab51de82b6}{load\+Solution\+\_\+\+V2} ()
+\begin{DoxyCompactList}\small\item\em Triggers a S\+G\+Solution\+\_\+\+V2 load. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ac098f548f9fcbc2e19eddbe60a90db2d}\label{classSGMainWindow_ac098f548f9fcbc2e19eddbe60a90db2d}} 
+void \hyperlink{classSGMainWindow_ac098f548f9fcbc2e19eddbe60a90db2d}{save\+Solution} ()
+\begin{DoxyCompactList}\small\item\em Triggers a solution save. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a8172c6ee9e3112f3f5cdcc01896c6975}\label{classSGMainWindow_a8172c6ee9e3112f3f5cdcc01896c6975}} 
+void \hyperlink{classSGMainWindow_a8172c6ee9e3112f3f5cdcc01896c6975}{load\+Game} ()
+\begin{DoxyCompactList}\small\item\em Triggers a game load. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ae1561288ed4562965fca780b15fbc730}\label{classSGMainWindow_ae1561288ed4562965fca780b15fbc730}} 
+void \hyperlink{classSGMainWindow_ae1561288ed4562965fca780b15fbc730}{save\+Game} ()
+\begin{DoxyCompactList}\small\item\em Triggers a game save. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a1f70e342154873b8c5254f21ec2a7883}\label{classSGMainWindow_a1f70e342154873b8c5254f21ec2a7883}} 
+void \hyperlink{classSGMainWindow_a1f70e342154873b8c5254f21ec2a7883}{quit\+Program} ()
+\begin{DoxyCompactList}\small\item\em Quits the program. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a318de5525d2d88cb6bb4976ab40d9dbc}\label{classSGMainWindow_a318de5525d2d88cb6bb4976ab40d9dbc}} 
+void \hyperlink{classSGMainWindow_a318de5525d2d88cb6bb4976ab40d9dbc}{change\+Settings} ()
+\begin{DoxyCompactList}\small\item\em Changes settings for the \hyperlink{classSGEnv}{S\+G\+Env} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a98bc00f752d14d10f4d36304ef2ffffe}\label{classSGMainWindow_a98bc00f752d14d10f4d36304ef2ffffe}} 
+void \hyperlink{classSGMainWindow_a98bc00f752d14d10f4d36304ef2ffffe}{settings\+Handler\+Closed} ()
+\begin{DoxyCompactList}\small\item\em Changes settings for the \hyperlink{classSGEnv}{S\+G\+Env} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a96c1951da5706cddbb3c7c04642d0516}\label{classSGMainWindow_a96c1951da5706cddbb3c7c04642d0516}} 
+void \hyperlink{classSGMainWindow_a96c1951da5706cddbb3c7c04642d0516}{change\+Plot\+Settings} ()
+\begin{DoxyCompactList}\small\item\em Changes plot settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_af7b4a5dc1a931885cdb618d8fe475f02}\label{classSGMainWindow_af7b4a5dc1a931885cdb618d8fe475f02}} 
+void \hyperlink{classSGMainWindow_af7b4a5dc1a931885cdb618d8fe475f02}{plot\+Settings\+Handler\+Closed} ()
+\begin{DoxyCompactList}\small\item\em Changes plot settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_aed927310137a02965872acf8c653f39f}\label{classSGMainWindow_aed927310137a02965872acf8c653f39f}} 
+void \hyperlink{classSGMainWindow_aed927310137a02965872acf8c653f39f}{screen\+Shot} ()
+\begin{DoxyCompactList}\small\item\em Triggers a new screen shot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a35df4b379f8ee46e78771c8190188e5a}\label{classSGMainWindow_a35df4b379f8ee46e78771c8190188e5a}} 
+void \hyperlink{classSGMainWindow_a35df4b379f8ee46e78771c8190188e5a}{solve\+Game} ()
+\begin{DoxyCompactList}\small\item\em Initializes solve routine for pencil sharpening. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_aee37774a08e1d24544ab028d181192eb}\label{classSGMainWindow_aee37774a08e1d24544ab028d181192eb}} 
+void \hyperlink{classSGMainWindow_aee37774a08e1d24544ab028d181192eb}{cancel\+Solve} ()
+\begin{DoxyCompactList}\small\item\em Throws the cancel solution flag. \end{DoxyCompactList}\item 
+void \hyperlink{classSGMainWindow_a511aee91c2c031f7f4a9148073177f0e}{iteration\+Finished} (bool)
+\begin{DoxyCompactList}\small\item\em Slot when iteration finishes. \end{DoxyCompactList}\item 
+void \hyperlink{classSGMainWindow_aa7cb5fa0763b2914492fc518dd175019}{solver\+Exception} ()
+\begin{DoxyCompactList}\small\item\em Triggers error message in log. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ad03acb0ec39c884ca93102c6c23743b5}\label{classSGMainWindow_ad03acb0ec39c884ca93102c6c23743b5}} 
+void \hyperlink{classSGMainWindow_ad03acb0ec39c884ca93102c6c23743b5}{solve\+Game\+\_\+\+V2} ()
+\begin{DoxyCompactList}\small\item\em Initializes solve routine for A\+BS 2018. \end{DoxyCompactList}\item 
+void \hyperlink{classSGMainWindow_a59248c811344a260981ea270d86d5d19}{iteration\+Finished\+\_\+\+V2} (bool)
+\begin{DoxyCompactList}\small\item\em Slot when iteration finishes, V2. \end{DoxyCompactList}\item 
+void \hyperlink{classSGMainWindow_a4be88c15c38bbdc162ad410b99e79c0d}{solver\+Exception\+\_\+\+V2} ()
+\begin{DoxyCompactList}\small\item\em Triggers error message in log, V2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a7a5038dbd555a4717ac758dfcba51a33}\label{classSGMainWindow_a7a5038dbd555a4717ac758dfcba51a33}} 
+void \hyperlink{classSGMainWindow_a7a5038dbd555a4717ac758dfcba51a33}{display\+About} ()
+\begin{DoxyCompactList}\small\item\em Displays an about message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_acb8c57315148c628af407ae8da6d5bb1}\label{classSGMainWindow_acb8c57315148c628af407ae8da6d5bb1}} 
+void \hyperlink{classSGMainWindow_acb8c57315148c628af407ae8da6d5bb1}{display\+Legend} ()
+\begin{DoxyCompactList}\small\item\em Displays a legend. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a1f0a10bf104be430f992d33b2de6e564}\label{classSGMainWindow_a1f0a10bf104be430f992d33b2de6e564}} 
+void \hyperlink{classSGMainWindow_a1f0a10bf104be430f992d33b2de6e564}{generate\+R\+SG} ()
+\begin{DoxyCompactList}\small\item\em Generate risk sharing game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ac5fc1ea12ae702771432bb4b5840e792}\label{classSGMainWindow_ac5fc1ea12ae702771432bb4b5840e792}} 
+void \hyperlink{classSGMainWindow_ac5fc1ea12ae702771432bb4b5840e792}{generate\+PD} ()
+\begin{DoxyCompactList}\small\item\em Generate prisoner\textquotesingle{}s dilemma game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a2b7cf2dd928b163c78df0d863fa05347}\label{classSGMainWindow_a2b7cf2dd928b163c78df0d863fa05347}} 
+void \hyperlink{classSGMainWindow_a2b7cf2dd928b163c78df0d863fa05347}{generate\+BoS} ()
+\begin{DoxyCompactList}\small\item\em Generate a Battle of the Sexes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGMainWindow_a576d4a2d0b9e9b077faa59d6a1db1485}\label{classSGMainWindow_a576d4a2d0b9e9b077faa59d6a1db1485}} 
+void \hyperlink{classSGMainWindow_a576d4a2d0b9e9b077faa59d6a1db1485}{settings\+Loader} ()
+\begin{DoxyCompactList}\small\item\em Loads saved settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ab14d201c21675bd6c5fddd79a4bd15e9}\label{classSGMainWindow_ab14d201c21675bd6c5fddd79a4bd15e9}} 
+void \hyperlink{classSGMainWindow_ab14d201c21675bd6c5fddd79a4bd15e9}{settings\+Saver} ()
+\begin{DoxyCompactList}\small\item\em Saves settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGMainWindow_a817d751fa6091d4b0a6f28bd2c76ce51}\label{classSGMainWindow_a817d751fa6091d4b0a6f28bd2c76ce51}} 
+Q\+Tab\+Widget $\ast$ \hyperlink{classSGMainWindow_a817d751fa6091d4b0a6f28bd2c76ce51}{tab\+Widget}
+\begin{DoxyCompactList}\small\item\em Widget containing game, solution, and log tabs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a09d1290636a995531461fb92a5d87678}\label{classSGMainWindow_a09d1290636a995531461fb92a5d87678}} 
+\hyperlink{classSGEnv}{S\+G\+Env} $\ast$ \hyperlink{classSGMainWindow_a09d1290636a995531461fb92a5d87678}{env}
+\begin{DoxyCompactList}\small\item\em Environment for computations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a1c1cef91745063c8349994394c2f4f6d}\label{classSGMainWindow_a1c1cef91745063c8349994394c2f4f6d}} 
+\hyperlink{classSGSolverWorker}{S\+G\+Solver\+Worker} $\ast$ \hyperlink{classSGMainWindow_a1c1cef91745063c8349994394c2f4f6d}{solver\+Worker}
+\begin{DoxyCompactList}\small\item\em Worker that handles solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a5b8bebd2fc00ff1b35ca3dd22a446357}\label{classSGMainWindow_a5b8bebd2fc00ff1b35ca3dd22a446357}} 
+\hyperlink{classSGSolverWorker__V2}{S\+G\+Solver\+Worker\+\_\+\+V2} $\ast$ \hyperlink{classSGMainWindow_a5b8bebd2fc00ff1b35ca3dd22a446357}{solver\+Worker\+\_\+v2}
+\begin{DoxyCompactList}\small\item\em Worker that handles solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a71569a2e0e90f5efd8fe3b8d43c71473}\label{classSGMainWindow_a71569a2e0e90f5efd8fe3b8d43c71473}} 
+Q\+Thread \hyperlink{classSGMainWindow_a71569a2e0e90f5efd8fe3b8d43c71473}{solver\+Thread}
+\begin{DoxyCompactList}\small\item\em Separate thread for running solve routines, so gui doesn\textquotesingle{}t hang. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a0863e0ab765177721bbda61a6494a60a}\label{classSGMainWindow_a0863e0ab765177721bbda61a6494a60a}} 
+\hyperlink{classSGSolutionHandler}{S\+G\+Solution\+Handler} $\ast$ \hyperlink{classSGMainWindow_a0863e0ab765177721bbda61a6494a60a}{solution\+Handler}
+\begin{DoxyCompactList}\small\item\em The object for interfacing with the solution. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ae8ef3d9c4be577f804c54fb1bccf63a2}\label{classSGMainWindow_ae8ef3d9c4be577f804c54fb1bccf63a2}} 
+\hyperlink{classSGSolutionHandler__V2}{S\+G\+Solution\+Handler\+\_\+\+V2} $\ast$ \hyperlink{classSGMainWindow_ae8ef3d9c4be577f804c54fb1bccf63a2}{solution\+Handler\+\_\+\+V2}
+\begin{DoxyCompactList}\small\item\em The object for interfacing with S\+G\+Solution\+\_\+\+V2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_aac360598eca3556adf4bba2588fb5f3c}\label{classSGMainWindow_aac360598eca3556adf4bba2588fb5f3c}} 
+\hyperlink{classSGGameHandler}{S\+G\+Game\+Handler} $\ast$ \hyperlink{classSGMainWindow_aac360598eca3556adf4bba2588fb5f3c}{game\+Handler}
+\begin{DoxyCompactList}\small\item\em The object for interfacing with the game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ab29540bcb97791859537ca8da988e3fe}\label{classSGMainWindow_ab29540bcb97791859537ca8da988e3fe}} 
+\hyperlink{classSGSettingsHandler}{S\+G\+Settings\+Handler} $\ast$ \hyperlink{classSGMainWindow_ab29540bcb97791859537ca8da988e3fe}{settings\+Handler}
+\begin{DoxyCompactList}\small\item\em The object for controling environment settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a2acf5b1f87ba1dd721fc916661c1acfe}\label{classSGMainWindow_a2acf5b1f87ba1dd721fc916661c1acfe}} 
+\hyperlink{classSGPlotSettingsHandler}{S\+G\+Plot\+Settings\+Handler} $\ast$ \hyperlink{classSGMainWindow_a2acf5b1f87ba1dd721fc916661c1acfe}{plot\+Settings\+Handler}
+\begin{DoxyCompactList}\small\item\em The object for controling plot settings. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a1bd520ead9bb17f8401a730760962b37}\label{classSGMainWindow_a1bd520ead9bb17f8401a730760962b37}} 
+Q\+Text\+Edit $\ast$ \hyperlink{classSGMainWindow_a1bd520ead9bb17f8401a730760962b37}{log\+Text\+Edit}
+\begin{DoxyCompactList}\small\item\em Text edit containing the log output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a575a41f119be8c024bead46cbaefb02b}\label{classSGMainWindow_a575a41f119be8c024bead46cbaefb02b}} 
+Q\+Time \hyperlink{classSGMainWindow_a575a41f119be8c024bead46cbaefb02b}{timer}
+\begin{DoxyCompactList}\small\item\em Times progress of the algorithm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a3fecf45fb589833629f92559ac633b53}\label{classSGMainWindow_a3fecf45fb589833629f92559ac633b53}} 
+bool \hyperlink{classSGMainWindow_a3fecf45fb589833629f92559ac633b53}{cancel\+Solve\+Flag}
+\begin{DoxyCompactList}\small\item\em Flag for canceling solve next time an iteration finishes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_ae750441d6f1b88af7a3f5f27e839dd8f}\label{classSGMainWindow_ae750441d6f1b88af7a3f5f27e839dd8f}} 
+Q\+String \hyperlink{classSGMainWindow_ae750441d6f1b88af7a3f5f27e839dd8f}{path}
+\begin{DoxyCompactList}\small\item\em Most recent path for saves/loads. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGMainWindow_a55c71737fb867ee33ffa8ec709c0eca3}\label{classSGMainWindow_a55c71737fb867ee33ffa8ec709c0eca3}} 
+Q\+Settings $\ast$ \hyperlink{classSGMainWindow_a55c71737fb867ee33ffa8ec709c0eca3}{settings}
+\begin{DoxyCompactList}\small\item\em Program settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Main window for S\+G\+Viewer. 
+
+This class constructs the tabs and layouts. It also contains signals and slots for handling certain high level functions, such as solving, saving, and loading saved content.
+
+Note that rather than using \hyperlink{classSGSolver}{S\+G\+Solver}, this class essentially replicates the behavior of the \hyperlink{classSGSolver}{S\+G\+Solver} class in its solve\+Game routine. The reason is that \hyperlink{classSGSolver}{S\+G\+Solver} runs straight through. We want to provide updates in the log window as the solver proceeds, which is facilitated by running \hyperlink{classSGSolverWorker}{S\+G\+Solver\+Worker} one iteration at a time, printing the output when each revolution finishes, and then restarting the solve routine. Also allows the user to cancel a computation when the next iteration finishes. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGMainWindow_af2c1eed12335e81fbbf403557d410d28}\label{classSGMainWindow_af2c1eed12335e81fbbf403557d410d28}} 
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\subsubsection{\texorpdfstring{S\+G\+Main\+Window()}{SGMainWindow()}}
+{\footnotesize\ttfamily S\+G\+Main\+Window\+::\+S\+G\+Main\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Constructor. 
+
+Initializes member objects and connects signals and slots. \mbox{\Hypertarget{classSGMainWindow_a38e9f6d5431f6b92c898089582b7d124}\label{classSGMainWindow_a38e9f6d5431f6b92c898089582b7d124}} 
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!````~S\+G\+Main\+Window@{$\sim$\+S\+G\+Main\+Window}}
+\index{````~S\+G\+Main\+Window@{$\sim$\+S\+G\+Main\+Window}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\subsubsection{\texorpdfstring{$\sim$\+S\+G\+Main\+Window()}{~SGMainWindow()}}
+{\footnotesize\ttfamily S\+G\+Main\+Window\+::$\sim$\+S\+G\+Main\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Destructor. 
+
+Just closes down the solver thread. Should other objects be destroyed? 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGMainWindow_a511aee91c2c031f7f4a9148073177f0e}\label{classSGMainWindow_a511aee91c2c031f7f4a9148073177f0e}} 
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!iteration\+Finished@{iteration\+Finished}}
+\index{iteration\+Finished@{iteration\+Finished}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\subsubsection{\texorpdfstring{iteration\+Finished}{iterationFinished}}
+{\footnotesize\ttfamily void S\+G\+Main\+Window\+::iteration\+Finished (\begin{DoxyParamCaption}\item[{bool}]{tf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Slot when iteration finishes. 
+
+Checks if the algorithm has converged or if maximum number of iterations has finished. If the algorithm has finished, plots the solution. If the algorithm has not converged and the cancel flag is false, the next iteration is started. If the cancel flag is thrown, will not trigger the next iteration. \mbox{\Hypertarget{classSGMainWindow_a59248c811344a260981ea270d86d5d19}\label{classSGMainWindow_a59248c811344a260981ea270d86d5d19}} 
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!iteration\+Finished\+\_\+\+V2@{iteration\+Finished\+\_\+\+V2}}
+\index{iteration\+Finished\+\_\+\+V2@{iteration\+Finished\+\_\+\+V2}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\subsubsection{\texorpdfstring{iteration\+Finished\+\_\+\+V2}{iterationFinished\_V2}}
+{\footnotesize\ttfamily void S\+G\+Main\+Window\+::iteration\+Finished\+\_\+\+V2 (\begin{DoxyParamCaption}\item[{bool}]{tf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Slot when iteration finishes, V2. 
+
+Checks if the algorithm has converged or if maximum number of iterations has finished. If the algorithm has finished, plots the solution. If the algorithm has not converged and the cancel flag is false, the next iteration is started. If the cancel flag is thrown, will not trigger the next iteration. \mbox{\Hypertarget{classSGMainWindow_aa7cb5fa0763b2914492fc518dd175019}\label{classSGMainWindow_aa7cb5fa0763b2914492fc518dd175019}} 
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!solver\+Exception@{solver\+Exception}}
+\index{solver\+Exception@{solver\+Exception}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\subsubsection{\texorpdfstring{solver\+Exception}{solverException}}
+{\footnotesize\ttfamily void S\+G\+Main\+Window\+::solver\+Exception (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Triggers error message in log. 
+
+When the algorithm throws an exception, triggers an error message report. \mbox{\Hypertarget{classSGMainWindow_a4be88c15c38bbdc162ad410b99e79c0d}\label{classSGMainWindow_a4be88c15c38bbdc162ad410b99e79c0d}} 
+\index{S\+G\+Main\+Window@{S\+G\+Main\+Window}!solver\+Exception\+\_\+\+V2@{solver\+Exception\+\_\+\+V2}}
+\index{solver\+Exception\+\_\+\+V2@{solver\+Exception\+\_\+\+V2}!S\+G\+Main\+Window@{S\+G\+Main\+Window}}
+\subsubsection{\texorpdfstring{solver\+Exception\+\_\+\+V2}{solverException\_V2}}
+{\footnotesize\ttfamily void S\+G\+Main\+Window\+::solver\+Exception\+\_\+\+V2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [slot]}}
+
+
+
+Triggers error message in log, V2. 
+
+When the algorithm throws an exception, triggers an error message report. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgmainwindow.\+hpp\item 
+viewer/cpp/sgmainwindow.\+cpp\end{DoxyCompactItemize}

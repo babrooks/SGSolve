@@ -1,0 +1,495 @@
+\hypertarget{classSGApprox}{}\section{S\+G\+Approx Class Reference}
+\label{classSGApprox}\index{S\+G\+Approx@{S\+G\+Approx}}
+
+
+Approximation of the equilibrium payoff correspondence.  
+
+
+
+
+{\ttfamily \#include $<$sgapprox.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Approx\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGApprox__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGApprox_a765c3c57b31d813ced0f7f93f6d4bb11}\label{classSGApprox_a765c3c57b31d813ced0f7f93f6d4bb11}} 
+\hyperlink{classSGApprox_a765c3c57b31d813ced0f7f93f6d4bb11}{S\+G\+Approx} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game, \hyperlink{classSGSolution}{S\+G\+Solution} \&\+\_\+soln)
+\begin{DoxyCompactList}\small\item\em Constructor for \hyperlink{classSGApprox}{S\+G\+Approx} class. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_a4bca21d3b688b3ca283c6778c593563a}{initialize} ()
+\begin{DoxyCompactList}\small\item\em Prepares the approximation for generation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_a35d7e3b13dd061c3cbb866aecc57581c}\label{classSGApprox_a35d7e3b13dd061c3cbb866aecc57581c}} 
+int \hyperlink{classSGApprox_a35d7e3b13dd061c3cbb866aecc57581c}{get\+Num\+Iterations} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of iterations thus far. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_afe20255116c97f7deea72e30fbb262a1}\label{classSGApprox_afe20255116c97f7deea72e30fbb262a1}} 
+int \hyperlink{classSGApprox_afe20255116c97f7deea72e30fbb262a1}{get\+Num\+Revolutions} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of revolutions of the pivot thus far. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_aec59b7e590064ceedd45b0faaf3297cc}\label{classSGApprox_aec59b7e590064ceedd45b0faaf3297cc}} 
+int \hyperlink{classSGApprox_aec59b7e590064ceedd45b0faaf3297cc}{get\+Num\+Extreme\+Tuples} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of tuples in the extreme\+Tuples array. \end{DoxyCompactList}\item 
+\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \hyperlink{classSGApprox_a5323e34b4a796d1667d93d6d62e5fe29}{get\+Best\+Regime} () const
+\item 
+list$<$ \hyperlink{classSGAction}{S\+G\+Action} $>$\+::const\+\_\+iterator \hyperlink{classSGApprox_af8eecb492245be11fc1626acd751b37b}{get\+Best\+Action} () const
+\item 
+\mbox{\Hypertarget{classSGApprox_a8b2466a3aa5de71e96e4a120ef044734}\label{classSGApprox_a8b2466a3aa5de71e96e4a120ef044734}} 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGApprox_a8b2466a3aa5de71e96e4a120ef044734}{get\+Best\+Direction} () const
+\begin{DoxyCompactList}\small\item\em Returns the best test direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_ad7911ce5dfbab5b366f2c47bea7463e5}\label{classSGApprox_ad7911ce5dfbab5b366f2c47bea7463e5}} 
+const vector$<$ const \hyperlink{classSGAction}{S\+G\+Action} $\ast$ $>$ \& \hyperlink{classSGApprox_ad7911ce5dfbab5b366f2c47bea7463e5}{get\+Action\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Returns the current action tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_a3d54d78a98f1d2567c5c3b21d776d8eb}\label{classSGApprox_a3d54d78a98f1d2567c5c3b21d776d8eb}} 
+const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \& \hyperlink{classSGApprox_a3d54d78a98f1d2567c5c3b21d776d8eb}{get\+Regime\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Returns the current regime tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_a54216fb04becc6af77a8a5bf1daab561}\label{classSGApprox_a54216fb04becc6af77a8a5bf1daab561}} 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGApprox_a54216fb04becc6af77a8a5bf1daab561}{get\+Direction} () const
+\begin{DoxyCompactList}\small\item\em Returns the current direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_ae5b524bc10cf0178c23a95b3795231c7}\label{classSGApprox_ae5b524bc10cf0178c23a95b3795231c7}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGApprox_ae5b524bc10cf0178c23a95b3795231c7}{get\+Pivot} () const
+\begin{DoxyCompactList}\small\item\em Returns the current pivot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_a74a2d231ba2d43002c616c8533b176d4}\label{classSGApprox_a74a2d231ba2d43002c616c8533b176d4}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGApprox_a74a2d231ba2d43002c616c8533b176d4}{get\+Threat\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Returns the current threat tuple. \end{DoxyCompactList}\item 
+const vector$<$ list$<$ \hyperlink{classSGAction}{S\+G\+Action} $>$ $>$ \& \hyperlink{classSGApprox_a067f58141855d9ef683c82a4d649ffd1}{get\+Actions} () const
+\item 
+\mbox{\Hypertarget{classSGApprox_af46f4c8e34da4a86cffc1db52e5328bf}\label{classSGApprox_af46f4c8e34da4a86cffc1db52e5328bf}} 
+const vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \& \hyperlink{classSGApprox_af46f4c8e34da4a86cffc1db52e5328bf}{get\+Extreme\+Tuples} () const
+\begin{DoxyCompactList}\small\item\em Returns the array of extreme tuples. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_ab41798c695da00bb2cc68edf67fb01a9}\label{classSGApprox_ab41798c695da00bb2cc68edf67fb01a9}} 
+std\+::string \hyperlink{classSGApprox_ab41798c695da00bb2cc68edf67fb01a9}{progress\+String} () const
+\begin{DoxyCompactList}\small\item\em Returns a string indicating the algorithms progress. \end{DoxyCompactList}\item 
+double \hyperlink{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}{generate} (bool store\+Iteration=true)
+\begin{DoxyCompactList}\small\item\em Refines the approximation. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGApprox_aa2ecb39d9938587e67bb07b9b445d6d4}{passed\+North} () const
+\begin{DoxyCompactList}\small\item\em Algorithm just passed north. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_af4ec568399b6e3ae16e6087d02381c12}{end} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGApprox_aea5ce8a2f48c7a572477f5f60520d565}{update\+Min\+Payoffs} ()
+\begin{DoxyCompactList}\small\item\em Calculates the minimum IC continuation values. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_a22804ad7335d810f6a48a304e618b4f2}{calculate\+Binding\+Continuations} ()
+\begin{DoxyCompactList}\small\item\em Calculates binding continuation values. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_abbd46d241613c871ecba24e10e115c56}{trim\+Binding\+Continuations} ()
+\begin{DoxyCompactList}\small\item\em Trims binding continuation values. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_a17d94998661d7d3fdb0618c8ce7dc53b}{find\+Best\+Direction} ()
+\begin{DoxyCompactList}\small\item\em Calculates the best direction. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_ad545fa06b93fd2241c798cf8661cc092}{calculate\+New\+Pivot} ()
+\begin{DoxyCompactList}\small\item\em Calculates the new pivot. \end{DoxyCompactList}\item 
+double \hyperlink{classSGApprox_afdc9f582e9b83dc68393da177330561e}{update\+Pivot} (vector$<$ double $>$ \&movements, vector$<$ double $>$ \&changes, vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&\hyperlink{classSGApprox_a01f7878f807a2143ce4a7b64bf3cc110}{regime\+Tuple}, const vector$<$ double $>$ \&max\+Movement, const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&max\+Movement\+Constraints)
+\begin{DoxyCompactList}\small\item\em Updates the pivot. \end{DoxyCompactList}\item 
+void \hyperlink{classSGApprox_a93455458a21bdeccff21a6163932c38a}{update\+Flags} ()
+\begin{DoxyCompactList}\small\item\em Updates flags before the next iteration. \end{DoxyCompactList}\item 
+double \hyperlink{classSGApprox_ae546360183bac3a32bc3fcb57cb81294}{distance} (int new\+Start, int new\+End, int old\+Start, int old\+End) const
+\begin{DoxyCompactList}\small\item\em Calculates the distance between revolutions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_ab123c62f0f56551cd56a843f273a29c1}\label{classSGApprox_ab123c62f0f56551cd56a843f273a29c1}} 
+double {\bfseries dist\+Helper} (const \hyperlink{classSGPoint}{S\+G\+Point} \&p, const \hyperlink{classSGPoint}{S\+G\+Point} \&qA, const \hyperlink{classSGPoint}{S\+G\+Point} \&qB) const
+\item 
+bool \hyperlink{classSGApprox_a1f34b002a7000a29338425ed4b452d86}{improves} (const \hyperlink{classSGPoint}{S\+G\+Point} \&current, const \hyperlink{classSGPoint}{S\+G\+Point} \&best, const \hyperlink{classSGPoint}{S\+G\+Point} \&new\+Direction) const
+\begin{DoxyCompactList}\small\item\em Checks whether or not new\+Direction is shallower than best, relative to current. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGApprox_a91be640b991ff44b56359cbe3a2b00d5}\label{classSGApprox_a91be640b991ff44b56359cbe3a2b00d5}} 
+void \hyperlink{classSGApprox_a91be640b991ff44b56359cbe3a2b00d5}{log\+Append} (ofstream \&\hyperlink{classSGApprox_aa95ff6bda46617fbaa7cf1c8d6708748}{logfs}, int iter, int rev, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&tuple, int state, int action)
+\begin{DoxyCompactList}\small\item\em Outputs progress to the log file every iteration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classSGEnv}{S\+G\+Env} \& \hyperlink{classSGApprox_a6597417918c1e6c764f4f943c72af781}{env}
+\item 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGApprox_a0774e3ed0ff009809606a42c9e7ef727}{game}
+\item 
+\hyperlink{classSGSolution}{S\+G\+Solution} \& \hyperlink{classSGApprox_aaed7d16ba723bbdfbec94b21e0edff8e}{soln}
+\item 
+const double \hyperlink{classSGApprox_ad105b178e4e85845ce5a85e26d7d038b}{delta}
+\item 
+const int \hyperlink{classSGApprox_a6f512c1cb974247ecb24c2201f045905}{num\+Players}
+\item 
+const int \hyperlink{classSGApprox_a676bda37d610e501eac72037d22b5293}{num\+States}
+\item 
+std\+::ofstream \hyperlink{classSGApprox_aa95ff6bda46617fbaa7cf1c8d6708748}{logfs}
+\item 
+int \hyperlink{classSGApprox_a7ab53424f5933726a15001ff2885a4a9}{num\+Iterations}
+\item 
+int \hyperlink{classSGApprox_a2bd0cab80a3f8d799fdc2841b65dd2c2}{num\+Revolutions}
+\item 
+double \hyperlink{classSGApprox_aee816ed49535cfc211aa34d0e6064e01}{error\+Level}
+\item 
+vector$<$ bool $>$ \hyperlink{classSGApprox_a44ce2e0eba77e1c7c155f38662cba9d0}{facing\+East\+North}
+\item 
+bool \hyperlink{classSGApprox_aec0377b26f0efaea314f72554a8862b9}{pass\+North}
+\item 
+bool \hyperlink{classSGApprox_ac683c5ef90b22b635d4c70861ca08887}{sufficiency\+Flag}
+\item 
+vector$<$ bool $>$ \hyperlink{classSGApprox_ae680fd19d6a65aecee81dffeba8e8595}{updated\+Threat\+Tuple}
+\item 
+vector$<$ list$<$ \hyperlink{classSGAction}{S\+G\+Action} $>$ $>$ \hyperlink{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}{actions}
+\item 
+vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \hyperlink{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}{extreme\+Tuples}
+\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGApprox_a69815072fd57ec5b6b137dc839371ec7}{threat\+Tuple}
+\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGApprox_a037c73ff2b6ff8a55fadf57bb0a6a546}{pivot}
+\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGApprox_ac5bf5f2eba2d65c8a9933b6d74f0cd47}{current\+Direction}
+\item 
+vector$<$ const \hyperlink{classSGAction}{S\+G\+Action} $\ast$$>$ \hyperlink{classSGApprox_a507eb6895c5a99c5d1efba8107989187}{action\+Tuple}
+\item 
+vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \hyperlink{classSGApprox_a01f7878f807a2143ce4a7b64bf3cc110}{regime\+Tuple}
+\item 
+list$<$ \hyperlink{classSGAction}{S\+G\+Action} $>$\+::const\+\_\+iterator \hyperlink{classSGApprox_a919c56cbea93b91c7ce4cd62201633e1}{best\+Action}
+\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGApprox_a20454173d5c9af9bd24870d97f4e2b91}{best\+Direction}
+\item 
+\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} \hyperlink{classSGApprox_ab2bc5dff1ce46dfe8eb035955b2642fc}{best\+Regime}
+\item 
+\hyperlink{classSGAction}{S\+G\+Action} \hyperlink{classSGApprox_ad2aeb05506b86560b35a0a812f95c4be}{null\+Action}
+\item 
+int \hyperlink{classSGApprox_aa0c6296f28ce5527edc9829e4d9c23a1}{west\+Point}
+\item 
+int \hyperlink{classSGApprox_aed002d6e06e7199e10b3ac4f27b6cb6c}{new\+West}
+\item 
+int \hyperlink{classSGApprox_a130b9dc6e354a70a0f3cf08c5a511c99}{old\+West}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Approximation of the equilibrium payoff correspondence. 
+
+This class contains an approximation of the equilibrium payoff correspondence. At its core, it contains a sequence of extreme tuples that have been generated thus far, a pivot, and a direction. The main method, \hyperlink{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}{S\+G\+Approx\+::generate()}, finds a new direction that will not intersect the equilibrium payoff correspondence and updates the pivot in that direction. By successively calling \hyperlink{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}{S\+G\+Approx\+::generate()}, the approximation will be refined and asymptotically it will converge to the equilibrium payoff correspondence.
+
+Part of the pencil sharpening algorithm. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGApprox_a22804ad7335d810f6a48a304e618b4f2}\label{classSGApprox_a22804ad7335d810f6a48a304e618b4f2}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!calculate\+Binding\+Continuations@{calculate\+Binding\+Continuations}}
+\index{calculate\+Binding\+Continuations@{calculate\+Binding\+Continuations}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{calculate\+Binding\+Continuations()}{calculateBindingContinuations()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::calculate\+Binding\+Continuations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates binding continuation values. 
+
+For each \hyperlink{classSGAction}{S\+G\+Action} objection in \hyperlink{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}{S\+G\+Approx\+::actions}, this method computes the extreme binding continuation values relative to the current threat tuple and the trajectory of the pivot on the previous revolution. \mbox{\Hypertarget{classSGApprox_ad545fa06b93fd2241c798cf8661cc092}\label{classSGApprox_ad545fa06b93fd2241c798cf8661cc092}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!calculate\+New\+Pivot@{calculate\+New\+Pivot}}
+\index{calculate\+New\+Pivot@{calculate\+New\+Pivot}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{calculate\+New\+Pivot()}{calculateNewPivot()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::calculate\+New\+Pivot (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates the new pivot. 
+
+After the best direction has been found, this method updates the pivot in the new current direction. First, it calculates the maximum movements in the current direction that would not violate incentive compatibility, and then iterates \hyperlink{classSGApprox_afdc9f582e9b83dc68393da177330561e}{S\+G\+Approx\+::update\+Pivot} until the pivot converges. \mbox{\Hypertarget{classSGApprox_ae546360183bac3a32bc3fcb57cb81294}\label{classSGApprox_ae546360183bac3a32bc3fcb57cb81294}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!distance@{distance}}
+\index{distance@{distance}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{distance()}{distance()}}
+{\footnotesize\ttfamily double S\+G\+Approx\+::distance (\begin{DoxyParamCaption}\item[{int}]{new\+Start,  }\item[{int}]{new\+End,  }\item[{int}]{old\+Start,  }\item[{int}]{old\+End }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates the distance between revolutions. 
+
+Returns the distance between successive iterations. Only runs when \hyperlink{classSGApprox_aec0377b26f0efaea314f72554a8862b9}{S\+G\+Approx\+::pass\+North} is true. Currently only runs when the number of \hyperlink{classSGTuple}{S\+G\+Tuple} objects on successive revolutions is the same, and then takes the maximum over all distances between tuples that are in corresponding positions in the revolutions. \mbox{\Hypertarget{classSGApprox_af4ec568399b6e3ae16e6087d02381c12}\label{classSGApprox_af4ec568399b6e3ae16e6087d02381c12}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!end@{end}}
+\index{end@{end}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destructor. 
+
+Only purpose right now is to close the log file. \mbox{\Hypertarget{classSGApprox_a17d94998661d7d3fdb0618c8ce7dc53b}\label{classSGApprox_a17d94998661d7d3fdb0618c8ce7dc53b}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!find\+Best\+Direction@{find\+Best\+Direction}}
+\index{find\+Best\+Direction@{find\+Best\+Direction}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{find\+Best\+Direction()}{findBestDirection()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::find\+Best\+Direction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates the best direction. 
+
+Iteraties over the \hyperlink{classSGAction}{S\+G\+Action} objects in \hyperlink{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}{S\+G\+Approx\+::actions} to find the shallowest admissible direction, and stores it in best\+Direction. \mbox{\Hypertarget{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}\label{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!generate@{generate}}
+\index{generate@{generate}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{generate()}{generate()}}
+{\footnotesize\ttfamily double S\+G\+Approx\+::generate (\begin{DoxyParamCaption}\item[{bool}]{store\+Iteration = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Refines the approximation. 
+
+Main public routine for the \hyperlink{classSGApprox}{S\+G\+Approx} class. Updates minimum IC continuation values and binding continuation values, finds the best new direction, advances the pivot, and resets the flags. Also returns the distance between revolutions when a revolution is completed. Otherwise, returns 1. \mbox{\Hypertarget{classSGApprox_a067f58141855d9ef683c82a4d649ffd1}\label{classSGApprox_a067f58141855d9ef683c82a4d649ffd1}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!get\+Actions@{get\+Actions}}
+\index{get\+Actions@{get\+Actions}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{get\+Actions()}{getActions()}}
+{\footnotesize\ttfamily const vector$<$ list$<$\hyperlink{classSGAction}{S\+G\+Action}$>$ $>$\& S\+G\+Approx\+::get\+Actions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the array of \hyperlink{classSGAction}{S\+G\+Action} objects that can currently be supported \mbox{\Hypertarget{classSGApprox_af8eecb492245be11fc1626acd751b37b}\label{classSGApprox_af8eecb492245be11fc1626acd751b37b}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!get\+Best\+Action@{get\+Best\+Action}}
+\index{get\+Best\+Action@{get\+Best\+Action}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{get\+Best\+Action()}{getBestAction()}}
+{\footnotesize\ttfamily list$<$\hyperlink{classSGAction}{S\+G\+Action}$>$\+::const\+\_\+iterator S\+G\+Approx\+::get\+Best\+Action (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns a constant iterator for the \hyperlink{classSGAction}{S\+G\+Action} in which the best test direction was generated \mbox{\Hypertarget{classSGApprox_a5323e34b4a796d1667d93d6d62e5fe29}\label{classSGApprox_a5323e34b4a796d1667d93d6d62e5fe29}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!get\+Best\+Regime@{get\+Best\+Regime}}
+\index{get\+Best\+Regime@{get\+Best\+Regime}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{get\+Best\+Regime()}{getBestRegime()}}
+{\footnotesize\ttfamily \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} S\+G\+Approx\+::get\+Best\+Regime (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the regime in which the best test direction was generated \mbox{\Hypertarget{classSGApprox_a1f34b002a7000a29338425ed4b452d86}\label{classSGApprox_a1f34b002a7000a29338425ed4b452d86}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!improves@{improves}}
+\index{improves@{improves}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{improves()}{improves()}}
+{\footnotesize\ttfamily bool S\+G\+Approx\+::improves (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{current,  }\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{best,  }\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{new\+Direction }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Checks whether or not new\+Direction is shallower than best, relative to current. 
+
+Returns true if the cosine between new\+Direction and best is greater than S\+G\+Env\+::improve\+Tol, or if best and new\+Direction are colinear, whether or not best has a larger norm. Non-\/static so it can read the parameter values in \hyperlink{classSGApprox_a6597417918c1e6c764f4f943c72af781}{S\+G\+Approx\+::env}. \mbox{\Hypertarget{classSGApprox_a4bca21d3b688b3ca283c6778c593563a}\label{classSGApprox_a4bca21d3b688b3ca283c6778c593563a}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!initialize@{initialize}}
+\index{initialize@{initialize}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prepares the approximation for generation. 
+
+Opens the log file, constructs the actions array, initializes extreme\+Tuples to a large \char`\"{}box\char`\"{} correspondence that contains the equilibrium payoff correspondence. Also initializes the pivot and the first direction. Sets the flags so that \hyperlink{classSGApprox_a9cf7330f7cab3f454b0850e778d132fa}{S\+G\+Approx\+::generate()} will calculate new binding continuation values on the first pass. \mbox{\Hypertarget{classSGApprox_aa2ecb39d9938587e67bb07b9b445d6d4}\label{classSGApprox_aa2ecb39d9938587e67bb07b9b445d6d4}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!passed\+North@{passed\+North}}
+\index{passed\+North@{passed\+North}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{passed\+North()}{passedNorth()}}
+{\footnotesize\ttfamily bool S\+G\+Approx\+::passed\+North (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Algorithm just passed north. 
+
+Indicates whether or not the current direction passed north on this iteration. \mbox{\Hypertarget{classSGApprox_abbd46d241613c871ecba24e10e115c56}\label{classSGApprox_abbd46d241613c871ecba24e10e115c56}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!trim\+Binding\+Continuations@{trim\+Binding\+Continuations}}
+\index{trim\+Binding\+Continuations@{trim\+Binding\+Continuations}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{trim\+Binding\+Continuations()}{trimBindingContinuations()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::trim\+Binding\+Continuations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Trims binding continuation values. 
+
+For each \hyperlink{classSGAction}{S\+G\+Action} in \hyperlink{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}{S\+G\+Approx\+::actions}, this method \char`\"{}trims\char`\"{} the binding payoff segents by intersecting them with the half-\/space correspondence that is below the pivot in the direction normal to the current direction. Not currently being used. \mbox{\Hypertarget{classSGApprox_a93455458a21bdeccff21a6163932c38a}\label{classSGApprox_a93455458a21bdeccff21a6163932c38a}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!update\+Flags@{update\+Flags}}
+\index{update\+Flags@{update\+Flags}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{update\+Flags()}{updateFlags()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::update\+Flags (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Updates flags before the next iteration. 
+
+This method checks whether or not the threat tuple has increased and sets the flags for recalculating binding continuation values. Also checks whether or not the cardinal direction has changed, and updates \hyperlink{classSGApprox_a44ce2e0eba77e1c7c155f38662cba9d0}{S\+G\+Approx\+::facing\+East\+North} and \hyperlink{classSGApprox_aec0377b26f0efaea314f72554a8862b9}{S\+G\+Approx\+::pass\+North}. \mbox{\Hypertarget{classSGApprox_aea5ce8a2f48c7a572477f5f60520d565}\label{classSGApprox_aea5ce8a2f48c7a572477f5f60520d565}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!update\+Min\+Payoffs@{update\+Min\+Payoffs}}
+\index{update\+Min\+Payoffs@{update\+Min\+Payoffs}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{update\+Min\+Payoffs()}{updateMinPayoffs()}}
+{\footnotesize\ttfamily void S\+G\+Approx\+::update\+Min\+Payoffs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates the minimum IC continuation values. 
+
+This method calculates for each \hyperlink{classSGAction}{S\+G\+Action} object in \hyperlink{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}{S\+G\+Approx\+::actions} the minimum incentive compatible continuation value, relative to the current threat tuple. \mbox{\Hypertarget{classSGApprox_afdc9f582e9b83dc68393da177330561e}\label{classSGApprox_afdc9f582e9b83dc68393da177330561e}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!update\+Pivot@{update\+Pivot}}
+\index{update\+Pivot@{update\+Pivot}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{update\+Pivot()}{updatePivot()}}
+{\footnotesize\ttfamily double S\+G\+Approx\+::update\+Pivot (\begin{DoxyParamCaption}\item[{vector$<$ double $>$ \&}]{movements,  }\item[{vector$<$ double $>$ \&}]{changes,  }\item[{vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&}]{regime\+Tuple,  }\item[{const vector$<$ double $>$ \&}]{max\+Movement,  }\item[{const vector$<$ \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} $>$ \&}]{max\+Movement\+Constraints }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Updates the pivot. 
+
+Bellman operator that advances the pivots corresponding to non-\/binding states in the current direction. If an IC constraint would be violated in state s, the movement in state s is set to max\+Movement\mbox{[}s\mbox{]} and the state is put into the binding regime. Returns the distance the pivot moves. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}\label{classSGApprox_a0fccecf0f5dbe7e9288e47182f180879}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!actions@{actions}}
+\index{actions@{actions}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{actions}{actions}}
+{\footnotesize\ttfamily vector$<$ list$<$\hyperlink{classSGAction}{S\+G\+Action}$>$ $>$ S\+G\+Approx\+::actions\hspace{0.3cm}{\ttfamily [private]}}
+
+actions\mbox{[}state\mbox{]} is a list of actions that can still be supported according to the current approximation. \mbox{\Hypertarget{classSGApprox_a507eb6895c5a99c5d1efba8107989187}\label{classSGApprox_a507eb6895c5a99c5d1efba8107989187}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!action\+Tuple@{action\+Tuple}}
+\index{action\+Tuple@{action\+Tuple}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{action\+Tuple}{actionTuple}}
+{\footnotesize\ttfamily vector$<$ const \hyperlink{classSGAction}{S\+G\+Action}$\ast$ $>$ S\+G\+Approx\+::action\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+action\+Tuple\mbox{[}state\mbox{]} is a pointer to the \hyperlink{classSGAction}{S\+G\+Action} object that generates pivot\mbox{[}state\mbox{]}. \mbox{\Hypertarget{classSGApprox_a919c56cbea93b91c7ce4cd62201633e1}\label{classSGApprox_a919c56cbea93b91c7ce4cd62201633e1}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!best\+Action@{best\+Action}}
+\index{best\+Action@{best\+Action}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{best\+Action}{bestAction}}
+{\footnotesize\ttfamily list$<$\hyperlink{classSGAction}{S\+G\+Action}$>$\+::const\+\_\+iterator S\+G\+Approx\+::best\+Action\hspace{0.3cm}{\ttfamily [private]}}
+
+Pointer to the action profile that generates the shallowest direction. \mbox{\Hypertarget{classSGApprox_a20454173d5c9af9bd24870d97f4e2b91}\label{classSGApprox_a20454173d5c9af9bd24870d97f4e2b91}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!best\+Direction@{best\+Direction}}
+\index{best\+Direction@{best\+Direction}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{best\+Direction}{bestDirection}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Approx\+::best\+Direction\hspace{0.3cm}{\ttfamily [private]}}
+
+The shallowest direction at the current iteration. \mbox{\Hypertarget{classSGApprox_ab2bc5dff1ce46dfe8eb035955b2642fc}\label{classSGApprox_ab2bc5dff1ce46dfe8eb035955b2642fc}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!best\+Regime@{best\+Regime}}
+\index{best\+Regime@{best\+Regime}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{best\+Regime}{bestRegime}}
+{\footnotesize\ttfamily \hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime} S\+G\+Approx\+::best\+Regime\hspace{0.3cm}{\ttfamily [private]}}
+
+Indicates which incentive constraints were binding for the best direction. \mbox{\Hypertarget{classSGApprox_ac5bf5f2eba2d65c8a9933b6d74f0cd47}\label{classSGApprox_ac5bf5f2eba2d65c8a9933b6d74f0cd47}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!current\+Direction@{current\+Direction}}
+\index{current\+Direction@{current\+Direction}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{current\+Direction}{currentDirection}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Approx\+::current\+Direction\hspace{0.3cm}{\ttfamily [private]}}
+
+The current direction. \mbox{\Hypertarget{classSGApprox_ad105b178e4e85845ce5a85e26d7d038b}\label{classSGApprox_ad105b178e4e85845ce5a85e26d7d038b}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!delta@{delta}}
+\index{delta@{delta}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{delta}{delta}}
+{\footnotesize\ttfamily const double S\+G\+Approx\+::delta\hspace{0.3cm}{\ttfamily [private]}}
+
+The discount factor, copied from \hyperlink{classSGApprox_a0774e3ed0ff009809606a42c9e7ef727}{S\+G\+Approx\+::game}. \mbox{\Hypertarget{classSGApprox_a6597417918c1e6c764f4f943c72af781}\label{classSGApprox_a6597417918c1e6c764f4f943c72af781}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!env@{env}}
+\index{env@{env}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{env}{env}}
+{\footnotesize\ttfamily const \hyperlink{classSGEnv}{S\+G\+Env}\& S\+G\+Approx\+::env\hspace{0.3cm}{\ttfamily [private]}}
+
+Constant reference to the parent environment. \mbox{\Hypertarget{classSGApprox_aee816ed49535cfc211aa34d0e6064e01}\label{classSGApprox_aee816ed49535cfc211aa34d0e6064e01}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!error\+Level@{error\+Level}}
+\index{error\+Level@{error\+Level}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{error\+Level}{errorLevel}}
+{\footnotesize\ttfamily double S\+G\+Approx\+::error\+Level\hspace{0.3cm}{\ttfamily [private]}}
+
+Current error level \mbox{\Hypertarget{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}\label{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!extreme\+Tuples@{extreme\+Tuples}}
+\index{extreme\+Tuples@{extreme\+Tuples}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{extreme\+Tuples}{extremeTuples}}
+{\footnotesize\ttfamily vector$<$\hyperlink{classSGTuple}{S\+G\+Tuple}$>$ S\+G\+Approx\+::extreme\+Tuples\hspace{0.3cm}{\ttfamily [private]}}
+
+Past trajectory of the pivot. \mbox{\Hypertarget{classSGApprox_a44ce2e0eba77e1c7c155f38662cba9d0}\label{classSGApprox_a44ce2e0eba77e1c7c155f38662cba9d0}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!facing\+East\+North@{facing\+East\+North}}
+\index{facing\+East\+North@{facing\+East\+North}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{facing\+East\+North}{facingEastNorth}}
+{\footnotesize\ttfamily vector$<$bool$>$ S\+G\+Approx\+::facing\+East\+North\hspace{0.3cm}{\ttfamily [private]}}
+
+Indicates whether the current direction points east (if facing\+East\+North\mbox{[}0\mbox{]}=true) and north (if facing\+East\+North\mbox{[}1\mbox{]}=true). \mbox{\Hypertarget{classSGApprox_a0774e3ed0ff009809606a42c9e7ef727}\label{classSGApprox_a0774e3ed0ff009809606a42c9e7ef727}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!game@{game}}
+\index{game@{game}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{game}{game}}
+{\footnotesize\ttfamily const \hyperlink{classSGGame}{S\+G\+Game}\& S\+G\+Approx\+::game\hspace{0.3cm}{\ttfamily [private]}}
+
+Constant reference to the game being solved. \mbox{\Hypertarget{classSGApprox_aa95ff6bda46617fbaa7cf1c8d6708748}\label{classSGApprox_aa95ff6bda46617fbaa7cf1c8d6708748}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!logfs@{logfs}}
+\index{logfs@{logfs}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{logfs}{logfs}}
+{\footnotesize\ttfamily std\+::ofstream S\+G\+Approx\+::logfs\hspace{0.3cm}{\ttfamily [private]}}
+
+File stream for log file. \mbox{\Hypertarget{classSGApprox_aed002d6e06e7199e10b3ac4f27b6cb6c}\label{classSGApprox_aed002d6e06e7199e10b3ac4f27b6cb6c}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!new\+West@{new\+West}}
+\index{new\+West@{new\+West}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{new\+West}{newWest}}
+{\footnotesize\ttfamily int S\+G\+Approx\+::new\+West\hspace{0.3cm}{\ttfamily [private]}}
+
+Index within \hyperlink{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}{S\+G\+Approx\+::extreme\+Tuples} of the westernmost tuple on the current revolution. \mbox{\Hypertarget{classSGApprox_ad2aeb05506b86560b35a0a812f95c4be}\label{classSGApprox_ad2aeb05506b86560b35a0a812f95c4be}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!null\+Action@{null\+Action}}
+\index{null\+Action@{null\+Action}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{null\+Action}{nullAction}}
+{\footnotesize\ttfamily \hyperlink{classSGAction}{S\+G\+Action} S\+G\+Approx\+::null\+Action\hspace{0.3cm}{\ttfamily [private]}}
+
+Used to initialize the action tuple. \mbox{\Hypertarget{classSGApprox_a7ab53424f5933726a15001ff2885a4a9}\label{classSGApprox_a7ab53424f5933726a15001ff2885a4a9}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!num\+Iterations@{num\+Iterations}}
+\index{num\+Iterations@{num\+Iterations}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{num\+Iterations}{numIterations}}
+{\footnotesize\ttfamily int S\+G\+Approx\+::num\+Iterations\hspace{0.3cm}{\ttfamily [private]}}
+
+Elapsed number of iterations. \mbox{\Hypertarget{classSGApprox_a6f512c1cb974247ecb24c2201f045905}\label{classSGApprox_a6f512c1cb974247ecb24c2201f045905}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!num\+Players@{num\+Players}}
+\index{num\+Players@{num\+Players}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{num\+Players}{numPlayers}}
+{\footnotesize\ttfamily const int S\+G\+Approx\+::num\+Players\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of players, always 2. \mbox{\Hypertarget{classSGApprox_a2bd0cab80a3f8d799fdc2841b65dd2c2}\label{classSGApprox_a2bd0cab80a3f8d799fdc2841b65dd2c2}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!num\+Revolutions@{num\+Revolutions}}
+\index{num\+Revolutions@{num\+Revolutions}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{num\+Revolutions}{numRevolutions}}
+{\footnotesize\ttfamily int S\+G\+Approx\+::num\+Revolutions\hspace{0.3cm}{\ttfamily [private]}}
+
+Elapsed number of revolutions. \mbox{\Hypertarget{classSGApprox_a676bda37d610e501eac72037d22b5293}\label{classSGApprox_a676bda37d610e501eac72037d22b5293}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!num\+States@{num\+States}}
+\index{num\+States@{num\+States}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{num\+States}{numStates}}
+{\footnotesize\ttfamily const int S\+G\+Approx\+::num\+States\hspace{0.3cm}{\ttfamily [private]}}
+
+The number of states, copied from \hyperlink{classSGApprox_a0774e3ed0ff009809606a42c9e7ef727}{S\+G\+Approx\+::game}. \mbox{\Hypertarget{classSGApprox_a130b9dc6e354a70a0f3cf08c5a511c99}\label{classSGApprox_a130b9dc6e354a70a0f3cf08c5a511c99}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!old\+West@{old\+West}}
+\index{old\+West@{old\+West}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{old\+West}{oldWest}}
+{\footnotesize\ttfamily int S\+G\+Approx\+::old\+West\hspace{0.3cm}{\ttfamily [private]}}
+
+Previous value of west\+Point. \mbox{\Hypertarget{classSGApprox_aec0377b26f0efaea314f72554a8862b9}\label{classSGApprox_aec0377b26f0efaea314f72554a8862b9}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!pass\+North@{pass\+North}}
+\index{pass\+North@{pass\+North}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{pass\+North}{passNorth}}
+{\footnotesize\ttfamily bool S\+G\+Approx\+::pass\+North\hspace{0.3cm}{\ttfamily [private]}}
+
+Flag that is true if the algorithm switched from pointing south to pointing north on the current iteration. \mbox{\Hypertarget{classSGApprox_a037c73ff2b6ff8a55fadf57bb0a6a546}\label{classSGApprox_a037c73ff2b6ff8a55fadf57bb0a6a546}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!pivot@{pivot}}
+\index{pivot@{pivot}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{pivot}{pivot}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} S\+G\+Approx\+::pivot\hspace{0.3cm}{\ttfamily [private]}}
+
+Current pivot. \mbox{\Hypertarget{classSGApprox_a01f7878f807a2143ce4a7b64bf3cc110}\label{classSGApprox_a01f7878f807a2143ce4a7b64bf3cc110}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!regime\+Tuple@{regime\+Tuple}}
+\index{regime\+Tuple@{regime\+Tuple}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{regime\+Tuple}{regimeTuple}}
+{\footnotesize\ttfamily vector$<$\hyperlink{namespaceSG_a139e4dec41ea0f38aae1f93f60cfff60}{S\+G\+::\+Regime}$>$ S\+G\+Approx\+::regime\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+regime\+Tuple\mbox{[}state\mbox{]} gives the manner in which pivot\mbox{[}state\mbox{]} was generated. \mbox{\Hypertarget{classSGApprox_aaed7d16ba723bbdfbec94b21e0edff8e}\label{classSGApprox_aaed7d16ba723bbdfbec94b21e0edff8e}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!soln@{soln}}
+\index{soln@{soln}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{soln}{soln}}
+{\footnotesize\ttfamily \hyperlink{classSGSolution}{S\+G\+Solution}\& S\+G\+Approx\+::soln\hspace{0.3cm}{\ttfamily [private]}}
+
+Reference to the \hyperlink{classSGSolution}{S\+G\+Solution} object in which output is being stored. \mbox{\Hypertarget{classSGApprox_ac683c5ef90b22b635d4c70861ca08887}\label{classSGApprox_ac683c5ef90b22b635d4c70861ca08887}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!sufficiency\+Flag@{sufficiency\+Flag}}
+\index{sufficiency\+Flag@{sufficiency\+Flag}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{sufficiency\+Flag}{sufficiencyFlag}}
+{\footnotesize\ttfamily bool S\+G\+Approx\+::sufficiency\+Flag\hspace{0.3cm}{\ttfamily [private]}}
+
+Flag that indicates if sufficient conditions have been met while searching for the best direction. \mbox{\Hypertarget{classSGApprox_a69815072fd57ec5b6b137dc839371ec7}\label{classSGApprox_a69815072fd57ec5b6b137dc839371ec7}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!threat\+Tuple@{threat\+Tuple}}
+\index{threat\+Tuple@{threat\+Tuple}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{threat\+Tuple}{threatTuple}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} S\+G\+Approx\+::threat\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+Current threat tuple. \mbox{\Hypertarget{classSGApprox_ae680fd19d6a65aecee81dffeba8e8595}\label{classSGApprox_ae680fd19d6a65aecee81dffeba8e8595}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!updated\+Threat\+Tuple@{updated\+Threat\+Tuple}}
+\index{updated\+Threat\+Tuple@{updated\+Threat\+Tuple}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{updated\+Threat\+Tuple}{updatedThreatTuple}}
+{\footnotesize\ttfamily vector$<$bool$>$ S\+G\+Approx\+::updated\+Threat\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+updated\+Threat\+Tuple\mbox{[}i\mbox{]} = true if player i\textquotesingle{}s threat tuple was updated on the current iteration. \mbox{\Hypertarget{classSGApprox_aa0c6296f28ce5527edc9829e4d9c23a1}\label{classSGApprox_aa0c6296f28ce5527edc9829e4d9c23a1}} 
+\index{S\+G\+Approx@{S\+G\+Approx}!west\+Point@{west\+Point}}
+\index{west\+Point@{west\+Point}!S\+G\+Approx@{S\+G\+Approx}}
+\subsubsection{\texorpdfstring{west\+Point}{westPoint}}
+{\footnotesize\ttfamily int S\+G\+Approx\+::west\+Point\hspace{0.3cm}{\ttfamily [private]}}
+
+Index within \hyperlink{classSGApprox_ab0e2c4678401f806922ac64667ad5ff6}{S\+G\+Approx\+::extreme\+Tuples} of the westernmost tuple on the previous revolution. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgapprox.\+hpp\item 
+src/cpp/sgapprox.\+cpp\end{DoxyCompactItemize}

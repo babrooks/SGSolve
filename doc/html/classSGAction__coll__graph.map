@@ -1,0 +1,5 @@
+<map id="SGAction" name="SGAction">
+<area shape="rect" id="node2" href="$classSGBaseAction.html" title="Describes an action in the game. " alt="" coords="197,109,310,136"/>
+<area shape="rect" id="node3" href="$classstd_1_1vector_3_01SGTuple_01_4.html" title="std::vector\&lt; SGTuple \&gt;" alt="" coords="5,5,179,32"/>
+<area shape="rect" id="node4" href="$classSGEnv.html" title="Manages parameters for algorithm behavior. " alt="" coords="335,109,399,136"/>
+</map>

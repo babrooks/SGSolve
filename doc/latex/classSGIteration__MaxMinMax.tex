@@ -1,0 +1,101 @@
+\hypertarget{classSGIteration__MaxMinMax}{}\section{S\+G\+Iteration\+\_\+\+Max\+Min\+Max Class Reference}
+\label{classSGIteration__MaxMinMax}\index{S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}}
+
+
+Stores data on the behavior of \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max}.  
+
+
+
+
+{\ttfamily \#include $<$sgiteration\+\_\+maxminmax.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Iteration\+\_\+\+Max\+Min\+Max\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=271pt]{classSGIteration__MaxMinMax__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_ad1b8626f55b8bf7bc1bf5d1d248d3434}\label{classSGIteration__MaxMinMax_ad1b8626f55b8bf7bc1bf5d1d248d3434}} 
+\hyperlink{classSGIteration__MaxMinMax_ad1b8626f55b8bf7bc1bf5d1d248d3434}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGIteration__MaxMinMax_ab30ded06cb025b502da9f9b2354f9e05}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} (const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&\+\_\+actions, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&\+\_\+threat\+Tuple)
+\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_a09973d8b9e68b2c58c352e012750ea88}\label{classSGIteration__MaxMinMax_a09973d8b9e68b2c58c352e012750ea88}} 
+void \hyperlink{classSGIteration__MaxMinMax_a09973d8b9e68b2c58c352e012750ea88}{push\+\_\+back} (const \hyperlink{classSGStep}{S\+G\+Step} \&step)
+\begin{DoxyCompactList}\small\item\em Add an \hyperlink{classSGStep}{S\+G\+Step}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_a5183c9cf3aecf12250b657a34283e1fb}\label{classSGIteration__MaxMinMax_a5183c9cf3aecf12250b657a34283e1fb}} 
+const list$<$ \hyperlink{classSGStep}{S\+G\+Step} $>$ \& \hyperlink{classSGIteration__MaxMinMax_a5183c9cf3aecf12250b657a34283e1fb}{get\+Steps} () const
+\begin{DoxyCompactList}\small\item\em Get method for the steps. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_ab7935dfd6cfc657723279e1570264e28}\label{classSGIteration__MaxMinMax_ab7935dfd6cfc657723279e1570264e28}} 
+const vector$<$ vector$<$ \hyperlink{classSGBaseAction}{S\+G\+Base\+Action} $>$ $>$ \& \hyperlink{classSGIteration__MaxMinMax_ab7935dfd6cfc657723279e1570264e28}{get\+Actions} () const
+\begin{DoxyCompactList}\small\item\em Get method for the actions available at the current iteration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_aca2ec19eb2806af69fdd7c7121794d04}\label{classSGIteration__MaxMinMax_aca2ec19eb2806af69fdd7c7121794d04}} 
+const \hyperlink{classSGTuple}{S\+G\+Tuple} \& \hyperlink{classSGIteration__MaxMinMax_aca2ec19eb2806af69fdd7c7121794d04}{get\+Threat\+Tuple} () const
+\begin{DoxyCompactList}\small\item\em Get method for the current threat tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_ae5590462f3a8b5b378a7ee35ffb8fcb0}\label{classSGIteration__MaxMinMax_ae5590462f3a8b5b378a7ee35ffb8fcb0}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGIteration__MaxMinMax_ae5590462f3a8b5b378a7ee35ffb8fcb0}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serialize the iteration using Boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ vector$<$ \hyperlink{classSGBaseAction}{S\+G\+Base\+Action} $>$ $>$ \hyperlink{classSGIteration__MaxMinMax_a0f6a9b1c5590ba858e154f365c09b472}{actions}
+\item 
+\hyperlink{classSGTuple}{S\+G\+Tuple} \hyperlink{classSGIteration__MaxMinMax_a095e196445f8ade3f0da2715b2337cae}{threat\+Tuple}
+\item 
+list$<$ \hyperlink{classSGStep}{S\+G\+Step} $>$ \hyperlink{classSGIteration__MaxMinMax_aba082a06c4a9bf9c1f1dcc70ae159838}{steps}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGIteration__MaxMinMax_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class \hyperlink{classSGIteration__MaxMinMax_ac98d07dd8f7b70e16ccb9a01abf56b9c}{boost\+::serialization\+::access}
+\begin{DoxyCompactList}\small\item\em Serializes the \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} object using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Stores data on the behavior of \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max}. 
+
+This class records the status of the max-\/min-\/max algorithm after each implementation of the max-\/min-\/max operator. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_ab30ded06cb025b502da9f9b2354f9e05}\label{classSGIteration__MaxMinMax_ab30ded06cb025b502da9f9b2354f9e05}} 
+\index{S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}!S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}}
+\index{S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}!S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{S\+G\+Iteration\+\_\+\+Max\+Min\+Max()}{SGIteration\_MaxMinMax()}}
+{\footnotesize\ttfamily S\+G\+Iteration\+\_\+\+Max\+Min\+Max\+::\+S\+G\+Iteration\+\_\+\+Max\+Min\+Max (\begin{DoxyParamCaption}\item[{const vector$<$ list$<$ \hyperlink{classSGAction__MaxMinMax}{S\+G\+Action\+\_\+\+Max\+Min\+Max} $>$ $>$ \&}]{\+\_\+actions,  }\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{\+\_\+threat\+Tuple }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initializes a new \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} object with data on the current iteration
+
+The constructor will copy the data in \hyperlink{classSGSolver__MaxMinMax_ad1a4bf22aaa58dd05c7bc7a24d9c1805}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::actions}, so that the user can later recover the test directions that were available at each step. For large games, storing the actions can take a large amount of memory. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGIteration__MaxMinMax_a0f6a9b1c5590ba858e154f365c09b472}\label{classSGIteration__MaxMinMax_a0f6a9b1c5590ba858e154f365c09b472}} 
+\index{S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}!actions@{actions}}
+\index{actions@{actions}!S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{actions}{actions}}
+{\footnotesize\ttfamily vector$<$ vector$<$\hyperlink{classSGBaseAction}{S\+G\+Base\+Action}$>$ $>$ S\+G\+Iteration\+\_\+\+Max\+Min\+Max\+::actions\hspace{0.3cm}{\ttfamily [private]}}
+
+The actions that can be supported at the current iteration \mbox{\Hypertarget{classSGIteration__MaxMinMax_aba082a06c4a9bf9c1f1dcc70ae159838}\label{classSGIteration__MaxMinMax_aba082a06c4a9bf9c1f1dcc70ae159838}} 
+\index{S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}!steps@{steps}}
+\index{steps@{steps}!S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{steps}{steps}}
+{\footnotesize\ttfamily list$<$\hyperlink{classSGStep}{S\+G\+Step}$>$ S\+G\+Iteration\+\_\+\+Max\+Min\+Max\+::steps\hspace{0.3cm}{\ttfamily [private]}}
+
+The steps in the iteration \mbox{\Hypertarget{classSGIteration__MaxMinMax_a095e196445f8ade3f0da2715b2337cae}\label{classSGIteration__MaxMinMax_a095e196445f8ade3f0da2715b2337cae}} 
+\index{S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}!threat\+Tuple@{threat\+Tuple}}
+\index{threat\+Tuple@{threat\+Tuple}!S\+G\+Iteration\+\_\+\+Max\+Min\+Max@{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{threat\+Tuple}{threatTuple}}
+{\footnotesize\ttfamily \hyperlink{classSGTuple}{S\+G\+Tuple} S\+G\+Iteration\+\_\+\+Max\+Min\+Max\+::threat\+Tuple\hspace{0.3cm}{\ttfamily [private]}}
+
+The current threat tuple. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgiteration\+\_\+maxminmax.\+hpp\end{DoxyCompactItemize}

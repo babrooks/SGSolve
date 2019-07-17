@@ -1,0 +1,4 @@
+<map id="SGGameHandler" name="SGGameHandler">
+<area shape="rect" id="node3" href="$classSGGame.html" title="Describes a stochastic game. " alt="" coords="105,5,183,32"/>
+<area shape="rect" id="node4" href="$classSGPayoffTableModel.html" title="Derived class for payoff table models. " alt="" coords="207,5,361,32"/>
+</map>

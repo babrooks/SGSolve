@@ -1,0 +1,169 @@
+\hypertarget{classSGAction}{}\section{S\+G\+Action Class Reference}
+\label{classSGAction}\index{S\+G\+Action@{S\+G\+Action}}
+
+
+Enhanced version of \hyperlink{classSGBaseAction}{S\+G\+Base\+Action}.  
+
+
+
+
+{\ttfamily \#include $<$sgaction.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Action\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=165pt]{classSGAction__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Action\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classSGAction__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGAction_a2beea431eab0f867e6bb678c8649c3e0}{S\+G\+Action} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classSGAction_a763b30d91b4ac060895b3af2731d097c}{S\+G\+Action} (const \hyperlink{classSGEnv}{S\+G\+Env} \&\+\_\+env, int \+\_\+state, int \+\_\+action)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction_a89ed8a8129660d5b55319194c6a0e2c5}\label{classSGAction_a89ed8a8129660d5b55319194c6a0e2c5}} 
+const vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \& \hyperlink{classSGAction_a89ed8a8129660d5b55319194c6a0e2c5}{get\+Trimmed\+Points} () const
+\begin{DoxyCompactList}\small\item\em Get method for trimmed points. \end{DoxyCompactList}\item 
+void \hyperlink{classSGAction_a7ecafdb0cf42f83931f923f2e4e23f25}{intersect\+Ray} (const \hyperlink{classSGPoint}{S\+G\+Point} \&pivot, const \hyperlink{classSGPoint}{S\+G\+Point} \&direction)
+\begin{DoxyCompactList}\small\item\em Trims binding continuation segments. \end{DoxyCompactList}\item 
+void \hyperlink{classSGAction_ae78f31d121e131788ac4c767e01d012c}{intersect\+Ray\+Segment} (const \hyperlink{classSGPoint}{S\+G\+Point} \&pivot, const \hyperlink{classSGPoint}{S\+G\+Point} \&direction, int player)
+\begin{DoxyCompactList}\small\item\em Static method to carry out trimming operations. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction_a3c356d4fdf210ff3f0f62cdff8f6f257}\label{classSGAction_a3c356d4fdf210ff3f0f62cdff8f6f257}} 
+void \hyperlink{classSGAction_a3c356d4fdf210ff3f0f62cdff8f6f257}{intersect\+Ray\+Segment} (const \hyperlink{classSGPoint}{S\+G\+Point} \&pivot, const \hyperlink{classSGPoint}{S\+G\+Point} \&direction, \hyperlink{classSGTuple}{S\+G\+Tuple} \&segment)
+\begin{DoxyCompactList}\small\item\em Intersects the segment with the ray emanating from the pivot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction_a8e90e30336fb9402cbb30a00215f6931}\label{classSGAction_a8e90e30336fb9402cbb30a00215f6931}} 
+void \hyperlink{classSGAction_a8e90e30336fb9402cbb30a00215f6931}{trim} (const \hyperlink{classSGPoint}{S\+G\+Point} \&pivot, const \hyperlink{classSGPoint}{S\+G\+Point} \&direction)
+\begin{DoxyCompactList}\small\item\em Trims the trimmed\+Points using intersect\+Ray\+Segment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction_a175b7f97c90b86d58a994eb5b42161e9}\label{classSGAction_a175b7f97c90b86d58a994eb5b42161e9}} 
+void \hyperlink{classSGAction_a175b7f97c90b86d58a994eb5b42161e9}{calculate\+Min\+IC} (const \hyperlink{classSGGame}{S\+G\+Game} \&game, const vector$<$ bool $>$ \&update, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&threat\+Tuple)
+\begin{DoxyCompactList}\small\item\em Calculates the minimum incentive compatible continuation payoff. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction_a3d8c9d0bc1022b0348a7ba1c7a158118}\label{classSGAction_a3d8c9d0bc1022b0348a7ba1c7a158118}} 
+void \hyperlink{classSGAction_a3d8c9d0bc1022b0348a7ba1c7a158118}{update\+Trim} ()
+\begin{DoxyCompactList}\small\item\em Sets points equal to the trimmed points. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGAction_ae5779968293b5483524919185d2ce248}\label{classSGAction_ae5779968293b5483524919185d2ce248}} 
+double \hyperlink{classSGAction_ae5779968293b5483524919185d2ce248}{dist\+To\+Trimmed} () const
+\begin{DoxyCompactList}\small\item\em Calculates sup norm distance between comparable points and trimmed points. \end{DoxyCompactList}\item 
+void \hyperlink{classSGAction_af0097be42f837e507097036df744f481}{calculate\+Binding\+Continuations} (const vector$<$ bool $>$ \&updated\+Threat\+Tuple, const \hyperlink{classSGGame}{S\+G\+Game} \&game, const vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \&extreme\+Tuples, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&threat\+Tuple, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&pivot, const \hyperlink{classSGPoint}{S\+G\+Point} \&current\+Direction, int old\+West)
+\begin{DoxyCompactList}\small\item\em Calculates binding continuation values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static double \hyperlink{classSGAction_a9d6073bab90739b098d8653d2eb51c6b}{calculate\+Min\+IC} (int \hyperlink{classSGBaseAction_af293adc10da2dbb5a388a2fbcca0c67c}{action}, int \hyperlink{classSGBaseAction_a2301bf142f93f7d3ddedd44676d10c6a}{state}, int player, const \hyperlink{classSGGame}{S\+G\+Game} \&game, const \hyperlink{classSGTuple}{S\+G\+Tuple} \&threat\+Tuple)
+\begin{DoxyCompactList}\small\item\em Calculates the IC constraint. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classSGEnv}{S\+G\+Env} \& \hyperlink{classSGAction_a5ae60f6fd5a545d13c8a2525d7378b9d}{env}
+\item 
+vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \hyperlink{classSGAction_a55b3b33f432a0a77c89c40438aa2dd1f}{trimmed\+Points}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Enhanced version of \hyperlink{classSGBaseAction}{S\+G\+Base\+Action}. 
+
+Same functionality as \hyperlink{classSGBaseAction}{S\+G\+Base\+Action}, but includes additional methods for computing payoffs and a reference to a parent \hyperlink{classSGEnv}{S\+G\+Env} object to control parameters for the computation.
+
+This class is used by the pencil sharpening algorithm and has been deprecated. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSGAction_a2beea431eab0f867e6bb678c8649c3e0}\label{classSGAction_a2beea431eab0f867e6bb678c8649c3e0}} 
+\index{S\+G\+Action@{S\+G\+Action}!S\+G\+Action@{S\+G\+Action}}
+\index{S\+G\+Action@{S\+G\+Action}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{S\+G\+Action()}{SGAction()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily S\+G\+Action\+::\+S\+G\+Action (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Constructs a null action associated with the given \hyperlink{classSGEnv}{S\+G\+Env}. \mbox{\Hypertarget{classSGAction_a763b30d91b4ac060895b3af2731d097c}\label{classSGAction_a763b30d91b4ac060895b3af2731d097c}} 
+\index{S\+G\+Action@{S\+G\+Action}!S\+G\+Action@{S\+G\+Action}}
+\index{S\+G\+Action@{S\+G\+Action}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{S\+G\+Action()}{SGAction()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily S\+G\+Action\+::\+S\+G\+Action (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGEnv}{S\+G\+Env} \&}]{\+\_\+env,  }\item[{int}]{\+\_\+state,  }\item[{int}]{\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor. 
+
+Constructs an action for the given state and action index in the given environment. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGAction_af0097be42f837e507097036df744f481}\label{classSGAction_af0097be42f837e507097036df744f481}} 
+\index{S\+G\+Action@{S\+G\+Action}!calculate\+Binding\+Continuations@{calculate\+Binding\+Continuations}}
+\index{calculate\+Binding\+Continuations@{calculate\+Binding\+Continuations}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{calculate\+Binding\+Continuations()}{calculateBindingContinuations()}}
+{\footnotesize\ttfamily void S\+G\+Action\+::calculate\+Binding\+Continuations (\begin{DoxyParamCaption}\item[{const vector$<$ bool $>$ \&}]{updated\+Threat\+Tuple,  }\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{game,  }\item[{const vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ \&}]{extreme\+Tuples,  }\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{threat\+Tuple,  }\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{pivot,  }\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{current\+Direction,  }\item[{int}]{old\+West }\end{DoxyParamCaption})}
+
+
+
+Calculates binding continuation values. 
+
+This code is deprecated. Was part of the pencil sharpening algorithm. \mbox{\Hypertarget{classSGAction_a9d6073bab90739b098d8653d2eb51c6b}\label{classSGAction_a9d6073bab90739b098d8653d2eb51c6b}} 
+\index{S\+G\+Action@{S\+G\+Action}!calculate\+Min\+IC@{calculate\+Min\+IC}}
+\index{calculate\+Min\+IC@{calculate\+Min\+IC}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{calculate\+Min\+I\+C()}{calculateMinIC()}}
+{\footnotesize\ttfamily double S\+G\+Action\+::calculate\+Min\+IC (\begin{DoxyParamCaption}\item[{int}]{action,  }\item[{int}]{state,  }\item[{int}]{player,  }\item[{const \hyperlink{classSGGame}{S\+G\+Game} \&}]{game,  }\item[{const \hyperlink{classSGTuple}{S\+G\+Tuple} \&}]{threat\+Tuple }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Calculates the IC constraint. 
+
+Calculates the minimum incentive compatible expected continuation value for the given action, relative to the given threat tuple and for the given \hyperlink{classSGGame}{S\+G\+Game}. \mbox{\Hypertarget{classSGAction_a7ecafdb0cf42f83931f923f2e4e23f25}\label{classSGAction_a7ecafdb0cf42f83931f923f2e4e23f25}} 
+\index{S\+G\+Action@{S\+G\+Action}!intersect\+Ray@{intersect\+Ray}}
+\index{intersect\+Ray@{intersect\+Ray}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{intersect\+Ray()}{intersectRay()}}
+{\footnotesize\ttfamily void S\+G\+Action\+::intersect\+Ray (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{pivot,  }\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{direction }\end{DoxyParamCaption})}
+
+
+
+Trims binding continuation segments. 
+
+Intersects the binding continuation segments in \hyperlink{classSGBaseAction_a4d200e71f5bcfad3fe039293e90dbd70}{S\+G\+Action\+::points} with the half space that is below pivot in direction.\+get\+Normal(). \mbox{\Hypertarget{classSGAction_ae78f31d121e131788ac4c767e01d012c}\label{classSGAction_ae78f31d121e131788ac4c767e01d012c}} 
+\index{S\+G\+Action@{S\+G\+Action}!intersect\+Ray\+Segment@{intersect\+Ray\+Segment}}
+\index{intersect\+Ray\+Segment@{intersect\+Ray\+Segment}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{intersect\+Ray\+Segment()}{intersectRaySegment()}}
+{\footnotesize\ttfamily void S\+G\+Action\+::intersect\+Ray\+Segment (\begin{DoxyParamCaption}\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{pivot,  }\item[{const \hyperlink{classSGPoint}{S\+G\+Point} \&}]{direction,  }\item[{int}]{player }\end{DoxyParamCaption})}
+
+
+
+Static method to carry out trimming operations. 
+
+Intersects the action with the ray emanating from pivot in the given direction. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGAction_a5ae60f6fd5a545d13c8a2525d7378b9d}\label{classSGAction_a5ae60f6fd5a545d13c8a2525d7378b9d}} 
+\index{S\+G\+Action@{S\+G\+Action}!env@{env}}
+\index{env@{env}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{env}{env}}
+{\footnotesize\ttfamily const \hyperlink{classSGEnv}{S\+G\+Env}\& S\+G\+Action\+::env\hspace{0.3cm}{\ttfamily [private]}}
+
+Constant reference to the parent environment. \mbox{\Hypertarget{classSGAction_a55b3b33f432a0a77c89c40438aa2dd1f}\label{classSGAction_a55b3b33f432a0a77c89c40438aa2dd1f}} 
+\index{S\+G\+Action@{S\+G\+Action}!trimmed\+Points@{trimmed\+Points}}
+\index{trimmed\+Points@{trimmed\+Points}!S\+G\+Action@{S\+G\+Action}}
+\subsubsection{\texorpdfstring{trimmed\+Points}{trimmedPoints}}
+{\footnotesize\ttfamily vector$<$ \hyperlink{classSGTuple}{S\+G\+Tuple} $>$ S\+G\+Action\+::trimmed\+Points\hspace{0.3cm}{\ttfamily [private]}}
+
+Stores the \char`\"{}trimmed\char`\"{} points before updating. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgaction.\+hpp\item 
+src/cpp/sgaction.\+cpp\end{DoxyCompactItemize}

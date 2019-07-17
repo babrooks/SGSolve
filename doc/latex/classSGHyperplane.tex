@@ -1,0 +1,158 @@
+\hypertarget{classSGHyperplane}{}\section{S\+G\+Hyperplane Class Reference}
+\label{classSGHyperplane}\index{S\+G\+Hyperplane@{S\+G\+Hyperplane}}
+
+
+Represents a hyperplane in $\mathbb{R}^N$.  
+
+
+
+
+{\ttfamily \#include $<$sghyperplane.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Hyperplane\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classSGHyperplane__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGHyperplane_a4fd24c9b78e60211ffe894949ae8b5d0}\label{classSGHyperplane_a4fd24c9b78e60211ffe894949ae8b5d0}} 
+\hyperlink{classSGHyperplane_a4fd24c9b78e60211ffe894949ae8b5d0}{S\+G\+Hyperplane} (int num\+States)
+\begin{DoxyCompactList}\small\item\em Initializes tuple to \+\_\+num\+States zero-\/vectors. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a002bf1b44c69989e472582d669cf4342}\label{classSGHyperplane_a002bf1b44c69989e472582d669cf4342}} 
+\hyperlink{classSGHyperplane_a002bf1b44c69989e472582d669cf4342}{S\+G\+Hyperplane} (const \hyperlink{classSGPoint}{S\+G\+Point} \&\+\_\+normal, const vector$<$ double $>$ \&\+\_\+levels)
+\begin{DoxyCompactList}\small\item\em Initializes tuple to \+\_\+num\+Points copies of point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a2154f1656b3b98398be07aae43294c5d}\label{classSGHyperplane_a2154f1656b3b98398be07aae43294c5d}} 
+\hyperlink{classSGHyperplane_a2154f1656b3b98398be07aae43294c5d}{S\+G\+Hyperplane} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for empty tuple. \end{DoxyCompactList}\item 
+double \hyperlink{classSGHyperplane_a54ab1a4f18536c7eef048fb6579e797a}{expectation} (const vector$<$ double $>$ \&prob) const
+\begin{DoxyCompactList}\small\item\em Mathematical expectation. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a62b2eccbe7ef8c8623416e3d992e1f91}\label{classSGHyperplane_a62b2eccbe7ef8c8623416e3d992e1f91}} 
+void \hyperlink{classSGHyperplane_a62b2eccbe7ef8c8623416e3d992e1f91}{push\+\_\+back} (double level)
+\begin{DoxyCompactList}\small\item\em Adds a new level to the back of the hyperplane. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a38e2a9c26b1c58f8e0c585614f318628}\label{classSGHyperplane_a38e2a9c26b1c58f8e0c585614f318628}} 
+void \hyperlink{classSGHyperplane_a38e2a9c26b1c58f8e0c585614f318628}{clear} ()
+\begin{DoxyCompactList}\small\item\em Sets the levels equal to an empty vector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_ab3e09fc609822cf940419acff48b0493}\label{classSGHyperplane_ab3e09fc609822cf940419acff48b0493}} 
+int \hyperlink{classSGHyperplane_ab3e09fc609822cf940419acff48b0493}{size} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of levels in the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_af6425968a114ae5b9f3716220a6a9f31}\label{classSGHyperplane_af6425968a114ae5b9f3716220a6a9f31}} 
+void \hyperlink{classSGHyperplane_af6425968a114ae5b9f3716220a6a9f31}{set\+Normal} (const \hyperlink{classSGPoint}{S\+G\+Point} \&new\+Norm)
+\begin{DoxyCompactList}\small\item\em Set the normal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a380197ed5db29754ee75c7628aef53e5}\label{classSGHyperplane_a380197ed5db29754ee75c7628aef53e5}} 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGHyperplane_a380197ed5db29754ee75c7628aef53e5}{get\+Normal} () const
+\begin{DoxyCompactList}\small\item\em Get the normal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_af7232a6b42e6aec55e4a1cf93d9c9fd3}\label{classSGHyperplane_af7232a6b42e6aec55e4a1cf93d9c9fd3}} 
+const vector$<$ double $>$ \& \hyperlink{classSGHyperplane_af7232a6b42e6aec55e4a1cf93d9c9fd3}{get\+Levels} () const
+\begin{DoxyCompactList}\small\item\em Get the levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a4a074f4db5c1b9440adfc6a26ef849ec}\label{classSGHyperplane_a4a074f4db5c1b9440adfc6a26ef849ec}} 
+double \& \hyperlink{classSGHyperplane_a4a074f4db5c1b9440adfc6a26ef849ec}{operator\mbox{[}$\,$\mbox{]}} (int state)
+\begin{DoxyCompactList}\small\item\em Random access the elements of the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a12547087ec56fa4148d6057ab9bf04b2}\label{classSGHyperplane_a12547087ec56fa4148d6057ab9bf04b2}} 
+const double \& \hyperlink{classSGHyperplane_a12547087ec56fa4148d6057ab9bf04b2}{operator\mbox{[}$\,$\mbox{]}} (int state) const
+\begin{DoxyCompactList}\small\item\em Constant random access to elements of the tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_ab4450942532a7322912aac2f4369f6f2}\label{classSGHyperplane_ab4450942532a7322912aac2f4369f6f2}} 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \& \hyperlink{classSGHyperplane_ab4450942532a7322912aac2f4369f6f2}{operator=} (const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&rhs)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_af3570931974fe91ac522711273ac8c77}\label{classSGHyperplane_af3570931974fe91ac522711273ac8c77}} 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \& \hyperlink{classSGHyperplane_af3570931974fe91ac522711273ac8c77}{operator+=} (const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&rhs)
+\begin{DoxyCompactList}\small\item\em Augmented addition of tuples. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a533fe06af60ebb131b188706aa8b7dcc}\label{classSGHyperplane_a533fe06af60ebb131b188706aa8b7dcc}} 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \& \hyperlink{classSGHyperplane_a533fe06af60ebb131b188706aa8b7dcc}{operator-\/=} (const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&rhs)
+\begin{DoxyCompactList}\small\item\em Augmented subtraction of tuples. \end{DoxyCompactList}\item 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \& \hyperlink{classSGHyperplane_a8ae5f73b29eb37d186e28e2397d27eca}{operator+=} (double rhs)
+\begin{DoxyCompactList}\small\item\em Augmented addition of tuple with a point. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a8f06272872b7401c2b3fb813edf6598c}\label{classSGHyperplane_a8f06272872b7401c2b3fb813edf6598c}} 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \& \hyperlink{classSGHyperplane_a8f06272872b7401c2b3fb813edf6598c}{operator$\ast$=} (double d)
+\begin{DoxyCompactList}\small\item\em Scalar multiplication of the hyperplane. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a02ec6baabcf5857e6fd2499b587fe9fc}\label{classSGHyperplane_a02ec6baabcf5857e6fd2499b587fe9fc}} 
+void \hyperlink{classSGHyperplane_a02ec6baabcf5857e6fd2499b587fe9fc}{round} (double tol)
+\begin{DoxyCompactList}\small\item\em Round off significant digits smaller than tol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a667377972806a13c704dcd728340878d}\label{classSGHyperplane_a667377972806a13c704dcd728340878d}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGHyperplane_a667377972806a13c704dcd728340878d}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serialize using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGHyperplane_abe0d95282d0fe15ea7ac5e1d138ea527}\label{classSGHyperplane_abe0d95282d0fe15ea7ac5e1d138ea527}} 
+static double \hyperlink{classSGHyperplane_abe0d95282d0fe15ea7ac5e1d138ea527}{distance} (const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&t0, const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&t1)
+\begin{DoxyCompactList}\small\item\em Calculates the distance between t0 and t1 in the sup norm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGHyperplane_ac5855eb45d21dc29a4770ad335a426e6}{normal}
+\item 
+vector$<$ double $>$ \hyperlink{classSGHyperplane_a0da64d24816c2d70c84aeaf405035416}{levels}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGHyperplane_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGHyperplane_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class {\bfseries boost\+::serialization\+::access}
+\item 
+\mbox{\Hypertarget{classSGHyperplane_a93b21e7662e8dfa8780bf805ef59f8ba}\label{classSGHyperplane_a93b21e7662e8dfa8780bf805ef59f8ba}} 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \hyperlink{classSGHyperplane_a93b21e7662e8dfa8780bf805ef59f8ba}{operator$\ast$} (double d, const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&hp)
+\begin{DoxyCompactList}\small\item\em Left scalar multiplication of a tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a7ee3d1e4a61b951d5687af84b06e49e4}\label{classSGHyperplane_a7ee3d1e4a61b951d5687af84b06e49e4}} 
+\hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \hyperlink{classSGHyperplane_a7ee3d1e4a61b951d5687af84b06e49e4}{operator$\ast$} (const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&hp, double d)
+\begin{DoxyCompactList}\small\item\em Right scalar multiplication of a tuple. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGHyperplane_a2e0ac25ee46e85b3df26d063fccc23cf}\label{classSGHyperplane_a2e0ac25ee46e85b3df26d063fccc23cf}} 
+ostream \& \hyperlink{classSGHyperplane_a2e0ac25ee46e85b3df26d063fccc23cf}{operator$<$$<$} (ostream \&out, const \hyperlink{classSGHyperplane}{S\+G\+Hyperplane} \&rhs)
+\begin{DoxyCompactList}\small\item\em Output formatted tuple to file stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents a hyperplane in $\mathbb{R}^N$. 
+
+Consists of a normal direction and a vector of levels, one for each state.
+
+Used to represent half spaces in \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max} and \hyperlink{classSGSolver__MaxMinMax__3Player}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+3\+Player}. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGHyperplane_a54ab1a4f18536c7eef048fb6579e797a}\label{classSGHyperplane_a54ab1a4f18536c7eef048fb6579e797a}} 
+\index{S\+G\+Hyperplane@{S\+G\+Hyperplane}!expectation@{expectation}}
+\index{expectation@{expectation}!S\+G\+Hyperplane@{S\+G\+Hyperplane}}
+\subsubsection{\texorpdfstring{expectation()}{expectation()}}
+{\footnotesize\ttfamily double S\+G\+Hyperplane\+::expectation (\begin{DoxyParamCaption}\item[{const vector$<$ double $>$ \&}]{prob }\end{DoxyParamCaption}) const}
+
+
+
+Mathematical expectation. 
+
+Returns the weighted sum of the levels using the weights in prob. \mbox{\Hypertarget{classSGHyperplane_a8ae5f73b29eb37d186e28e2397d27eca}\label{classSGHyperplane_a8ae5f73b29eb37d186e28e2397d27eca}} 
+\index{S\+G\+Hyperplane@{S\+G\+Hyperplane}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!S\+G\+Hyperplane@{S\+G\+Hyperplane}}
+\subsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily \hyperlink{classSGHyperplane}{S\+G\+Hyperplane}\& S\+G\+Hyperplane\+::operator+= (\begin{DoxyParamCaption}\item[{double}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Augmented addition of tuple with a point. 
+
+Adds rhs to each level. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGHyperplane_a0da64d24816c2d70c84aeaf405035416}\label{classSGHyperplane_a0da64d24816c2d70c84aeaf405035416}} 
+\index{S\+G\+Hyperplane@{S\+G\+Hyperplane}!levels@{levels}}
+\index{levels@{levels}!S\+G\+Hyperplane@{S\+G\+Hyperplane}}
+\subsubsection{\texorpdfstring{levels}{levels}}
+{\footnotesize\ttfamily vector$<$double$>$ S\+G\+Hyperplane\+::levels\hspace{0.3cm}{\ttfamily [private]}}
+
+Level attained in each state. \mbox{\Hypertarget{classSGHyperplane_ac5855eb45d21dc29a4770ad335a426e6}\label{classSGHyperplane_ac5855eb45d21dc29a4770ad335a426e6}} 
+\index{S\+G\+Hyperplane@{S\+G\+Hyperplane}!normal@{normal}}
+\index{normal@{normal}!S\+G\+Hyperplane@{S\+G\+Hyperplane}}
+\subsubsection{\texorpdfstring{normal}{normal}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Hyperplane\+::normal\hspace{0.3cm}{\ttfamily [private]}}
+
+Normal normal to the hyperplanes. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sghyperplane.\+hpp\item 
+src/cpp/sghyperplane.\+cpp\end{DoxyCompactItemize}

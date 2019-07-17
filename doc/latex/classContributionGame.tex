@@ -1,0 +1,83 @@
+\hypertarget{classContributionGame}{}\section{Contribution\+Game Class Reference}
+\label{classContributionGame}\index{Contribution\+Game@{Contribution\+Game}}
+
+
+N-\/player prisoners\textquotesingle{} contribution game.  
+
+
+
+
+{\ttfamily \#include $<$sgcontribution.\+hpp$>$}
+
+
+
+Inheritance diagram for Contribution\+Game\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classContributionGame__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Contribution\+Game\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classContributionGame__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classContributionGame_aa642964959782aaed1d86a0d38d32493}\label{classContributionGame_aa642964959782aaed1d86a0d38d32493}} 
+{\bfseries Contribution\+Game} (int \+\_\+num\+Players, double \+\_\+delta, int \+\_\+num\+States)
+\item 
+virtual \hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classContributionGame_ab33daef685ec7b22c44dad283c2f88cd}{payoffs} (int state, const vector$<$ int $>$ \&actions) const
+\begin{DoxyCompactList}\small\item\em The payoff function. \end{DoxyCompactList}\item 
+virtual double \hyperlink{classContributionGame_a7b5ca7f6f0119f5899784ceae570666d}{probability} (int state, const vector$<$ int $>$ \&actions, int statep) const
+\begin{DoxyCompactList}\small\item\em Transition probabilities. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+N-\/player prisoners\textquotesingle{} contribution game. 
+
+$<$ This class implements a multi-\/player prisoners\textquotesingle{} dilemma with two states and uniform transition probabilities. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classContributionGame_ab33daef685ec7b22c44dad283c2f88cd}\label{classContributionGame_ab33daef685ec7b22c44dad283c2f88cd}} 
+\index{Contribution\+Game@{Contribution\+Game}!payoffs@{payoffs}}
+\index{payoffs@{payoffs}!Contribution\+Game@{Contribution\+Game}}
+\subsubsection{\texorpdfstring{payoffs()}{payoffs()}}
+{\footnotesize\ttfamily virtual \hyperlink{classSGPoint}{S\+G\+Point} Contribution\+Game\+::payoffs (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+The payoff function. 
+
+A class that is derived from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the payoffs method, which returns, for a given state and action pair, the flow payoffs that the players receive as an \hyperlink{classSGPoint}{S\+G\+Point}. 
+
+Implements \hyperlink{classSGAbstractGame_a3fc1cd009d1813f44f1f219e7deb6eef}{S\+G\+Abstract\+Game}.
+
+\mbox{\Hypertarget{classContributionGame_a7b5ca7f6f0119f5899784ceae570666d}\label{classContributionGame_a7b5ca7f6f0119f5899784ceae570666d}} 
+\index{Contribution\+Game@{Contribution\+Game}!probability@{probability}}
+\index{probability@{probability}!Contribution\+Game@{Contribution\+Game}}
+\subsubsection{\texorpdfstring{probability()}{probability()}}
+{\footnotesize\ttfamily virtual double Contribution\+Game\+::probability (\begin{DoxyParamCaption}\item[{int}]{state,  }\item[{const vector$<$ int $>$ \&}]{actions,  }\item[{int}]{statep }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Transition probabilities. 
+
+A class that derives from \hyperlink{classSGAbstractGame}{S\+G\+Abstract\+Game} must define the probability method, which gives, for each state and action pair and new state, the probability of reaching the new state tomorrow when starting from the given state and when the given action pair is played. 
+
+Implements \hyperlink{classSGAbstractGame_a416b31d5020b75de49447ce4f7783b98}{S\+G\+Abstract\+Game}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgcontribution.\+hpp\end{DoxyCompactItemize}

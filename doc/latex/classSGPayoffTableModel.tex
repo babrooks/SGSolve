@@ -1,0 +1,88 @@
+\hypertarget{classSGPayoffTableModel}{}\section{S\+G\+Payoff\+Table\+Model Class Reference}
+\label{classSGPayoffTableModel}\index{S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}}
+
+
+Derived class for payoff table models.  
+
+
+
+
+{\ttfamily \#include $<$sgpayofftablemodel.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Payoff\+Table\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=217pt]{classSGPayoffTableModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Payoff\+Table\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classSGPayoffTableModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPayoffTableModel_ab6768d4b56d310752769d6b4eb094323}\label{classSGPayoffTableModel_ab6768d4b56d310752769d6b4eb094323}} 
+\hyperlink{classSGPayoffTableModel_ab6768d4b56d310752769d6b4eb094323}{S\+G\+Payoff\+Table\+Model} (\hyperlink{classSGGame}{S\+G\+Game} $\ast$\+\_\+game, int \+\_\+state)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+Q\+Variant \hyperlink{classSGPayoffTableModel_ad47a81403a6442bd2fb879b52beea8c1}{data} (const Q\+Model\+Index \&index, int role) const Q\+\_\+\+D\+E\+C\+L\+\_\+\+O\+V\+E\+R\+R\+I\+DE
+\begin{DoxyCompactList}\small\item\em Returns formatted data. \end{DoxyCompactList}\item 
+Q\+Variant \hyperlink{classSGPayoffTableModel_a8473c095d2a00721bd36c196f2b90b95}{header\+Data} (int section, Qt\+::\+Orientation orientation, int role) const Q\+\_\+\+D\+E\+C\+L\+\_\+\+O\+V\+E\+R\+R\+I\+DE
+\begin{DoxyCompactList}\small\item\em Returns formatted header data. \end{DoxyCompactList}\item 
+bool \hyperlink{classSGPayoffTableModel_a9be799422c8a564a00911e959c795b5d}{set\+Data} (const Q\+Model\+Index \&index, const Q\+Variant \&value, int role)
+\begin{DoxyCompactList}\small\item\em Sets data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Derived class for payoff table models. 
+
+This class handles the interface between \hyperlink{classSGTableView}{S\+G\+Table\+View} and the payoff matrices in \hyperlink{classSGGameHandler_ac95a8d363c98979cbbd8fc63a112bf11}{S\+G\+Game\+Handler\+::game}. Adds functionality for header data (using the row player action/ column player action conventions. Also reimplements the \hyperlink{classSGPayoffTableModel_ad47a81403a6442bd2fb879b52beea8c1}{data()} method to display an ordered pair of the two players\textquotesingle{} payoffs. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGPayoffTableModel_ad47a81403a6442bd2fb879b52beea8c1}\label{classSGPayoffTableModel_ad47a81403a6442bd2fb879b52beea8c1}} 
+\index{S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}!data@{data}}
+\index{data@{data}!S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}}
+\subsubsection{\texorpdfstring{data()}{data()}}
+{\footnotesize\ttfamily Q\+Variant S\+G\+Payoff\+Table\+Model\+::data (\begin{DoxyParamCaption}\item[{const Q\+Model\+Index \&}]{index,  }\item[{int}]{role }\end{DoxyParamCaption}) const}
+
+
+
+Returns formatted data. 
+
+Returns an ordered pair of the two players\textquotesingle{} payoffs for the action profile specified in index. Reads this data from the game object using \hyperlink{classSGGame_a37036f4f8389a68c53b12eb75c1eb7af}{S\+G\+Game\+::get\+Payoffs}. \mbox{\Hypertarget{classSGPayoffTableModel_a8473c095d2a00721bd36c196f2b90b95}\label{classSGPayoffTableModel_a8473c095d2a00721bd36c196f2b90b95}} 
+\index{S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}!header\+Data@{header\+Data}}
+\index{header\+Data@{header\+Data}!S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}}
+\subsubsection{\texorpdfstring{header\+Data()}{headerData()}}
+{\footnotesize\ttfamily Q\+Variant S\+G\+Payoff\+Table\+Model\+::header\+Data (\begin{DoxyParamCaption}\item[{int}]{section,  }\item[{Qt\+::\+Orientation}]{orientation,  }\item[{int}]{role }\end{DoxyParamCaption}) const}
+
+
+
+Returns formatted header data. 
+
+Returns header data formatted to indicate the appropriate row/ column action. \mbox{\Hypertarget{classSGPayoffTableModel_a9be799422c8a564a00911e959c795b5d}\label{classSGPayoffTableModel_a9be799422c8a564a00911e959c795b5d}} 
+\index{S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}!set\+Data@{set\+Data}}
+\index{set\+Data@{set\+Data}!S\+G\+Payoff\+Table\+Model@{S\+G\+Payoff\+Table\+Model}}
+\subsubsection{\texorpdfstring{set\+Data()}{setData()}}
+{\footnotesize\ttfamily bool S\+G\+Payoff\+Table\+Model\+::set\+Data (\begin{DoxyParamCaption}\item[{const Q\+Model\+Index \&}]{index,  }\item[{const Q\+Variant \&}]{value,  }\item[{int}]{role }\end{DoxyParamCaption})}
+
+
+
+Sets data. 
+
+Parses the data in value to set a new pair of payoffs. Sets the data using S\+G\+Game\+::set\+Data. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgpayofftablemodel.\+hpp\item 
+viewer/cpp/sgpayofftablemodel.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,113 @@
+\hypertarget{classSGPlotSettings}{}\section{S\+G\+Plot\+Settings Class Reference}
+\label{classSGPlotSettings}\index{S\+G\+Plot\+Settings@{S\+G\+Plot\+Settings}}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_a76b5597519c9cc9fa3f7b3ee24c28d39}\label{classSGPlotSettings_a76b5597519c9cc9fa3f7b3ee24c28d39}} 
+enum {\bfseries S\+G\+Scatter\+Param} \{ \newline
+{\bfseries Pivot\+Style}, 
+{\bfseries Exp\+Pivot\+Style}, 
+{\bfseries Stage\+Style}, 
+{\bfseries Binding\+Payoff\+Style}, 
+\newline
+{\bfseries I\+C\+Payoff\+Style}, 
+{\bfseries Payoff\+Style}, 
+{\bfseries Tuple\+Style}, 
+{\bfseries Num\+Scatter\+Params}
+ \}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_ae655b3b1e012fcb780d4ed541a725f05}\label{classSGPlotSettings_ae655b3b1e012fcb780d4ed541a725f05}} 
+enum {\bfseries S\+G\+Pen\+Param} \{ \newline
+{\bfseries Stage\+Pen}, 
+{\bfseries Pivot\+Pen}, 
+{\bfseries Exp\+Pivot\+Pen}, 
+{\bfseries Exp\+Pen}, 
+\newline
+{\bfseries Prev\+Exp\+Pen}, 
+{\bfseries Value\+Pen}, 
+{\bfseries I\+C\+Pen}, 
+{\bfseries Binding\+Payoff\+Pen}, 
+\newline
+{\bfseries Direction\+Pen}, 
+{\bfseries Gen\+Line\+Pen}, 
+{\bfseries Num\+Pen\+Params}
+ \}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_a3e027e0bf85db5184d5d2fe9362e245d}\label{classSGPlotSettings_a3e027e0bf85db5184d5d2fe9362e245d}} 
+enum {\bfseries S\+G\+Plot\+Feature} \{ \newline
+{\bfseries Stage\+Payoffs}, 
+{\bfseries Pivot}, 
+{\bfseries Exp\+Pivot}, 
+{\bfseries Payoff\+Set}, 
+\newline
+{\bfseries Exp\+Payoff\+Set}, 
+{\bfseries Prev\+Exp\+Payoff\+Set}, 
+{\bfseries I\+C\+Boundary}, 
+{\bfseries Binding\+Payoffs}, 
+\newline
+{\bfseries Direction}, 
+{\bfseries Gen\+Lines}, 
+{\bfseries Grid\+Lines}, 
+{\bfseries Zero\+Lines}, 
+\newline
+{\bfseries Uniform\+Ranges}, 
+{\bfseries Num\+Plot\+Features}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_ac788d0490d12b5422f27631db51c4411}\label{classSGPlotSettings_ac788d0490d12b5422f27631db51c4411}} 
+\hyperlink{classSGPlotSettings_ac788d0490d12b5422f27631db51c4411}{S\+G\+Plot\+Settings} ()
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGPlotSettings_a1048c1e82e135c3c8bae919c1e47f09c}\label{classSGPlotSettings_a1048c1e82e135c3c8bae919c1e47f09c}} 
+void {\bfseries restore\+Defaults} ()
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_aed5e0cdec60f428e9aa3ae25172eaf8b}\label{classSGPlotSettings_aed5e0cdec60f428e9aa3ae25172eaf8b}} 
+void {\bfseries restore\+Default} (const S\+G\+Plot\+Settings\+::\+S\+G\+Scatter\+Param param)
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_abf35a7b6b2d9dad699527270ff334916}\label{classSGPlotSettings_abf35a7b6b2d9dad699527270ff334916}} 
+void {\bfseries restore\+Default} (const S\+G\+Plot\+Settings\+::\+S\+G\+Pen\+Param param)
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_abb2a031b4b0aeaa9a5c04bfeb99939d2}\label{classSGPlotSettings_abb2a031b4b0aeaa9a5c04bfeb99939d2}} 
+const Q\+C\+P\+Scatter\+Style \& {\bfseries get} (const S\+G\+Plot\+Settings\+::\+S\+G\+Scatter\+Param param) const
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_ac0163bf092eff5613834272e8535be20}\label{classSGPlotSettings_ac0163bf092eff5613834272e8535be20}} 
+const Q\+Pen \& {\bfseries get} (const S\+G\+Plot\+Settings\+::\+S\+G\+Pen\+Param param) const
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_ab6a9ce3dc76d6ad187487d17e5b759e0}\label{classSGPlotSettings_ab6a9ce3dc76d6ad187487d17e5b759e0}} 
+bool {\bfseries get} (const S\+G\+Plot\+Settings\+::\+S\+G\+Plot\+Feature param) const
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_a962a48121fca1edf4acdd485d941fee3}\label{classSGPlotSettings_a962a48121fca1edf4acdd485d941fee3}} 
+void {\bfseries set} (const S\+G\+Plot\+Settings\+::\+S\+G\+Scatter\+Param param, const Q\+C\+P\+Scatter\+Style \&new\+Style)
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_a2d1695078c94a973dfb0b6fd9910c2a2}\label{classSGPlotSettings_a2d1695078c94a973dfb0b6fd9910c2a2}} 
+void {\bfseries set} (const S\+G\+Plot\+Settings\+::\+S\+G\+Pen\+Param param, const Q\+Pen \&new\+Pen)
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_a150ebe4d84dbb7bcdc05385bc8091bac}\label{classSGPlotSettings_a150ebe4d84dbb7bcdc05385bc8091bac}} 
+void {\bfseries set} (const S\+G\+Plot\+Settings\+::\+S\+G\+Plot\+Feature param, bool tf)
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_af8b8b771f3897f7487e9dfbaf88a2a89}\label{classSGPlotSettings_af8b8b771f3897f7487e9dfbaf88a2a89}} 
+void {\bfseries disable} (const S\+G\+Plot\+Settings\+::\+S\+G\+Scatter\+Param param)
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_a7d3f2e58941f5f76e193bf567a83b49b}\label{classSGPlotSettings_a7d3f2e58941f5f76e193bf567a83b49b}} 
+void {\bfseries disable} (const S\+G\+Plot\+Settings\+::\+S\+G\+Pen\+Param param)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_ac587d4f23d3beeb6506013f707cf8a3e}\label{classSGPlotSettings_ac587d4f23d3beeb6506013f707cf8a3e}} 
+std\+::vector$<$ Q\+C\+P\+Scatter\+Style $>$ {\bfseries styles}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_aef45e112cea82b97bba0802b33b70ca0}\label{classSGPlotSettings_aef45e112cea82b97bba0802b33b70ca0}} 
+std\+::vector$<$ Q\+Pen $>$ {\bfseries pens}
+\item 
+\mbox{\Hypertarget{classSGPlotSettings_af479e795f9fbc1bc1e2b98268f83a7c3}\label{classSGPlotSettings_af479e795f9fbc1bc1e2b98268f83a7c3}} 
+std\+::vector$<$ bool $>$ {\bfseries features}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgplotsettings.\+hpp\item 
+viewer/cpp/sgplotsettings.\+cpp\end{DoxyCompactItemize}

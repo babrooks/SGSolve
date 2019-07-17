@@ -1,0 +1,101 @@
+\hypertarget{classSGProductPolicy}{}\section{S\+G\+Product\+Policy Class Reference}
+\label{classSGProductPolicy}\index{S\+G\+Product\+Policy@{S\+G\+Product\+Policy}}
+
+
+Class for storing product policies.  
+
+
+
+
+{\ttfamily \#include $<$sgproductpolicy.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Product\+Policy\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=176pt]{classSGProductPolicy__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGProductPolicy_aa822b9975e47f654ab4311b35a597473}\label{classSGProductPolicy_aa822b9975e47f654ab4311b35a597473}} 
+\hyperlink{classSGProductPolicy_aa822b9975e47f654ab4311b35a597473}{S\+G\+Product\+Policy} (int \+\_\+num\+States, const \hyperlink{classSGPoint}{S\+G\+Point} \&\+\_\+dir)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_add72243a393131f102540126aea8859a}\label{classSGProductPolicy_add72243a393131f102540126aea8859a}} 
+const S\+G\+Policy\+Set \& \hyperlink{classSGProductPolicy_add72243a393131f102540126aea8859a}{get\+Policies} (int state) const
+\begin{DoxyCompactList}\small\item\em Get method for policies in a given state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_ab9ba1bb8485b50ad98957a3c6cd85e9a}\label{classSGProductPolicy_ab9ba1bb8485b50ad98957a3c6cd85e9a}} 
+const \hyperlink{classSGPoint}{S\+G\+Point} \& \hyperlink{classSGProductPolicy_ab9ba1bb8485b50ad98957a3c6cd85e9a}{get\+Dir} () const
+\begin{DoxyCompactList}\small\item\em Get method for the direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_af9c6f66468315d4091bbba12a4d44b56}\label{classSGProductPolicy_af9c6f66468315d4091bbba12a4d44b56}} 
+const vector$<$ double $>$ \& \hyperlink{classSGProductPolicy_af9c6f66468315d4091bbba12a4d44b56}{get\+Levels} () const
+\begin{DoxyCompactList}\small\item\em Get method for levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_a936a5504d92977a627724e8b45066b54}\label{classSGProductPolicy_a936a5504d92977a627724e8b45066b54}} 
+void \hyperlink{classSGProductPolicy_a936a5504d92977a627724e8b45066b54}{insert\+Policy} (int state, const \hyperlink{classSGPolicy}{S\+G\+Policy} \&policy)
+\begin{DoxyCompactList}\small\item\em Inserts a new policy in the given state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_a5638293bd9eb245f1d170124c53cb697}\label{classSGProductPolicy_a5638293bd9eb245f1d170124c53cb697}} 
+void \hyperlink{classSGProductPolicy_a5638293bd9eb245f1d170124c53cb697}{erase\+Policy} (int state, const \hyperlink{classSGPolicy}{S\+G\+Policy} \&policy)
+\begin{DoxyCompactList}\small\item\em Removes a policy from the given state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_a86d1e5a5d77be5e327f693901d56ee8a}\label{classSGProductPolicy_a86d1e5a5d77be5e327f693901d56ee8a}} 
+void \hyperlink{classSGProductPolicy_a86d1e5a5d77be5e327f693901d56ee8a}{set\+Level} (int state, double lvl)
+\begin{DoxyCompactList}\small\item\em Sets the level in a given state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_a2cefb83938def0559e6cf0f49ce1d051}\label{classSGProductPolicy_a2cefb83938def0559e6cf0f49ce1d051}} 
+void \hyperlink{classSGProductPolicy_a2cefb83938def0559e6cf0f49ce1d051}{clear} ()
+\begin{DoxyCompactList}\small\item\em Clears the policies in all states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_acfb729843ff2535c9517683d6d87011b}\label{classSGProductPolicy_acfb729843ff2535c9517683d6d87011b}} 
+bool \hyperlink{classSGProductPolicy_acfb729843ff2535c9517683d6d87011b}{isempty} () const
+\begin{DoxyCompactList}\small\item\em Returns whether the policy set is empty in any state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_ac5ef7368e3056a0de9724b50fa721e0e}\label{classSGProductPolicy_ac5ef7368e3056a0de9724b50fa721e0e}} 
+int \hyperlink{classSGProductPolicy_ac5ef7368e3056a0de9724b50fa721e0e}{dimension} () const
+\begin{DoxyCompactList}\small\item\em Returns the total number of policies, minus the number of states. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_a8749ddaea74aa5174bcb21971020e097}\label{classSGProductPolicy_a8749ddaea74aa5174bcb21971020e097}} 
+std\+::string \hyperlink{classSGProductPolicy_a8749ddaea74aa5174bcb21971020e097}{hash} () const
+\begin{DoxyCompactList}\small\item\em Returns a unique identifier for the product policy. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGProductPolicy_aa409d0511c127e2624f143ffbae0145c}\label{classSGProductPolicy_aa409d0511c127e2624f143ffbae0145c}} 
+int \hyperlink{classSGProductPolicy_aa409d0511c127e2624f143ffbae0145c}{num\+States} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of states. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ S\+G\+Policy\+Set $>$ \hyperlink{classSGProductPolicy_abdf942313081ac619e2a2efe7bf1480d}{policies}
+\item 
+\hyperlink{classSGPoint}{S\+G\+Point} \hyperlink{classSGProductPolicy_ac8fcfe1943a80e7229f4499f3ada1026}{dir}
+\item 
+vector$<$ double $>$ \hyperlink{classSGProductPolicy_a2bc6dc794b3e3e74e6a84a9d4d3f47ec}{levels}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for storing product policies. 
+
+$<$ This class is part of the routine for the exact computation of the max-\/min-\/max operator in \hyperlink{classSGSolver__MaxMinMax__3Player}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+\_\+3\+Player}. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGProductPolicy_ac8fcfe1943a80e7229f4499f3ada1026}\label{classSGProductPolicy_ac8fcfe1943a80e7229f4499f3ada1026}} 
+\index{S\+G\+Product\+Policy@{S\+G\+Product\+Policy}!dir@{dir}}
+\index{dir@{dir}!S\+G\+Product\+Policy@{S\+G\+Product\+Policy}}
+\subsubsection{\texorpdfstring{dir}{dir}}
+{\footnotesize\ttfamily \hyperlink{classSGPoint}{S\+G\+Point} S\+G\+Product\+Policy\+::dir\hspace{0.3cm}{\ttfamily [private]}}
+
+The direction in which these policies are optimal. \mbox{\Hypertarget{classSGProductPolicy_a2bc6dc794b3e3e74e6a84a9d4d3f47ec}\label{classSGProductPolicy_a2bc6dc794b3e3e74e6a84a9d4d3f47ec}} 
+\index{S\+G\+Product\+Policy@{S\+G\+Product\+Policy}!levels@{levels}}
+\index{levels@{levels}!S\+G\+Product\+Policy@{S\+G\+Product\+Policy}}
+\subsubsection{\texorpdfstring{levels}{levels}}
+{\footnotesize\ttfamily vector$<$double$>$ S\+G\+Product\+Policy\+::levels\hspace{0.3cm}{\ttfamily [private]}}
+
+The associated optimal levels. \mbox{\Hypertarget{classSGProductPolicy_abdf942313081ac619e2a2efe7bf1480d}\label{classSGProductPolicy_abdf942313081ac619e2a2efe7bf1480d}} 
+\index{S\+G\+Product\+Policy@{S\+G\+Product\+Policy}!policies@{policies}}
+\index{policies@{policies}!S\+G\+Product\+Policy@{S\+G\+Product\+Policy}}
+\subsubsection{\texorpdfstring{policies}{policies}}
+{\footnotesize\ttfamily vector$<$S\+G\+Policy\+Set$>$ S\+G\+Product\+Policy\+::policies\hspace{0.3cm}{\ttfamily [private]}}
+
+The vector of sets of policies for each state. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgproductpolicy.\+hpp\item 
+src/cpp/sgproductpolicy.\+cpp\end{DoxyCompactItemize}

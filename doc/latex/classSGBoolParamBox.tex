@@ -1,0 +1,71 @@
+\hypertarget{classSGBoolParamBox}{}\section{S\+G\+Bool\+Param\+Box Class Reference}
+\label{classSGBoolParamBox}\index{S\+G\+Bool\+Param\+Box@{S\+G\+Bool\+Param\+Box}}
+
+
+Class for changing boolean parameters.  
+
+
+
+
+{\ttfamily \#include $<$sgsettingshandler.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Bool\+Param\+Box\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classSGBoolParamBox__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Bool\+Param\+Box\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classSGBoolParamBox__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGBoolParamBox_a7dbba884d15e63ac6302672a0526d689}\label{classSGBoolParamBox_a7dbba884d15e63ac6302672a0526d689}} 
+\hyperlink{classSGBoolParamBox_a7dbba884d15e63ac6302672a0526d689}{S\+G\+Bool\+Param\+Box} (Q\+Widget $\ast$parent, \hyperlink{classSGEnv}{S\+G\+Env} $\ast$\+\_\+env, \hyperlink{namespaceSG_a0b164afe6c58be3386d9e3f6e857b673}{S\+G\+::\+B\+O\+O\+L\+\_\+\+P\+A\+R\+AM} \+\_\+param)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGBoolParamBox_a1cb3236565d114c247b82ee9b5a344e7}\label{classSGBoolParamBox_a1cb3236565d114c247b82ee9b5a344e7}} 
+void \hyperlink{classSGBoolParamBox_a1cb3236565d114c247b82ee9b5a344e7}{change\+Param} ()
+\begin{DoxyCompactList}\small\item\em Slot called when the check is modified. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGBoolParamBox_a80b6c9d3e08126850ce592e395cbe6f7}\label{classSGBoolParamBox_a80b6c9d3e08126850ce592e395cbe6f7}} 
+void \hyperlink{classSGBoolParamBox_a80b6c9d3e08126850ce592e395cbe6f7}{reset\+Param} ()
+\begin{DoxyCompactList}\small\item\em Slot called when resetting to default values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGBoolParamBox_a325cf165100d961ef33c77001b42270e}\label{classSGBoolParamBox_a325cf165100d961ef33c77001b42270e}} 
+void \hyperlink{classSGBoolParamBox_a325cf165100d961ef33c77001b42270e}{set\+Check} (bool tf)
+\begin{DoxyCompactList}\small\item\em The set method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGBoolParamBox_a490e196a9b5942edf920d16a83ff9a98}\label{classSGBoolParamBox_a490e196a9b5942edf920d16a83ff9a98}} 
+\hyperlink{namespaceSG_a0b164afe6c58be3386d9e3f6e857b673}{S\+G\+::\+B\+O\+O\+L\+\_\+\+P\+A\+R\+AM} \hyperlink{classSGBoolParamBox_a490e196a9b5942edf920d16a83ff9a98}{param}
+\begin{DoxyCompactList}\small\item\em The boolean parameter associated with the box. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGBoolParamBox_aa3592842bf61b151242c99cf8bc3517a}\label{classSGBoolParamBox_aa3592842bf61b151242c99cf8bc3517a}} 
+\hyperlink{classSGEnv}{S\+G\+Env} $\ast$ \hyperlink{classSGBoolParamBox_aa3592842bf61b151242c99cf8bc3517a}{env}
+\begin{DoxyCompactList}\small\item\em The associated environment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for changing boolean parameters. 
+
+A customized version of Q\+Check\+Box for modifying boolean parameters in an \hyperlink{classSGEnv}{S\+G\+Env} object that is used by the \hyperlink{classSGSettingsHandler}{S\+G\+Settings\+Handler}. It has a private members which are the particular \hyperlink{namespaceSG_a0b164afe6c58be3386d9e3f6e857b673}{S\+G\+::\+B\+O\+O\+L\+\_\+\+P\+A\+R\+AM} that is associated with this edit and a pointer to an associated \hyperlink{classSGEnv}{S\+G\+Env} object. There are also mutator methods for setting the parameter value and resetting to the default value of the given parameter. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsettingshandler.\+hpp\end{DoxyCompactItemize}

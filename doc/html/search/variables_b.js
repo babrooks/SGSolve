@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['newwest',['newWest',['../classSGApprox.html#aed002d6e06e7199e10b3ac4f27b6cb6c',1,'SGApprox']]],
+  ['nextstate',['nextState',['../classSGProbabilityTableModel.html#af7619d3adeb71d6ff7f75f78f4b0e34f',1,'SGProbabilityTableModel']]],
+  ['nominalxrange',['nominalXRange',['../classSGCustomPlot.html#a255402d40b328430c649c878ee593b11',1,'SGCustomPlot']]],
+  ['nominalyrange',['nominalYRange',['../classSGCustomPlot.html#a4d7a4961ec0e095a9c3582060bc9cbd2',1,'SGCustomPlot']]],
+  ['normal',['normal',['../classSGHyperplane.html#ac5855eb45d21dc29a4770ad335a426e6',1,'SGHyperplane']]],
+  ['nullaction',['nullAction',['../classSGApprox.html#ad2aeb05506b86560b35a0a812f95c4be',1,'SGApprox']]],
+  ['numactions',['numActions',['../classSGAbstractGame.html#a907a945ec0afb42dfeb164b4520879c5',1,'SGAbstractGame::numActions()'],['../classSGGame.html#acebe94d195ffb67f92925bcd4c26d1a9',1,'SGGame::numActions()'],['../classSGSolver__MaxMinMax.html#a58be6ea5885884e3dda5cdfcaf92236c',1,'SGSolver_MaxMinMax::numActions()'],['../classSGSolver__MaxMinMax__3Player.html#a0f67396d7ccbb5a4c71be0d75c9f9f79',1,'SGSolver_MaxMinMax_3Player::numActions()']]],
+  ['numactions_5ftotal',['numActions_total',['../classSGGame.html#a3b219a37177b5b8b38737f570e419429',1,'SGGame']]],
+  ['numactions_5ftotalbystate',['numActions_totalByState',['../classSGSolver__MaxMinMax.html#a17e30f869dd8132126a07b31a5123ad5',1,'SGSolver_MaxMinMax::numActions_totalByState()'],['../classSGSolver__MaxMinMax__3Player.html#a7da97117d0d8dd9bfd739ee312513c64',1,'SGSolver_MaxMinMax_3Player::numActions_totalByState()']]],
+  ['numactionsedits',['numActionsEdits',['../classSGGameHandler.html#af781ae067fa7402743f2f494ab4ff20f',1,'SGGameHandler']]],
+  ['numdirections',['numDirections',['../classSGSolver__JYC.html#a76cc905a4d426dba288a6d3dea632fb9',1,'SGSolver_JYC::numDirections()'],['../classSGSolver__MaxMinMax__GRB.html#a70deb0251347be75832bc2965ecf5088',1,'SGSolver_MaxMinMax_GRB::numDirections()']]],
+  ['numendogdirs',['numEndogDirs',['../classSGSolver__MaxMinMax__3Player.html#acc47b9e01943a25c9939b22723c027e1',1,'SGSolver_MaxMinMax_3Player']]],
+  ['numextremetuples',['numExtremeTuples',['../classSGIteration.html#a14ecfb94b3111911d9b0ef545f72e88d',1,'SGIteration']]],
+  ['numiter',['numIter',['../classSGSimulator.html#aad0eefe29ca6df736afb9ed31be28324',1,'SGSimulator::numIter()'],['../classSGSolver__MaxMinMax.html#aa9e508ac0cf0175d2635a2fcc4bb207a',1,'SGSolver_MaxMinMax::numIter()'],['../classSGSolver__MaxMinMax__3Player.html#a148ff6b6d52a4cdac99557e37045c854',1,'SGSolver_MaxMinMax_3Player::numIter()'],['../classSGSolverWorker__V2.html#a6d19ed64fc70a400897d1667d41f1207',1,'SGSolverWorker_V2::numIter()']]],
+  ['numiterations',['numIterations',['../classSGApprox.html#a7ab53424f5933726a15001ff2885a4a9',1,'SGApprox']]],
+  ['numplayers',['numPlayers',['../classSGAbstractGame.html#aaa793d0ed9adcb2b2e11b999432bfae8',1,'SGAbstractGame::numPlayers()'],['../classSGApprox.html#a6f512c1cb974247ecb24c2201f045905',1,'SGApprox::numPlayers()'],['../classSGBaseAction.html#a88066434fc68234175141e4bc19b1648',1,'SGBaseAction::numPlayers()'],['../classSGGame.html#a6f02e3f92db6a3c5d2d9076dcb7b6d61',1,'SGGame::numPlayers()'],['../classSGSolver__MaxMinMax.html#a457fae4e376e1f21636629196495fa97',1,'SGSolver_MaxMinMax::numPlayers()'],['../classSGSolver__MaxMinMax__3Player.html#ae77fe15fe7ea92f7e6b2e007627f7648',1,'SGSolver_MaxMinMax_3Player::numPlayers()']]],
+  ['numredunddirs',['numRedundDirs',['../classSGSolver__MaxMinMax__3Player.html#a75becc64c5ebd6d18b1644372be7f0d6',1,'SGSolver_MaxMinMax_3Player']]],
+  ['numrevolutions',['numRevolutions',['../classSGApprox.html#a2bd0cab80a3f8d799fdc2841b65dd2c2',1,'SGApprox']]],
+  ['numsim',['numSim',['../classSGSimulator.html#a47c69f11d6f8f3b9a67c74eb7c31b813',1,'SGSimulator']]],
+  ['numstates',['numStates',['../classSGAbstractGame.html#a4d09150e3135b0abf07ae5319c12d1ef',1,'SGAbstractGame::numStates()'],['../classSGApprox.html#a676bda37d610e501eac72037d22b5293',1,'SGApprox::numStates()'],['../classSGGame.html#ae7b105b2fe9ee277d38e518223dd0482',1,'SGGame::numStates()'],['../classSGSolver__MaxMinMax.html#a13cbb5552061a0e1705cbfb7c53ab963',1,'SGSolver_MaxMinMax::numStates()'],['../classSGSolver__MaxMinMax__3Player.html#a6470be7219bd202efca50c2be4f7d84a',1,'SGSolver_MaxMinMax_3Player::numStates()'],['../classSGSimulationPlot.html#adfbb763422b91db7560ebdaa95d646b8',1,'SGSimulationPlot::numStates()']]],
+  ['numstatesedit',['numStatesEdit',['../classSGGameHandler.html#afb806d54a9d193c5ab8e3a1510001fba',1,'SGGameHandler']]]
+];

@@ -1,0 +1,103 @@
+\hypertarget{classSGSolution__MaxMinMax}{}\section{S\+G\+Solution\+\_\+\+Max\+Min\+Max Class Reference}
+\label{classSGSolution__MaxMinMax}\index{S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}}
+
+
+Records the progress of \hyperlink{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::solve()}.  
+
+
+
+
+{\ttfamily \#include $<$sgsolution\+\_\+maxminmax.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Solution\+\_\+\+Max\+Min\+Max\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{classSGSolution__MaxMinMax__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a97ab8bfd9ea61f24533ef3c57bf9e765}\label{classSGSolution__MaxMinMax_a97ab8bfd9ea61f24533ef3c57bf9e765}} 
+\hyperlink{classSGSolution__MaxMinMax_a97ab8bfd9ea61f24533ef3c57bf9e765}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a2805d2c944ba8d9524d77ed2374ae601}\label{classSGSolution__MaxMinMax_a2805d2c944ba8d9524d77ed2374ae601}} 
+\hyperlink{classSGSolution__MaxMinMax_a2805d2c944ba8d9524d77ed2374ae601}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} (const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game)
+\begin{DoxyCompactList}\small\item\em Initializes an \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} object with a copy of the \hyperlink{classSGGame}{S\+G\+Game} \+\_\+game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a2eba53c219636491429e0288ed1251f8}\label{classSGSolution__MaxMinMax_a2eba53c219636491429e0288ed1251f8}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolution__MaxMinMax_a2eba53c219636491429e0288ed1251f8}{get\+Game} () const
+\begin{DoxyCompactList}\small\item\em Get method for the game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a9abb92b3922f47e9d9e659337cb987df}\label{classSGSolution__MaxMinMax_a9abb92b3922f47e9d9e659337cb987df}} 
+const list$<$ \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} $>$ \& \hyperlink{classSGSolution__MaxMinMax_a9abb92b3922f47e9d9e659337cb987df}{get\+Iterations} () const
+\begin{DoxyCompactList}\small\item\em Get method for the iterations. \end{DoxyCompactList}\item 
+void \hyperlink{classSGSolution__MaxMinMax_a486859659ba8ae3ee1d38403a158236a}{clear} ()
+\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a66ee7794c55d4c795c7c3e7ee0c86658}\label{classSGSolution__MaxMinMax_a66ee7794c55d4c795c7c3e7ee0c86658}} 
+void \hyperlink{classSGSolution__MaxMinMax_a66ee7794c55d4c795c7c3e7ee0c86658}{push\+\_\+back} (const \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} \&iteration)
+\begin{DoxyCompactList}\small\item\em Adds a new iteration to the back of \hyperlink{classSGSolution__MaxMinMax_a119ccef307a2964b6b16e8ba2af547fd}{S\+G\+Solution\+\_\+\+Max\+Min\+Max\+::iterations}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_af116b55bb38d2b727802e34a8873d6ea}\label{classSGSolution__MaxMinMax_af116b55bb38d2b727802e34a8873d6ea}} 
+{\footnotesize template$<$class Archive $>$ }\\void \hyperlink{classSGSolution__MaxMinMax_af116b55bb38d2b727802e34a8873d6ea}{serialize} (Archive \&ar, const unsigned int version)
+\begin{DoxyCompactList}\small\item\em Serializes the \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} object using boost. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a1965d607757c0b8be41f1a68f0d29438}\label{classSGSolution__MaxMinMax_a1965d607757c0b8be41f1a68f0d29438}} 
+static void \hyperlink{classSGSolution__MaxMinMax_a1965d607757c0b8be41f1a68f0d29438}{save} (const \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} \&soln, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Static method for saving an \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} object to the file filename. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a79b383dcf65095dcccabe18744a733cc}\label{classSGSolution__MaxMinMax_a79b383dcf65095dcccabe18744a733cc}} 
+static void \hyperlink{classSGSolution__MaxMinMax_a79b383dcf65095dcccabe18744a733cc}{load} (\hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} \&soln, const char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em Static method for loading an \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} object from the file filename. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSGGame}{S\+G\+Game} \hyperlink{classSGSolution__MaxMinMax_a5d4ad64f86fcd34f2e25ea06c17e6efc}{game}
+\item 
+list$<$ \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} $>$ \hyperlink{classSGSolution__MaxMinMax_a119ccef307a2964b6b16e8ba2af547fd}{iterations}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_ac98d07dd8f7b70e16ccb9a01abf56b9c}\label{classSGSolution__MaxMinMax_ac98d07dd8f7b70e16ccb9a01abf56b9c}} 
+class {\bfseries boost\+::serialization\+::access}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Records the progress of \hyperlink{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::solve()}. 
+
+This class contains a copy of the game used by \hyperlink{classSGSolver__MaxMinMax}{S\+G\+Solver\+\_\+\+Max\+Min\+Max}, a list of iterations generated by \hyperlink{classSGSolver__MaxMinMax_aad121e84c1492524e439ffba05893f3d}{S\+G\+Solver\+\_\+\+Max\+Min\+Max\+::solve()}. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{pd_twostate_8cpp-example}{pd\+\_\+twostate.\+cpp}, and \hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a486859659ba8ae3ee1d38403a158236a}\label{classSGSolution__MaxMinMax_a486859659ba8ae3ee1d38403a158236a}} 
+\index{S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}!clear@{clear}}
+\index{clear@{clear}!S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void S\+G\+Solution\+\_\+\+Max\+Min\+Max\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Resets the \hyperlink{classSGSolution__MaxMinMax}{S\+G\+Solution\+\_\+\+Max\+Min\+Max} object by clearing the iterations and extreme\+Tuples lists. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classSGSolution__MaxMinMax_a5d4ad64f86fcd34f2e25ea06c17e6efc}\label{classSGSolution__MaxMinMax_a5d4ad64f86fcd34f2e25ea06c17e6efc}} 
+\index{S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}!game@{game}}
+\index{game@{game}!S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{game}{game}}
+{\footnotesize\ttfamily \hyperlink{classSGGame}{S\+G\+Game} S\+G\+Solution\+\_\+\+Max\+Min\+Max\+::game\hspace{0.3cm}{\ttfamily [private]}}
+
+The game that was solved. \mbox{\Hypertarget{classSGSolution__MaxMinMax_a119ccef307a2964b6b16e8ba2af547fd}\label{classSGSolution__MaxMinMax_a119ccef307a2964b6b16e8ba2af547fd}} 
+\index{S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}!iterations@{iterations}}
+\index{iterations@{iterations}!S\+G\+Solution\+\_\+\+Max\+Min\+Max@{S\+G\+Solution\+\_\+\+Max\+Min\+Max}}
+\subsubsection{\texorpdfstring{iterations}{iterations}}
+{\footnotesize\ttfamily list$<$\hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max}$>$ S\+G\+Solution\+\_\+\+Max\+Min\+Max\+::iterations\hspace{0.3cm}{\ttfamily [private]}}
+
+A list of \hyperlink{classSGIteration__MaxMinMax}{S\+G\+Iteration\+\_\+\+Max\+Min\+Max} objects tracking the progress of \hyperlink{classSGSolver_a220dd431eabdd9ff8419fafb28b7b990}{S\+G\+Solver\+::solve()}. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsolution\+\_\+maxminmax.\+hpp\end{DoxyCompactItemize}

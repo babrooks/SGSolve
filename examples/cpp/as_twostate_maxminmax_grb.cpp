@@ -106,7 +106,6 @@ int main ()
       SGSolver_MaxMinMax_GRB solver(game);
 
       solver.solve();
-      
     }
   catch (SGException e)
     {

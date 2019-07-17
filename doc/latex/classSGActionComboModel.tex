@@ -1,0 +1,68 @@
+\hypertarget{classSGActionComboModel}{}\section{S\+G\+Action\+Combo\+Model Class Reference}
+\label{classSGActionComboModel}\index{S\+G\+Action\+Combo\+Model@{S\+G\+Action\+Combo\+Model}}
+
+
+Model for the action select menu.  
+
+
+
+
+{\ttfamily \#include $<$sgactioncombomodel.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Action\+Combo\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=205pt]{classSGActionComboModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Action\+Combo\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{classSGActionComboModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGActionComboModel_a66d596fb4ca91f5f4fe3f8d42ce12634}\label{classSGActionComboModel_a66d596fb4ca91f5f4fe3f8d42ce12634}} 
+void \hyperlink{classSGActionComboModel_a66d596fb4ca91f5f4fe3f8d42ce12634}{action\+Changed} (int index)
+\begin{DoxyCompactList}\small\item\em Signals to the associated action\+Controller to change the action. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGActionComboModel_a20046762e7cd9a5e3ceeadb382a04294}\label{classSGActionComboModel_a20046762e7cd9a5e3ceeadb382a04294}} 
+void \hyperlink{classSGActionComboModel_a20046762e7cd9a5e3ceeadb382a04294}{change\+Layout} ()
+\begin{DoxyCompactList}\small\item\em Signals to gui to change the layout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGActionComboModel_a86bc33aa551e463e9b527b831cc95162}\label{classSGActionComboModel_a86bc33aa551e463e9b527b831cc95162}} 
+\hyperlink{classSGActionComboModel_a86bc33aa551e463e9b527b831cc95162}{S\+G\+Action\+Combo\+Model} (\hyperlink{classSGPlotController}{S\+G\+Plot\+Controller} $\ast$\+\_\+controller)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGActionComboModel_a6a070739e0bdbf37f72728b5b315dc7e}\label{classSGActionComboModel_a6a070739e0bdbf37f72728b5b315dc7e}} 
+int \hyperlink{classSGActionComboModel_a6a070739e0bdbf37f72728b5b315dc7e}{row\+Count} (const Q\+Model\+Index \&parent) const
+\begin{DoxyCompactList}\small\item\em Reimplement rowcount. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGActionComboModel_a40b862e251b8af402683a413fbe4aaf6}\label{classSGActionComboModel_a40b862e251b8af402683a413fbe4aaf6}} 
+Q\+Variant \hyperlink{classSGActionComboModel_a40b862e251b8af402683a413fbe4aaf6}{data} (const Q\+Model\+Index \&index, int role) const
+\begin{DoxyCompactList}\small\item\em Reimplement data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGActionComboModel_ab390b51f00169a101b370ebdb6cf5d5f}\label{classSGActionComboModel_ab390b51f00169a101b370ebdb6cf5d5f}} 
+\hyperlink{classSGPlotController}{S\+G\+Plot\+Controller} $\ast$ \hyperlink{classSGActionComboModel_ab390b51f00169a101b370ebdb6cf5d5f}{controller}
+\begin{DoxyCompactList}\small\item\em Pointer to the associated \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Model for the action select menu. 
+
+This class interfaces between the Q\+Combo\+Box for selecting the action and the underlying \hyperlink{classSGSolution}{S\+G\+Solution} object. The model automatically synchronizes the action\+Combo with the set of actions which are available on the current iteration and in the state selected in the state\+Combo, where the current iteration and state are controlled by the associated \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller} object. When the action, state, or current\+Iter is changed in the \hyperlink{classSGPlotController}{S\+G\+Plot\+Controller}, the change\+Layout slot is triggered, which causes action\+Combo to request new data entries to reflect the actions that are available. The action that generates the best test direction is indicated with an asterisk. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgactioncombomodel.\+hpp\end{DoxyCompactItemize}

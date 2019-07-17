@@ -1,0 +1,5 @@
+<map id="SGSolverWorker" name="SGSolverWorker">
+<area shape="rect" id="node3" href="$classSGSolution.html" title="Records the progress of SGSolver::solve(). " alt="" coords="120,5,213,32"/>
+<area shape="rect" id="node5" href="$classSGApprox.html" title="Approximation of the equilibrium payoff correspondence. " alt="" coords="185,95,271,121"/>
+<area shape="rect" id="node4" href="$classSGEnv.html" title="Manages parameters for algorithm behavior. " alt="" coords="252,5,316,32"/>
+</map>

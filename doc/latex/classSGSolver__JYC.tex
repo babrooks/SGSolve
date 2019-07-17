@@ -1,0 +1,89 @@
+\hypertarget{classSGSolver__JYC}{}\section{S\+G\+Solver\+\_\+\+J\+YC Class Reference}
+\label{classSGSolver__JYC}\index{S\+G\+Solver\+\_\+\+J\+YC@{S\+G\+Solver\+\_\+\+J\+YC}}
+
+
+Class that implements the J\+YC algorithm using Gurobi.  
+
+
+
+
+{\ttfamily \#include $<$sgsolver\+\_\+jyc.\+hpp$>$}
+
+
+
+Collaboration diagram for S\+G\+Solver\+\_\+\+J\+YC\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{classSGSolver__JYC__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__JYC_ad96df40bd0f4957899807f0d986fed5c}\label{classSGSolver__JYC_ad96df40bd0f4957899807f0d986fed5c}} 
+\hyperlink{classSGSolver__JYC_ad96df40bd0f4957899807f0d986fed5c}{S\+G\+Solver\+\_\+\+J\+YC} (const \hyperlink{classSGGame}{S\+G\+Game} \&\+\_\+game, int \+\_\+num\+Directions)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a9a078110d65f2f3f93cec5f65611e46a}\label{classSGSolver__JYC_a9a078110d65f2f3f93cec5f65611e46a}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolver__JYC_a9a078110d65f2f3f93cec5f65611e46a}{get\+Game} () const
+\begin{DoxyCompactList}\small\item\em Returns the current game. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a427c8b15a28974c66cea85bdd0741c64}\label{classSGSolver__JYC_a427c8b15a28974c66cea85bdd0741c64}} 
+G\+R\+B\+Env \& \hyperlink{classSGSolver__JYC_a427c8b15a28974c66cea85bdd0741c64}{get\+Env} ()
+\begin{DoxyCompactList}\small\item\em Returns the environment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_ac9cbab573aed7338139b117a63deb975}\label{classSGSolver__JYC_ac9cbab573aed7338139b117a63deb975}} 
+const vector$<$ vector$<$ double $>$ $>$ \& \hyperlink{classSGSolver__JYC_ac9cbab573aed7338139b117a63deb975}{get\+Levels} () const
+\begin{DoxyCompactList}\small\item\em Returns payoff levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a742b0eb85d4024eb5bc3ffd89f9a9b99}\label{classSGSolver__JYC_a742b0eb85d4024eb5bc3ffd89f9a9b99}} 
+const vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \& \hyperlink{classSGSolver__JYC_a742b0eb85d4024eb5bc3ffd89f9a9b99}{get\+Directions} () const
+\begin{DoxyCompactList}\small\item\em Return directions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a35ab6e400e2f9f5f4010417b0194d1b3}\label{classSGSolver__JYC_a35ab6e400e2f9f5f4010417b0194d1b3}} 
+int \hyperlink{classSGSolver__JYC_a35ab6e400e2f9f5f4010417b0194d1b3}{get\+Num\+Directions} () const
+\begin{DoxyCompactList}\small\item\em Return num\+Directions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_ae6e82b53a3c81ef437f60a29c37f81a1}\label{classSGSolver__JYC_ae6e82b53a3c81ef437f60a29c37f81a1}} 
+void \hyperlink{classSGSolver__JYC_ae6e82b53a3c81ef437f60a29c37f81a1}{solve} ()
+\begin{DoxyCompactList}\small\item\em Solve routine. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a81f0e82a4ab20f4a808271b614201b47}\label{classSGSolver__JYC_a81f0e82a4ab20f4a808271b614201b47}} 
+void \hyperlink{classSGSolver__JYC_a81f0e82a4ab20f4a808271b614201b47}{initialize} ()
+\begin{DoxyCompactList}\small\item\em Initializes the solver. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a971be7b836aabbda9b6323fbe7b4e4e6}\label{classSGSolver__JYC_a971be7b836aabbda9b6323fbe7b4e4e6}} 
+double \hyperlink{classSGSolver__JYC_a971be7b836aabbda9b6323fbe7b4e4e6}{iterate} ()
+\begin{DoxyCompactList}\small\item\em Runs one iteration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a35672b0735a0caa0c7e1ed250b2a14af}\label{classSGSolver__JYC_a35672b0735a0caa0c7e1ed250b2a14af}} 
+const \hyperlink{classSGGame}{S\+G\+Game} \& \hyperlink{classSGSolver__JYC_a35672b0735a0caa0c7e1ed250b2a14af}{game}
+\begin{DoxyCompactList}\small\item\em Const reference to the game being solved. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a9649e2498ddf9f00cfc0f8421fae3d2c}\label{classSGSolver__JYC_a9649e2498ddf9f00cfc0f8421fae3d2c}} 
+G\+R\+B\+Env \hyperlink{classSGSolver__JYC_a9649e2498ddf9f00cfc0f8421fae3d2c}{env}
+\begin{DoxyCompactList}\small\item\em The Gurobi environment. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a87b0a617d1a3ca7b7fdfab12fde0b64f}\label{classSGSolver__JYC_a87b0a617d1a3ca7b7fdfab12fde0b64f}} 
+G\+R\+B\+Model \hyperlink{classSGSolver__JYC_a87b0a617d1a3ca7b7fdfab12fde0b64f}{model}
+\begin{DoxyCompactList}\small\item\em The Gurobi model. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_abe4e58873ded1889eed4d704d5dd893d}\label{classSGSolver__JYC_abe4e58873ded1889eed4d704d5dd893d}} 
+vector$<$ vector$<$ double $>$ $>$ \hyperlink{classSGSolver__JYC_abe4e58873ded1889eed4d704d5dd893d}{levels}
+\begin{DoxyCompactList}\small\item\em Payoff levels. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a8eaf232eb1cc90b38e583892ed8832e6}\label{classSGSolver__JYC_a8eaf232eb1cc90b38e583892ed8832e6}} 
+vector$<$ \hyperlink{classSGPoint}{S\+G\+Point} $>$ \hyperlink{classSGSolver__JYC_a8eaf232eb1cc90b38e583892ed8832e6}{directions}
+\begin{DoxyCompactList}\small\item\em List of gradients in which to bound the correspondence. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGSolver__JYC_a76cc905a4d426dba288a6d3dea632fb9}\label{classSGSolver__JYC_a76cc905a4d426dba288a6d3dea632fb9}} 
+int \hyperlink{classSGSolver__JYC_a76cc905a4d426dba288a6d3dea632fb9}{num\+Directions}
+\begin{DoxyCompactList}\small\item\em Number of gradients. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that implements the J\+YC algorithm using Gurobi. 
+
+This class implements the generalization of the algorithm of Judd, Yeltekin, and Conklin (2002) for solving stochastic games.
+
+This file has no associated cpp file, so that libsg does not have to link to Gurobi.
+
+Currently works on two and three player games. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{risksharing_maxminmax_8cpp-example}{risksharing\+\_\+maxminmax.\+cpp}.\end{Desc}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/hpp/sgsolver\+\_\+jyc.\+hpp\end{DoxyCompactItemize}

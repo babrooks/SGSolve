@@ -1,0 +1,7 @@
+<map id="SGSolutionHandler_V2" name="SGSolutionHandler_V2">
+<area shape="rect" id="node3" href="$classSGPlotController__V2.html" title="Handles the plot settings for SGSolutionHandler. " alt="" coords="267,47,420,73"/>
+<area shape="rect" id="node4" href="$classSGSolution__MaxMinMax.html" title="Records the progress of SGSolver_MaxMinMax::solve(). " alt="" coords="5,69,183,96"/>
+<area shape="rect" id="node5" href="$classSGSimulationHandler.html" title="Widget for forward simulating an equilibrium. " alt="" coords="263,160,424,187"/>
+<area shape="rect" id="node6" href="$classSGPlotSettings.html" title="SGPlotSettings" alt="" coords="284,211,403,237"/>
+<area shape="rect" id="node7" href="$classSGCustomPlot.html" title="A customized version of QCustomPlot. " alt="" coords="286,261,401,288"/>
+</map>

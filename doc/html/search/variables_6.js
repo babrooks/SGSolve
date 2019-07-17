@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['game',['game',['../classSGApprox.html#a0774e3ed0ff009809606a42c9e7ef727',1,'SGApprox::game()'],['../classSGSolution.html#a7358a0ff1476b3dd1eefaa96f2efd8ed',1,'SGSolution::game()'],['../classSGSolution__MaxMinMax.html#a5d4ad64f86fcd34f2e25ea06c17e6efc',1,'SGSolution_MaxMinMax::game()'],['../classSGSolver.html#ad9b23110fabeeb58f19729017d56c792',1,'SGSolver::game()'],['../classSGSolver__JYC.html#a35672b0735a0caa0c7e1ed250b2a14af',1,'SGSolver_JYC::game()'],['../classSGSolver__MaxMinMax.html#a39a710babdb8e7579bdb7239d4ed6a1c',1,'SGSolver_MaxMinMax::game()'],['../classSGSolver__MaxMinMax__3Player.html#a398d79e97cad54e73da270bce81a2ed4',1,'SGSolver_MaxMinMax_3Player::game()'],['../classSGSolver__MaxMinMax__GRB.html#a255f5b992318f32044437144456cc3f2',1,'SGSolver_MaxMinMax_GRB::game()'],['../classSGGameHandler.html#ac95a8d363c98979cbbd8fc63a112bf11',1,'SGGameHandler::game()'],['../classSGTableModel.html#ace1b0551b82c669c334d2bc5c6be118a',1,'SGTableModel::game()']]],
+  ['gamehandler',['gameHandler',['../classSGMainWindow.html#aac360598eca3556adf4bba2588fb5f3c',1,'SGMainWindow']]]
+];

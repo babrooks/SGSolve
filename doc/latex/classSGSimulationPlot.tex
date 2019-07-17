@@ -1,0 +1,77 @@
+\hypertarget{classSGSimulationPlot}{}\section{S\+G\+Simulation\+Plot Class Reference}
+\label{classSGSimulationPlot}\index{S\+G\+Simulation\+Plot@{S\+G\+Simulation\+Plot}}
+
+
+A customized version of Q\+Custom\+Plot.  
+
+
+
+
+{\ttfamily \#include $<$sgsimulationplot.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Simulation\+Plot\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classSGSimulationPlot__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Simulation\+Plot\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classSGSimulationPlot__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulationPlot_a85020912b296cab6b013b67f61670d75}\label{classSGSimulationPlot_a85020912b296cab6b013b67f61670d75}} 
+\hyperlink{classSGSimulationPlot_a85020912b296cab6b013b67f61670d75}{S\+G\+Simulation\+Plot} (int \+\_\+num\+States)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classSGSimulationPlot_a941b3cca099b11618dd16ea9de9ebe91}{resize\+Event} (Q\+Resize\+Event $\ast$event)
+\begin{DoxyCompactList}\small\item\em Reimplement resize\+Event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulationPlot_a2e514fdb0e72f5f9acb2bdc3f6811932}\label{classSGSimulationPlot_a2e514fdb0e72f5f9acb2bdc3f6811932}} 
+virtual Q\+Size \hyperlink{classSGSimulationPlot_a2e514fdb0e72f5f9acb2bdc3f6811932}{minimum\+Size\+Hint} () const
+\begin{DoxyCompactList}\small\item\em Custom minimum size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGSimulationPlot_adfbb763422b91db7560ebdaa95d646b8}\label{classSGSimulationPlot_adfbb763422b91db7560ebdaa95d646b8}} 
+int \hyperlink{classSGSimulationPlot_adfbb763422b91db7560ebdaa95d646b8}{num\+States}
+\begin{DoxyCompactList}\small\item\em The number of states in the given plot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A customized version of Q\+Custom\+Plot. 
+
+This class inherits from Q\+Custom\+Plot and mainly reimplements the minimum\+Size\+Hint to reflect the number of states. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGSimulationPlot_a941b3cca099b11618dd16ea9de9ebe91}\label{classSGSimulationPlot_a941b3cca099b11618dd16ea9de9ebe91}} 
+\index{S\+G\+Simulation\+Plot@{S\+G\+Simulation\+Plot}!resize\+Event@{resize\+Event}}
+\index{resize\+Event@{resize\+Event}!S\+G\+Simulation\+Plot@{S\+G\+Simulation\+Plot}}
+\subsubsection{\texorpdfstring{resize\+Event()}{resizeEvent()}}
+{\footnotesize\ttfamily void S\+G\+Simulation\+Plot\+::resize\+Event (\begin{DoxyParamCaption}\item[{Q\+Resize\+Event $\ast$}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Reimplement resize\+Event. 
+
+Calls adjust ranges before calling Q\+Custom\+Plot\+::resize\+Event. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgsimulationplot.\+hpp\end{DoxyCompactItemize}

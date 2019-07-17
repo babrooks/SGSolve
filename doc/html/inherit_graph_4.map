@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classSGBaseAction.html" title="Describes an action in the game. " alt="" coords="5,31,119,57"/>
+<area shape="rect" id="node2" href="$classSGAction.html" title="Enhanced version of SGBaseAction. " alt="" coords="209,5,290,32"/>
+<area shape="rect" id="node3" href="$classSGAction__MaxMinMax.html" title="Enhanced version of SGBaseAction. " alt="" coords="167,56,332,83"/>
+</map>

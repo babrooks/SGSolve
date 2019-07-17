@@ -1,0 +1,7 @@
+<map id="SGSolutionHandler" name="SGSolutionHandler">
+<area shape="rect" id="node3" href="$classSGPlotController.html" title="Handles the plot settings for SGSolutionHandler. " alt="" coords="35,95,165,121"/>
+<area shape="rect" id="node4" href="$classSGSolution.html" title="Records the progress of SGSolver::solve(). " alt="" coords="167,5,260,32"/>
+<area shape="rect" id="node5" href="$classSGSimulationHandler.html" title="Widget for forward simulating an equilibrium. " alt="" coords="270,95,431,121"/>
+<area shape="rect" id="node6" href="$classSGPlotSettings.html" title="SGPlotSettings" alt="" coords="455,95,574,121"/>
+<area shape="rect" id="node7" href="$classSGCustomPlot.html" title="A customized version of QCustomPlot. " alt="" coords="599,95,713,121"/>
+</map>

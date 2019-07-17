@@ -1,0 +1,9 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$classSGGameHandler.html" title="This class handles the widgets for editing/displaying the game. " alt="" coords="147,5,277,32"/>
+<area shape="rect" id="node3" href="$classSGPlotController.html" title="Handles the plot settings for SGSolutionHandler. " alt="" coords="147,56,277,83"/>
+<area shape="rect" id="node4" href="$classSGPlotController__V2.html" title="Handles the plot settings for SGSolutionHandler. " alt="" coords="135,107,289,133"/>
+<area shape="rect" id="node5" href="$classSGSolutionHandler.html" title="Handles the widgets for displaying the solution. " alt="" coords="140,157,284,184"/>
+<area shape="rect" id="node6" href="$classSGSolutionHandler__V2.html" title="Handles the widgets for displaying the solution. " alt="" coords="128,208,296,235"/>
+<area shape="rect" id="node7" href="$classSGSolverWorker.html" title="Class for implementing the twist algorithm within SGViewer. " alt="" coords="149,259,275,285"/>
+<area shape="rect" id="node8" href="$classSGSolverWorker__V2.html" title="Class for implementing the twist algorithm within SGViewer. " alt="" coords="137,309,287,336"/>
+</map>

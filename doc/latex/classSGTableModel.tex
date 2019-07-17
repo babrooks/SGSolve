@@ -1,0 +1,83 @@
+\hypertarget{classSGTableModel}{}\section{S\+G\+Table\+Model Class Reference}
+\label{classSGTableModel}\index{S\+G\+Table\+Model@{S\+G\+Table\+Model}}
+
+
+Table models for S\+G\+Viewer.  
+
+
+
+
+{\ttfamily \#include $<$sgtablemodel.\+hpp$>$}
+
+
+
+Inheritance diagram for S\+G\+Table\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{classSGTableModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+G\+Table\+Model\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{classSGTableModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGTableModel_aa048e2bf2957daacc383c961b98f9c52}\label{classSGTableModel_aa048e2bf2957daacc383c961b98f9c52}} 
+\hyperlink{classSGTableModel_aa048e2bf2957daacc383c961b98f9c52}{S\+G\+Table\+Model} (\hyperlink{classSGGame}{S\+G\+Game} $\ast$\+\_\+game, int \+\_\+state)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+Qt\+::\+Item\+Flags \hyperlink{classSGTableModel_aa0a7a0d77e74ce1f799b52a1dc5fc9d6}{flags} (const Q\+Model\+Index \&index) const
+\begin{DoxyCompactList}\small\item\em Returns flags. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableModel_acc83fe7efd6aba0e69c4b2a70bd2ded1}\label{classSGTableModel_acc83fe7efd6aba0e69c4b2a70bd2ded1}} 
+int \hyperlink{classSGTableModel_acc83fe7efd6aba0e69c4b2a70bd2ded1}{row\+Count} (const Q\+Model\+Index \&parent=Q\+Model\+Index()) const Q\+\_\+\+D\+E\+C\+L\+\_\+\+O\+V\+E\+R\+R\+I\+DE
+\begin{DoxyCompactList}\small\item\em Returns the number of row player actions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableModel_a132a3d56c2076e5c27596672a6e5205f}\label{classSGTableModel_a132a3d56c2076e5c27596672a6e5205f}} 
+int \hyperlink{classSGTableModel_a132a3d56c2076e5c27596672a6e5205f}{column\+Count} (const Q\+Model\+Index \&parent=Q\+Model\+Index()) const Q\+\_\+\+D\+E\+C\+L\+\_\+\+O\+V\+E\+R\+R\+I\+DE
+\begin{DoxyCompactList}\small\item\em Returns the number of column player actions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableModel_a1ed208aebe952b152e1234b17a347689}\label{classSGTableModel_a1ed208aebe952b152e1234b17a347689}} 
+void \hyperlink{classSGTableModel_a1ed208aebe952b152e1234b17a347689}{emit\+Layout\+Changed} ()
+\begin{DoxyCompactList}\small\item\em Emits layout\+Changed signal. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableModel_a24af3154e28c520ca9e2d5e4980814f4}\label{classSGTableModel_a24af3154e28c520ca9e2d5e4980814f4}} 
+bool \hyperlink{classSGTableModel_a24af3154e28c520ca9e2d5e4980814f4}{set\+State} (int new\+State)
+\begin{DoxyCompactList}\small\item\em Sets the state to new\+State. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classSGTableModel_a6a74c2e062d9053ba90c07e916e7b2f6}\label{classSGTableModel_a6a74c2e062d9053ba90c07e916e7b2f6}} 
+int \hyperlink{classSGTableModel_a6a74c2e062d9053ba90c07e916e7b2f6}{state}
+\begin{DoxyCompactList}\small\item\em The state that the model is associated with. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classSGTableModel_ace1b0551b82c669c334d2bc5c6be118a}\label{classSGTableModel_ace1b0551b82c669c334d2bc5c6be118a}} 
+\hyperlink{classSGGame}{S\+G\+Game} $\ast$ \hyperlink{classSGTableModel_ace1b0551b82c669c334d2bc5c6be118a}{game}
+\begin{DoxyCompactList}\small\item\em Pointer to the associated game. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Table models for S\+G\+Viewer. 
+
+Specializes Q\+Abstract\+Table\+Model for the S\+G\+Viewer program. Sets flags, reimplements the row\+Count and column\+Count methods to return the numbers of actions. Also contains members to indicate which state the model is currently associated with. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSGTableModel_aa0a7a0d77e74ce1f799b52a1dc5fc9d6}\label{classSGTableModel_aa0a7a0d77e74ce1f799b52a1dc5fc9d6}} 
+\index{S\+G\+Table\+Model@{S\+G\+Table\+Model}!flags@{flags}}
+\index{flags@{flags}!S\+G\+Table\+Model@{S\+G\+Table\+Model}}
+\subsubsection{\texorpdfstring{flags()}{flags()}}
+{\footnotesize\ttfamily Qt\+::\+Item\+Flags S\+G\+Table\+Model\+::flags (\begin{DoxyParamCaption}\item[{const Q\+Model\+Index \&}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns flags. 
+
+Returns flags that indicate the model is enabled, can be edited, and can be selected. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+viewer/hpp/sgtablemodel.\+hpp\end{DoxyCompactItemize}

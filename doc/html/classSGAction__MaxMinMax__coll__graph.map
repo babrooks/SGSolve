@@ -1,0 +1,5 @@
+<map id="SGAction_MaxMinMax" name="SGAction_MaxMinMax">
+<area shape="rect" id="node2" href="$classSGBaseAction.html" title="Describes an action in the game. " alt="" coords="221,111,334,137"/>
+<area shape="rect" id="node3" href="$classstd_1_1vector_3_01SGTuple_01_4.html" title="std::vector\&lt; SGTuple \&gt;" alt="" coords="5,5,179,32"/>
+<area shape="rect" id="node4" href="$classSGEnv.html" title="Manages parameters for algorithm behavior. " alt="" coords="359,111,423,137"/>
+</map>

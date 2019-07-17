@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['improves',['improves',['../classSGApprox.html#a1f34b002a7000a29338425ed4b452d86',1,'SGApprox']]],
+  ['incrementbasepolicy',['incrementBasePolicy',['../classSGEdgePolicy.html#a967bd25525188460c0c4ab4881ed23f9',1,'SGEdgePolicy']]],
+  ['incrementsubpolicy',['incrementSubPolicy',['../classSGEdgePolicy.html#a07eb755f0281023ad7fc76190b33a83f',1,'SGEdgePolicy']]],
+  ['indextoactions',['indexToActions',['../classSGAbstractGame.html#a1b1ab8f6b09aaef481ba8eab5934ac66',1,'SGAbstractGame']]],
+  ['indextovector',['indexToVector',['../sgutilities_8hpp.html#a1d362a3ffd8d363ddffc2fd82cbdc603',1,'sgutilities.cpp']]],
+  ['initialize',['initialize',['../classSGApprox.html#a4bca21d3b688b3ca283c6778c593563a',1,'SGApprox::initialize()'],['../classSGSimulator.html#a1997cb6546587e80102a430240315a14',1,'SGSimulator::initialize()'],['../classSGSolver__JYC.html#a81f0e82a4ab20f4a808271b614201b47',1,'SGSolver_JYC::initialize()'],['../classSGSolver__MaxMinMax.html#a16095a92d8f4875a37515596440a7ac3',1,'SGSolver_MaxMinMax::initialize()'],['../classSGSolver__MaxMinMax__3Player.html#a53ff30c2388d0dcfef31e45e66d63d6b',1,'SGSolver_MaxMinMax_3Player::initialize()'],['../classSGSolver__MaxMinMax__GRB.html#a53c7768ce8fae4ae40fa8c02946349f3',1,'SGSolver_MaxMinMax_GRB::initialize()']]],
+  ['initializemodels',['initializeModels',['../classSGGameHandler.html#af80ac7a33ba124153e2be5528dbce4b7',1,'SGGameHandler']]],
+  ['insertpolicy',['insertPolicy',['../classSGProductPolicy.html#a936a5504d92977a627724e8b45066b54',1,'SGProductPolicy']]],
+  ['inspectpoint',['inspectPoint',['../classSGCustomPlot.html#a23f808cae1e818047ef19fb2f81b2640',1,'SGCustomPlot::inspectPoint()'],['../classSGSolutionHandler.html#ac1138f5e4b98e30bb55b7e524767a0cb',1,'SGSolutionHandler::inspectPoint()'],['../classSGSolutionHandler__V2.html#aa55671d49ce1ec2a3ef4c6f0dac186d8',1,'SGSolutionHandler_V2::inspectPoint()']]],
+  ['intersecthalfspace',['intersectHalfSpace',['../classSGAction__MaxMinMax.html#a6a7c5c65a4b8c80e919dbb0039a3831c',1,'SGAction_MaxMinMax']]],
+  ['intersectpolygonhalfspace',['intersectPolygonHalfSpace',['../classSGAction__MaxMinMax.html#ada49ec584361e9ec63b16f22f8d57468',1,'SGAction_MaxMinMax']]],
+  ['intersectray',['intersectRay',['../classSGAction.html#a7ecafdb0cf42f83931f923f2e4e23f25',1,'SGAction::intersectRay()'],['../classSGPoint.html#a81992734a4de046226d60b3df576bbb6',1,'SGPoint::intersectRay()']]],
+  ['intersectraysegment',['intersectRaySegment',['../classSGAction.html#ae78f31d121e131788ac4c767e01d012c',1,'SGAction::intersectRaySegment(const SGPoint &amp;pivot, const SGPoint &amp;direction, int player)'],['../classSGAction.html#a3c356d4fdf210ff3f0f62cdff8f6f257',1,'SGAction::intersectRaySegment(const SGPoint &amp;pivot, const SGPoint &amp;direction, SGTuple &amp;segment)']]],
+  ['invertsystem',['invertSystem',['../classSGPoint.html#a0a613c9498f11a7d2d50c4f7f371dab9',1,'SGPoint']]],
+  ['iscorner',['isCorner',['../classSGBaseAction.html#ab46bc1f281b01c7289b2e7e68e64c4ac',1,'SGBaseAction']]],
+  ['isempty',['isempty',['../classSGProductPolicy.html#acfb729843ff2535c9517683d6d87011b',1,'SGProductPolicy']]],
+  ['isequal',['isEqual',['../classSGPolicy.html#ac0878f9985f875caf3ff2bd728c42d4c',1,'SGPolicy']]],
+  ['isequilibriumaction',['isEquilibriumAction',['../classSGAbstractGame.html#a2cec8147c3055cfe6314da349d1a7344',1,'SGAbstractGame::isEquilibriumAction(int state, const vector&lt; int &gt; &amp;actions) const'],['../classSGAbstractGame.html#aa7b88a879bd7b7aa7e275c0e0e92a3d8',1,'SGAbstractGame::isEquilibriumAction(int state, int action) const'],['../classRiskSharingGame.html#a7da6b669317562cd9df8dfc0f8226b4c',1,'RiskSharingGame::isEquilibriumAction()'],['../classRiskSharingGame__3Player.html#a79f44b04c558ecd72cf0b464fdd8a317',1,'RiskSharingGame_3Player::isEquilibriumAction()'],['../classRiskSharingGame__3Player__Merged.html#aeff4f08e00ef46bbdbb190c9c6c393a4',1,'RiskSharingGame_3Player_Merged::isEquilibriumAction()']]],
+  ['iterate',['iterate',['../classSGSolver__JYC.html#a971be7b836aabbda9b6323fbe7b4e4e6',1,'SGSolver_JYC::iterate()'],['../classSGSolver__MaxMinMax.html#ab8c5d13de6ad13e26a42f901d7e1d9c8',1,'SGSolver_MaxMinMax::iterate()'],['../classSGSolver__MaxMinMax__GRB.html#a11e74dc20f359766064a68e6f710a457',1,'SGSolver_MaxMinMax_GRB::iterate()'],['../classSGSolverWorker.html#aeb03e91da258a3c13e8d13b66605b973',1,'SGSolverWorker::iterate()'],['../classSGSolverWorker__V2.html#a3b7099cf8b559184743bca1eba3fa00e',1,'SGSolverWorker_V2::iterate()']]],
+  ['iterate_5fendogenous',['iterate_endogenous',['../classSGSolver__MaxMinMax__3Player.html#a51a9f21016a88463930890bd95c0c0de',1,'SGSolver_MaxMinMax_3Player']]],
+  ['iterate_5ffixed',['iterate_fixed',['../classSGSolver__MaxMinMax__3Player.html#af70c3ae57f9a485f0f66c4dc76eb3bff',1,'SGSolver_MaxMinMax_3Player']]],
+  ['iterationchanged',['iterationChanged',['../classSGPlotController.html#ae24292f1d18e5eb5debb56e4e186c953',1,'SGPlotController::iterationChanged()'],['../classSGPlotController__V2.html#a1ab601bb4a50d7a15dbda5de0d577ca0',1,'SGPlotController_V2::iterationChanged()']]],
+  ['iterationfinished',['iterationFinished',['../classSGMainWindow.html#a511aee91c2c031f7f4a9148073177f0e',1,'SGMainWindow']]],
+  ['iterationfinished_5fv2',['iterationFinished_V2',['../classSGMainWindow.html#a59248c811344a260981ea270d86d5d19',1,'SGMainWindow']]],
+  ['itersliderupdate',['iterSliderUpdate',['../classSGPlotController.html#ae34ccf38225310038155d3f815e98793',1,'SGPlotController::iterSliderUpdate()'],['../classSGPlotController__V2.html#a2d224cc2f5c0f0d405fb761710332ff0',1,'SGPlotController_V2::iterSliderUpdate()']]]
+];

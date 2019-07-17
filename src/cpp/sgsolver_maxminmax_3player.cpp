@@ -141,8 +141,8 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
   int addEndogFreq = 5;
   int dropAfterThisIter = addEndogFreq;
   
-  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  std::default_random_engine generator (seed);
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count(); 
+  std::default_random_engine generator (seed);  
   std::normal_distribution<double> normDistr(0.0,1.0);
   std::uniform_int_distribution<int> intDistr(0.0,directions.size());
 
