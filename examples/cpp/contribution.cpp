@@ -78,6 +78,8 @@ int main ()
       cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
       SGSolution_MaxMinMax soln = solver.getSolution();
       SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
+      
+      SGGame::save(game,"./games/contribution.sgm");
 
       start = clock();
       SGSolver_MaxMinMax_3Player solver2(env,game);

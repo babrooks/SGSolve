@@ -83,8 +83,10 @@ int main ()
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution::save(solver.getSolution(),"./solutions/sgtest.sln");
+      SGSolution::save(solver.getSolution(),"./solutions/abreusanikov.sln");
       cout << "Done!" << endl;
+
+      SGGame::save(game,"./games/abreusanikov.sgm");
     }
   catch (SGException e)
     {

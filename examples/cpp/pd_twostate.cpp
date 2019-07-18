@@ -98,10 +98,10 @@ int main ()
       SGSolution_MaxMinMax soln = solver.getSolution();
       
       cout << "Saving data... ";
-      SGSolution_MaxMinMax::save(soln,"sgtest.sln2");
+      SGSolution_MaxMinMax::save(soln,"./solutions/pd_twostate.sln2");
       cout << "Done!" << endl;
 
-      SGGame::save(game,"pd.sgm");
+      SGGame::save(game,"./games/pd_twostate.sgm");
 
       ofstream ofs ("pd_twostate.log");
       

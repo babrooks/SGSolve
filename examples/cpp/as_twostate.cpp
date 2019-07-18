@@ -105,7 +105,7 @@ int main ()
       cout << "Saving data... ";
       SGSolution soln = solver.getSolution();
       stringstream ss;
-      ss << "./solutions/sgtest.sln";
+      ss << "./solutions/as_twostate.sln";
       SGSolution::save(soln,ss.str().c_str());
       cout << "Done!" << endl;
 

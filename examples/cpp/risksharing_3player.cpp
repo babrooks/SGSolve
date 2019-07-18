@@ -96,6 +96,8 @@ int main ()
       SGSolution_MaxMinMax soln = solver.getSolution();
       SGSolution_MaxMinMax::save(soln,ss.str().c_str());
 
+      SGGame::save(game,"./games/risksharing_3player");
+
     }
   catch (SGException e)
     {

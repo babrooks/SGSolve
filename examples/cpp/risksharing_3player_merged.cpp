@@ -58,6 +58,7 @@ int main()
     SGSolution_MaxMinMax soln = solver.getSolution();
     SGSolution_MaxMinMax::save(soln,"./solutions/risksharing_3player_merged.sln2");
     
+    SGGame::save(game,"./games/risksharing_3player_merged.sgm");  
   }
 
   return 0;
