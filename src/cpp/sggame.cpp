@@ -57,7 +57,8 @@ SGGame::SGGame(const SGAbstractGame & game):
 	    }
 	  // cout << "(s,a)=(" << state << "," << action << "), "
 	  //      << "prob sum: " << probSum << endl;
-	  assert(abs(probSum-1.0)<1e-6);
+	  if(abs(probSum-1.0)<1e-5)
+		throw(SGException(SG::PROB_SUM_NOT1));
 
 	  eqActions[state].push_back(game.isEquilibriumAction(state,action));
 	  
@@ -161,7 +162,7 @@ SGGame::SGGame(int _numPlayers,
 	    probSum 
 	      += probabilities[state][action][statep];
 	  
-	  if (abs(probSum-1.0)>1e-9)
+	  if (abs(probSum-1.0)>1e-5)
 	    sumNotOne = true;
 	}
 
@@ -436,7 +437,7 @@ bool SGGame::transitionProbsSumToOne() const
 	    {
 	      probSum += probabilities[s][a][sp];
 	    }
-	  if (abs(probSum-1.0)>1e-7)
+	  if (abs(probSum-1.0)>1e-5)
 	    return false;
 	}
     }
