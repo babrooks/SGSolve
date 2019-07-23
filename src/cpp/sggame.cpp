@@ -57,7 +57,7 @@ SGGame::SGGame(const SGAbstractGame & game):
 	    }
 	  // cout << "(s,a)=(" << state << "," << action << "), "
 	  //      << "prob sum: " << probSum << endl;
-	  if(abs(probSum-1.0)<1e-5)
+	  if(abs(probSum-1.0)>1e-5)
 		throw(SGException(SG::PROB_SUM_NOT1));
 
 	  eqActions[state].push_back(game.isEquilibriumAction(state,action));
