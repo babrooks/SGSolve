@@ -428,7 +428,7 @@ void SGMainWindow::solveGame_V2()
 
 //      Needs to be updated to use a new solver worker.
 
-      if (!gameHandler->getGame().transitionProbsSumToOne())
+      if (!gameHandler->getGame().transitionProbsSumToOne(SG::TRANSITION_PROB_TOL))
        throw(SGException(SG::PROB_SUM_NOT1));
 
      solverWorker_v2 = new SGSolverWorker_V2(*env,

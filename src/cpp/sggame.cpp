@@ -43,7 +43,6 @@ SGGame::SGGame(const SGAbstractGame & game):
       payoffs[state] = vector<SGPoint>(numActions_total[state],SGPoint(numPlayers,0.0));
       probabilities[state] = vector< vector<double> >(numActions_total[state],
 						      vector<double> (numStates,0));
-      
       for (int action = 0; action < numActions_total[state]; action++)
 	{
 	  double probSum = 0;
@@ -57,12 +56,12 @@ SGGame::SGGame(const SGAbstractGame & game):
 	    }
 	  // cout << "(s,a)=(" << state << "," << action << "), "
 	  //      << "prob sum: " << probSum << endl;
-	  if(abs(probSum-1.0)>1e-5)
+	  if(abs(probSum-1.0)>1e-3)
 		throw(SGException(SG::PROB_SUM_NOT1));
 
 	  eqActions[state].push_back(game.isEquilibriumAction(state,action));
 	  
-	} // for action
+	} // for action 
     } // for state
 } // Conversion from SGAbstractGame
 
@@ -150,7 +149,7 @@ SGGame::SGGame(int _numPlayers,
 	  if (probabilities[state][action].size() != numStates
 	      || _payoffs[state][action].size() != numPlayers)
 	    throw(SGException(SG::INCONSISTENT_INPUTS));
-	  
+
 	  payoffs[state][action] 
 	    = SGPoint(_payoffs[state][action]);
 
@@ -161,9 +160,8 @@ SGGame::SGGame(int _numPlayers,
 	       statep ++)
 	    probSum 
 	      += probabilities[state][action][statep];
-	  
 	  if (abs(probSum-1.0)>1e-5)
-	    sumNotOne = true;
+	    sumNotOne = true; 
 	}
 
       if (sumNotOne)
@@ -172,7 +170,7 @@ SGGame::SGGame(int _numPlayers,
 	  ss << "WARNING: Transition probabilities in state " << state
 	     << " do not sum to 1." << endl;
 	  cout << ss.str();
-	}
+	} 
     } // state
 
   if (eqActions.size() != 0)
@@ -426,7 +424,7 @@ bool SGGame::setConstrained(const vector<bool> & _unconstrained)
 } // setConstrained
 
 
-bool SGGame::transitionProbsSumToOne() const
+bool SGGame::transitionProbsSumToOne(double tolerance) const
 {
   for (int s = 0; s < probabilities.size(); s++)
     {
@@ -437,7 +435,7 @@ bool SGGame::transitionProbsSumToOne() const
 	    {
 	      probSum += probabilities[s][a][sp];
 	    }
-	  if (abs(probSum-1.0)>1e-5)
+	  if (abs(probSum-1.0)>tolerance)
 	    return false;
 	}
     }

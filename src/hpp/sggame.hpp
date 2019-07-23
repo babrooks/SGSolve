@@ -231,7 +231,7 @@ public:
   bool removeState(int state);
 
   //! Check if transition probabilities sum to one
-  bool transitionProbsSumToOne() const;
+  bool transitionProbsSumToOne(double tolerance=1e-3) const;
   
   //! Static method for saving an SGGame object to the file filename.
   static void save(const SGGame & game, const char* filename)

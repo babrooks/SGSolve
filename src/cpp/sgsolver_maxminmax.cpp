@@ -219,7 +219,7 @@ void SGSolver_MaxMinMax::solve()
 {
   initialize();
   
-  if (!game.transitionProbsSumToOne())
+  if(!game.transitionProbsSumToOne(SG::TRANSITION_PROB_TOL))
     throw(SGException(SG::PROB_SUM_NOT1));
   // Main loop
 
