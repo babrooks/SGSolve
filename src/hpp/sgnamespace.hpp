@@ -99,6 +99,7 @@ namespace SG
       BNDRYPNTTOL, /*! Distance below which extreme binding
                        continuation values are considered equal . */
       SUBGENFACTOR, /*! Scaling of the hyperplanes to test for supergeneration. */
+      TRANSITION_PROB_TOL, /*! Tolerance for difference bteween sum of transition prob and one */
       NUMDOUBLEPARAMS /*!< Used internally to indicate the number of
 			enumerated double parameters. */
     };

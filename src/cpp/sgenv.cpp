@@ -52,6 +52,7 @@ void SGEnv::restoreDefaults()
   doubleParams[SG::ROUNDTOL] = 0.0;
   doubleParams[SG::INTERSECTTOL] = 1e-6; // 10
   doubleParams[SG::BNDRYPNTTOL] = 1e-6;
+  doubleParams[SG::TRANSITION_PROB_TOL] = 1e-5;
 
   boolParams[SG::MERGETUPLES] = false;
   boolParams[SG::BACKBENDINGWARNING] = false;
