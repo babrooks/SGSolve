@@ -324,8 +324,11 @@ void SGMainWindow::loadGame()
       const char * newPath_c = ba.data();
 
       SGGame game;
-      
+
       SGGame::load(game,newPath_c);
+
+      if(2 != game.getNumPlayers()) //because viewer is only compatible with two players right now
+	      throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
 
       gameHandler->setGame(game);
 
@@ -338,7 +341,7 @@ void SGMainWindow::loadGame()
   catch (std::exception & e)
     {
       qDebug() << "Load game didnt work :(" << endl;
-    }
+    } 
 } // loadGame
 
 void SGMainWindow::saveGame()

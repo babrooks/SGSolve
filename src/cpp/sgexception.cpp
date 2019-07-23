@@ -53,6 +53,8 @@ const char* SGException::what() const throw()
       return "Could not find an action in some state.";
     case SG::NOOPTIMALPOLICIES:
       return "Could not find an optimal policy in some state.";
+    case SG::WRONG_NUMBER_OF_PLAYERS:
+      return "Game has wrong number of players for viewer.";
     default:
       return "No message specified.";
     }

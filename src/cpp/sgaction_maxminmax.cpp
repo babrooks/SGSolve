@@ -386,7 +386,8 @@ void SGAction_MaxMinMax::calculateMinIC(const SGGame & game,
 					const vector<bool> & update,
 					const SGTuple & threatTuple)
 {
-  assert(numPlayers == game.getNumPlayers());
+  if(numPlayers != game.getNumPlayers())
+	  throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
   for (int player = 0;
        player < game.getNumPlayers();
        player++)
