@@ -28,7 +28,7 @@
 #include "sggame.hpp"
 #include "sgapprox.hpp"
 #include "sgexception.hpp"
-#include "sgsolution_pencilsharpener.hpp"
+#include "sgsolution_PencilSharpening.hpp"
 
 //! Class for solving stochastic games
 /*! This class implements the pencil-sharpening algorithm of Abreu,

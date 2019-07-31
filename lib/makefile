@@ -21,8 +21,8 @@
 
 include ../localsettings.mk
 
-OBJFILES= sgexception.o sggame.o sgsolver_pencilsharpener.o sgutilities.o sgapprox.o	\
-sgpoint.o sgtuple.o sgaction_pencilsharpener.o sgaction_maxminmax.o sgenv.o		\
+OBJFILES= sgexception.o sggame.o sgsolver_PencilSharpening.o sgutilities.o sgapprox.o	\
+sgpoint.o sgtuple.o sgaction_PencilSharpening.o sgaction_maxminmax.o sgenv.o		\
 sgsimulator.o sgiteration.o sghyperplane.o sgsolver_maxminmax.o		\
 sgsolver_maxminmax_3player.o sgpolicy.o sgedgepolicy.o sgbaseaction.o	\
 sgproductpolicy.o

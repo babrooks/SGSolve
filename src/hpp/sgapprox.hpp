@@ -27,7 +27,7 @@
 #include "sgenv.hpp"
 #include "sggame.hpp"
 #include "sgexception.hpp"
-#include "sgsolution_pencilsharpener.hpp"
+#include "sgsolution_PencilSharpening.hpp"
 #include "sgnamespace.hpp"
 
 //! Approximation of the equilibrium payoff correspondence.

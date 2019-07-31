@@ -22,7 +22,7 @@
 #ifndef _SGSIMULATOR_HPP
 #define _SGSIMULATOR_HPP
 
-#include "sgsolution_pencilsharpener.hpp"
+#include "sgsolution_PencilSharpening.hpp"
 #include <chrono>
 #include <random>
 #include <utility>

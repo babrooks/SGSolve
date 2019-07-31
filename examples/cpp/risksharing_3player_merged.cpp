@@ -23,7 +23,7 @@
 //! players from the three player example.
 //! @example
 #include "sgrisksharing_3player_merged.hpp"
-#include "sgsolver_pencilsharpener.hpp"
+#include "sgsolver_PencilSharpening.hpp"
 #include "sgsolver_maxminmax.hpp"
 #include <ctime>
 
