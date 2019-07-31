@@ -22,7 +22,7 @@
 #ifndef _SG_HPP
 #define _SG_HPP
 
-#include "sgsolver.hpp"
+#include "sgsolver_pencilsharpener.hpp"
 #include "sgsolver_maxminmax.hpp"
 
 #endif
