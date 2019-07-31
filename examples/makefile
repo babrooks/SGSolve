@@ -25,7 +25,9 @@
 MAINSPS= as_twostate abreusannikov risksharing
 # These use max-min-max
 MAINSMM= pd bos pd_twostate as_twostate_maxminmax	\
-	risksharing_3player risksharing_3player_merged
+	risksharing_3player risksharing_3player_merged	\
+	matching_pennies	\
+	random
 # These programs use gurobi
 MAINSGRB=as_twostate_jyc abs_jyc as_twostate_maxminmax_grb	\
 	contribution risksharing_maxminmax

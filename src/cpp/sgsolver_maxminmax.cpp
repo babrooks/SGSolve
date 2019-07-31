@@ -219,7 +219,7 @@ void SGSolver_MaxMinMax::solve()
 {
   initialize();
   
-  if(!game.transitionProbsSumToOne(SG::TRANSITION_PROB_TOL))
+  if(!game.transitionProbsSumToOne(env.getParam(SG::TRANSITION_PROB_TOL)))
     throw(SGException(SG::PROB_SUM_NOT1));
   // Main loop
 
@@ -381,7 +381,7 @@ double SGSolver_MaxMinMax::iterate()
     } // for state
 
   feasibleTuple = threatTuple;
-  // findFeasibleTuple(feasibleTuple,actions);
+  findFeasibleTuple(feasibleTuple,actions);
   
   for (int state = 0; state < numStates; state++)
     {

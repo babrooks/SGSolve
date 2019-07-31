@@ -428,7 +428,7 @@ void SGMainWindow::solveGame_V2()
 
 //      Needs to be updated to use a new solver worker.
 
-      if (!gameHandler->getGame().transitionProbsSumToOne(SG::TRANSITION_PROB_TOL))
+      if (!gameHandler->getGame().transitionProbsSumToOne((env->getParam(SG::TRANSITION_PROB_TOL))))
        throw(SGException(SG::PROB_SUM_NOT1));
 
      solverWorker_v2 = new SGSolverWorker_V2(*env,
@@ -451,7 +451,7 @@ void SGMainWindow::solveGame_V2()
     }
   catch (exception & e)
     {
-      logTextEdit -> append(QString("SGSolver was unable to solver your game. Caught the following exception: "));
+      logTextEdit -> append(QString("SGSolver was unable to solve your game. Caught the following exception: "));
       logTextEdit -> append(QString(e.what()));
       logTextEdit -> append(QString(""));
     }

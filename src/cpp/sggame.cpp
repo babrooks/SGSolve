@@ -45,24 +45,20 @@ SGGame::SGGame(const SGAbstractGame & game):
 						      vector<double> (numStates,0));
       for (int action = 0; action < numActions_total[state]; action++)
 	{
-	  double probSum = 0;
 	  payoffs[state][action] = game.payoffs(state,action);
 	  for (int statep = 0; statep < numStates; statep++)
 	    {
-	      probSum +=
 		(probabilities[state][action][statep]
 		 = game.probability(state,action,statep));
 	      assert (game.probability(state,action,statep)>=0);
 	    }
-	  // cout << "(s,a)=(" << state << "," << action << "), "
-	  //      << "prob sum: " << probSum << endl;
-	  if(abs(probSum-1.0)>1e-3)
-		throw(SGException(SG::PROB_SUM_NOT1));
 
 	  eqActions[state].push_back(game.isEquilibriumAction(state,action));
 	  
 	} // for action 
     } // for state
+  if(!transitionProbsSumToOne())
+    throw(SGException(SG::PROB_SUM_NOT1));
 } // Conversion from SGAbstractGame
 
 SGGame::SGGame(double _delta,
@@ -131,8 +127,6 @@ SGGame::SGGame(int _numPlayers,
        state < numStates;
        state++)
     {
-      bool sumNotOne = false;
-
       for (int player=0; player<numPlayers; player++)
 	numActions_total[state] *= _numActions[state][player];
 
@@ -152,26 +146,11 @@ SGGame::SGGame(int _numPlayers,
 
 	  payoffs[state][action] 
 	    = SGPoint(_payoffs[state][action]);
-
-	  // Check that probabilities add up to 1.
-	  probSum = 0.0;
-	  for (int statep = 0; 
-	       statep < numStates;
-	       statep ++)
-	    probSum 
-	      += probabilities[state][action][statep];
-	  if (abs(probSum-1.0)>1e-5)
-	    sumNotOne = true; 
 	}
-
-      if (sumNotOne)
-	{
-	  stringstream ss;
-	  ss << "WARNING: Transition probabilities in state " << state
-	     << " do not sum to 1." << endl;
-	  cout << ss.str();
-	} 
     } // state
+
+  if(!transitionProbsSumToOne())
+    throw(SGException(SG::PROB_SUM_NOT1)); 
 
   if (eqActions.size() != 0)
     {
