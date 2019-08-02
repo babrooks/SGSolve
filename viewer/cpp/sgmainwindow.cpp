@@ -252,6 +252,8 @@ void SGMainWindow::loadSolution()
       
       gameHandler->setGame(soln.getGame());
       solutionHandler->setSolution(soln);
+
+      SGGame game = soln.getGame();
       
       tabWidget->setCurrentIndex(1);
 
@@ -259,15 +261,17 @@ void SGMainWindow::loadSolution()
       newWindowTitle += info.fileName();
       setWindowTitle(newWindowTitle);
       
+      if(game.getNumPlayers() != 2) //since viewer is only compatible with two players
+	      throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
     }
-  catch (std::exception & e)
+  catch (exception & e)
     {
-      qDebug() << "Load solution didnt work :(" << endl;
-      QErrorMessage em(this);
-      em.showMessage(QString("Load solution didnt work :("));
-
-      qDebug() << "Error message:" << e.what() << endl;
+      tabWidget->setCurrentIndex(2);	    
+      logTextEdit -> append(QString("SGSolver was unable to load your solution. Caught the following exception: "));
+      logTextEdit -> append(QString(e.what()));
+      logTextEdit -> append(QString(""));
     }
+
 } // loadSolution_V2
 /*
 void SGMainWindow::saveSolution()
@@ -309,8 +313,6 @@ void SGMainWindow::loadGame()
   QFileInfo fi(newPath);
   path = fi.canonicalPath();
 
-
-
   try
     {
       QByteArray ba = newPath.toLocal8Bit();
@@ -327,11 +329,19 @@ void SGMainWindow::loadGame()
       QString newWindowTitle(tr("SGViewer - "));
       newWindowTitle += fi.fileName();
       setWindowTitle(newWindowTitle);
+
+      if(game.getNumPlayers() != 2) //since viewer is only compatible with two players
+	      throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
     }
-  catch (std::exception & e)
+
+  catch (exception & e)
     {
-      qDebug() << "Load game didnt work :(" << endl;
+      tabWidget->setCurrentIndex(2);	    
+      logTextEdit -> append(QString("SGSolver was unable to load your game. Caught the following exception: "));
+      logTextEdit -> append(QString(e.what()));
+      logTextEdit -> append(QString(""));
     }
+
 } // loadGame
 
 void SGMainWindow::saveGame()
@@ -354,10 +364,14 @@ void SGMainWindow::saveGame()
       SGGame::save(gameHandler->getGame(),
 		   newPath_c);
     }
-  catch (std::exception & e)
+  catch (exception & e)
     {
-      qDebug() << "Save game didnt work :(" << endl;
+      tabWidget->setCurrentIndex(2);	    
+      logTextEdit -> append(QString("SGSolver was unable to save your game. Caught the following exception: "));
+      logTextEdit -> append(QString(e.what()));
+      logTextEdit -> append(QString(""));
     }
+
 } // saveGame
 
 void SGMainWindow::quitProgram()
@@ -418,7 +432,7 @@ void SGMainWindow::solveGame()
 
 //      Needs to be updated to use a new solver worker.
 
-      if (!gameHandler->getGame().transitionProbsSumToOne())
+      if (!gameHandler->getGame().transitionProbsSumToOne(env->getParam(SG::TRANSITION_PROB_TOL)))
        throw(SGException(SG::PROB_SUM_NOT1));
 
      solverWorker = new SGSolverWorker(*env,
