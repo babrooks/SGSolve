@@ -19,8 +19,8 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef SGSTATECOMBOMODEL_HPP
-#define SGSTATECOMBOMODEL_HPP
+#ifndef SGSTATECOMBOMODEL_V2_HPP
+#define SGSTATECOMBOMODEL_V2_HPP
 
 #include "sgplotcontroller.hpp"
 #include <QAbstractListModel>
@@ -33,7 +33,7 @@
     SGSolution, and it indicates with an asterisk which state
     generated the best test direction for the current iteration. When
     a new solution is loaded, or when the current iteration is changed
-    in the SGPlotController, the changeLayout slot is triggered so
+    in the SGPlotController_V2, the changeLayout slot is triggered so
     that the stateCombo is updated to reflect the true number of
     states and the identity of the best state.
 
@@ -59,7 +59,7 @@ public:
   int rowCount(const QModelIndex & parent) const
   {
     if (controller->hasSolution())
-      return controller->getCurrentIter().getActions().size()+1;
+      return controller->getCurrentIter()->getActions().size()+1;
     else
       return 1;
   } // rowCount
@@ -70,8 +70,8 @@ public:
     if (index.row()>0)
       {
 	QString dataString = QString("S")+QString::number(index.row()-1);
-	if ( (index.row()-1) == controller->getCurrentIter().getBestState())
-	  dataString += QString("*");
+	// if ( (index.row()-1) == controller->getCurrentIter()->getBestState())
+	//   dataString += QString("*");
 	return dataString;
       }
     else if (index.row()==0)
@@ -90,6 +90,6 @@ public slots:
     emit layoutChanged(); 
   }
 
-}; // SGStateComboModel
+}; // SGStateComboModel_V2
 
 #endif

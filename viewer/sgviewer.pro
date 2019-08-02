@@ -45,9 +45,7 @@ sgtableview.hpp \
 sgprobabilitytablemodel.hpp \
 sgpayofftablemodel.hpp \
 sgsolutionhandler.hpp \
-sgsolutionhandler_v2.hpp \
 sgsolverworker.hpp \
-sgsolverworker_v2.hpp \
 sgcustomplot.hpp \
 sgsimulationhandler.hpp \
 sgsimulationplot.hpp \
@@ -55,11 +53,8 @@ sgsettingshandler.hpp \
 sgplotsettingshandler.hpp \
 sgplotsettings.hpp \
 sgplotcontroller.hpp \
-sgplotcontroller_v2.hpp \
 sgstatecombomodel.hpp \
-sgstatecombomodel_v2.hpp \
 sgactioncombomodel.hpp \
-sgactioncombomodel_v2.hpp \
 sgrisksharinghandler.hpp \
 sglegend.hpp \
 sgplotsettings.hpp \
@@ -76,11 +71,9 @@ sgprobabilitytablemodel.cpp \
 sgpayofftablemodel.cpp \
 sgplotsettings.cpp \
 sgsimulationhandler.cpp \
+sgactioncombomodel.cpp \
 sgsolutionhandler.cpp \
-sgactioncombomodel_v2.cpp \
-sgsolutionhandler_v2.cpp \
 sgplotcontroller.cpp \
-sgplotcontroller_v2.cpp \
 sgsettingshandler.cpp \
 sgplotsettingshandler.cpp \
 sglegend.cpp

@@ -19,11 +19,11 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef SGSOLUTIONHANDLER_HPP
-#define SGSOLUTIONHANDLER_HPP
+#ifndef SGSOLUTIONHANDLER_V2_HPP
+#define SGSOLUTIONHANDLER_V2_HPP
 
 #include "sgplotsettings.hpp"
-#include "sgsolution.hpp"
+#include "sgsolution_maxminmax.hpp"
 #include "sgcustomplot.hpp"
 #include "sgsimulationhandler.hpp"
 #include "sgplotcontroller.hpp"
@@ -38,7 +38,7 @@
     specification of what to plot is controlled by a member
     SGPlotController. 
 
-    Specifically, SGSolutionHandler constructs plots for the
+    Specifically, SGSolutionHandler_V2 constructs plots for the
     trajectory of the pivot in each state, which are the statePlots,
     and it constructs a detailPlot which shows the behavior of the
     algorithm at a particular iteration or a particular
@@ -59,7 +59,7 @@
     The sliders and combo boxes communicate with and are controlled by
     a member SGPlotController object, which aggregates all of the
     user-provided specifications into a compact set of parameters that
-    are used by SGSolutionHandler::plotSolution() to construct the
+    are used by SGSolutionHandler_V2::plotSolution() to construct the
     plots.
 
     See also \ref viewersolutionsec.
@@ -74,7 +74,7 @@ private:
   //! Solution
   /*! Stores all of the information related to the result of the
       computation. */
-  SGSolution soln;
+  SGSolution_MaxMinMax soln;
   //! A pointer to the associated plot controller.
   SGPlotController * controller;
 
@@ -113,12 +113,20 @@ private:
   //! Pointer to simulation handler
   SGSimulationHandler * simHandler;
 
+  //! Default pen for grid lines
+  QPen defaultGridLinePen;
+
+  //! Default pen for zero lines
+  QPen defaultZeroLinePen;
+
   // Methods
   //! Plots the solution from start to end
   void plotSolution();
   //! Plots the solution for a particular state.
   void plotSolution(SGCustomPlot * plot, int state,
 		    bool addSquares);
+  //! Turns on or off grid lines and zero lines
+  void configureGridLines(SGCustomPlot * plot);
   //! Generates title for the detail plot
   QString generatePlotTitle(int state, int action,bool addIterRev);
   //! Gets bounds for the plots.
@@ -141,9 +149,9 @@ public:
   SGSolutionHandler(QWidget * parent = 0);
 
   //! Sets the solution to newSoln.
-  void setSolution(const SGSolution & newSoln);
+  void setSolution(const SGSolution_MaxMinMax & newSoln);
   //! Returns a const reference to the solution.
-  const SGSolution & getSolution() const
+  const SGSolution_MaxMinMax & getSolution() const
   {return soln;}
 
   //! Returns the layout
@@ -153,6 +161,9 @@ public:
   //! Returns the detailed titles action
   QAction * getDetailedTitlesAction() const
   { return detailedTitlesAction; }
+
+  SGPlotSettings * getPlotSettingsPtr()
+  { return & plotSettings; }
   
   //! Returns the equalize axes action
   QAction * getEqualizeAxesAction() const

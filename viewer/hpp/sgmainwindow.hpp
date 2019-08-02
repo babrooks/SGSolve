@@ -27,9 +27,7 @@
 #include <QSettings>
 #include "sggamehandler.hpp"
 #include "sgsolutionhandler.hpp"
-#include "sgsolutionhandler_v2.hpp"
 #include "sgsolverworker.hpp"
-#include "sgsolverworker_v2.hpp"
 #include "sgsettingshandler.hpp"
 #include "sgplotsettingshandler.hpp"
 #include "sg.hpp"
@@ -69,16 +67,12 @@ private:
 
   //! Worker that handles solution.
   SGSolverWorker * solverWorker;
-  //! Worker that handles solution.
-  SGSolverWorker_V2 * solverWorker_v2;
+  
   //! Separate thread for running solve routines, so gui doesn't hang.
   QThread solverThread;
 
   //! The object for interfacing with the solution.
   SGSolutionHandler * solutionHandler;
-
-  //! The object for interfacing with SGSolution_V2.
-  SGSolutionHandler_V2 * solutionHandler_V2;
 
   //! The object for interfacing with the game.
   SGGameHandler * gameHandler;

@@ -19,9 +19,9 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#include "sgactioncombomodel_v2.hpp"
+#include "sgactioncombomodel.hpp"
 
-SGActionComboModel_V2::SGActionComboModel_V2(SGPlotController_V2 * _controller):
+SGActionComboModel::SGActionComboModel(SGPlotController * _controller):
   controller(_controller)
 {
   connect(controller,SIGNAL(solutionChanged()),
@@ -31,7 +31,7 @@ SGActionComboModel_V2::SGActionComboModel_V2(SGPlotController_V2 * _controller):
 }
   
 //! Reimplement rowcount
-int SGActionComboModel_V2::rowCount(const QModelIndex & parent) const
+int SGActionComboModel::rowCount(const QModelIndex & parent) const
 {
   if (controller->hasSolution()
       && state>-1)
@@ -46,7 +46,7 @@ int SGActionComboModel_V2::rowCount(const QModelIndex & parent) const
 } // rowCount
 
   //! Reimplement data
-QVariant SGActionComboModel_V2::data(const QModelIndex & index, int role) const
+QVariant SGActionComboModel::data(const QModelIndex & index, int role) const
 {
   if (index.row()>0 && state > -1)
     {
@@ -70,7 +70,7 @@ QVariant SGActionComboModel_V2::data(const QModelIndex & index, int role) const
 }
 
 //! Signals to gui to change the layout
-void SGActionComboModel_V2::changeLayout()
+void SGActionComboModel::changeLayout()
 {
   emit layoutAboutToBeChanged();
   state=controller->getState();

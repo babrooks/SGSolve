@@ -22,433 +22,518 @@
 #include "sgsolutionhandler.hpp"
 
 SGSolutionHandler::SGSolutionHandler(QWidget * _parent): 
-  parent(_parent),
-  plotSettings()
+    parent(_parent),
+    plotSettings()
 {
-  // Set up the menu items. Added by SGMainWindow to the menubar.
-  detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
-  detailedTitlesAction->setCheckable(true);
-  detailedTitlesAction->setChecked(true);
+    // Set up the menu items. Added by SGMainWindow to the menubar.
+    detailedTitlesAction = new QAction(tr("&Detailed plot titles"),this);
+    detailedTitlesAction->setCheckable(true);
+    detailedTitlesAction->setChecked(true);
 
-  equalizeAxesAction = new QAction(tr("&Equalize axes scales"),this);
-  equalizeAxesAction->setCheckable(true);
-  equalizeAxesAction->setChecked(true);
+    equalizeAxesAction = new QAction(tr("&Equalize axes scales"),this);
+    equalizeAxesAction->setCheckable(true);
+    equalizeAxesAction->setChecked(true);
 
-  // Top control for solution mode.
-  QHBoxLayout * controlLayout = new QHBoxLayout();
-  QFormLayout * leftControlLayout = new QFormLayout();
-  QComboBox * solutionModeCombo = new QComboBox();
-  solutionModeCombo->addItem("Progress");
-  solutionModeCombo->addItem("Final");
-  
-  solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
-				   QSizePolicy::Preferred);
-  leftControlLayout->addRow(new QLabel(tr("Display mode:")),
-			    solutionModeCombo);
-  controlLayout->addLayout(leftControlLayout);
+    // Top control for solution mode.
+    QHBoxLayout * controlLayout = new QHBoxLayout();
+    QFormLayout * leftControlLayout = new QFormLayout();
+    QComboBox * solutionModeCombo = new QComboBox();
+    solutionModeCombo->addItem("Progress");
+    solutionModeCombo->addItem("Final");
 
-  // Sliders at the bottom
-  QScrollBar * iterSlider = new QScrollBar();
-  iterSlider->setOrientation(Qt::Horizontal);
-  iterSlider->setToolTip(tr("The final iteration"));
-  QScrollBar * startSlider = new QScrollBar();
-  startSlider->setOrientation(Qt::Horizontal);
-  startSlider->setToolTip(tr("The first iteration"));
+    solutionModeCombo->setSizePolicy(QSizePolicy::Maximum,
+                                     QSizePolicy::Preferred);
+    // leftControlLayout->addRow(new QLabel(tr("Display mode:")),
+    //                           solutionModeCombo);
+    controlLayout->addLayout(leftControlLayout);
 
-  // Set up the detail plot
-  detailPlot = new SGCustomPlot(0,true);
-  detailPlot->setSizePolicy(QSizePolicy::Expanding,
-			  QSizePolicy::Expanding);
-  detailPlot->setInteraction(QCP::iRangeZoom,true);
-  detailPlot->setInteraction(QCP::iRangeDrag,true);
-  statePlots.push_back(new SGCustomPlot());
+    // Sliders at the bottom
+    QScrollBar * iterSlider = new QScrollBar();
+    iterSlider->setOrientation(Qt::Horizontal);
+    iterSlider->setToolTip(tr("The current iteration."));
+    QScrollBar * stepSlider = new QScrollBar();
+    stepSlider->setOrientation(Qt::Horizontal);
+    stepSlider->setToolTip(tr("The current direction."));
 
-  detailPlot->addGraph();
-  statePlots[0]->addGraph();
+    // Set up the detail plot
+    detailPlot = new SGCustomPlot(0,true);
+    detailPlot->setSizePolicy(QSizePolicy::Expanding,
+                              QSizePolicy::Expanding);
+    detailPlot->setInteraction(QCP::iRangeZoom,true);
+    detailPlot->setInteraction(QCP::iRangeDrag,true);
 
-  // Layout the controls for the detail plot
-  QComboBox * stateCombo = new QComboBox();
-  stateCombo->setToolTip(tr("Current state"));
-  QComboBox * actionCombo = new QComboBox();
-  actionCombo->setToolTip(tr("Current action pair"));
+    defaultGridLinePen = detailPlot->xAxis->grid()->subGridPen();
+    defaultGridLinePen = detailPlot->xAxis->grid()->zeroLinePen();
 
-  controller = new SGPlotController(stateCombo,actionCombo,
-				    iterSlider,startSlider,
-				    solutionModeCombo);
-  connect(controller,SIGNAL(actionChanged()),
-	  this,SLOT(replotSlot()));
-  connect(controller,SIGNAL(iterationChanged()),
-	  this,SLOT(replotSlot()));
+    statePlots.push_back(new SGCustomPlot());
 
-  SGStateComboModel * stateComboModel
-    = new SGStateComboModel(controller);
-  SGActionComboModel * actionComboModel
-    = new SGActionComboModel(controller);
+    detailPlot->addGraph();
+    statePlots[0]->addGraph();
 
-  stateCombo->setModel(stateComboModel);
-  actionCombo->setModel(actionComboModel);
-  QPushButton * nextActionButton = new QPushButton("->");
-  nextActionButton->setToolTip(tr("Next action"));
-  QPushButton * prevActionButton = new QPushButton("<-");
-  prevActionButton->setToolTip(tr("Previous action"));
-  
-  QHBoxLayout * detailPlotControlLayout = new QHBoxLayout();
-  QLabel * stateComboLabel = new QLabel(tr("State:"));
-  stateComboLabel->setAlignment(Qt::AlignRight);
-  detailPlotControlLayout->addWidget(stateComboLabel);
-  detailPlotControlLayout->addWidget(stateCombo);
-  QLabel * actionComboLabel = new QLabel(tr("Action:"));
-  actionComboLabel->setAlignment(Qt::AlignRight);
-  detailPlotControlLayout->addWidget(actionComboLabel);
-  detailPlotControlLayout->addWidget(actionCombo);
-  detailPlotControlLayout->addWidget(prevActionButton);
-  detailPlotControlLayout->addWidget(nextActionButton);
-  connect(stateCombo,SIGNAL(currentIndexChanged(int)),
-  	  stateComboModel,SLOT(changeState(int)));
-  connect(nextActionButton,SIGNAL(clicked()),
-	  controller,SLOT(nextAction()));
-  connect(prevActionButton,SIGNAL(clicked()),
-	  controller,SLOT(prevAction()));
-  connect(this,SIGNAL(nextActionSignal()),
-	  controller,SLOT(nextAction()));
-  connect(this,SIGNAL(prevActionSignal()),
-	  controller,SLOT(prevAction()));
+    // Layout the controls for the detail plot
+    QComboBox * stateCombo = new QComboBox();
+    stateCombo->setToolTip(tr("Current state"));
+    QComboBox * actionCombo = new QComboBox();
+    actionCombo->setToolTip(tr("Current action pair"));
 
-  // Combine the detail plot and controls into a detail plot widget
-  QWidget * detailPlotWidget = new QWidget();
-  QVBoxLayout * detailPlotWidgetLayout = new QVBoxLayout();
-  detailPlotWidgetLayout->addWidget(detailPlot);
-  detailPlotWidgetLayout->addLayout(detailPlotControlLayout);
-  detailPlotWidget->setLayout(detailPlotWidgetLayout);
+    controller = new SGPlotController(stateCombo,actionCombo,
+                                      iterSlider,stepSlider,
+                                      solutionModeCombo);
+    connect(controller,SIGNAL(actionChanged()),
+            this,SLOT(replotSlot()));
+    connect(controller,SIGNAL(iterationChanged()),
+            this,SLOT(replotSlot()));
 
-  // Now layout the state plots
-  statePlotsLayout = new QGridLayout();
-  statePlotsLayout->addWidget(statePlots[0]);
+    SGStateComboModel * stateComboModel
+            = new SGStateComboModel(controller);
+    SGActionComboModel * actionComboModel
+            = new SGActionComboModel(controller);
 
-  QScrollArea * topRightScrollArea = new QScrollArea();
-  
-  QWidget * statePlotsWidget = new QWidget();
-  statePlotsWidget->setLayout(statePlotsLayout);
-  topRightScrollArea->setWidget(statePlotsWidget);
+    stateCombo->setModel(stateComboModel);
+    stateCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    actionCombo->setModel(actionComboModel);
+    actionCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    QPushButton * nextActionButton = new QPushButton("->");
+    nextActionButton->setToolTip(tr("Next action"));
+    QPushButton * prevActionButton = new QPushButton("<-");
+    prevActionButton->setToolTip(tr("Previous action"));
 
-  topRightScrollArea->setWidgetResizable(true);
-  topRightScrollArea->setSizePolicy(QSizePolicy::Expanding,
-  				    QSizePolicy::Preferred);
-  topRightScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    QHBoxLayout * detailPlotControlLayout = new QHBoxLayout();
+    QLabel * stateComboLabel = new QLabel(tr("State:"));
+    stateComboLabel->setAlignment(Qt::AlignRight);
+    detailPlotControlLayout->addWidget(stateComboLabel);
+    detailPlotControlLayout->addWidget(stateCombo);
+    QLabel * actionComboLabel = new QLabel(tr("Action:"));
+    actionComboLabel->setAlignment(Qt::AlignRight);
+    detailPlotControlLayout->addWidget(actionComboLabel);
+    detailPlotControlLayout->addWidget(actionCombo);
+    detailPlotControlLayout->addWidget(prevActionButton);
+    detailPlotControlLayout->addWidget(nextActionButton);
+    connect(stateCombo,SIGNAL(currentIndexChanged(int)),
+            stateComboModel,SLOT(changeState(int)));
+    connect(nextActionButton,SIGNAL(clicked()),
+            controller,SLOT(nextAction()));
+    connect(prevActionButton,SIGNAL(clicked()),
+            controller,SLOT(prevAction()));
+    connect(this,SIGNAL(nextActionSignal()),
+            controller,SLOT(nextAction()));
+    connect(this,SIGNAL(prevActionSignal()),
+            controller,SLOT(prevAction()));
 
-  QHBoxLayout * topLayout = new QHBoxLayout();
-  topLayout->addWidget(detailPlotWidget);
-  topLayout->addWidget(topRightScrollArea);
+    // Combine the detail plot and controls into a detail plot widget
+    QWidget * detailPlotWidget = new QWidget();
+    QVBoxLayout * detailPlotWidgetLayout = new QVBoxLayout();
+    detailPlotWidgetLayout->addWidget(detailPlot);
+    detailPlotWidgetLayout->addLayout(detailPlotControlLayout);
+    detailPlotWidget->setLayout(detailPlotWidgetLayout);
 
-  QWidget * topSolutionPanel = new QWidget();
-  topSolutionPanel->setLayout(topLayout);
+    // Now layout the state plots
+    statePlotsLayout = new QGridLayout();
+    statePlotsLayout->addWidget(statePlots[0]);
 
-  // Add sliders to bottom panel
-  QWidget * botSolutionPanel = new QWidget();
-  QFormLayout * botLayout = new QFormLayout(botSolutionPanel);
-  botLayout->addRow(new QLabel(tr("End iteration:")),
-		    iterSlider);
-  botLayout->addRow(new QLabel(tr("Start iteration:")),
-		    startSlider);
-  botSolutionPanel->setFixedHeight(60);
-  botLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-  
-  layout = new QVBoxLayout();
-  layout->addLayout(controlLayout);
-  layout->addWidget(topSolutionPanel);
-  layout->addWidget(botSolutionPanel);
+    QScrollArea * topRightScrollArea = new QScrollArea();
+
+    QWidget * statePlotsWidget = new QWidget();
+    statePlotsWidget->setLayout(statePlotsLayout);
+    topRightScrollArea->setWidget(statePlotsWidget);
+
+    topRightScrollArea->setWidgetResizable(true);
+    topRightScrollArea->setSizePolicy(QSizePolicy::Expanding,
+                                      QSizePolicy::Preferred);
+    topRightScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+    QHBoxLayout * topLayout = new QHBoxLayout();
+    topLayout->addWidget(detailPlotWidget);
+    topLayout->addWidget(topRightScrollArea);
+
+    QWidget * topSolutionPanel = new QWidget();
+    topSolutionPanel->setLayout(topLayout);
+
+    // Add sliders to bottom panel
+    QWidget * botSolutionPanel = new QWidget();
+    QFormLayout * botLayout = new QFormLayout(botSolutionPanel);
+    botLayout->addRow(new QLabel(tr("Iteration:")),
+                      iterSlider);
+    botLayout->addRow(new QLabel(tr("Direction:")),
+                      stepSlider);
+    botSolutionPanel->setFixedHeight(60);
+    botLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+
+    layout = new QVBoxLayout();
+    layout->addLayout(controlLayout);
+    layout->addWidget(topSolutionPanel);
+    layout->addWidget(botSolutionPanel);
 } // constructor
 
-void SGSolutionHandler::setSolution(const SGSolution & newSoln)
+void SGSolutionHandler::setSolution(const SGSolution_MaxMinMax & newSoln)
 {
-  soln = newSoln;
-  connect(detailPlot,SIGNAL(inspectPoint(SGPoint,int,bool)),
-	  this,SLOT(inspectPoint(SGPoint,int,bool)) );
-  connect(detailPlot,SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
-	  this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
-  // Set up state plots
-  QLayoutItem * item;
-  while ((item = statePlotsLayout->takeAt(0))!=0)
-    delete item->widget();
-  
-  statePlots.clear();
-  statePlots = vector<SGCustomPlot *>(soln.getGame().getNumStates());
-  
-  SGPoint UB, LB;
-  soln.getGame().getPayoffBounds(UB,LB);
-  payoffBound = std::max(UB[0]-LB[0],
-			 UB[1]-LB[1]);
+    soln = newSoln;
 
-  for (int state = 0;
-       state < soln.getGame().getNumStates();
-       state ++)
+    connect(detailPlot,SIGNAL(inspectPoint(SGPoint,int,bool)),
+            this,SLOT(inspectPoint(SGPoint,int,bool)) );
+
+    // Set up state plots
+    QLayoutItem * item;
+    while ((item = statePlotsLayout->takeAt(0))!=0)
+        delete item->widget();
+
+    statePlots.clear();
+    statePlots = vector<SGCustomPlot *>(soln.getGame().getNumStates());
+
+    SGPoint UB, LB;
+    soln.getGame().getPayoffBounds(UB,LB);
+    payoffBound = std::max(UB[0]-LB[0],
+            UB[1]-LB[1]);
+
+    for (int state = 0;
+         state < soln.getGame().getNumStates();
+         state ++)
     {
-      statePlots[state] =  new SGCustomPlot(state,false);
-      statePlots[state]->setInteraction(QCP::iRangeZoom,true);
-      statePlots[state]->setInteraction(QCP::iRangeDrag,true);
-      
-      connect(statePlots[state],SIGNAL(inspectPoint(SGPoint,int,bool)),
-	      this,SLOT(inspectPoint(SGPoint,int,bool)) );
-      connect(statePlots[state],SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
-	      this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
-      statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
+        statePlots[state] =  new SGCustomPlot(state,false);
+        statePlots[state]->setInteraction(QCP::iRangeZoom,true);
+        statePlots[state]->setInteraction(QCP::iRangeDrag,true);
+
+
+        connect(statePlots[state],SIGNAL(inspectPoint(SGPoint,int,bool)),
+                this,SLOT(inspectPoint(SGPoint,int,bool)) );
+        connect(statePlots[state],SIGNAL(simulateEquilibrium(SGPoint,int,bool)),
+                this,SLOT(simulateEquilibrium(SGPoint,int,bool)) );
+        statePlotsLayout->addWidget(statePlots[state],state/2,state%2);
     }
 
-  controller->setSolution(&soln);
-  
-  solnLoaded = true;
+    controller->setSolution(&soln);
+
+    solnLoaded = true;
 } // setSolution
 
 void SGSolutionHandler::plotSolution()
 {
-  const SGIteration & startIter = controller->getStartIter();
-  const SGIteration & endIter = controller->getEndIter();
-  const SGIteration & pivotIter = controller->getCurrentIter();
-  int start = controller->getStartSliderPosition();
+    int numStates = soln.getGame().getNumStates();
 
-  if (start == -1)
-    start = 0;
-  else
-    start = startIter.getNumExtremeTuples()-1;
+    detailPlot->clearPlottables();
+    detailPlot->clearItems();
+    QCPAbstractItem * item;
+    while ((item = detailPlot->item())!=0)
+        delete item;
 
-  int end = endIter.getNumExtremeTuples()-1;
+    int state = controller->getState();
+    int action = controller->getAction();
+    int actionIndex = controller->getActionIndex();
+    list<SGIteration_MaxMinMax>::const_iterator currentIter = controller->getCurrentIter();
+    const SGStep & currentStep = controller->getCurrentStep();
+    const list<SGStep> & steps = currentIter->getSteps();
 
-  int numStates = soln.getGame().getNumStates();
-
-  detailPlot->clearPlottables();
-  detailPlot->clearItems();
-  // QCPAbstractItem * item;
-  // while ((item = detailPlot->item())!=0)
-  //   delete item;
-  
-  int state = controller->getState();
-  int action = controller->getAction();
-  int actionIndex = controller->getActionIndex();
-
-  if (state >= 0 && action >= 0 && endIter.getIteration()>=0)
+    if (state >= 0 && action >= 0)
     {
-      detailPlot->setState(state);
-  
-      plotSolution(detailPlot,state,false);
+        detailPlot->setState(state);
 
-      const SGBaseAction & actionObject = pivotIter.getActions()[state][actionIndex];
+        plotSolution(detailPlot,state,false);
 
-      // Add expected set
-      QVector<double> expSetX(end-start),
-	expSetY(expSetX.size()),
-	expSetT(expSetX.size());
+        const SGBaseAction & actionObject = currentIter->getActions()[state][actionIndex];
 
-      int tupleC = 0;
+        // Add expected set
+        QVector<double> expSetX(steps.size()),
+                expSetY(expSetX.size()),
+                expSetT(expSetX.size());
 
-      for (list<SGTuple>::const_iterator tuple = soln.getExtremeTuples().begin();
-	   tuple != soln.getExtremeTuples().end();
-	   ++tuple)
-	{
-	  if (tupleC >= end)
-	    break;
-	  else if (tupleC >= start)
-	    {
-	      SGPoint expPoint
-		= tuple->expectation(soln.getGame().getProbabilities()
-				     [state][action]);
-	      expSetX[tupleC-start] = expPoint[0];
-	      expSetY[tupleC-start] = expPoint[1];
-	      expSetT[tupleC-start] = tupleC;
-	    }
-	  
-	  tupleC++;
-	}
-      
-      QCPCurve * expCurve = new QCPCurve(detailPlot->xAxis,
-					 detailPlot->yAxis);
-      expCurve->setData(expSetT,expSetX,expSetY);
-      expCurve->setPen(plotSettings.get(SGPlotSettings::ExpPen));
-      detailPlot->addPlottable(expCurve);
-      expCurve->setName(tr("Expected continuation values"));
+        int tupleC = 0;
 
-      QCPRange xrange = getBounds(expSetX),
-	yrange = getBounds(expSetY);
+        for (auto step = steps.cbegin();
+             step != steps.cend();
+             ++step)
+        {
+            SGPoint expPoint
+                    = step->getPivot().expectation(soln.getGame().getProbabilities()
+                                                   [state][action]);
+            expSetX[tupleC] = expPoint[0];
+            expSetY[tupleC] = expPoint[1];
+            expSetT[tupleC] = tupleC;
 
-      SGPoint stagePayoffs = soln.getGame().getPayoffs()[state][action];
-      double delta = soln.getGame().getDelta();
-      if (controller->getPlotMode() == SGPlotController::Directions)
-	{
-	  // Non-binding direction
-	  SGPoint expPivot = pivotIter.getPivot().expectation(soln.getGame().getProbabilities()
-							 [state][action]);
-	  
-	  SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
+            tupleC++;
+        }
 
-	  QCPItemLine * nonBindingGenLine
-	    = sgToQCPItemLine(detailPlot,stagePayoffs,
-			      expPivot-stagePayoffs);
-	  nonBindingGenLine->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
-	  detailPlot->addItem(nonBindingGenLine);
+        QCPCurve * expCurve = new QCPCurve(detailPlot->xAxis,
+                                           detailPlot->yAxis);
+        expCurve->setData(expSetT,expSetX,expSetY);
+        expCurve->setPen(plotSettings.get(SGPlotSettings::ExpPen));
+        detailPlot->addPlottable(expCurve);
+        expCurve->setName(tr("Expected continuation values"));
 
-	  addPoint(nonBindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
+        // Add previous iteration expected set
+        if (currentIter != soln.getIterations().cbegin())
+        {
+            tupleC = 0;
 
-	  QCPItemLine * nonBindingDirection
-	    = sgToQCPItemLine(detailPlot,pivotIter.getPivot()[state],
-			      nonBindingPayoff-pivotIter.getPivot()[state]);
-	  nonBindingDirection->setHead(QCPLineEnding::esSpikeArrow);
-	  detailPlot->addItem(nonBindingDirection);
-      
-	  // Binding directions
-	  for (vector<SGTuple>::const_iterator tuple
-		 = actionObject.getBindingContinuations().begin();
-	       tuple != actionObject.getBindingContinuations().end();
-	       ++tuple)
-	    {
-	      for (int pointIndex = 0; pointIndex < tuple->size(); pointIndex++)
-		{
-		  SGPoint continuationValue = (*tuple)[pointIndex];
-		  SGPoint bindingPayoff = (1-delta)*stagePayoffs
-		    + delta*continuationValue;
-		  QCPItemLine * bindingGenCurve
-		    = sgToQCPItemLine(detailPlot,stagePayoffs,
-				      continuationValue - stagePayoffs);
-		  bindingGenCurve->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
-		  detailPlot->addItem(bindingGenCurve);
+            auto prevIter = currentIter;
+	    prevIter--;
+            QVector<double> prevExpSetX(prevIter->getSteps().size()),
+                    prevExpSetY(prevExpSetX.size()),
+                    prevExpSetT(prevExpSetX.size());
 
-		  QCPItemLine * bindingDirection
-		    = sgToQCPItemLine(detailPlot,pivotIter.getPivot()[state],
-				      bindingPayoff - pivotIter.getPivot()[state]);
-		  bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
-		  detailPlot->addItem(bindingDirection);
-				   
-		  addPoint(bindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
-		  addPoint(continuationValue,detailPlot,
-			   plotSettings.get(SGPlotSettings::BindingPayoffStyle));
-		} // for 
-	    } // for tuple
+            for (auto step = prevIter->getSteps().cbegin();
+                 step != prevIter->getSteps().cend();
+                 ++step)
+            {
+                SGPoint expPoint
+                        = step->getPivot().expectation(soln.getGame().getProbabilities()
+                                                       [state][action]);
+                prevExpSetX[tupleC] = expPoint[0];
+                prevExpSetY[tupleC] = expPoint[1];
+                prevExpSetT[tupleC] = tupleC;
 
-	  // Add expected pivot
-	  addPoint(expPivot,detailPlot,plotSettings.get(SGPlotSettings::ExpPivotStyle));
-	}
-      else
-	{
-	  // Plot the generation only of the current pivot
-	  SGPoint continuationValue = (pivotIter.getPivot()[state]-(1-delta)*stagePayoffs)/delta;
-	  QCPItemLine * genLine
-	    = sgToQCPItemLine(detailPlot,stagePayoffs,continuationValue-stagePayoffs);
-	  detailPlot->addItem(genLine);
+                tupleC++;
+            }
 
-	  // Add continuation value
-	  addPoint(continuationValue,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
-	  
-	}
+            QCPCurve * prevExpCurve = new QCPCurve(detailPlot->xAxis,
+                                               detailPlot->yAxis);
+            prevExpCurve->setData(prevExpSetT,prevExpSetX,prevExpSetY);
+            prevExpCurve->setPen(plotSettings.get(SGPlotSettings::PrevExpPen));
+            detailPlot->addPlottable(prevExpCurve);
+            prevExpCurve->setName(tr("Expected continuation values"));
+        }
+        QCPRange xrange = getBounds(expSetX),
+                yrange = getBounds(expSetY);
 
-      // Add action
-      addPoint(stagePayoffs,detailPlot,plotSettings.get(SGPlotSettings::StageStyle));
+        SGPoint stagePayoffs = soln.getGame().getPayoffs()[state][action];
+        double delta = soln.getGame().getDelta();
+        // if (controller->getPlotMode() == SGPlotController::Directions)
+        // 	{
+        // Non-binding direction
+        SGPoint expPivot = currentStep.getPivot().expectation(soln.getGame().getProbabilities()
+                                                              [state][action]);
 
-      xrange.expand(QCPRange(stagePayoffs[0],stagePayoffs[0]));
-      yrange.expand(QCPRange(stagePayoffs[1],stagePayoffs[1]));
-      xrange.expand(detailPlot->getNominalXRange());
-      yrange.expand(detailPlot->getNominalYRange());
+        SGPoint nonBindingPayoff = (1-delta)*stagePayoffs + delta*expPivot;
 
-      // Add IC region
-      const SGPoint & minIC = pivotIter.getActions()[state][actionIndex].getMinICPayoffs();
+        QCPItemLine * nonBindingGenLine
+                = sgToQCPItemLine(detailPlot,stagePayoffs,
+                                  expPivot-stagePayoffs);
+        nonBindingGenLine->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
+        detailPlot->addItem(nonBindingGenLine);
 
-      QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
-					     SGPoint(0.0,yrange.upper-minIC[1]));
-      QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
-					     SGPoint(xrange.upper-minIC[0],0.0));
-      ICCurveH->setPen(plotSettings.get(SGPlotSettings::ICPen));
-      ICCurveV->setPen(plotSettings.get(SGPlotSettings::ICPen));
-      detailPlot->addPlottable(ICCurveH);
-      detailPlot->addPlottable(ICCurveV);
+        addPoint(nonBindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
 
-      detailPlot->setRanges(xrange,yrange);
+        QCPItemLine * nonBindingDirection
+                = sgToQCPItemLine(detailPlot,currentStep.getPivot()[state],
+                                  nonBindingPayoff-currentStep.getPivot()[state]);
+        nonBindingDirection->setHead(QCPLineEnding::esSpikeArrow);
+        detailPlot->addItem(nonBindingDirection);
 
-      detailPlot->getTitle()->setText(generatePlotTitle(state,action,true));
+        // Binding directions
+        for (vector<SGTuple>::const_iterator tuple
+             = actionObject.getBindingContinuations().cbegin();
+             tuple != actionObject.getBindingContinuations().cend();
+             ++tuple)
+        {
+            if (tuple->size()==0)
+                continue;
+            for (int pointIndex = 0; pointIndex < tuple->size(); pointIndex++)
+            {
+                SGPoint continuationValue = (*tuple)[pointIndex];
+                SGPoint bindingPayoff = (1-delta)*stagePayoffs
+                        + delta*continuationValue;
+                QCPItemLine * bindingGenCurve
+                        = sgToQCPItemLine(detailPlot,stagePayoffs,
+                                          continuationValue - stagePayoffs);
+                bindingGenCurve->setPen(plotSettings.get(SGPlotSettings::GenLinePen));
+                detailPlot->addItem(bindingGenCurve);
+
+                QCPItemLine * bindingDirection
+                        = sgToQCPItemLine(detailPlot,currentStep.getPivot()[state],
+                                          bindingPayoff - currentStep.getPivot()[state]);
+                bindingDirection->setHead(QCPLineEnding::esSpikeArrow);
+                detailPlot->addItem(bindingDirection);
+
+                addPoint(bindingPayoff,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
+                addPoint(continuationValue,detailPlot,
+                         plotSettings.get(SGPlotSettings::BindingPayoffStyle));
+            } // for
+        } // for tuple
+
+        // Add expected pivot
+        addPoint(expPivot,detailPlot,plotSettings.get(SGPlotSettings::ExpPivotStyle));
+        // }
+        //   else
+        // 	{
+        // 	  // Plot the generation only of the current pivot
+        // 	  SGPoint continuationValue = (pivotIter.getPivot()[state]-(1-delta)*stagePayoffs)/delta;
+        // 	  QCPItemLine * genLine
+        // 	    = sgToQCPItemLine(detailPlot,stagePayoffs,continuationValue-stagePayoffs);
+        // 	  detailPlot->addItem(genLine);
+
+        // 	  // Add continuation value
+        // 	  addPoint(continuationValue,detailPlot,plotSettings.get(SGPlotSettings::PayoffStyle));
+
+        // }
+
+
+        // Add action
+        addPoint(stagePayoffs,detailPlot,plotSettings.get(SGPlotSettings::StageStyle));
+
+        xrange.expand(QCPRange(stagePayoffs[0],stagePayoffs[0]));
+        yrange.expand(QCPRange(stagePayoffs[1],stagePayoffs[1]));
+        xrange.expand(detailPlot->getNominalXRange());
+        yrange.expand(detailPlot->getNominalYRange());
+
+        // Add IC region
+        const SGPoint & minIC = currentIter->getActions()[state][actionIndex].getMinICPayoffs();
+
+        QCPCurve * ICCurveH = vectorToQCPCurve(detailPlot,minIC,
+                                               SGPoint(0.0,yrange.upper-minIC[1]));
+        QCPCurve * ICCurveV = vectorToQCPCurve(detailPlot,minIC,
+                                               SGPoint(xrange.upper-minIC[0],0.0));
+        ICCurveH->setPen(plotSettings.get(SGPlotSettings::ICPen));
+        ICCurveV->setPen(plotSettings.get(SGPlotSettings::ICPen));
+        detailPlot->addPlottable(ICCurveH);
+        detailPlot->addPlottable(ICCurveV);
+
+        detailPlot->setRanges(xrange,yrange);
+
+        detailPlot->getTitle()->setText(generatePlotTitle(state,action,true));
     }
-  else if (state < 0)
+    // else if (state < 0)
+    //   {
+    //     plotSolution(detailPlot,pivotIter.getBestState(),false);
+    //   }
+    else
+        plotSolution(detailPlot,0,false);
+
+
+    if (equalizeAxesAction->isChecked())
+        detailPlot->equalizeAxesScales();
+
+    configureGridLines(detailPlot);
+    
+    detailPlot->replot();
+
+    // Other states
+    if (statePlots.size() != numStates)
+        qDebug() << "Warning: Number of states ("
+                 << numStates << ") does not match size of stateplots ("
+                 << statePlots.size() << ")." << endl;
+    for (int state = 0;
+         state < statePlots.size();
+         state++)
     {
-      plotSolution(detailPlot,pivotIter.getBestState(),false);
+        statePlots[state]->clearPlottables();
+        plotSolution(statePlots[state],state,true);
+
+        if (equalizeAxesAction->isChecked())
+            statePlots[state]->equalizeAxesScales();
+
+	configureGridLines(statePlots[state]);
+	
     }
-  else
-    plotSolution(detailPlot,0,false);
-  
 
-  if (equalizeAxesAction->isChecked())
-    detailPlot->equalizeAxesScales();
-  detailPlot->replot();
+    QCPRange uniformXRange = statePlots[0]->getNominalXRange(),
+      uniformYRange = statePlots[0]->getNominalYRange();
+    for (int state = 1;
+	 state < statePlots.size();
+	 state++)
+      {
+	uniformXRange.expand(statePlots[state]->getNominalXRange());
+	uniformYRange.expand(statePlots[state]->getNominalYRange());
+      }
+    
+    for (int state = 0;
+	 state < statePlots.size();
+	 state++)
+      {
+	if (plotSettings.get(SGPlotSettings::UniformRanges) )
+	  {
+	    statePlots[state]->setRanges(uniformXRange,uniformYRange);
+	    statePlots[state]->adjustRanges();
+	  }
+        statePlots[state]->replot();
+      }
 
-  // Other states
-  if (statePlots.size() != numStates)
-    qDebug() << "Warning: Number of states ("
-	     << numStates << ") does not match size of stateplots (" 
-	     << statePlots.size() << ")." << endl;
-  for (int state = 0;
-       state < statePlots.size();
-       state++)
-    {
-      statePlots[state]->clearPlottables();
-      plotSolution(statePlots[state],state,true);
-
-      if (equalizeAxesAction->isChecked())
-	statePlots[state]->equalizeAxesScales();
-
-      statePlots[state]->replot();
-    }
-  
 } // plotSolution
 
-void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
-				     bool addSquares)
+void SGSolutionHandler::configureGridLines(SGCustomPlot * plot)
 {
-  int start = controller->getStartSliderPosition();
-  if (start == -1)
-    start = 0;
+  if (!plotSettings.get(SGPlotSettings::GridLines) )
+    {
+      plot->xAxis->grid()->setSubGridPen(Qt::NoPen);
+      plot->yAxis->grid()->setSubGridPen(Qt::NoPen);
+      plot->xAxis->grid()->setPen(Qt::NoPen);
+      plot->yAxis->grid()->setPen(Qt::NoPen);
+    }
   else
-    start = controller->getStartIter().getNumExtremeTuples()-1;
-  int end = controller->getEndIter().getNumExtremeTuples()-1;
+    {
+      plot->xAxis->grid()->setSubGridPen(defaultGridLinePen);
+      plot->yAxis->grid()->setSubGridPen(defaultGridLinePen);
+      plot->xAxis->grid()->setPen(defaultGridLinePen);
+      plot->yAxis->grid()->setPen(defaultGridLinePen);
+    }
+  if (!plotSettings.get(SGPlotSettings::ZeroLines) )
+    {
+      plot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
+      plot->yAxis->grid()->setZeroLinePen(Qt::NoPen);
+    }
+  else
+    {
+      plot->xAxis->grid()->setZeroLinePen(defaultZeroLinePen);
+      plot->yAxis->grid()->setZeroLinePen(defaultZeroLinePen);
+    }
+}
 
-  QVector<double> x(end-start+1);
+void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
+                                        bool addSquares)
+{
+  // int start = controller->getStartSliderPosition();
+  // if (start == -1)
+  //   start = 0;
+  // else
+  //   start = controller->getStartIter().getNumExtremeTuples()-1;
+  // int end = controller->getEndIter().getNumExtremeTuples()-1;
+
+  list<SGIteration_MaxMinMax>::const_iterator currentIter = controller->getCurrentIter();
+  const list<SGStep> & steps = currentIter->getSteps();
+  const SGStep & currentStep = controller->getCurrentStep();
+
+  QVector<double> x(steps.size());
   QVector<double> y(x.size());
   QVector<double> t(x.size());
-  
-  assert(end>=start);
 
-  int tupleC = 0;
-  
-  for (list<SGTuple>::const_iterator tuple = soln.getExtremeTuples().begin();
-       tuple != soln.getExtremeTuples().end();
-       ++tuple)
+  // assert(end>=start);
+
+  int stepC = 0;
+
+  for (auto step = steps.cbegin();
+       step != steps.cend();
+       ++step)
     {
-      if (tupleC >= end)
-	break;
-      else if (tupleC >= start)
-	{
-	  x[tupleC-start] = (*tuple)[state][0];
-	  y[tupleC-start] = (*tuple)[state][1];
-	  t[tupleC-start] = tupleC;
-	}
-      
-      tupleC++;
+      x[stepC] = step->getPivot()[state][0];
+      y[stepC] = step->getPivot()[state][1];
+      t[stepC] = stepC;
+
+      stepC++;
     }
-  const SGIteration & endIter = controller->getEndIter();
-  t[tupleC-start] = tupleC;
-  x[tupleC-start] = endIter.getPivot()[state][0];
-  y[tupleC-start] = endIter.getPivot()[state][1];
-  
+  // const SGIteration & endIter = controller->getEndIter();
+  // t[tupleC-start] = tupleC;
+  // x[tupleC-start] = endIter.getPivot()[state][0];
+  // y[tupleC-start] = endIter.getPivot()[state][1];
+
   QCPRange xrange = getBounds(x),
     yrange = getBounds(y);
-  
+
   QCPCurve * newCurve = new QCPCurve(plot->xAxis,
 				     plot->yAxis);
   newCurve->setData(t,x,y);
   plot->addPlottable(newCurve);
 
   // Add current pivot and current direction
-  const SGIteration & pivotIter = controller->getCurrentIter();
+  double norm = currentStep.getHyperplane().getNormal().norm();
+  if (norm==0)
+    norm=1;
   QCPCurve * directionCurve = vectorToQCPCurve(plot,
-					       pivotIter.getPivot()[state],
-					       pivotIter.getDirection()*1.5*payoffBound/pivotIter.getDirection().norm());
+					       currentStep.getPivot()[state],
+					       currentStep.getHyperplane().getNormal()*1.5*payoffBound/norm);
+
   directionCurve->setPen(plotSettings.get(SGPlotSettings::DirectionPen));
+  // directionCurve->setPen(Qt::NoPen);
   plot->addPlottable(directionCurve);
 
-  addPoint(pivotIter.getPivot()[state],plot,plotSettings.get(SGPlotSettings::PivotStyle));
+  addPoint(currentStep.getPivot()[state],plot,plotSettings.get(SGPlotSettings::PivotStyle));
 
   if (addSquares)
     {
@@ -457,158 +542,157 @@ void SGSolutionHandler::plotSolution(SGCustomPlot * plot, int state,
       plot->graph(1)->setLineStyle(QCPGraph::lsNone);
       plot->graph(1)->setScatterStyle(plotSettings.get(SGPlotSettings::TupleStyle));
     }
-  
+
   plot->setRanges(xrange,yrange);
 
   plot->getTitle()->setText(generatePlotTitle(state,
-					      pivotIter.getActionTuple()[state],
+					      currentIter->getActions()[state][currentStep.getActionTuple()[state]].getAction(),
 					      false));
 } // plotSolution
 
 QString SGSolutionHandler::generatePlotTitle(int state, int action,
-					     bool addIterRev)
+                                                bool addIterStep)
 {
-  const SGIteration & pivotIter = controller->getCurrentIter();
+  list<SGIteration_MaxMinMax>::const_iterator currentIter = controller->getCurrentIter();
+  const SGStep & currentStep = controller->getCurrentStep();
   // Update the title
   QString titleString = QString("");
-  if (addIterRev)
+  if (addIterStep)
     {
-      titleString += QString("Iteration: ");
-      titleString += QString::number(pivotIter.getIteration());
-      titleString += QString(", Revolution: ");
-      titleString += QString::number(pivotIter.getRevolution());
-      titleString += QString(", ");
+        titleString += QString("Iteration: ");
+        titleString += QString::number(controller->getCurrentIterIndex());
+        titleString += QString(", ");
     }
-  if (pivotIter.getIteration() >=0
-      && detailedTitlesAction->isChecked())
+    if (controller->getCurrentIterIndex() >=0
+            && detailedTitlesAction->isChecked())
     {
-      titleString += QString("S");
-      titleString += QString::number(state);
+        titleString += QString("S");
+        titleString += QString::number(state);
 
-      vector<int> actions;
-      if (action>-1)
-	{
-	  indexToVector(action,actions,
-			soln.getGame().getNumActions()[state]);
-	  titleString += QString(", (R");
-	  titleString += QString::number(actions[0]);
-	  titleString += QString(",C");
-	  titleString += QString::number(actions[1]);
-	  titleString += QString(")");
-	}
-      else
-	titleString += QString(", Null action");
+        vector<int> actions;
+        if (action>-1)
+        {
+            indexToVector(action,actions,
+                          soln.getGame().getNumActions()[state]);
+            titleString += QString(", (R");
+            titleString += QString::number(actions[0]);
+            titleString += QString(",C");
+            titleString += QString::number(actions[1]);
+            titleString += QString(")");
+        }
+        else
+            titleString += QString(", Null action");
 
-      switch (pivotIter.getRegimeTuple()[state])
-	{
-	case SG::NonBinding:
-	  titleString += "\n(Non-binding)";
-	  break;
+        switch (currentStep.getRegimeTuple()[state])
+        {
+        case SG::NonBinding:
+            titleString += "\n(Non-binding)";
+            break;
 
-	case SG::Binding:
-	  titleString += "\n(Binding)";
-	  break;
+        case SG::Binding:
+            titleString += "\n(Binding)";
+            break;
 
-	case SG::Binding0:
-	  titleString += "\n(Binding 0)";
-	  break;
+        case SG::Binding0:
+            titleString += "\n(Binding 0)";
+            break;
 
-	case SG::Binding1:
-	  titleString += "\n(Binding 1)";
-	  break;
+        case SG::Binding1:
+            titleString += "\n(Binding 1)";
+            break;
 
-	case SG::Binding01:
-	  titleString += "\n(Binding 0 and 1)";
-	  break;
-	}
+        case SG::Binding01:
+            titleString += "\n(Binding 0 and 1)";
+            break;
+        }
     }
-  
-  return titleString;
+
+    return titleString;
 } // generatePlotTitle
 
 void SGSolutionHandler::addPoint(const SGPoint & point,QCustomPlot* plot,
-				 const QCPScatterStyle & style)
+                                    const QCPScatterStyle & style)
 {
-  QVector<double> X(1), Y(1);
-  X[0] = point[0];
-  Y[0] = point[1];
+    QVector<double> X(1), Y(1);
+    X[0] = point[0];
+    Y[0] = point[1];
 
-  plot->addGraph();
-  plot->graph()->setData(X,Y);
-  plot->graph()->setScatterStyle(style);
+    plot->addGraph();
+    plot->graph()->setData(X,Y);
+    plot->graph()->setScatterStyle(style);
 } // addPoint
 
 QCPCurve * SGSolutionHandler::vectorToQCPCurve(SGCustomPlot * plot,
-					       const SGPoint & point,
-					       const SGPoint & dir)
+                                                  const SGPoint & point,
+                                                  const SGPoint & dir)
 {
-  double norm = dir.norm();
+    double norm = dir.norm();
 
-  QVector<double> X(2), Y(2), T(2);
-  X[0] = point[0];
-  Y[0] = point[1];
-  T[0] = 0;
-  X[1] = point[0]+dir[0];
-  Y[1] = point[1]+dir[1];
-  T[1] = 1;
-  QCPCurve * curve = new QCPCurve(plot->xAxis,
-				  plot->yAxis);
-  curve->setData(T,X,Y);
-  
-  return curve;
+    QVector<double> X(2), Y(2), T(2);
+    X[0] = point[0];
+    Y[0] = point[1];
+    T[0] = 0;
+    X[1] = point[0]+dir[0];
+    Y[1] = point[1]+dir[1];
+    T[1] = 1;
+    QCPCurve * curve = new QCPCurve(plot->xAxis,
+                                    plot->yAxis);
+    curve->setData(T,X,Y);
+
+    return curve;
 } // vectorToQCPCurve
 
 QCPItemLine * SGSolutionHandler::sgToQCPItemLine(SGCustomPlot * plot,
-						 const SGPoint & point,
-						 const SGPoint & dir)
+                                                    const SGPoint & point,
+                                                    const SGPoint & dir)
 {
-  QCPItemLine * line = new QCPItemLine(plot);
-  line->start->setCoords(point[0],point[1]);
-  line->end->setCoords(point[0]+dir[0],point[1]+dir[1]);
+    QCPItemLine * line = new QCPItemLine(plot);
+    line->start->setCoords(point[0],point[1]);
+    line->end->setCoords(point[0]+dir[0],point[1]+dir[1]);
     
-  return line;
+    return line;
 } // sgToQCPItemLine
 
 QCPRange SGSolutionHandler::getBounds(const QVector<double> & x) const
 {
-  double paddFactor = 0.1;
+    double paddFactor = 0.1;
 
-  double xmin = numeric_limits<double>::max();
-  double xmax = -numeric_limits<double>::max();
-  
-  for (int k = 0; k < x.size(); ++k)
+    double xmin = numeric_limits<double>::max();
+    double xmax = -numeric_limits<double>::max();
+
+    for (int k = 0; k < x.size(); ++k)
     {
-      xmin = std::min(xmin,x[k]);
-      xmax = std::max(xmax,x[k]);
+        xmin = std::min(xmin,x[k]);
+        xmax = std::max(xmax,x[k]);
     }
-  double padd = (xmax-xmin)*paddFactor;
-  xmin -= padd; xmax += padd;
+    double padd = (xmax-xmin)*paddFactor;
+    xmin -= padd; xmax += padd;
 
-  return QCPRange(xmin,xmax);  
+    return QCPRange(xmin,xmax);
 }
 
 void SGSolutionHandler::inspectPoint(SGPoint point,
-				     int state, bool isDetailPlot)
+                                        int state, bool isDetailPlot)
 {
-  // Find the point that is closest for the given state.
-  controller->setPlotMode(SGPlotController::Generation);
-  controller->setCurrentIteration(point,state);
+    // Find the point that is closest for the given state.
+    controller->setPlotMode(SGPlotController::Generation);
+    controller->setCurrentDirection(point,state);
 
 } // inspectPoint
 
 void SGSolutionHandler::simulateEquilibrium(SGPoint point,
-					    int state, bool isDetailPlot)
+                                               int state, bool isDetailPlot)
 {
-  simHandler = new SGSimulationHandler(parent,soln,
-				       point,state);
+    // simHandler = new SGSimulationHandler(parent,soln,
+    // 				       point,state);
 
-  simHandler->adjustSize();
+    // simHandler->adjustSize();
 
-  simHandler->move(parent->pos()
-		   +parent->rect().center()
-		   -simHandler->pos()
-		   -simHandler->rect().center());
-  
-  simHandler->show();
+    // simHandler->move(parent->pos()
+    // 		   +parent->rect().center()
+    // 		   -simHandler->pos()
+    // 		   -simHandler->rect().center());
+
+    // simHandler->show();
 } // simulateEquilibrium
 

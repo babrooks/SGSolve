@@ -19,13 +19,14 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef SGPLOTCONTROLLER_HPP
-#define SGPLOTCONTROLLER_HPP
+#ifndef SGPLOTCONTROLLER_V2_HPP
+#define SGPLOTCONTROLLER_V2_HPP
 
 #include <QObject>
 #include <QComboBox>
 #include <QScrollBar>
-#include "sgsolution.hpp"
+#include <QDebug>
+#include "sgsolution_maxminmax.hpp"
 
 //! Handles the plot settings for SGSolutionHandler
 /*! This class intermediates between the controllers (iterSlider,
@@ -38,7 +39,8 @@
 */
 class SGPlotController : public QObject
 {
-  Q_OBJECT;
+  Q_OBJECT
+
 public:
   //! Plot mode for the detailPlot
   /*! Indicates whether to plot all of the test directions
@@ -72,7 +74,7 @@ private:
   int iteration;
 
   //! The current solution object
-  SGSolution * soln;
+  SGSolution_MaxMinMax * soln;
   
   //! The current plot mode
   PlotMode plotMode;
@@ -80,14 +82,10 @@ private:
   //! The current solution mode
   SolutionMode mode;
   
-  //! Points to the first SGIteration object from which to plot.
-  list<SGIteration>::const_iterator startIter;
-  //! Points to the last SGIteration object to which to plot.
-  list<SGIteration>::const_iterator endIter;
   //! Points to the current SGiteration.
-  list<SGIteration>::const_iterator currentIter;
-  //! Points to the SGIteration that starts the last revolution.
-  list<SGIteration>::const_iterator startOfLastRev;
+  list<SGIteration_MaxMinMax>::const_iterator currentIter;
+  //! Points to the current step.
+  list< SGStep >::const_iterator currentStep;
 
   //! Indicates when an SGSolution object has been loaded
   bool solnLoaded;
@@ -100,15 +98,15 @@ private:
   QComboBox * solutionModeCombo;
   //! Points to the iterSlider QScrollBar for selecting the current iteration
   QScrollBar * iterSlider;
-  //! Points to the startSlider QScrollBar for selecting the start
+  //! Points to the stepSlider QScrollBar for selecting the start
   //! iteration when the solution mode is Progress.
-  QScrollBar * startSlider;
+  QScrollBar * stepSlider;
 public:
   //! Constructor
   SGPlotController(QComboBox * _stateCombo,
 		   QComboBox *_actionCombo,
 		   QScrollBar * _iterSlider,
-		   QScrollBar * _startSlider,
+		   QScrollBar * _stepSlider,
 		   QComboBox * _solutionModeCombo);
 
   //! Access method for the current state.
@@ -123,22 +121,20 @@ public:
   PlotMode getPlotMode() const { return plotMode; }
   //! Access method for the current solution mode.
   SolutionMode getMode () const { return mode; }
-  //! Access method for the current SGIteration pointer.
-  const SGIteration & getCurrentIter() const { return *currentIter; }
-  //! Access method for the start SGIteration pointer.
-  const SGIteration & getStartIter() const { return *startIter; }
-  //! Access method for the end SGIteration pointer.
-  const SGIteration & getEndIter() const { return *endIter; }
-  //! Access method for the SGIteration pointer that starts the last revolution.
-  const SGIteration & getStartOfLastRev() const { return *startOfLastRev; }
-  //! Returns the position of the startSlider.
-  int getStartSliderPosition() const { return startSlider->sliderPosition(); }
+  //! Access method for the current SGIteration_MaxMinMax pointer.
+  list<SGIteration_MaxMinMax>::const_iterator getCurrentIter() const { return currentIter; }
+  //! Access method for the current SGIteration_MaxMinMax pointer.
+  int getCurrentIterIndex() const { return iteration; }
+  //! Access method for the current SGStep pointer.
+  const SGStep & getCurrentStep() const { return *currentStep; }
+  //! Returns the position of the stepSlider.
+  int getStepSliderPosition() const { return stepSlider->sliderPosition(); }
   //! Returns true if a solution has been loaded.
   bool hasSolution() const { return solnLoaded; }
   //! Returns the current solution.
-  const SGSolution * getSolution() const { return soln; }
+  const SGSolution_MaxMinMax * getSolution() const { return soln; }
   //! Sets the solution.
-  void setSolution(SGSolution * newSoln);
+  void setSolution(SGSolution_MaxMinMax * newSoln);
   //! Sets the current state.
   bool setState(int newState);
   //! Sets the plot mode.
@@ -169,31 +165,33 @@ public:
 					   iterSlider->value()+1));
     // iterSliderUpdate(iterSlider->value());
   }
-  //! Sets the current iteration to be the one where the pivot in the
+  //! Sets the current direction to be the one where the pivot in the
   //! given state is closest to point.
-  void setCurrentIteration(SGPoint point, int state);
+  void setCurrentDirection(SGPoint point, int state);
   //! Synchronizes sliders with controls.
   /*! Sets startIter and currentIter to be equal to the values
       indicated in the respective sliders. */
   void synchronizeSliders();
+
+  //! Synchronizes iterSlider.
+  void synchronizeIterSlider();
+  //! Synchronizes stepSlider.
+  void synchronizeStepSlider();
 
 signals:
   //! Signal to the state and action models that the solution changed.
   void solutionChanged();
   //! Signal to the solutionHandler that the action changed.
   void actionChanged();
+  //! Signal to the actionCombo that the state changed.
+  void stateChanged();
   //! Signal to solutionHandler that the iteration changed.
   void iterationChanged();
 
     
 public slots:
-  //! Toggles the solution mode
-  void changeMode(int newMode);
   //! Slot when the iter and start sliders are moved.
   void iterSliderUpdate(int value);
-  //! Slot used to set up the sliders when changing between Progress
-  //! and Final modes.
-  void setSliderRanges(int start, int end);
   //! Decrements the action.
   void prevAction();
   //! Increments the action.
@@ -201,6 +199,12 @@ public slots:
   //! Sets the action
   void changeAction(int newAction);
 
+  //! Toggles the solution mode
+  void changeMode(int newMode);
+
+  // //! Slot used to set up the sliders when changing between Progress
+  // //! and Final modes.
+  // void setSliderRanges(int start, int end);
   
 
 

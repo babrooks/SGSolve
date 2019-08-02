@@ -37,18 +37,16 @@ SGMainWindow::SGMainWindow()
   gameHandler = new SGGameHandler();
 
   solutionHandler = new SGSolutionHandler(this);
-  solutionHandler_V2 = new SGSolutionHandler_V2(this);
 
   // Menu bar
   QMenu * fileMenu = menuBar()->addMenu(tr("&File"));
   QAction * loadSolutionAction = new QAction(tr("&Load solution"),this);
-  QAction * loadSolutionAction_V2 = new QAction(tr("&Load solution V2"),this);
   QAction * loadGameAction = new QAction(tr("Load &game"),this);
   QAction * saveGameAction = new QAction(tr("Save game"),this);
   QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
   QAction * quitAction = new QAction(tr("&Quit"),this);
   // fileMenu->addAction(loadSolutionAction);
-  fileMenu->addAction(loadSolutionAction_V2);
+  fileMenu->addAction(loadSolutionAction);
   fileMenu->addAction(loadGameAction);
   fileMenu->addSeparator();
   fileMenu->addAction(saveSolutionAction);
@@ -56,7 +54,7 @@ SGMainWindow::SGMainWindow()
   fileMenu->addSeparator();
   fileMenu->addAction(quitAction);
   // loadSolutionAction->setShortcut(tr("Ctrl+Shift+L"));
-  loadSolutionAction_V2->setShortcut(tr("Ctrl+L"));
+  loadSolutionAction->setShortcut(tr("Ctrl+L"));
   saveSolutionAction->setShortcut(tr("Ctrl+S"));
   loadGameAction->setShortcut(tr("Ctrl+G"));
   quitAction->setShortcut(tr("Alt+W"));
@@ -99,12 +97,9 @@ SGMainWindow::SGMainWindow()
   
   QWidget * gameTab = new QWidget();
   QWidget * solutionTab = new QWidget();
-  QWidget * solutionTab2 = new QWidget();
   QWidget * logTab = new QWidget();
   
   solutionTab->setLayout(solutionHandler->getLayout());
-  solutionTab2->setLayout(solutionHandler_V2->getLayout());
-
 
   // Game tab
   gameTab->setLayout(gameHandler->getLayout());
@@ -126,10 +121,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(displayLegend()));
   connect(aboutAction,SIGNAL(triggered()),
 	  this,SLOT(displayAbout()));
-  connect(gameHandler->getSolveButton(),SIGNAL(clicked()),
-      this,SLOT(solveGame()));
   connect(gameHandler->getSolveButton_V2(),SIGNAL(clicked()),
-      this,SLOT(solveGame_V2()));
+      this,SLOT(solveGame()));
   connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
 	  this,SLOT(cancelSolve()));
   connect(solveAction,SIGNAL(triggered()),
@@ -147,8 +140,8 @@ SGMainWindow::SGMainWindow()
   connect(bosAction,SIGNAL(triggered()),
 	  this,SLOT(generateBoS()));
   
-  connect(loadSolutionAction_V2,SIGNAL(triggered()),
-	  this,SLOT(loadSolution_V2()));
+  connect(loadSolutionAction,SIGNAL(triggered()),
+	  this,SLOT(loadSolution()));
 
   // Log tab
   QHBoxLayout * logEditLayout = new QHBoxLayout();
@@ -165,7 +158,7 @@ SGMainWindow::SGMainWindow()
   tabWidget->addTab(gameTab,"Game");
   // tabWidget->addTab(solutionTab,"Solution - Pencil Sharpening");
   // tabWidget->addTab(solutionTab2,"Solution - Max-Min-Max");
-  tabWidget->addTab(solutionTab2,"Solution");
+  tabWidget->addTab(solutionTab,"Solution");
   tabWidget->addTab(logTab,"Log");
   mainLayout->addWidget(tabWidget);
 
@@ -189,7 +182,7 @@ void SGMainWindow::settingsSaver()
 {
     settings->setValue("LastDir", path);
 }
-
+/* this seems like old code
 void SGMainWindow::loadSolution()
 {
   QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
@@ -228,9 +221,9 @@ void SGMainWindow::loadSolution()
       QErrorMessage em(this);
       em.showMessage(QString("Load solution didnt work :("));
     }
-} // loadSolution
+} */ // loadSolution
 
-void SGMainWindow::loadSolution_V2()
+void SGMainWindow::loadSolution()
 {
   QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
                          path,
@@ -258,7 +251,7 @@ void SGMainWindow::loadSolution_V2()
 	}
       
       gameHandler->setGame(soln.getGame());
-      solutionHandler_V2->setSolution(soln);
+      solutionHandler->setSolution(soln);
       
       tabWidget->setCurrentIndex(1);
 
@@ -276,7 +269,7 @@ void SGMainWindow::loadSolution_V2()
       qDebug() << "Error message:" << e.what() << endl;
     }
 } // loadSolution_V2
-
+/*
 void SGMainWindow::saveSolution()
 {
   QString newPath = QFileDialog::getSaveFileName(this,tr("Select a solution file"),
@@ -296,13 +289,13 @@ void SGMainWindow::saveSolution()
       const char * newPath_c = ba.data();
 
       SGSolution::save(solutionHandler->getSolution(),
-		       newPath_c);
+		       newPath_c); 
     }
   catch (std::exception & e)
     {
       qDebug() << "Save solution didnt work :(" << endl;
     }
-} // saveSolution
+} */  // saveSolution
 
 void SGMainWindow::loadGame()
 {
@@ -324,11 +317,8 @@ void SGMainWindow::loadGame()
       const char * newPath_c = ba.data();
 
       SGGame game;
-
+      
       SGGame::load(game,newPath_c);
-
-      if(2 != game.getNumPlayers()) //because viewer is only compatible with two players right now
-	      throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
 
       gameHandler->setGame(game);
 
@@ -341,7 +331,7 @@ void SGMainWindow::loadGame()
   catch (std::exception & e)
     {
       qDebug() << "Load game didnt work :(" << endl;
-    } 
+    }
 } // loadGame
 
 void SGMainWindow::saveGame()
@@ -374,7 +364,7 @@ void SGMainWindow::quitProgram()
 {
   QApplication::quit();
 }
-
+/* this is old code
 void SGMainWindow::solveGame()
 {
   tabWidget->setCurrentIndex(2);
@@ -411,9 +401,9 @@ void SGMainWindow::solveGame()
                 tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
                 QMessageBox::Ok);
     }
-} // solveGame
+} */ // solveGame
 
-void SGMainWindow::solveGame_V2()
+void SGMainWindow::solveGame()
 {
   tabWidget->setCurrentIndex(2);
 
@@ -428,30 +418,30 @@ void SGMainWindow::solveGame_V2()
 
 //      Needs to be updated to use a new solver worker.
 
-      if (!gameHandler->getGame().transitionProbsSumToOne((env->getParam(SG::TRANSITION_PROB_TOL))))
+      if (!gameHandler->getGame().transitionProbsSumToOne())
        throw(SGException(SG::PROB_SUM_NOT1));
 
-     solverWorker_v2 = new SGSolverWorker_V2(*env,
+     solverWorker = new SGSolverWorker(*env,
                    gameHandler->getGame(),
                    logTextEdit);
-     solverWorker_v2->moveToThread(&solverThread);
+     solverWorker->moveToThread(&solverThread);
 
 
-     connect(this,SIGNAL(startIteration_V2()),
-         solverWorker_v2,SLOT(iterate()));
-     connect(solverWorker_v2,SIGNAL(resultReady(bool)),
-             this,SLOT(iterationFinished_V2(bool)));
-     connect(solverWorker_v2,SIGNAL(exceptionCaught()),
-         this,SLOT(solverException_V2()));
+     connect(this,SIGNAL(startIteration()),
+         solverWorker,SLOT(iterate()));
+     connect(solverWorker,SIGNAL(resultReady(bool)),
+             this,SLOT(iterationFinished(bool)));
+     connect(solverWorker,SIGNAL(exceptionCaught()),
+         this,SLOT(solverException()));
      solverThread.start();
 
      timer.restart();
 
-     emit startIteration_V2();
+     emit startIteration();
     }
   catch (exception & e)
     {
-      logTextEdit -> append(QString("SGSolver was unable to solve your game. Caught the following exception: "));
+      logTextEdit -> append(QString("SGSolver was unable to solver your game. Caught the following exception: "));
       logTextEdit -> append(QString(e.what()));
       logTextEdit -> append(QString(""));
     }
@@ -462,6 +452,7 @@ void SGMainWindow::cancelSolve()
   cancelSolveFlag = true;
 } // cancelSolve
 
+/* this is old code
 void SGMainWindow::iterationFinished(bool tf)
 {
   string str;
@@ -548,19 +539,19 @@ void SGMainWindow::iterationFinished(bool tf)
   
   delete solverWorker;
 
-} // iterationFinished
+} */ // iterationFinished
 
-void SGMainWindow::iterationFinished_V2(bool tf)
+void SGMainWindow::iterationFinished(bool tf)
 {
   string str;
 
-  switch (solverWorker_v2->getStatus())
+  switch (solverWorker->getStatus())
     {
-    case SGSolverWorker_V2::NOTCONVERGED:
+    case SGSolverWorker::NOTCONVERGED:
       
       if (cancelSolveFlag)
 	{
-	  str = solverWorker_v2->getSolver().progressString();
+	  str = solverWorker->getSolver().progressString();
 	  logTextEdit->append(QString(str.c_str()));
 	  logTextEdit->append(QString(""));
 	  logTextEdit->append(QString("Computation canceled."));
@@ -571,16 +562,16 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 	}
       else
 	{
-	  string str = solverWorker_v2->getSolver().progressString();
+	  string str = solverWorker->getSolver().progressString();
 	  logTextEdit->append(QString(str.c_str()));
 
-	  emit startIteration_V2();
+	  emit startIteration();
 
 	  return;
 	}
 
-    case SGSolverWorker_V2::CONVERGED:
-      str = solverWorker_v2->getSolver().progressString();
+    case SGSolverWorker::CONVERGED:
+      str = solverWorker->getSolver().progressString();
       logTextEdit->append(QString(str.c_str()));
       logTextEdit->append(QString(""));
       logTextEdit->append(QString("Computation complete!"));
@@ -588,18 +579,18 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 
       break;
 
-    case SGSolverWorker_V2::FAILED:
-      str = solverWorker_v2->getSolver().progressString();
+    case SGSolverWorker::FAILED:
+      str = solverWorker->getSolver().progressString();
       logTextEdit->append(QString(str.c_str()));
       logTextEdit->append(QString(""));
       logTextEdit->append(QString("Computation failed."));
-      logTextEdit->append(QString(solverWorker_v2->getExceptionMsg()));
+      logTextEdit->append(QString(solverWorker->getExceptionMsg()));
 
       break;
       
     }
   
-  solutionHandler_V2->setSolution(solverWorker_v2->getSolution());
+  solutionHandler->setSolution(solverWorker->getSolution());
 
   int telapsed = timer.elapsed();
       
@@ -632,22 +623,22 @@ void SGMainWindow::iterationFinished_V2(bool tf)
 
   tabWidget->setCurrentIndex(1);
   
-  delete solverWorker_v2;
+  delete solverWorker;
 
 } // iterationFinished_V2
+/* this is old code
+void SGMainWindow::solverException()
+{
+  logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
+
+  delete solverWorker;
+} */ // solverException
 
 void SGMainWindow::solverException()
 {
   logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
 
   delete solverWorker;
-} // solverException
-
-void SGMainWindow::solverException_V2()
-{
-  logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
-
-  delete solverWorker_v2;
 } // solverException
 
 void SGMainWindow::keyPressEvent(QKeyEvent * event)
@@ -737,7 +728,7 @@ void SGMainWindow::settingsHandlerClosed()
 void SGMainWindow::changePlotSettings()
 {
   plotSettingsHandler = new SGPlotSettingsHandler(this,
-						  solutionHandler_V2->getPlotSettingsPtr());
+						  solutionHandler->getPlotSettingsPtr());
 
   plotSettingsHandler->adjustSize();
   plotSettingsHandler->move(this->pos()

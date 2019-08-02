@@ -19,12 +19,12 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef SGSOLVERWORKER_HPP
-#define SGSOLVERWORKER_HPP
+#ifndef SGSOLVERWORKER_V2_HPP
+#define SGSOLVERWORKER_V2_HPP
 
 #include <QtWidgets>
 #include "sg.hpp"
-#include "sgapprox.hpp"
+#include "sgsolver_maxminmax.hpp"
 
 //! Class for implementing the twist algorithm within SGViewer
 /*! If we just used the SGSolver class to solve the game, the
@@ -50,12 +50,14 @@ class SGSolverWorker : public QObject
 private:
   //! An environment object to hold settings.
   const SGEnv & env;
-  //! Solution object used by SGApprox.
-  SGSolution soln;
   //! The main object for performing calculations
-  SGApprox approx;
+  SGSolver_MaxMinMax solver;
   //! A pointer to the text edit in which to report progress.
   QTextEdit * logTextEdit;
+  //! Number of iterations
+  int numIter;
+  //! Exception message caught by solver
+  QString exceptionMsg;
 
 public:
   //! Code for status at the end of the iteration.
@@ -70,19 +72,22 @@ public:
     } status; /*!< Current status. */
 
   //! Constructor
-  /*! Initializes the SGApprox object. Waits for instruction to begin
-      iteration via the SGSolverWorker::iterate slot. */
+  /*! Initializes the solver object. Waits for instruction to begin
+      iteration via the SGSolverWorker_V2::iterate slot. */
   SGSolverWorker(const SGEnv & _env,
 		 const SGGame & game,
 		 QTextEdit * _logTextEdit):
-    env(_env), soln(game), approx(env,game,soln),
+    env(_env), solver(env,game),
     logTextEdit(_logTextEdit)
   {
-    approx.initialize();
+    numIter = 0;
+    solver.initialize();
   } // constructor
 
   //! Returns the status of the worker
   STATUS getStatus() const { return status; }
+  //! Returns the exception message (if one is caught)
+  const QString & getExceptionMsg() const { return exceptionMsg; }
 
 public slots:
 
@@ -93,28 +98,14 @@ public slots:
   {
     try
       {
-	// Add the extreme tuples array to soln.
-	if (approx.getNumIterations()==0)
-	  {
-	    for (vector<SGTuple>::const_iterator tuple
-	    	   = approx.getExtremeTuples().begin();
-	    	 tuple != approx.getExtremeTuples().end();
-	    	 ++tuple)
-	      soln.push_back(*tuple);
-	  }
-	else
-	  soln.push_back(approx.getExtremeTuples().back());
-	
-	if (approx.generate() > env.getParam(SG::ERRORTOL)
-	    && approx.getNumIterations() < env.getParam(SG::MAXITERATIONS))
+	if (solver.iterate() > env.getParam(SG::ERRORTOL)
+	    && numIter < env.getParam(SG::MAXITERATIONS))
 	  {
 	    status = NOTCONVERGED;
 	    emit resultReady(false);
 	  }
 	else
 	  {
-	    approx.end();
-	    
 	    status = CONVERGED;
 	    emit resultReady(true);
 	  }
@@ -124,22 +115,20 @@ public slots:
 	// Add the extreme tuples array to soln.
 	qDebug() << "solve failed" << endl;
 
-	approx.end();
-	
+	exceptionMsg = QString(e.what());
+
 	status = FAILED;
 	emit resultReady(true);
-	
-	// emit exceptionCaught();
       }
   } // iterate
 
   //! Returns the SGSolution object.
-  const SGSolution & getSolution() const
-  { return soln; }
+  const SGSolution_MaxMinMax & getSolution() const
+  { return solver.getSolution(); }
 
-  //! Returns the SGApprox object.
-  const SGApprox & getApprox() const
-  { return approx; }
+  //! Returns the solver object.
+  const SGSolver_MaxMinMax & getSolver() const
+  { return solver; }
   
 signals:
   //! Signal that gets emitted when iteration finishes.
