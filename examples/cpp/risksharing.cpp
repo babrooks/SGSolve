@@ -120,7 +120,7 @@ int main()
 	    {
 	      cout << "Caught the following exception:" << endl
 		   << ep.what() << endl;
-	      SGGame::save(game,gamename.str().c_str());
+	      SGGame::save(game,"./games/risksharing.sgm");
 
 	      SGEnv env;
 	      env.setParam(SG::STOREITERATIONS,1);
@@ -129,7 +129,7 @@ int main()
 
 	      solver->solve();
 	      soln = solver->getSolution();
-	      SGSolution::save(soln,solnname.str().c_str());
+	      SGSolution::save(soln,"./solutions/risksharing.sln");
 	      delete solver;
 	    }
 

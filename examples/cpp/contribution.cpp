@@ -77,7 +77,7 @@ int main ()
       duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
       cout << "Fixed dir solver time elapsed: "<< duration << " seconds" << endl;
       SGSolution_MaxMinMax soln = solver.getSolution();
-      SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln2");
+      SGSolution_MaxMinMax::save(soln,"./solutions/contribution_fixed.sln");
       
       SGGame::save(game,"./games/contribution.sgm");
 

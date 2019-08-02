@@ -87,7 +87,7 @@ int main()
        << "_delta=" << delta;
     if (env.getParam(SG::SUBGENFACTOR)>0)
       ss << "_sgf=" << env.getParam(SG::SUBGENFACTOR);
-    ss << ".sln2";
+    ss << ".sln";
     SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
     
     start = clock();

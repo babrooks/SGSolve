@@ -56,7 +56,7 @@ int main ()
     ss << "_dropredund";
   if (addEndogenous)
     ss << "_addendog";
-  ss << ".sln2";
+  ss << ".sln";
   
   try
     {

@@ -76,7 +76,7 @@ int main ()
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution_MaxMinMax::save(solver.getSolution(),"./solutions/bos.sln2");
+      SGSolution_MaxMinMax::save(solver.getSolution(),"./solutions/bos.sln");
       cout << "Done!" << endl;
 
       SGGame::save(game,"./games/bos.sgm");
