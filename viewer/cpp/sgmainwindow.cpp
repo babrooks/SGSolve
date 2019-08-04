@@ -59,7 +59,6 @@ SGMainWindow::SGMainWindow()
   loadGameAction->setShortcut(tr("Ctrl+G"));
   quitAction->setShortcut(tr("Alt+W"));
 
-
   QMenu * viewMenu = menuBar()->addMenu(tr("&View"));
   QAction * screenShotAction = new QAction(tr("&Save a screen shot"),this);
   viewMenu->addAction(solutionHandler->getDetailedTitlesAction());
@@ -77,9 +76,11 @@ SGMainWindow::SGMainWindow()
   QAction * rsgAction = new QAction(tr("&Risk sharing"),this);
   QAction * pdAction = new QAction(tr("&Prisoners' Dilemmas"),this);
   QAction * bosAction = new QAction(tr("&Battle of the Sexes"),this);
+  QAction * randomAction = new QAction(tr("&Random"),this);
   gamesMenu->addAction(rsgAction);
   gamesMenu->addAction(pdAction);
   gamesMenu->addAction(bosAction);
+  gamesMenu->addAction(randomAction);
   toolsMenu->addSeparator();
   QAction * solveAction = new QAction(tr("&Solve game"),this);
   QAction * cancelAction = new QAction(tr("&Cancel computation"),this);
@@ -139,6 +140,8 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(generatePD()));
   connect(bosAction,SIGNAL(triggered()),
 	  this,SLOT(generateBoS()));
+  connect(randomAction,SIGNAL(triggered()),
+	  this,SLOT(generateRandom()));
   
   connect(loadSolutionAction,SIGNAL(triggered()),
 	  this,SLOT(loadSolution()));
@@ -890,3 +893,123 @@ void SGMainWindow::generateBoS()
   setWindowTitle(newWindowTitle);
 
 } // generateBoS
+
+
+void SGMainWindow::generateRandom()
+{
+	  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	  std::default_random_engine generator (seed); 
+
+	  std::uniform_real_distribution<double> distribution(1e-6,1-(1e-6));
+	  double delta = distribution(generator);
+		
+	  // default values 
+	  int numPlayers = 2;
+	  int numStates = 4; 
+	  int numactions = 3;
+	  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
+
+	  SGRandomHandler rh(this,numPlayers,numStates,numactions);
+            if (rh.exec()==QDialog::Accepted)
+            {
+             // RandomGame rg(delta,numPlayers,numStates,numactions);
+	     numPlayers = numPlayers;
+	     numStates = numStates;
+	     numactions = numactions;
+	    } 
+
+
+	  vector<bool> unconstrained(2,false); 
+
+	  vector< vector< int > > numActions(numStates,vector<int>(numPlayers,numactions));
+	  vector<int> numActions_total(numStates,pow(numactions, numPlayers));
+
+	  vector< vector< vector<double> > >
+		  payoffs(numStates,vector< vector<double> >(pow(numactions, numPlayers),vector<double>(numPlayers,0.0))); 
+	  unsigned int i,j,k,l;
+	  for(i=0;i<numStates;i++)
+	  {
+	    for(j=0;j<numActions_total[i];j++)
+	    {
+	       for(k=0;k<numPlayers;k++)
+	       {
+	         std::uniform_real_distribution<double> distribution(0,10);	                    
+		 payoffs[i][j][k] = distribution(generator);
+	       }
+	    }
+	  }
+	
+	  // Transition probabilities 
+	  vector < vector< vector<double> > >
+		  probabilities(numStates,vector< vector<double> >(pow(numactions, numPlayers), vector<double>(numStates,1.0))); // 1.0 as initial value, but then randomize
+	  // randomize transition probabilities 
+	  double prob_sum;
+	  for(i=0;i<numStates;i++)
+	  { 
+	    for(j=0;j<numActions_total[i];j++)
+	    { 
+	      prob_sum = 0.0;
+	      for(k=0;k<numStates;k++)
+	      {
+		std::uniform_real_distribution<double> distribution(0,1.0);
+		probabilities[i][j][k] = distribution(generator);
+		// normalize probabilities
+		prob_sum += probabilities[i][j][k];
+	      }
+	      for(k=0;k<numStates;k++)
+	      {
+		probabilities[i][j][k] = probabilities[i][j][k]/prob_sum;
+	      } 
+	    }
+	  }
+	 /* try
+	    {
+	       cout << "Constructing game object" <<endl; */
+	       SGGame game(delta,
+			   numStates,
+			   numActions,
+			   payoffs,
+			   probabilities,
+			   unconstrained);
+
+	       SGEnv env;
+	       env.setParam(SG::DIRECTIONTOL, 1e-12);
+	       env.setParam(SG::NORMTOL, 1e-12);
+	       env.setParam(SG::LEVELTOL, 1e-12);
+	       env.setParam(SG::IMPROVETOL, 1e-13);
+
+	        // do we want to build solver and save solution, or just save the game?
+	       
+	        // update name of new game generated: currently commented out because not yet functional 
+	   /*   seqFileIn.open("sequeceFile.txt", ios::in);
+
+		// If "sequenceFile.txt" exists, read the last sequence from it and increment it by 1.
+		if (seqFileIn.is_open())
+		{
+		  seqFileIn >> fileSeq;
+		  fileSeq++;
+		}
+	        else
+		  fileSeq = 1; // if it does not exist, start from sequence 1. 
+ 		string fileName = "random" + to_string(fileSeq) + ".sgm";
+		SGGame::save(game,"./games/random/fileName.sgm" */ 
+
+	   /*    SGGame::save(game,"./games/random/random1.sgm");  
+	  }     
+	 catch (SGException e)
+ 	   {
+		cout << "Caught the following exception:" << endl
+			<< e.what() << endl;
+	   } */
+/*
+	 seqFileOut.open("sequeceFile.txt", ios::out);
+	     seqFileOut << fileSeq; */   
+	 
+	 gameHandler->setGame(game);
+ 
+	 tabWidget->setCurrentIndex(0);
+
+         QString newWindowTitle(tr("SGViewer - Random"));
+         setWindowTitle(newWindowTitle);
+} //generate random
+

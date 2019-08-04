@@ -56,6 +56,7 @@ sgplotcontroller.hpp \
 sgstatecombomodel.hpp \
 sgactioncombomodel.hpp \
 sgrisksharinghandler.hpp \
+sgrandomhandler.hpp \ 
 sglegend.hpp \
 sgplotsettings.hpp \
 Q_DebugStream.h

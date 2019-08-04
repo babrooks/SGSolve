@@ -33,6 +33,7 @@
 #include "sg.hpp"
 #include "sgrisksharing.hpp"
 #include "sgrisksharinghandler.hpp"
+#include "sgrandomhandler.hpp"
 #include "sglegend.hpp"
 
 using namespace std;
@@ -205,6 +206,9 @@ private slots:
 
   //! Generate a Battle of the Sexes
   void generateBoS();
+
+  //! Generates a random game
+  void generateRandom();
 };
 
 
