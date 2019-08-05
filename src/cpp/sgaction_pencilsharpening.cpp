@@ -20,7 +20,7 @@
 // Chicago, IL
 
 // BAB 9-25-2012
-#include "sgaction_PencilSharpening.hpp"
+#include "sgaction_pencilsharpening.hpp"
 
 /* SGAction */
 

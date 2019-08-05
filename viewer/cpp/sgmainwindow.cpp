@@ -276,7 +276,7 @@ void SGMainWindow::loadSolution()
     }
 
 } // loadSolution_V2
-/*
+
 void SGMainWindow::saveSolution()
 {
   QString newPath = QFileDialog::getSaveFileName(this,tr("Select a solution file"),
@@ -295,14 +295,14 @@ void SGMainWindow::saveSolution()
       QByteArray ba = newPath.toLocal8Bit();
       const char * newPath_c = ba.data();
 
-      SGSolution::save(solutionHandler->getSolution(),
+      SGSolution_MaxMinMax::save(solutionHandler->getSolution(),
 		       newPath_c); 
     }
   catch (std::exception & e)
     {
       qDebug() << "Save solution didnt work :(" << endl;
     }
-} */  // saveSolution
+}   // saveSolution
 
 void SGMainWindow::loadGame()
 {

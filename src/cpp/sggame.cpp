@@ -152,21 +152,6 @@ SGGame::SGGame(int _numPlayers,
   if(!transitionProbsSumToOne())
     throw(SGException(SG::PROB_SUM_NOT1)); 
 
-  if (eqActions.size() != 0)
-    {
-      // Deprecated
-      // for (int state = 0; state < numStates; state++)
-      // 	{
-      // 	  for (list<int>::const_iterator action
-      // 		 = eqActions[state].begin();
-      // 	       action != eqActions[state].end();
-      // 	       action++)
-      // 	    {
-      // 	      if(*action<0 || *action>=numActions_total[state])
-      // 		throw(SGException(SG::OUT_OF_BOUNDS));
-      // 	    }
-      // 	} // for state
-    }
   else if (eqActions.size() == 0)
     {
       for (int state = 0; state < numStates; state++)

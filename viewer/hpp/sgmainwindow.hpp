@@ -127,14 +127,10 @@ protected:
 signals:
   //! Signal for SGSolverThread to start next iteration.
   void startIteration();
-  //! Signal for SGSolverThread to start next iteration, V2.
-  void startIteration_V2();
 					       
 private slots:
   //! Triggers a solution load
   void loadSolution();
-  //! Triggers a SGSolution_V2 load
-  void loadSolution_V2();
   //! Triggers a solution save.
   void saveSolution();
   //! Triggers a game load.
@@ -160,37 +156,23 @@ private slots:
   //! Triggers a new screen shot.
   void screenShot();
   
-  //! Initializes solve routine for pencil sharpening.
-  void solveGame();
   //! Throws the cancel solution flag.
   void cancelSolve();
-  //! Slot when iteration finishes.
-  /*! Checks if the algorithm has converged or if maximum number of
-      iterations has finished. If the algorithm has finished, plots
-      the solution. If the algorithm has not converged and the cancel
-      flag is false, the next iteration is started. If the cancel flag
-      is thrown, will not trigger the next iteration. */
-  void iterationFinished(bool);
-
-  //! Triggers error message in log.
-  /*! When the algorithm throws an exception, triggers an error
-      message report. */
-  void solverException();
 
   //! Initializes solve routine for ABS 2018.
-  void solveGame_V2();
-  //! Slot when iteration finishes, V2.
+  void solveGame();
+  //! Slot when iteration finishes 
   /*! Checks if the algorithm has converged or if maximum number of
     iterations has finished. If the algorithm has finished, plots
     the solution. If the algorithm has not converged and the cancel
     flag is false, the next iteration is started. If the cancel flag
     is thrown, will not trigger the next iteration. */
-  void iterationFinished_V2(bool);
+  void iterationFinished(bool);
 
-  //! Triggers error message in log, V2.
+  //! Triggers error message in log
   /*! When the algorithm throws an exception, triggers an error
       message report. */
-  void solverException_V2();
+  void solverException();
 
   //! Displays an about message
   void displayAbout();

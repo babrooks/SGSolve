@@ -19,7 +19,7 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#include "sgsolver_PencilSharpening.hpp"
+#include "sgsolver_pencilsharpening.hpp"
 
 SGSolver::SGSolver(const SGEnv & _env,
 		   const SGGame & _game):

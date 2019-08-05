@@ -23,7 +23,7 @@
 #define _SGSOLUTION_HPP
 
 #include "sggame.hpp"
-#include "sgiteration.hpp"
+#include "sgiteration_pencilsharpening.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/utility.hpp>
