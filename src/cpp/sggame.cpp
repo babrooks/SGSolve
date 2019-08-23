@@ -405,3 +405,4 @@ bool SGGame::transitionProbsSumToOne(double tolerance) const
     }
   return true;
 } // transitionProbsSumToOne
+ 

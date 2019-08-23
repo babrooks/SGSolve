@@ -55,6 +55,8 @@ const char* SGException::what() const throw()
       return "Could not find an optimal policy in some state.";
     case SG::WRONG_NUMBER_OF_PLAYERS:
       return "Game has wrong number of players for viewer.";
+    case SG::MAX_ITERATIONS_REACHED:
+      return "The maximum number of iterations has been reached.";
     default:
       return "No message specified.";
     }

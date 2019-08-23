@@ -22,7 +22,7 @@
 //! Kocherlakota style risk sharing model
 //! @example
 #include "sgrisksharing.hpp"
-#include "sgsolver_PencilSharpening.hpp"
+#include "sgsolver_pencilsharpening.hpp"
 #include "sgsolver_jyc.hpp"
 #include "sgsolver_maxminmax_grb.hpp"
 #include "sgsolver_maxminmax.hpp"

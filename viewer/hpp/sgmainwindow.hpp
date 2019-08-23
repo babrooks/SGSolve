@@ -33,6 +33,7 @@
 #include "sg.hpp"
 #include "sgrisksharing.hpp"
 #include "sgrisksharinghandler.hpp"
+#include "sgrandom.hpp"
 #include "sgrandomhandler.hpp"
 #include "sglegend.hpp"
 

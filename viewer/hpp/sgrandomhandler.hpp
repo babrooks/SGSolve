@@ -12,57 +12,20 @@
 #include <QValidator>
 #include "sgrisksharinghandler.hpp"
 
-
-//! A widget for editing integer attributes 
-/*!
-  \ingroup viewer 
-  */ /*
-class SGIntAttrEdit : public QLineEdit
-{
-  Q_OBJECT;
-private: 
-  //! Reference to the attribute 
-  int & attr;
-
-public:
-  //! Constructor 
-  SGIntATTrEdit(int & _attr)
-    : QLineEdit(), attr(_attr)
-  {
-    setText(QString::number(attr));
-    connect(this,SIGNAL(textChanged(const QString &)),
-	    this,SLOT(changeAttr(const QString &)));
-  } // constructor 
-
-private slots: 
-  //! Slot called when QLineEdit is edited 
-  void changeAttr(const QString & text)
-  {
-    attr = text.toInt();
-  }
-}; */ //SGIntAttrEdit 
-
-//! A widget for setting parameters of the random game. 
-/*!
-  \ingroup viewer
- */ 
 class SGRandomHandler : public QDialog 
 {
   Q_OBJECT;
 
 private: 
-  int & numPlayers;
   int & numStates;
   int & numActions;
 
 public: 
   //! Constructor
   SGRandomHandler(QWidget * parent, 
-           int & _numPlayers,
 	   int & _numStates,
 	   int & _numActions):
     QDialog(parent),
-    numPlayers(_numPlayers),
     numStates(_numStates), 
     numActions(_numActions)
    {
@@ -80,10 +43,6 @@ public:
 
     QFormLayout * editLayout = new QFormLayout ();
     // Construct and add the new parameters 
-    SGIntAttrEdit * playerEdit = new SGIntAttrEdit(numPlayers);
-    QIntValidator * playerValidator = new QIntValidator();
-    playerValidator->setBottom(1);
-
     SGIntAttrEdit * stateEdit = new SGIntAttrEdit(numStates);
     QIntValidator * stateValidator = new QIntValidator();
     stateValidator->setBottom(1);
@@ -94,8 +53,6 @@ public:
     actionValidator->setBottom(1);
     actionEdit->setValidator(actionValidator);
 
-    editLayout->addRow(QString("Number of players:"),
-		       playerEdit);
     editLayout->addRow(QString("Number of states:"),
 		       stateEdit);
     editLayout->addRow(QString("Number of Actions:"),

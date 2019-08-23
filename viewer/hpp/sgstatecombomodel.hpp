@@ -19,8 +19,8 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef SGSTATECOMBOMODEL_V2_HPP
-#define SGSTATECOMBOMODEL_V2_HPP
+#ifndef SGSTATECOMBOMODEL_HPP
+#define SGSTATECOMBOMODEL_HPP
 
 #include "sgplotcontroller.hpp"
 #include <QAbstractListModel>

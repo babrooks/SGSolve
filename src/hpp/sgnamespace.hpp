@@ -55,7 +55,8 @@ namespace SG
       NOEDGES, /*!< Could not find an edge in a product policy. */
       NOACTIONS, /*!< Could not find an action. */
       NOOPTIMALPOLICIES, /*!< Could not find an optimal policy for some state. */
-      WRONG_NUMBER_OF_PLAYERS, /*!< Number of players in incomaptible with viewer */
+      WRONG_NUMBER_OF_PLAYERS, /*!< Number of players is incomaptible with viewer */
+      MAX_ITERATIONS_REACHED, /*!< The maximum number of iterations was reached */
     };
 
   //! Double parameters

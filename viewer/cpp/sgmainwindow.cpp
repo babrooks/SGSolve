@@ -45,7 +45,6 @@ SGMainWindow::SGMainWindow()
   QAction * saveGameAction = new QAction(tr("Save game"),this);
   QAction * saveSolutionAction = new QAction(tr("&Save solution"),this);
   QAction * quitAction = new QAction(tr("&Quit"),this);
-  // fileMenu->addAction(loadSolutionAction);
   fileMenu->addAction(loadSolutionAction);
   fileMenu->addAction(loadGameAction);
   fileMenu->addSeparator();
@@ -53,7 +52,6 @@ SGMainWindow::SGMainWindow()
   fileMenu->addAction(saveGameAction);
   fileMenu->addSeparator();
   fileMenu->addAction(quitAction);
-  // loadSolutionAction->setShortcut(tr("Ctrl+Shift+L"));
   loadSolutionAction->setShortcut(tr("Ctrl+L"));
   saveSolutionAction->setShortcut(tr("Ctrl+S"));
   loadGameAction->setShortcut(tr("Ctrl+G"));
@@ -122,7 +120,7 @@ SGMainWindow::SGMainWindow()
 	  this,SLOT(displayLegend()));
   connect(aboutAction,SIGNAL(triggered()),
 	  this,SLOT(displayAbout()));
-  connect(gameHandler->getSolveButton_V2(),SIGNAL(clicked()),
+  connect(gameHandler->getSolveButton(),SIGNAL(clicked()),
       this,SLOT(solveGame()));
   connect(gameHandler->getCancelButton(),SIGNAL(clicked()),
 	  this,SLOT(cancelSolve()));
@@ -185,52 +183,12 @@ void SGMainWindow::settingsSaver()
 {
     settings->setValue("LastDir", path);
 }
-/* this seems like old code
-void SGMainWindow::loadSolution()
-{
-  QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
-						 "./",
-						 tr("SGViewer solution files (*.sln)"));
-
-  if (newPath.isEmpty())
-    return;
-
-  path = newPath;
-
-  try
-    {
-      QByteArray ba = newPath.toLocal8Bit();
-      const char * newPath_c = ba.data();
-
-      SGSolution soln;
-      
-      SGSolution::load(soln,newPath_c);
-
-      gameHandler->setGame(soln.getGame());
-      solutionHandler->setSolution(soln);
-      
-      tabWidget->setCurrentIndex(3);
-
-      QFileInfo info(path);
-      
-      QString newWindowTitle(tr("SGViewer - "));
-      newWindowTitle += info.fileName();
-      setWindowTitle(newWindowTitle);
-      
-    }
-  catch (...)
-    {
-      qDebug() << "Load solution didnt work :(" << endl;
-      QErrorMessage em(this);
-      em.showMessage(QString("Load solution didnt work :("));
-    }
-} */ // loadSolution
 
 void SGMainWindow::loadSolution()
 {
   QString newPath = QFileDialog::getOpenFileName(this,tr("Select a solution file"),
                          path,
-						 tr("SGViewer solution files (*.sln2)"));
+						 tr("SGViewer solution files (*.sln)"));
 
   if (newPath.isEmpty())
     return;
@@ -275,7 +233,7 @@ void SGMainWindow::loadSolution()
       logTextEdit -> append(QString(""));
     }
 
-} // loadSolution_V2
+} // loadSolution
 
 void SGMainWindow::saveSolution()
 {
@@ -381,44 +339,6 @@ void SGMainWindow::quitProgram()
 {
   QApplication::quit();
 }
-/* this is old code
-void SGMainWindow::solveGame()
-{
-  tabWidget->setCurrentIndex(2);
-
-  try
-    {
-
-      logTextEdit->append(QString(""));
-      logTextEdit->append(QString("Starting a new computation with pencil sharpening..."));
-      logTextEdit->append(QString(""));
-
-      cancelSolveFlag = false;
-
-      solverWorker = new SGSolverWorker(*env,
-                    gameHandler->getGame(),
-                    logTextEdit);
-      solverWorker->moveToThread(&solverThread);
-      connect(this,SIGNAL(startIteration()),
-          solverWorker,SLOT(iterate()));
-      connect(solverWorker,SIGNAL(resultReady(bool)),
-              this,SLOT(iterationFinished(bool)));
-      connect(solverWorker,SIGNAL(exceptionCaught()),
-          this,SLOT(solverException()));
-      solverThread.start();
-
-      timer.restart();
-
-      emit startIteration();
-    }
-  catch (exception & e)
-    {
-      delete solverWorker;
-      QMessageBox::critical(this,tr("Solver failed"),
-                tr("SGSolver was not able to solve your game.\nMaybe no pure strategy equilibria exist?"),
-                QMessageBox::Ok);
-    }
-} */ // solveGame
 
 void SGMainWindow::solveGame()
 {
@@ -443,7 +363,6 @@ void SGMainWindow::solveGame()
                    logTextEdit);
      solverWorker->moveToThread(&solverThread);
 
-
      connect(this,SIGNAL(startIteration()),
          solverWorker,SLOT(iterate()));
      connect(solverWorker,SIGNAL(resultReady(bool)),
@@ -462,101 +381,12 @@ void SGMainWindow::solveGame()
       logTextEdit -> append(QString(e.what()));
       logTextEdit -> append(QString(""));
     }
-} // solveGame_V2
+} // solveGame
 
 void SGMainWindow::cancelSolve()
 {
   cancelSolveFlag = true;
 } // cancelSolve
-
-/* this is old code
-void SGMainWindow::iterationFinished(bool tf)
-{
-  string str;
-
-  switch (solverWorker->getStatus())
-    {
-    case SGSolverWorker::NOTCONVERGED:
-      
-      if (cancelSolveFlag)
-	{
-	  str = solverWorker->getApprox().progressString();
-	  logTextEdit->append(QString(str.c_str()));
-	  logTextEdit->append(QString(""));
-	  logTextEdit->append(QString("Computation canceled."));
-
-	  tabWidget->setCurrentIndex(2);
-	  
-	  break;
-	}
-      else
-	{
-	  if (solverWorker->getApprox().passedNorth())
-	    {
-	      string str = solverWorker->getApprox().progressString();
-	      logTextEdit->append(QString(str.c_str()));
-	    }
-
-	  emit startIteration();
-
-	  return;
-	}
-
-    case SGSolverWorker::CONVERGED:
-      str = solverWorker->getApprox().progressString();
-      logTextEdit->append(QString(str.c_str()));
-      logTextEdit->append(QString(""));
-      logTextEdit->append(QString("Computation complete!"));
-
-
-      break;
-
-    case SGSolverWorker::FAILED:
-      str = solverWorker->getApprox().progressString();
-      logTextEdit->append(QString(str.c_str()));
-      logTextEdit->append(QString(""));
-      logTextEdit->append(QString("Computation failed."));
-
-      break;
-      
-    }
-
-  solutionHandler->setSolution(solverWorker->getSolution());
-
-  int telapsed = timer.elapsed();
-      
-  QString timeString("Time elapsed: ");
-
-  int hrs = telapsed/(60*60*1000);
-  telapsed -= hrs*60*60*1000;
-  int mins = telapsed/(60*1000);
-  telapsed -= mins*60*1000;
-  double secs = telapsed/1000.0;
-      
-  if (hrs)
-    {
-      timeString += QString::number(hrs);
-      timeString += " hours, ";
-      timeString += QString::number(mins);
-      timeString += QString(" minutes, and ");
-    }
-  else if (mins)
-    {
-	  
-      timeString += QString::number(mins);
-      timeString += QString(" minutes and ");
-    }
-
-  timeString += QString::number(secs);
-  timeString += QString(" seconds");
-	
-  logTextEdit->append(timeString);
-
-  tabWidget->setCurrentIndex(3);
-  
-  delete solverWorker;
-
-} */ // iterationFinished
 
 void SGMainWindow::iterationFinished(bool tf)
 {
@@ -642,14 +472,7 @@ void SGMainWindow::iterationFinished(bool tf)
   
   delete solverWorker;
 
-} // iterationFinished_V2
-/* this is old code
-void SGMainWindow::solverException()
-{
-  logTextEdit->append(QString("Unknown exception caught: Possibly no pure strategy equilibria exist."));
-
-  delete solverWorker;
-} */ // solverException
+} // iterationFinished
 
 void SGMainWindow::solverException()
 {
@@ -897,119 +720,38 @@ void SGMainWindow::generateBoS()
 
 void SGMainWindow::generateRandom()
 {
-	  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	  std::default_random_engine generator (seed); 
-
-	  std::uniform_real_distribution<double> distribution(1e-6,1-(1e-6));
-	  double delta = distribution(generator);
 		
-	  // default values 
-	  int numPlayers = 2;
-	  int numStates = 4; 
-	  int numactions = 3;
-	  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
+	// default values 
+	int numPlayers = 2;
+	int numStates = 4; 
+	int numactions = 3;
 
-	  SGRandomHandler rh(this,numPlayers,numStates,numactions);
-            if (rh.exec()==QDialog::Accepted)
-            {
-             // RandomGame rg(delta,numPlayers,numStates,numactions);
-	     numPlayers = numPlayers;
-	     numStates = numStates;
-	     numactions = numactions;
-	    } 
-
-
-	  vector<bool> unconstrained(2,false); 
-
-	  vector< vector< int > > numActions(numStates,vector<int>(numPlayers,numactions));
-	  vector<int> numActions_total(numStates,pow(numactions, numPlayers));
-
-	  vector< vector< vector<double> > >
-		  payoffs(numStates,vector< vector<double> >(pow(numactions, numPlayers),vector<double>(numPlayers,0.0))); 
-	  unsigned int i,j,k,l;
-	  for(i=0;i<numStates;i++)
+	SGRandomHandler rh(this,numStates,numactions);
+        if (rh.exec()==QDialog::Accepted)
+        {
+	  try
 	  {
-	    for(j=0;j<numActions_total[i];j++)
-	    {
-	       for(k=0;k<numPlayers;k++)
-	       {
-	         std::uniform_real_distribution<double> distribution(0,10);	                    
-		 payoffs[i][j][k] = distribution(generator);
-	       }
-	    }
-	  }
-	
-	  // Transition probabilities 
-	  vector < vector< vector<double> > >
-		  probabilities(numStates,vector< vector<double> >(pow(numactions, numPlayers), vector<double>(numStates,1.0))); // 1.0 as initial value, but then randomize
-	  // randomize transition probabilities 
-	  double prob_sum;
-	  for(i=0;i<numStates;i++)
-	  { 
-	    for(j=0;j<numActions_total[i];j++)
-	    { 
-	      prob_sum = 0.0;
-	      for(k=0;k<numStates;k++)
-	      {
-		std::uniform_real_distribution<double> distribution(0,1.0);
-		probabilities[i][j][k] = distribution(generator);
-		// normalize probabilities
-		prob_sum += probabilities[i][j][k];
-	      }
-	      for(k=0;k<numStates;k++)
-	      {
-		probabilities[i][j][k] = probabilities[i][j][k]/prob_sum;
-	      } 
-	    }
-	  }
-	 /* try
-	    {
-	       cout << "Constructing game object" <<endl; */
-	       SGGame game(delta,
-			   numStates,
-			   numActions,
-			   payoffs,
-			   probabilities,
-			   unconstrained);
+	    cout << "Constructing game object" <<endl; 
+	    SGRandomGame rg(numPlayers,numStates,numactions);
+		
+	    SGEnv env;
 
-	       SGEnv env;
-	       env.setParam(SG::DIRECTIONTOL, 1e-12);
-	       env.setParam(SG::NORMTOL, 1e-12);
-	       env.setParam(SG::LEVELTOL, 1e-12);
-	       env.setParam(SG::IMPROVETOL, 1e-13);
+	    env.setParam(SG::MAXITERATIONS, 1e3);
 
-	        // do we want to build solver and save solution, or just save the game?
-	       
-	        // update name of new game generated: currently commented out because not yet functional 
-	   /*   seqFileIn.open("sequeceFile.txt", ios::in);
-
-		// If "sequenceFile.txt" exists, read the last sequence from it and increment it by 1.
-		if (seqFileIn.is_open())
-		{
-		  seqFileIn >> fileSeq;
-		  fileSeq++;
-		}
-	        else
-		  fileSeq = 1; // if it does not exist, start from sequence 1. 
- 		string fileName = "random" + to_string(fileSeq) + ".sgm";
-		SGGame::save(game,"./games/random/fileName.sgm" */ 
-
-	   /*    SGGame::save(game,"./games/random/random1.sgm");  
-	  }     
-	 catch (SGException e)
- 	   {
-		cout << "Caught the following exception:" << endl
-			<< e.what() << endl;
-	   } */
-/*
-	 seqFileOut.open("sequeceFile.txt", ios::out);
-	     seqFileOut << fileSeq; */   
-	 
-	 gameHandler->setGame(game);
+	    gameHandler->setGame(rg);
  
-	 tabWidget->setCurrentIndex(0);
+	    tabWidget->setCurrentIndex(0);
 
-         QString newWindowTitle(tr("SGViewer - Random"));
-         setWindowTitle(newWindowTitle);
+            QString newWindowTitle(tr("SGViewer - Random"));
+            setWindowTitle(newWindowTitle);
+         }
+	 catch (exception & e)
+           {
+      	     tabWidget->setCurrentIndex(2);	    
+             logTextEdit -> append(QString("SGViewer was unable to generate your random game. Caught the following exception: "));
+             logTextEdit -> append(QString(e.what()));
+             logTextEdit -> append(QString(""));
+           }
+	 }
 } //generate random
 

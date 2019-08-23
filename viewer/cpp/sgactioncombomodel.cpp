@@ -36,9 +36,6 @@ int SGActionComboModel::rowCount(const QModelIndex & parent) const
   if (controller->hasSolution()
       && state>-1)
     {
-      qDebug() << "In row count: " << controller->getState() << " " << controller->getAction()
-	       <<  " " << controller->getCurrentIter()->getActions()[controller->getState()].size()+1
-	       << endl;
       return controller->getCurrentIter()->getActions()[state].size()+1;
     }
   else
@@ -51,7 +48,6 @@ QVariant SGActionComboModel::data(const QModelIndex & index, int role) const
   if (index.row()>0 && state > -1)
     {
       int action = controller->getCurrentIter()->getActions()[state][index.row()-1].getAction();
-      qDebug() << "In data: " << controller->getState() << " " << controller->getAction() << endl;
       const vector< int >& numActions = controller->getSolution()->getGame().getNumActions()[state];
       QString dataString = QString("A")
 	+ QString::number(action)

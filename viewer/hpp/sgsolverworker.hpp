@@ -98,17 +98,21 @@ public slots:
   {
     try
       {
-	if (solver.iterate() > env.getParam(SG::ERRORTOL)
-	    && numIter < env.getParam(SG::MAXITERATIONS))
+	if(numIter < env.getParam(SG::MAXITERATIONS)){
+	  if(solver.iterate() > env.getParam(SG::ERRORTOL))
 	  {
 	    status = NOTCONVERGED;
 	    emit resultReady(false);
+	    numIter++;
 	  }
-	else
+	  else
 	  {
 	    status = CONVERGED;
 	    emit resultReady(true);
 	  }
+	}
+        else
+	  throw(SGException(SG::MAX_ITERATIONS_REACHED));
       }
     catch (exception & e)
       {

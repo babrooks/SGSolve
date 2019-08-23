@@ -79,139 +79,142 @@ void SGSolver_MaxMinMax::solve_fixed()
 
   SGIteration_MaxMinMax iter;
   
-  while (errorLevel > env.getParam(SG::ERRORTOL)
-	 && numIter < env.getParam(SG::MAXITERATIONS) )
+  while (errorLevel > env.getParam(SG::ERRORTOL))
     {
-      vector<SGActionIter> actionTuple(numStates);
-      // Pick the initial actions arbitrarily
-      for (int state = 0; state < numStates; state++)
+      if(numIter >= env.getParam(SG::MAXITERATIONS))
+  	throw(SGException(SG::MAX_ITERATIONS_REACHED));
+      else{
+        vector<SGActionIter> actionTuple(numStates);
+        // Pick the initial actions arbitrarily
+        for (int state = 0; state < numStates; state++)
 	actionTuple[state] = actions[state].begin();
       
-      vector<SG::Regime> regimeTuple(numStates,SG::Binding);
+        vector<SG::Regime> regimeTuple(numStates,SG::Binding);
 
-      // Reset the trimmed points for the actions
-      for (int state = 0; state < numStates; state++)
-	{
-	  auto ait = actions[state].begin();
-	  while (ait != actions[state].end())
-	    {
-	      ait->updateTrim();
-
-	      if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
-							       [ait->getAction()]))))
-		{
-		  actions[state].erase(ait++);
-		  continue;
-		}
-	      ait++;
-	      
-	    } // for ait
-	} // for state
-
-      if (env.getParam(SG::STOREITERATIONS))
-	iter = SGIteration_MaxMinMax(actions,threatTuple);
-      
-      // Reset the error level
-      errorLevel = 0;
-
-      {
-	list<vector< double> >::iterator lvl;
-	int dirCnt;
-	list<SGPoint>::const_iterator dir;
-
-	// Iterate through directions
-	for (dir = directions.cbegin(),
-	       lvl = levels.begin(),
-	       dirCnt = 0;
-	     dir != directions.cend(),
-	       lvl != levels.end();
-	     dir++, lvl++, dirCnt ++ )
+        // Reset the trimmed points for the actions
+        for (int state = 0; state < numStates; state++)
 	  {
-	    // Compute optimal level in this direction
-	    vector<double> newLevels(numStates,0);
-	    SGPoint currDir = *dir;
-
-	    optimizePolicy(pivot,penalties,
-			   actionTuple,regimeTuple,
-			   currDir,
-			   actions,feasibleTuple);
-
-	    for (int state = 0; state < numStates; state++)
+	    auto ait = actions[state].begin();
+	    while (ait != actions[state].end())
 	      {
-		// Update the levels and the error level with the
-		// movement in this direction
-		newLevels[state] = (pivot[state]*currDir-penalties[state]);
-		errorLevel = max(errorLevel,abs(newLevels[state]-(*lvl)[state]));
-		(*lvl)[state] = newLevels[state];
-	      } // for state
+	        ait->updateTrim();
 
-
-	    if (env.getParam(SG::STOREITERATIONS))
-	      iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
-				    SGHyperplane(currDir,newLevels),actions));
-	  
-	  } // for dir lvl dirCntr
-      }
-
-      // Update the the threat tuple
-      for (int state = 0; state < numStates; state++)
-	{
-	  threatTuple[state][0] = -(*dueWestLvl)[state];
-	  threatTuple[state][1] = -(*dueSouthLvl)[state];
-	}
-
-      if (env.getParam(SG::STOREITERATIONS)==2
-	  || (env.getParam(SG::STOREITERATIONS)==1
-	      && ( errorLevel < env.getParam(SG::ERRORTOL)
-		   || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
-	soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
-
-      findFeasibleTuple(feasibleTuple,actions);
-      
-      // Recalculate minimum IC continuation payoffs
-      for (int state = 0; state < numStates; state++)
-	{
-	  for (auto ait = actions[state].begin();
-	       ait != actions[state].end();
-	       ++ait)
-	    {
-	      ait->calculateMinIC(game,threatTuple);
-	      ait->resetTrimmedPoints();
-	      
-	      {
-		list<SGPoint>::const_iterator dir;
-		list< vector< double> >::const_iterator lvl;
-		for (dir = directions.cbegin(),
-		       lvl = levels.cbegin();
-		     dir != directions.cend(),
-		       lvl != levels.cend();
-		     dir++, lvl++)
+	        if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
+							       [ait->getAction()]))))
 		  {
-		    // Compute the expected level
-		    double expLevel = 0;
-		    for (int sp = 0; sp < numStates; sp++)
-		      expLevel += probabilities[state][ait->getAction()][sp]
-			* (*lvl)[sp];
-		  
-		    // Trim the action
-		    ait->trim(*dir,expLevel);
-		  } // for dir
-	      }
-	    } // for ait
-	  
-	} // for state
+		    actions[state].erase(ait++);
+		    continue;
+		  }
+	        ait++;
+	      
+	      } // for ait
+	  } // for state
 
-      cout << "Iter: " << numIter
-	   << ", errorLvl: " << scientific << errorLevel
-	   << ", remaining actions: ( ";
-      for (int state = 0; state < numStates; state++)
-	cout << actions[state].size() << " ";
-      cout << ")" << endl;
+        if (env.getParam(SG::STOREITERATIONS))
+	  iter = SGIteration_MaxMinMax(actions,threatTuple);
       
-      numIter++;
+        // Reset the error level
+        errorLevel = 0;
+
+        {
+	  list<vector< double> >::iterator lvl;
+	  int dirCnt;
+	  list<SGPoint>::const_iterator dir;
+
+	  // Iterate through directions
+	  for (dir = directions.cbegin(),
+	         lvl = levels.begin(),
+	         dirCnt = 0;
+	       dir != directions.cend(),
+	         lvl != levels.end();
+	       dir++, lvl++, dirCnt ++ )
+	    {
+	      // Compute optimal level in this direction
+	      vector<double> newLevels(numStates,0);
+	      SGPoint currDir = *dir;
+
+	      optimizePolicy(pivot,penalties,
+	         	     actionTuple,regimeTuple,
+			     currDir,
+			     actions,feasibleTuple);
+
+	      for (int state = 0; state < numStates; state++)
+	        {
+		  // Update the levels and the error level with the
+		  // movement in this direction
+		  newLevels[state] = (pivot[state]*currDir-penalties[state]);
+		  errorLevel = max(errorLevel,abs(newLevels[state]-(*lvl)[state]));
+		  (*lvl)[state] = newLevels[state];
+	        } // for state
+
+
+	      if (env.getParam(SG::STOREITERATIONS))
+	        iter.push_back(SGStep(actionTuple,regimeTuple,pivot,
+		  		      SGHyperplane(currDir,newLevels),actions));
+	  
+	    } // for dir lvl dirCntr
+        }
+
+        // Update the the threat tuple
+        for (int state = 0; state < numStates; state++)
+	  {
+	    threatTuple[state][0] = -(*dueWestLvl)[state];
+	    threatTuple[state][1] = -(*dueSouthLvl)[state];
+	  }
+
+        if (env.getParam(SG::STOREITERATIONS)==2
+	    || (env.getParam(SG::STOREITERATIONS)==1
+	        && ( errorLevel < env.getParam(SG::ERRORTOL)
+	  	     || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
+	  soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
+
+        findFeasibleTuple(feasibleTuple,actions);
+      
+        // Recalculate minimum IC continuation payoffs
+        for (int state = 0; state < numStates; state++)
+	  {
+	    for (auto ait = actions[state].begin();
+	         ait != actions[state].end();
+	         ++ait)
+	      {
+	        ait->calculateMinIC(game,threatTuple);
+	        ait->resetTrimmedPoints();
+	      
+	       {
+	  	  list<SGPoint>::const_iterator dir;
+		  list< vector< double> >::const_iterator lvl;
+		  for (dir = directions.cbegin(),
+		         lvl = levels.cbegin();
+		       dir != directions.cend(),
+		         lvl != levels.cend();
+		       dir++, lvl++)
+		    {
+		      // Compute the expected level
+		      double expLevel = 0;
+		      for (int sp = 0; sp < numStates; sp++)
+		        expLevel += probabilities[state][ait->getAction()][sp]
+			  * (*lvl)[sp];
+		  
+		      // Trim the action
+		      ait->trim(*dir,expLevel);
+		    } // for dir
+	        }
+	      } // for ait
+	  
+	  } // for state
+
+        cout << "Iter: " << numIter
+	     << ", errorLvl: " << scientific << errorLevel
+	     << ", remaining actions: ( ";
+        for (int state = 0; state < numStates; state++)
+	  cout << actions[state].size() << " ";
+          cout << ")" << endl;
+      
+        numIter++;
+      }
     } // while
 
-  cout << "Converged!" << endl;
+  cout << "Converged" << endl;
 
 } // solve_fixed
 
@@ -223,16 +226,19 @@ void SGSolver_MaxMinMax::solve()
     throw(SGException(SG::PROB_SUM_NOT1));
   // Main loop
 
-  while (errorLevel > env.getParam(SG::ERRORTOL)
-	 && numIter < env.getParam(SG::MAXITERATIONS) )
-    {
-      iterate();
+  while (errorLevel > env.getParam(SG::ERRORTOL))
+  {
+    if(numIter >= env.getParam(SG::MAXITERATIONS))
+      throw(SGException(SG::MAX_ITERATIONS_REACHED));
+    else
+      {
+        iterate();
 
-      cout << progressString() << endl;
-    } // while --- main loop
-
-  cout << "Converged!" << endl;
-  
+        cout << progressString() << endl;
+      } 
+   }  // while --- main loop
+   cout << "Converged!" << endl;
+ 
 } // solve
 
 std::string SGSolver_MaxMinMax::progressString() const
@@ -895,7 +901,8 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
 		}
 	    }
 	  if (feasiblePlayer >= 0)
-	    {
+	    { 
+	      actionTuple[state] = ait;	    
 	      feasibleTuple[state] = (1-delta)*payoffs[state][ait->getAction()]
 		+delta*ait->getPoints()[feasiblePlayer][0];
 	      foundFeasiblePlayer = true;
@@ -928,6 +935,7 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
 	      // Try advancing the action and recomputing
 	      if ((++actionTuple[state])==actions[state].end())
 		{
+		  cout << "EXCEPTION IS BEING CALLED HERE!!!"; 	
 		  throw(SGException(SG::NOFEASIBLETUPLE));
 		}
 	    }

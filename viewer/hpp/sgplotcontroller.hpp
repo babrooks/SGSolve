@@ -19,8 +19,8 @@
 // ben@benjaminbrooks.net
 // Chicago, IL
 
-#ifndef SGPLOTCONTROLLER_V2_HPP
-#define SGPLOTCONTROLLER_V2_HPP
+#ifndef SGPLOTCONTROLLER_HPP
+#define SGPLOTCONTROLLER_HPP
 
 #include <QObject>
 #include <QComboBox>
