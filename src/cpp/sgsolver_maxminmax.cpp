@@ -320,12 +320,12 @@ double SGSolver_MaxMinMax::iterate()
       if (currDir*dueNorth > 0 && newDir*dueNorth <= 0) // Passing due west
 	{
 	  for (int state = 0; state < numStates; state++)
-	    newThreatTuple[state][0] = pivot[state][0]+penalties[state];
+	    newThreatTuple[state][0] = max(pivot[state][0]+penalties[state],threatTuple[state][0]);
 	}
       else if (currDir*dueEast < 0 && newDir*dueEast >= 0) // Passing due south
 	{
 	  for (int state = 0; state < numStates; state++)
-	    newThreatTuple[state][1] = pivot[state][1]+penalties[state];
+	    newThreatTuple[state][1] = max(pivot[state][1]+penalties[state],threatTuple[state][1]);
 	}
       else if (currDir*dueNorth < 0 && newDir*dueNorth >= 0)
 	passEast = true;
@@ -935,7 +935,6 @@ void SGSolver_MaxMinMax::findFeasibleTuple(SGTuple & feasibleTuple,
 	      // Try advancing the action and recomputing
 	      if ((++actionTuple[state])==actions[state].end())
 		{
-		  cout << "EXCEPTION IS BEING CALLED HERE!!!"; 	
 		  throw(SGException(SG::NOFEASIBLETUPLE));
 		}
 	    }

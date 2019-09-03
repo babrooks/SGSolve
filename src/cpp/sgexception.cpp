@@ -57,6 +57,8 @@ const char* SGException::what() const throw()
       return "Game has wrong number of players for viewer.";
     case SG::MAX_ITERATIONS_REACHED:
       return "The maximum number of iterations has been reached.";
+    case SG::NO_ITERATIONS: 
+      return "Cannot load a solution with no iterations.";
     default:
       return "No message specified.";
     }

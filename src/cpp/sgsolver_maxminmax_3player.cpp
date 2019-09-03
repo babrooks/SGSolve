@@ -114,13 +114,17 @@ void SGSolver_MaxMinMax_3Player::solve_fixed(const int numDirsApprox,
   numRedundDirs = 0;
   numEndogDirs = 0;
   
-  while (errorLevel > env.getParam(SG::ERRORTOL)
-	 && numIter < env.getParam(SG::MAXITERATIONS) )
+  while (errorLevel > env.getParam(SG::ERRORTOL))
     {
-      iterate_fixed(numDirections,dropRedundant,addEndogenous);
-      cout << progressString() << endl;
+      if(numIter >= env.getParam(SG::MAXITERATIONS))
+	throw(SGException(SG::MAX_ITERATIONS_REACHED));
+      else 
+      {
+	iterate_fixed(numDirections,dropRedundant,addEndogenous);
+        cout << progressString() << endl;
 
-      numIter++;
+        numIter++;
+      } 
     } // while
 
   // Finish with one round of endogenous iteration.
@@ -505,12 +509,16 @@ void SGSolver_MaxMinMax_3Player::solve_endogenous()
   
   // Main loop
 
-  while (errorLevel > env.getParam(SG::ERRORTOL)
-	 && numIter < env.getParam(SG::MAXITERATIONS) )
+  while (errorLevel > env.getParam(SG::ERRORTOL))
     {
-      iterate_endogenous();
+      if(numIter >= env.getParam(SG::MAXITERATIONS))
+        throw(SGException(SG::MAX_ITERATIONS_REACHED));
+      else 
+      {  
+	iterate_endogenous();
 
-      cout << progressString() << endl;
+        cout << progressString() << endl;
+      }
     } // while --- main loop
 
   numIter++;

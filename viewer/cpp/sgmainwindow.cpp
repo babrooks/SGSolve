@@ -141,9 +141,6 @@ SGMainWindow::SGMainWindow()
   connect(randomAction,SIGNAL(triggered()),
 	  this,SLOT(generateRandom()));
   
-  connect(loadSolutionAction,SIGNAL(triggered()),
-	  this,SLOT(loadSolution()));
-
   // Log tab
   QHBoxLayout * logEditLayout = new QHBoxLayout();
   logTextEdit = new QTextEdit();
@@ -203,18 +200,17 @@ void SGMainWindow::loadSolution()
 
       SGSolution_MaxMinMax soln;
       
-      SGSolution_MaxMinMax::load(soln,newPath_c);
-
-      if (soln.getIterations().empty())
-	{
-	  qDebug() << "Solution has no iterations." << endl;
-	  throw(1);
-	}
+      SGSolution_MaxMinMax::load(soln,newPath_c); 
       
-      gameHandler->setGame(soln.getGame());
-      solutionHandler->setSolution(soln);
+      if(soln.getGame().getNumPlayers() != 2) //since viewer is only compatible with two players
+	throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
 
-      SGGame game = soln.getGame();
+      gameHandler->setGame(soln.getGame());
+
+      if(soln.getIterations().empty())
+	throw(SGException(SG::NO_ITERATIONS));
+      
+      solutionHandler->setSolution(soln);
       
       tabWidget->setCurrentIndex(1);
 
@@ -222,8 +218,6 @@ void SGMainWindow::loadSolution()
       newWindowTitle += info.fileName();
       setWindowTitle(newWindowTitle);
       
-      if(game.getNumPlayers() != 2) //since viewer is only compatible with two players
-	      throw(SGException(SG::WRONG_NUMBER_OF_PLAYERS));
     }
   catch (exception & e)
     {

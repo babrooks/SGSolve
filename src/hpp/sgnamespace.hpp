@@ -57,6 +57,7 @@ namespace SG
       NOOPTIMALPOLICIES, /*!< Could not find an optimal policy for some state. */
       WRONG_NUMBER_OF_PLAYERS, /*!< Number of players is incomaptible with viewer */
       MAX_ITERATIONS_REACHED, /*!< The maximum number of iterations was reached */
+      NO_ITERATIONS, /*!< Cannot load a solution with no iterations */
     };
 
   //! Double parameters

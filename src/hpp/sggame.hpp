@@ -38,7 +38,7 @@
  */
 class SGGame
 {
-protected:
+protected: 
   double delta; /*!< The discount factor. */
   int numPlayers; /*!< The number of players. */
   int numStates; /*!< The number of states, must be at least 1. */

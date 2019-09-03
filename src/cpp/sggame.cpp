@@ -122,7 +122,6 @@ SGGame::SGGame(int _numPlayers,
 	   || eqActions.size() == 0))
     throw(SGException(SG::INCONSISTENT_INPUTS));
 
-
   for (int state = 0; 
        state < numStates;
        state++)
@@ -132,7 +131,7 @@ SGGame::SGGame(int _numPlayers,
 
       if (probabilities[state].size() != numActions_total[state]
 	  || _payoffs[state].size() != numActions_total[state])
-	throw(SGException(SG::INCONSISTENT_INPUTS));
+	throw(SGException(SG::INCONSISTENT_INPUTS));	
       
       payoffs.push_back(vector<SGPoint>(numActions_total[state],SGPoint(numPlayers,0.0)));
 
