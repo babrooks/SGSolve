@@ -52,7 +52,7 @@ private:
                         environment. */
   const SGGame & game; /*!< Constant reference to the game being
                           solved. */
-  SGSolution & soln; /*!< Reference to the SGSolution object in which output
+  SGSolution_Pencil_Sharpening & soln; /*!< Reference to the SGSolution object in which output
                     is being stored. */
 
   const double delta; /*!< The discount factor, copied from
@@ -82,7 +82,7 @@ private:
                                       updated on the current
                                       iteration. */
 
-  vector< list<SGAction> > actions; /*!< actions[state] is a list of
+  vector< list<SGAction_Pencil_Sharpening> > actions; /*!< actions[state] is a list of
                                        actions that can still be
                                        supported according to the
                                        current approximation. */
@@ -92,7 +92,7 @@ private:
 
   SGTuple pivot; /*!< Current pivot. */
   SGPoint currentDirection; /*!< The current direction. */
-  vector< const SGAction* > actionTuple; /*!< actionTuple[state] is a
+  vector< const SGAction_Pencil_Sharpening* > actionTuple; /*!< actionTuple[state] is a
                                             pointer to the SGAction
                                             object that generates
                                             pivot[state]. */
@@ -100,7 +100,7 @@ private:
 				    manner in which pivot[state] was
 				    generated. */
   
-  list<SGAction>::const_iterator bestAction; /*!< Pointer to the
+  list<SGAction_Pencil_Sharpening>::const_iterator bestAction; /*!< Pointer to the
 					       action profile that
 					       generates the
 					       shallowest
@@ -111,7 +111,7 @@ private:
                                       constraints were binding for the
                                       best direction. */
 
-  SGAction nullAction; /*!< Used to initialize the action tuple. */
+  SGAction_Pencil_Sharpening nullAction; /*!< Used to initialize the action tuple. */
 
   int westPoint; /*!< Index within SGApprox::extremeTuples of
                     the westernmost tuple on the previous
@@ -207,7 +207,7 @@ public:
   //! Constructor for SGApprox class
   SGApprox(const SGEnv & _env,
 	   const SGGame & _game,
-	   SGSolution & _soln):
+	   SGSolution_Pencil_Sharpening & _soln):
     env(_env), game(_game), soln(_soln),
     delta(game.getDelta()), numPlayers(game.getNumPlayers()),
     numStates(game.getNumStates()), errorLevel(1), sufficiencyFlag(true),
@@ -234,11 +234,11 @@ public:
   SG::Regime getBestRegime() const {return bestRegime; }
   //! Returns a constant iterator for the SGAction in which the best
   //! test direction was generated
-  list<SGAction>::const_iterator  getBestAction() const { return bestAction; }
+  list<SGAction_Pencil_Sharpening>::const_iterator  getBestAction() const { return bestAction; }
   //! Returns the best test direction
   const SGPoint & getBestDirection() const { return bestDirection; }
   //! Returns the current action tuple
-  const vector<const SGAction*> & getActionTuple() const { return actionTuple; }
+  const vector<const SGAction_Pencil_Sharpening*> & getActionTuple() const { return actionTuple; }
   //! Returns the current regime tuple
   const vector<SG::Regime> & getRegimeTuple() const { return regimeTuple; }
   //! Returns the current direction
@@ -249,7 +249,7 @@ public:
   const SGTuple & getThreatTuple() const {return threatTuple; }
   //! Returns the array of SGAction objects that can currently be
   //! supported
-  const vector< list<SGAction> > & getActions() const { return actions; }
+  const vector< list<SGAction_Pencil_Sharpening> > & getActions() const { return actions; }
   //! Returns the array of extreme tuples
   const vector<SGTuple> & getExtremeTuples() const {return extremeTuples; }
 

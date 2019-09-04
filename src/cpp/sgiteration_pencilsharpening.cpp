@@ -21,8 +21,8 @@
 
 #include "sgapprox.hpp"
 
-SGIteration::SGIteration(const SGApprox & approx,
-			 bool storeActions):
+SGIteration_Pencil_Sharpening::SGIteration_Pencil_Sharpening(const SGApprox & approx,
+			                                     bool storeActions):
   iteration(approx.getNumIterations()),
   revolution(approx.getNumRevolutions()),
   numExtremeTuples(approx.getExtremeTuples().size()),
@@ -57,7 +57,7 @@ SGIteration::SGIteration(const SGApprox & approx,
     {
       for (int state = 0; state < actions.size(); state++)
 	{
-	  for (list<SGAction>::const_iterator action
+	  for (list<SGAction_Pencil_Sharpening>::const_iterator action
 		 = approx.getActions()[state].begin();
 	       action != approx.getActions()[state].end();
 	       ++action)

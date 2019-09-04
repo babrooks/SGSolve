@@ -39,7 +39,7 @@
 
   \ingroup src
 */
-class SGAction : public SGBaseAction
+class SGAction_Pencil_Sharpening : public SGBaseAction
 {
 private:
   const SGEnv & env; /*!< Constant reference to the parent
@@ -52,15 +52,15 @@ private:
 public:
   //! Constructor
   /*! Constructs a null action associated with the given SGEnv. */
-  SGAction(const SGEnv & _env):
-    env(_env),
-    SGBaseAction()
-  {}
+  SGAction_Pencil_Sharpening(const SGEnv & _env):
+                       env(_env),
+                       SGBaseAction()
+                       {}
 
   //! Constructor
   /*! Constructs an action for the given state and action index in the
       given environment. */
-  SGAction(const SGEnv & _env, int _state, int _action):
+  SGAction_Pencil_Sharpening(const SGEnv & _env, int _state, int _action):
     env(_env), SGBaseAction(_state,_action)
   {
     trimmedPoints.resize(2);

@@ -49,7 +49,7 @@ void SGSimulator::initialize()
     
   // For each state/tuple, find the clockwise next tuple and the
   // probability of going to that tuple. 
-  list<SGIteration>::const_iterator currentIter = startOfLastRev;
+  list<SGIteration_Pencil_Sharpening>::const_iterator currentIter = startOfLastRev;
 
   int tupleCounter = 0;
   // for (int tupleCounter = 0; 
@@ -74,7 +74,7 @@ void SGSimulator::initialize()
 	    {
 	      int action = currentIter->getActionTuple()[state];
 
-	      list<SGIteration>::const_iterator iter = startOfLastRev;
+	      list<SGIteration_Pencil_Sharpening>::const_iterator iter = startOfLastRev;
 	      SGPoint continuationValue
 		= (currentIter->getPivot()[state]
 		   - (1-delta)*soln.getGame().getPayoffs()[state][action])/delta;
@@ -88,7 +88,7 @@ void SGSimulator::initialize()
 		  
 		  // Find the iteration that is the closest to
 		  // continuationValue
-		  list<SGIteration>::const_iterator nextIter = startOfLastRev;
+		  list<SGIteration_Pencil_Sharpening>::const_iterator nextIter = startOfLastRev;
 		  nextIter++;
 
 		  SGPoint nextExpPivot;
@@ -173,7 +173,7 @@ void SGSimulator::initialize()
 			  && (expPivot-expStartOfLastRev)
 			  *(expPivot-expStartOfLastRev) > 1e-5)
 			{
-			  list<SGIteration>::const_iterator nextIter = (iter--);
+			  list<SGIteration_Pencil_Sharpening>::const_iterator nextIter = (iter--);
 			  SGPoint oldExpPivot = iter->getPivot()
 			    .expectation(game.getProbabilities()[state][action]);
 			  double oldLevel = oldExpPivot*normal;
@@ -272,7 +272,7 @@ void SGSimulator::simulate(int _numSim,
   assert(initialTuple >= startOfLastRev->getIteration());
   assert(initialTuple <= soln.getIterations().back().getIteration());
     
-  list<SGIteration>::const_iterator initialTupleIt = soln.getIterations().end();
+  list<SGIteration_Pencil_Sharpening>::const_iterator initialTupleIt = soln.getIterations().end();
 
   initialTupleIt--;
   while (initialTupleIt->getIteration() != initialTuple)
@@ -284,7 +284,7 @@ void SGSimulator::simulate(int _numSim,
   for (int sim = 0; sim < numSim; sim++)
     {
       int currentState = initialState;
-      list<SGIteration>::const_iterator currentTuple = initialTupleIt;
+      list<SGIteration_Pencil_Sharpening>::const_iterator currentTuple = initialTupleIt;
       int currentAction = currentTuple->getActionTuple()[currentState];
 
       for (int iter = 0; iter < numIter; iter++)
@@ -310,7 +310,7 @@ void SGSimulator::simulate(int _numSim,
 	    = transitionTable[currentTuple->getIteration()
 			      - startOfLastRev->getIteration()]
 	    [currentState].begin();
-	  list<SGIteration>::const_iterator newTuple;
+	  list<SGIteration_Pencil_Sharpening>::const_iterator newTuple;
 	  while (pairIter
 		 != transitionTable[currentTuple->getIteration()
 				    - startOfLastRev->getIteration()][currentState].end())

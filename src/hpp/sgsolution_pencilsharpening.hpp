@@ -37,11 +37,11 @@
     
     \ingroup src
 */
-class SGSolution
+class SGSolution_Pencil_Sharpening
 {
 private:
   SGGame game; /*!< The game that was solved. */
-  list<SGIteration> iterations; /*!< A list of SGIteration objects
+  list<SGIteration_Pencil_Sharpening> iterations; /*!< A list of SGIteration objects
                                    tracking the progress of
                                    SGSolver::solve(). */
   list<SGTuple> extremeTuples; /*!< The trajectory of the pivot tuple
@@ -49,16 +49,16 @@ private:
 
 public:
   //! Default constructor
-  SGSolution() {}
+  SGSolution_Pencil_Sharpening() {}
   //! Initializes an SGSolution object with a copy of the SGGame _game.
-  SGSolution(const SGGame& _game):
+  SGSolution_Pencil_Sharpening(const SGGame& _game):
     game(_game)
   {}
 
   //! Get method for the game
   const SGGame & getGame() const { return game; }
   //! Get method for the iterations
-  const list<SGIteration> & getIterations() const { return iterations; }
+  const list<SGIteration_Pencil_Sharpening> & getIterations() const { return iterations; }
   //! Get method for the extremeTuples
   const list<SGTuple> & getExtremeTuples() const { return extremeTuples; }
   
@@ -66,7 +66,7 @@ public:
   //! extremeTuples lists.
   void clear() {iterations.clear(); extremeTuples.clear();}
   //! Adds a new iteration to the back of SGSolution::iterations
-  void push_back(const SGIteration & iteration)
+  void push_back(const SGIteration_Pencil_Sharpening & iteration)
   { iterations.push_back(iteration); }
   //! Adds a new tuple to the back of SGSolution::extremeTuples
   void push_back(const SGTuple & tuple)
@@ -83,7 +83,7 @@ public:
   }
 
   //! Static method for saving an SGSolution object to the file filename.
-  static void save(const SGSolution & soln, const char* filename)
+  static void save(const SGSolution_Pencil_Sharpening & soln, const char* filename)
   {
     std::ofstream ofs(filename,std::fstream::out);
 
@@ -97,7 +97,7 @@ public:
   }
 
   //! Static method for loading an SGSolution object from the file filename.
-  static void load(SGSolution & soln, const char* filename)
+  static void load(SGSolution_Pencil_Sharpening & soln, const char* filename)
   {
     std::ifstream ifs(filename,std::fstream::in);
     if (ifs.good() && ifs.is_open())

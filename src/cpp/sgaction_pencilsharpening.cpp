@@ -24,21 +24,21 @@
 
 /* SGAction */
 
-void SGAction::intersectRay(const SGPoint& pivot, 
-			    const SGPoint& direction)
+void SGAction_Pencil_Sharpening::intersectRay(const SGPoint& pivot, 
+			                      const SGPoint& direction)
 {
   for (int player=0; player < points.size(); player++)
     intersectRaySegment(pivot,direction,points[player]);
 }
 
-void SGAction::trim(const SGPoint& pivot, 
-		    const SGPoint& direction)
+void SGAction_Pencil_Sharpening::trim(const SGPoint& pivot, 
+		                      const SGPoint& direction)
 {
   for (int player=0; player < points.size(); player++)
     intersectRaySegment(pivot,direction,trimmedPoints[player]);
 }
 
-void SGAction::updateTrim()
+void SGAction_Pencil_Sharpening::updateTrim()
 {
   points = trimmedPoints;
   for (int player = 0; player < 2; player++)
@@ -48,7 +48,7 @@ void SGAction::updateTrim()
     }
 }
 
-double SGAction::distToTrimmed() const
+double SGAction_Pencil_Sharpening::distToTrimmed() const
 {
   double dist = 0;
   for (int player = 0; player < 2; player++)
@@ -66,19 +66,18 @@ double SGAction::distToTrimmed() const
   return dist;
 }
 
-
-void SGAction::intersectRaySegment(const SGPoint& pivot, 
-				   const SGPoint& direction,
-				   int player)
+void SGAction_Pencil_Sharpening::intersectRaySegment(const SGPoint& pivot, 
+				                     const SGPoint& direction,
+				                     int player)
 {
   intersectRaySegment(pivot,direction,points[player]);
   if (points[player].size() == 0)
     tuples[player] = vector<int>(0);
 }
 
-void SGAction::intersectRaySegment(const SGPoint& pivot, 
-				   const SGPoint& direction,
-				   SGTuple & segment)
+void SGAction_Pencil_Sharpening::intersectRaySegment(const SGPoint& pivot, 
+				                     const SGPoint& direction,
+				                     SGTuple & segment)
 {
 
   SGPoint normal = direction.getNormal();
@@ -132,9 +131,9 @@ void SGAction::intersectRaySegment(const SGPoint& pivot,
     }
 }
 
-void SGAction::calculateMinIC(const SGGame & game,
-			      const vector<bool> & update,
-			      const SGTuple & threatTuple)
+void SGAction_Pencil_Sharpening::calculateMinIC(const SGGame & game,
+			                        const vector<bool> & update,
+			                        const SGTuple & threatTuple)
 {
   for (int player = 0;
        player < game.getNumPlayers();
@@ -143,15 +142,15 @@ void SGAction::calculateMinIC(const SGGame & game,
       if (!update[player])
 	continue;
 
-      minIC[player] = SGAction::calculateMinIC(action,state,player,
-					       game,threatTuple);
+      minIC[player] = SGAction_Pencil_Sharpening::calculateMinIC(action,state,player,
+					          game,threatTuple);
     }
 
 } // calculateMinIC
 
-double SGAction::calculateMinIC(int action,int state,int player,
-				const SGGame & game,
-				const SGTuple & threatTuple)
+double SGAction_Pencil_Sharpening::calculateMinIC(int action,int state,int player,
+				                  const SGGame & game,
+				                  const SGTuple & threatTuple)
 {
   vector<int> playersActions, playersDeviations;
   int deviation, deviationIndex;
@@ -185,7 +184,7 @@ double SGAction::calculateMinIC(int action,int state,int player,
   return minIC;
 }
 
-void SGAction::calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
+void SGAction_Pencil_Sharpening::calculateBindingContinuations(const vector<bool> & updatedThreatTuple,
 					     const SGGame & game,
 					     const vector<SGTuple> & extremeTuples,
 					     const SGTuple & threatTuple,
