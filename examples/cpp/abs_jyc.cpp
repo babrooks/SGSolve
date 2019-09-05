@@ -88,18 +88,18 @@ int main()
 	  // pass JYC
 	  SGEnv env;
 	  start = std::clock();
-	  SGSolver_Pencil_Sharpening solver_abs(env,game);
+	  SGSolver_PencilSharpening solver_abs(env,game);
 	  env.setParam(SG::STOREITERATIONS,2);
 	  env.setParam(SG::STOREACTIONS,false);
 	  solver_abs.solve();
 
 	  double duration_abs = (std::clock() - start) / (double) CLOCKS_PER_SEC;
   
-	  SGSolution_Pencil_Sharpening soln = solver_abs.getSolution();
+	  SGSolution_PencilSharpening soln = solver_abs.getSolution();
 
 	  int lastIterOutsideJYC;
 	  int lastRevOutsideJYC;
-	  for (list<SGIteration_Pencil_Sharpening>::const_reverse_iterator iter
+	  for (list<SGIteration_PencilSharpening>::const_reverse_iterator iter
 		 = soln.getIterations().rbegin();
 	       iter != soln.getIterations().rend();
 	       ++iter)
@@ -129,7 +129,7 @@ int main()
 
 	  int firstIterInsideJYC;
 	  int firstRevInsideJYC;
-	  for (list<SGIteration_Pencil_Sharpening>::const_iterator iter
+	  for (list<SGIteration_PencilSharpening>::const_iterator iter
 		 = soln.getIterations().begin();
 	       iter != soln.getIterations().end();
 	       ++iter)

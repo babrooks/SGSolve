@@ -77,13 +77,13 @@ int main ()
 
       cout << "Building solver" << endl;
       SGEnv env;
-      SGSolver_Pencil_Sharpening solver(env,game);
+      SGSolver_PencilSharpening solver(env,game);
 
       cout << "Starting solve routine" << endl;
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution_Pencil_Sharpening::save(solver.getSolution(),"./solutions/abreusanikov.sln");
+      SGSolution_PencilSharpening::save(solver.getSolution(),"./solutions/abreusanikov.sln");
       cout << "Done!" << endl;
 
       SGGame::save(game,"./games/abreusanikov.sgm");

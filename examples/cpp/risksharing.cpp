@@ -40,7 +40,7 @@ int main()
     env.setParam(SG::STOREITERATIONS,1);
     env.setParam(SG::STOREACTIONS,false);
     SGGame game(rsg);
-    SGSolver_Pencil_Sharpening solver(env,game);
+    SGSolver_PencilSharpening solver(env,game);
     solver.solve();
 
   }
@@ -70,7 +70,7 @@ int main()
   ofstream ofs_lrp(lrpname.str().c_str(),std::ofstream::out);
   ofstream ofs_nash(nashname.str().c_str(),std::ofstream::out);
 
-  SGSolver_Pencil_Sharpening * solver;
+  SGSolver_PencilSharpening * solver;
   
   for (double persistence = 0.0; persistence < 0.125; persistence += 0.25)
     {
@@ -109,12 +109,12 @@ int main()
 		   << name.str()
 		   << ".sln";
 
-	  SGSolution_Pencil_Sharpening soln;
+	  SGSolution_PencilSharpening soln;
 	  try
 	    {
 	      cout << "Trying to load: " << solnname.str() << endl;
 		
-	      SGSolution_Pencil_Sharpening::load(soln,solnname.str().c_str());
+	      SGSolution_PencilSharpening::load(soln,solnname.str().c_str());
 	    }
 	  catch (std::exception & ep)
 	    {
@@ -125,11 +125,11 @@ int main()
 	      SGEnv env;
 	      env.setParam(SG::STOREITERATIONS,1);
 	      env.setParam(SG::STOREACTIONS,false);
-	      solver = new SGSolver_Pencil_Sharpening(env,game);
+	      solver = new SGSolver_PencilSharpening(env,game);
 
 	      solver->solve();
 	      soln = solver->getSolution();
-	      SGSolution_Pencil_Sharpening::save(soln,"./solutions/risksharing.sln");
+	      SGSolution_PencilSharpening::save(soln,"./solutions/risksharing.sln");
 	      delete solver;
 	    }
 
@@ -138,8 +138,8 @@ int main()
 	  SGPoint northWest(1.0,1.0);
 	  double bestLevel = -numeric_limits<double>::max(),
 	    worstLevel = numeric_limits<double>::max();
-	  list<SGIteration_Pencil_Sharpening>::const_iterator bestIter, worstIter;
-	  for (list<SGIteration_Pencil_Sharpening>::const_iterator iter
+	  list<SGIteration_PencilSharpening>::const_iterator bestIter, worstIter;
+	  for (list<SGIteration_PencilSharpening>::const_iterator iter
 		 = soln.getIterations().begin();
 	       iter != soln.getIterations().end();
 	       ++iter)
@@ -182,7 +182,7 @@ int main()
 	    {
 	      double nashObj = -numeric_limits<double>::max();
 	      SGPoint nashPayoffs;
-	      for (list<SGIteration_Pencil_Sharpening>::const_iterator iter
+	      for (list<SGIteration_PencilSharpening>::const_iterator iter
 		     = soln.getIterations().begin();
 		   iter != soln.getIterations().end();
 		   ++iter)
@@ -209,8 +209,8 @@ int main()
 	}
       catch (std::exception & e)
 	{
-	  SGSolution_Pencil_Sharpening soln = solver->getSolution();
-	  SGSolution_Pencil_Sharpening::save(soln,solnname.str().c_str());
+	  SGSolution_PencilSharpening soln = solver->getSolution();
+	  SGSolution_PencilSharpening::save(soln,solnname.str().c_str());
 	  delete solver;
 	  cout << "SGException caught. Received following error: "
 	       << endl
