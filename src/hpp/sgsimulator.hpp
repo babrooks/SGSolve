@@ -72,14 +72,14 @@
 */
 class SGSimulator
 {
-  typedef pair< list<SGIteration_Pencil_Sharpening>::const_iterator, double > transitionPair;
+  typedef pair< list<SGIteration_PencilSharpening>::const_iterator, double > transitionPair;
 
 private:
   //! The associated SGSolution object.
-  const SGSolution_Pencil_Sharpening & soln;
+  const SGSolution_PencilSharpening & soln;
 
   //! Points to the beginning of the last revolution.
-  list<SGIteration_Pencil_Sharpening>::const_iterator startOfLastRev;
+  list<SGIteration_PencilSharpening>::const_iterator startOfLastRev;
 
   //! The transition table
   /*! This table consists of, for each state and tuple, a list
@@ -121,7 +121,7 @@ private:
   
 public:
   //! Constructor
-  SGSimulator(const SGSolution_Pencil_Sharpening & _soln): 
+  SGSimulator(const SGSolution_PencilSharpening & _soln): 
     soln(_soln), logFlag(false), weightTol(1e-4)
   {}
 

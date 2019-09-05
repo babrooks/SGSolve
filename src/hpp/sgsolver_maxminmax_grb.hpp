@@ -361,7 +361,7 @@ double SGSolver_MaxMinMax_GRB::iterate(const SGSolverMode mode, int & steps)
 		// Calculate minIC for each player.
 		for (int p = 0; p < numPlayers; p++)
 		  {
-		    double minIC = SGAction_Pencil_Sharpening::calculateMinIC(a,s,p,
+		    double minIC = SGAction_PencilSharpening::calculateMinIC(a,s,p,
 							    game,threatTuple);
 		    APSContVal -= ICMult[p+2*ga]*minIC;
 		  }

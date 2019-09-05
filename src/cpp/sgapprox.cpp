@@ -39,7 +39,7 @@ void SGApprox::initialize()
   SGPoint payoffUB, payoffLB;
   game.getPayoffBounds(payoffUB,payoffLB);
 
-  actions = vector< list<SGAction_Pencil_Sharpening> > (numStates);
+  actions = vector< list<SGAction_PencilSharpening> > (numStates);
 
   const vector< vector<bool> > & eqActions = game.getEquilibriumActions();
   // Create the intersection arrays.
@@ -50,16 +50,16 @@ void SGApprox::initialize()
 	  for (int a = 0; a < game.getNumActions_total()[state]; a++)
 	    {
 	      if (eqActions[state][a])
-		actions[state].push_back(SGAction_Pencil_Sharpening(env,state,a));
+		actions[state].push_back(SGAction_PencilSharpening(env,state,a));
 	    }
 	}
       else
 	for (action = 0; action < game.getNumActions_total()[state]; action++)
-	  actions[state].push_back(SGAction_Pencil_Sharpening(env,state,action));
+	  actions[state].push_back(SGAction_PencilSharpening(env,state,action));
     } // state
 
   pivot = SGTuple(numStates);
-  actionTuple = vector< const SGAction_Pencil_Sharpening* >(numStates,&nullAction);
+  actionTuple = vector< const SGAction_PencilSharpening* >(numStates,&nullAction);
   regimeTuple = vector<SG::Regime>(numStates,SG::Binding);
   threatTuple = SGTuple(numStates,payoffLB);
 
@@ -94,7 +94,7 @@ void SGApprox::initialize()
   bestAction = actions[0].end();
 
   if (env.getParam(SG::STOREITERATIONS) == 2)
-    soln.push_back(SGIteration_Pencil_Sharpening(*this,
+    soln.push_back(SGIteration_PencilSharpening(*this,
 			       env.getParam(SG::STOREACTIONS)));
   numIterations = 0;
   
@@ -127,7 +127,7 @@ double SGApprox::generate(bool storeIterations)
   
   if (storeIterations)
     {
-      soln.push_back(SGIteration_Pencil_Sharpening(*this,
+      soln.push_back(SGIteration_PencilSharpening(*this,
 				                   env.getParam(SG::STOREACTIONS)));
       assert(soln.getIterations().back().getBestAction()
 	     < game.getNumActions_total()[soln.getIterations().back().getBestState()]);
@@ -198,7 +198,7 @@ void SGApprox::findBestDirection()
   
   for (state = 0; state < numStates; state++)
     {
-      for (list<SGAction_Pencil_Sharpening>::const_iterator action = actions[state].begin();
+      for (list<SGAction_PencilSharpening>::const_iterator action = actions[state].begin();
 	   action != actions[state].end();
 	   ++action)
 	{
@@ -707,7 +707,7 @@ double SGApprox::distHelper(const SGPoint & p,
 
 void SGApprox::updateMinPayoffs()
 {
-  list<SGAction_Pencil_Sharpening>::iterator action;
+  list<SGAction_PencilSharpening>::iterator action;
   vector<bool> update(2,true);
 
   for (int player = 0; player < numPlayers; player++)
@@ -739,7 +739,7 @@ void SGApprox::calculateBindingContinuations()
 
   for (state = 0; state < numStates; state++)
     {
-      list<SGAction_Pencil_Sharpening>::iterator action = actions[state].begin();
+      list<SGAction_PencilSharpening>::iterator action = actions[state].begin();
       while (action != actions[state].end())
 	{
 	  for (int player = 0; player < numPlayers; player++)
@@ -775,7 +775,7 @@ void SGApprox::trimBindingContinuations()
   // Updates the actions array after the cut from pivot towards
   // direction. 
   int state;
-  list<SGAction_Pencil_Sharpening>::iterator action;
+  list<SGAction_PencilSharpening>::iterator action;
   SGPoint expPivot;
 
   for (state = 0; state < numStates; state++)

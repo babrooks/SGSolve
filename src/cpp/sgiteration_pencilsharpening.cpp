@@ -21,7 +21,7 @@
 
 #include "sgapprox.hpp"
 
-SGIteration_Pencil_Sharpening::SGIteration_Pencil_Sharpening(const SGApprox & approx,
+SGIteration_PencilSharpening::SGIteration_PencilSharpening(const SGApprox & approx,
 			                                     bool storeActions):
   iteration(approx.getNumIterations()),
   revolution(approx.getNumRevolutions()),
@@ -57,7 +57,7 @@ SGIteration_Pencil_Sharpening::SGIteration_Pencil_Sharpening(const SGApprox & ap
     {
       for (int state = 0; state < actions.size(); state++)
 	{
-	  for (list<SGAction_Pencil_Sharpening>::const_iterator action
+	  for (list<SGAction_PencilSharpening>::const_iterator action
 		 = approx.getActions()[state].begin();
 	       action != approx.getActions()[state].end();
 	       ++action)

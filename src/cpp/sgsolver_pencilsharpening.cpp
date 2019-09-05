@@ -21,14 +21,14 @@
 
 #include "sgsolver_pencilsharpening.hpp"
 
-SGSolver_Pencil_Sharpening::SGSolver_Pencil_Sharpening(const SGEnv & _env,
+SGSolver_PencilSharpening::SGSolver_PencilSharpening(const SGEnv & _env,
 		                                       const SGGame & _game):
   env(_env),
   game(_game),
   soln(_game)
 {}
 
-void SGSolver_Pencil_Sharpening::solve()
+void SGSolver_PencilSharpening::solve()
 {
 
   SGApprox approx (env,game,soln);

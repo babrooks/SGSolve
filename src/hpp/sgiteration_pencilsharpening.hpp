@@ -39,7 +39,7 @@ class SGApprox;
 
     \ingroup src
 */
-class SGIteration_Pencil_Sharpening
+class SGIteration_PencilSharpening
 {
 private:
   int iteration; /*!< The value of SGApprox::numIterations. */
@@ -67,7 +67,7 @@ private:
 
 public:
   //! Default constructor
-  SGIteration_Pencil_Sharpening() {}
+  SGIteration_PencilSharpening() {}
   //! Initializes a new SGIteration object with data on the current
   //! iteration
   /*! By default, the constructor will also copy the data in
@@ -76,7 +76,7 @@ public:
       second argument is false, then these actions will not be
       stored. For large games, storing the actions can take a large
       amount of memory. */
-  SGIteration_Pencil_Sharpening(const SGApprox & approx,
+  SGIteration_PencilSharpening(const SGApprox & approx,
 	                        bool storeActions = true);
 
   //! Get method for the iteration.
@@ -124,6 +124,6 @@ public:
     ar & regimeTuple;
     ar & threatTuple;
   }
-}; // SGIteration_Pencil_Sharpening
+}; // SGIteration_PencilSharpening
 
 #endif

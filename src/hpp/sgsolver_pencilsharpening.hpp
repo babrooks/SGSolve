@@ -39,7 +39,7 @@
 
   \ingroup src
  */
-class SGSolver_Pencil_Sharpening
+class SGSolver_PencilSharpening
 {
 private:
   // Data
@@ -49,20 +49,20 @@ private:
   //! Constant reference to the game to be solved.
   const SGGame & game; 
   //! SGSolution object used by SGApprox to store data.
-  SGSolution_Pencil_Sharpening soln;
+  SGSolution_PencilSharpening soln;
 
 public:
   //! Default constructor
-  SGSolver_Pencil_Sharpening(); 
+  SGSolver_PencilSharpening(); 
 
   //! Constructor
   /*! Creates a new SGSolver object and initializes it with the given
       game. */
-  SGSolver_Pencil_Sharpening(const SGEnv & _env, 
+  SGSolver_PencilSharpening(const SGEnv & _env, 
 	                     const SGGame & _game);
 
   //! Destructor
-  ~SGSolver_Pencil_Sharpening() {}
+  ~SGSolver_PencilSharpening() {}
 
   //! Solve routine
   /*! Initializes a new SGApproximation object and iteratively
@@ -72,7 +72,7 @@ public:
 
   //! Returns a constant reference to the SGSolution object storing the
   //! output of the computation.
-  const SGSolution_Pencil_Sharpening& getSolution() const {return soln;}
+  const SGSolution_PencilSharpening& getSolution() const {return soln;}
 };
 
 
