@@ -56,7 +56,7 @@ class SGSimulationHandler : public QWidget
 
 private:
   //! Constant reference to the associated SGSolution object.
-  const SGSolution & soln;
+  const SGSolution_PencilSharpening & soln;
   //! Discounted payoffs in the simulated equilibrium.
   /*! The widget will simulate an equilibrium that generates payoffs
       closest to this point. */
@@ -101,7 +101,7 @@ private:
 public:
   //! Constructor.
   SGSimulationHandler(QWidget * parent, 
-		      const SGSolution & _soln, 
+		      const SGSolution_PencilSharpening & _soln, 
 		      const SGPoint & _point,
 		      int _state);
 

@@ -22,7 +22,7 @@
 #include "sgsimulationhandler.hpp"
 
 SGSimulationHandler::SGSimulationHandler(QWidget * parent, 
-					 const SGSolution & _soln,
+					 const SGSolution_PencilSharpening & _soln,
 					 const SGPoint & _point,
 					 int _state)
   : QWidget(parent), soln(_soln), 
@@ -142,7 +142,7 @@ SGSimulationHandler::SGSimulationHandler(QWidget * parent,
   // Find the point that is closest for the given state.
   double minDistance = numeric_limits<double>::max();
 
-  for (list<SGIteration>::const_reverse_iterator iter = soln.getIterations().rbegin();
+  for (list<SGIteration_PencilSharpening>::const_reverse_iterator iter = soln.getIterations().rbegin();
        iter != soln.getIterations().rend();
        ++iter)
     {
