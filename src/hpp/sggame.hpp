@@ -232,6 +232,9 @@ public:
 
   //! Check if transition probabilities sum to one
   bool transitionProbsSumToOne(double tolerance=1e-3) const;
+
+  //! Check if there exists a profitable deviation 
+  bool profitableDeviation(vector<int> & input, SGGame game);
   
   //! Static method for saving an SGGame object to the file filename.
   static void save(const SGGame & game, const char* filename)

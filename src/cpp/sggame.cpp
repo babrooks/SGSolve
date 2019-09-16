@@ -404,4 +404,82 @@ bool SGGame::transitionProbsSumToOne(double tolerance) const
     }
   return true;
 } // transitionProbsSumToOne
- 
+
+bool SGGame::profitableDeviation(vector<int> & input, SGGame game)
+{
+
+  vector< vector< int > >optimalactions(game.numStates,vector<int>(game.numPlayers,0));
+  unsigned int s, i;
+  for(s=0;s<game.numStates;s++)
+  {
+    unsigned int action2 = input[s]/game.numActions[s][0];
+    unsigned int action1 = input[s] - action2*game.numActions[s][0];
+    for(i=0;i<game.numPlayers;i++)
+    {    
+      if(i==0)      
+      	optimalactions[s][i] = action1; 
+      if(i==1)
+	optimalactions[s][i] = action2;
+    }
+  }
+
+  vector< vector< double > >guess(game.numPlayers,vector<double>(game.numStates,0.0)); 
+  vector< vector< double > >valuefunction(game.numPlayers,vector<double>(game.numStates,0.0));
+  double error = 10.0; 
+  unsigned int st;
+  for(i=0;i<game.numPlayers;i++)
+  {
+    while(error>1e-5)
+    {
+        error = 0.0;
+        for(s=0;s<game.numStates;s++)
+        {
+	  unsigned int input_action = input[s];
+	  double cont_payoff = 0.0;
+	  for(st=0;st<game.numStates;st++)
+          {	
+	    cont_payoff += guess[i][st] * game.probabilities[s][input_action][st];
+	  }
+          valuefunction[i][s] = (1-game.delta)*(game.payoffs[s][input_action][i])+game.delta*cont_payoff;
+	  if(abs(valuefunction[i][s] - guess[i][s]) > error)
+	    error = abs(valuefunction[i][s] - guess[i][s]); 
+	  guess[i][s] = valuefunction[i][s];
+        }
+    }
+  }
+
+  unsigned int j,player,action,state;
+  double dev_payoff;
+  bool profitable_deviation = false;
+  for(s=0;s<game.numStates;s++)
+  {
+    for(j=0;j<game.numActions_total[s];j++)
+    {
+      for(i=0;i<game.numPlayers;i++)
+      {      
+	double cont_payoff = 0;
+	unsigned int a2 = j/game.numActions[s][0];
+	unsigned int a1 = j - a2*game.numActions[s][0];
+	if((i==0 && (a2 == optimalactions[s][1])) || (i==1 && (a1 == optimalactions[s][0])))
+	{
+	  for(st=0;st<game.numStates;st++)
+	  {
+	    cont_payoff += game.probabilities[s][j][st]*valuefunction[i][st];
+	  }	  
+	  dev_payoff = game.payoffs[s][j][i]*(1-game.delta)+game.delta*cont_payoff;
+	  if(dev_payoff > valuefunction[i][s])
+	  {
+	    profitable_deviation = true; 
+	    return profitable_deviation;
+	  }
+	}
+      }
+    }
+  }
+  return profitable_deviation;
+   
+}
+
+
+
+
