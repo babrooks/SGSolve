@@ -429,8 +429,8 @@ void SGMainWindow::solveGame_V2()
        throw(SGException(SG::PROB_SUM_NOT1));
 
      solverWorker_v2 = new SGSolverWorker_V2(*env,
-                   gameHandler->getGame(),
-                   logTextEdit);
+					     gameHandler->getGame(),
+					     logTextEdit);
      solverWorker_v2->moveToThread(&solverThread);
 
 
@@ -443,7 +443,7 @@ void SGMainWindow::solveGame_V2()
      solverThread.start();
 
      timer.restart();
-
+     
      emit startIteration_V2();
     }
   catch (exception & e)

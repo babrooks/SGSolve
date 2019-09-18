@@ -87,7 +87,7 @@ p=plot(genLine(:,1),genLine(:,2),'k--',...
     expCorner(1),expCorner(2),'r.');
 set(p,'markersize',13);
 
-title('$\delta=0.7$','interpreter','latex');
+title('$\delta=0.4$','interpreter','latex');
 xlabel('$v_1$','interpreter','latex');
 ylabel('$v_2$','interpreter','latex');
 set(gca,'ticklabelinterpreter','latex');

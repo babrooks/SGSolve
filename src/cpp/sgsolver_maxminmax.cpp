@@ -381,7 +381,7 @@ double SGSolver_MaxMinMax::iterate()
     } // for state
 
   feasibleTuple = threatTuple;
-  // findFeasibleTuple(feasibleTuple,actions);
+  findFeasibleTuple(feasibleTuple,actions);
   
   for (int state = 0; state < numStates; state++)
     {
