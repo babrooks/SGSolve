@@ -120,7 +120,7 @@ private slots:
   { 
     plotSettings->restoreDefaults();
     //! Signals all of the edits and check boxes to reset to default values.
-    void restoreDefaultSignal();
+    emit restoreDefaultSignal();
   } // restoreDefaults
   
 };
