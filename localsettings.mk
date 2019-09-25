@@ -20,10 +20,10 @@
 # Chicago, IL
 
 # Configured for Ben's macbook pro
-GRBDIR=/Library/gurobi800/mac64
+GRBDIR=/Library/gurobi811/mac64
 GRBINCLDIR=$(GRBDIR)/include
 GRBLIBDIR=$(GRBDIR)/lib
-GRBNAME=gurobi80
+GRBNAME=gurobi81
 
 STATIC=
 DYNAMIC=

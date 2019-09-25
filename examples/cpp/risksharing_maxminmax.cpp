@@ -30,7 +30,7 @@
 
 int main()
 {
-  double delta = 0.7;
+  double delta = 0.4;
   int numEndowments = 2;
   int c2e = 200;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
