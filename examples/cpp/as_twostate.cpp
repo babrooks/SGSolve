@@ -97,22 +97,22 @@ int main ()
       env.setParam(SG::LEVELTOL,1e-12);
   
       cout << "Building solver" << endl;
-      SGSolver_Pencil_Sharpening solver(env,game);
+      SGSolver_PencilSharpening solver(env,game);
 
       cout << "Starting solve routine" << endl;
       solver.solve();
   
       cout << "Saving data... ";
-      SGSolution_Pencil_Sharpening soln = solver.getSolution();
+      SGSolution_PencilSharpening soln = solver.getSolution();
       stringstream ss;
       ss << "./solutions/as_twostate.sln";
-      SGSolution_Pencil_Sharpening::save(soln,ss.str().c_str());
+      SGSolution_PencilSharpening::save(soln,ss.str().c_str());
       cout << "Done!" << endl;
 
       SGGame::save(game,"./games/as_twostate.sgm");
 
-      SGSolution_Pencil_Sharpening soln2;
-      SGSolution_Pencil_Sharpening::load(soln2,ss.str().c_str());
+      SGSolution_PencilSharpening soln2;
+      SGSolution_PencilSharpening::load(soln2,ss.str().c_str());
   
       SGSimulator sim(soln2);
 
