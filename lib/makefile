@@ -25,7 +25,7 @@ OBJFILES= sgexception.o sggame.o sgsolver_pencilsharpening.o sgutilities.o sgapp
 sgpoint.o sgtuple.o sgaction_pencilsharpening.o sgaction_maxminmax.o sgenv.o		\
 sgsimulator.o sghyperplane.o sgsolver_maxminmax.o		\
 sgsolver_maxminmax_3player.o sgpolicy.o sgedgepolicy.o sgbaseaction.o	\
-sgproductpolicy.o sgrandom.o
+sgproductpolicy.o sgrandom.o sgiteration_pencilsharpening.o
 
 all: libsg.a 
 
