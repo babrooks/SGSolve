@@ -164,7 +164,7 @@ public:
   const SGPoint getBndryDir(const int player,const int point) const;
   
   // Returns whether the action can be supported
-  bool supportable(const SGPoint & feasiblePoint ) const;
+  bool supportable() const;
 
 }; // SGAction_MaxMinMax
 

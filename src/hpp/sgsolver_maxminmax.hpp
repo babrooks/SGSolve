@@ -126,8 +126,17 @@ double pseudoHausdorff(const list<SGPoint> & newDirections,
 		      vector<SGActionIter> & actionTuple,
 		      vector<SG::Regime> & regimeTuple,
 		      const SGPoint currDir,
-		      const vector<list<SGAction_MaxMinMax> > & actions,
-		      const SGTuple & feasibleTuple) const;
+		      const vector<list<SGAction_MaxMinMax> > & actions) const;
+
+  //! Optimizes the policy for the given direction
+  void robustOptimizePolicy(SGTuple & pivot,
+			    vector<double> & penalties,
+			    vector<SGActionIter> & actionTuple,
+			    vector<SG::Regime> & regimeTuple,
+			    vector<bool> & bestAPSNotBinding,
+			    SGTuple & bestBindingPayoffs,
+			    const SGPoint currDir,
+			    const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Find the next clockwise direction at which the optimal tuple
   //! changes
@@ -137,10 +146,6 @@ double pseudoHausdorff(const list<SGPoint> & newDirections,
 		     const vector<SG::Regime> & regimeTuple,
 		     const SGPoint currDir,
 		     const vector<list<SGAction_MaxMinMax> > & actions) const;
-
-  //! Find a payoff tuple that is feasible for APS
-  void findFeasibleTuple(SGTuple & feasibleTuple,
-			 const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Converts a policy function to a payoff function using bellman iteration
   void policyToPayoffs(SGTuple & pivot,
@@ -153,6 +158,35 @@ double pseudoHausdorff(const list<SGPoint> & newDirections,
 			 const vector<SGActionIter>  & actionTuple,
 			 const vector<SG::Regime> & regimeTuple) const;
 
+  //! Lexicographic comparison of points
+  /*! Returns true if a is above b in the direction dir, or if they
+      are at the same level but a is higher than b in the direction
+      dir rotated 90 degrees clockwise. */
+  bool lexComp(const SGPoint & a,
+	       const double aPenalty,
+	       const SGPoint & b,
+	       const double bPenalty,
+	       const SGPoint & dir ) const;
+
+  //! Computes  the best binding payoff for an action
+  bool computeBestBindingPayoff(const SGActionIter ait,
+				int & bestBindingPlayer,
+				int & bestBindingPoint,
+				const SGPoint & dir) const;
+
+  //! Switches regimes from binding to non-binding to minimize levels
+  void minimizeRegimes(SGTuple & pivot,
+		       vector<double> & penalties,
+		       const vector<SGActionIter> & actionTuple,
+		       vector<SG::Regime> & regimeTuple,
+		       const SGPoint & dir,
+		       const SGTuple & bestBindingPayoffs,
+		       const vector<bool> & bestAPSNotBinding) const;
+
+  //! Lexicographic comparison of directions
+  /*! Returns true if a is above b or a is parallel to b. */
+  bool lexAbove(const SGPoint & a, const SGPoint & b ) const;
+  
   //! Returns a constant reference to the SGSolution_MaxMinMax object storing the
   //! output of the computation.
   const SGSolution_MaxMinMax& getSolution() const {return soln;}

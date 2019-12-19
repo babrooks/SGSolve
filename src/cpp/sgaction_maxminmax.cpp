@@ -177,8 +177,8 @@ bool SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
 	  segment.clear();
 	  segmentDirs.clear();
 	}
-      else if (l0 < level
-	       && l1 < level)
+      else if (l0 < level+env->getParam(SG::ICTOL)
+	       && l1 < level+env->getParam(SG::ICTOL))
 	{
 	  // Leave points alone.
 	  return false;
@@ -186,11 +186,11 @@ bool SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
       else if (abs(l0 - l1)>env->getParam(SG::INTERSECTTOL))
 	{
 	  // Can take intersection.
-	  double weightOn1 = (level - l0)/(l1 - l0);
+	  //double weightOn1 = max(0.0,min((level - l0)/(l1 - l0),1.0));
 
+	  double weightOn1 = (level-l0)/(l1-l0);
 	  // In first two cases, must be very close to being coplanar
-	  // with the normal. Just make both points the same. (Is this
-	  // necessary? Seems like it might screw things up.)
+	  // with the normal. Just make both points the same. 
 	  if (weightOn1 > 1)
 	    segment[0] = segment[1];
 	  else if (weightOn1 < 0)
@@ -209,8 +209,8 @@ bool SGAction_MaxMinMax::intersectHalfSpace(const SGPoint& normal,
 	      segment[replace] = intersection;
 	      if (player == replace)
 		segmentDirs[replace] = normal.getNormal();
-	      else
-		segmentDirs[replace] = (-1)*normal.getNormal();
+	      else 
+		segmentDirs[replace] = (-1.0)*normal.getNormal();
 	    }
 	}
     }
@@ -472,14 +472,10 @@ void SGAction_MaxMinMax::mergeDuplicatePoints(const double tol)
     }
 }
 
-bool SGAction_MaxMinMax::supportable(const SGPoint & feasiblePoint ) const
+bool SGAction_MaxMinMax::supportable() const
 {
   for (int player = 0; player < points.size(); player++)
     if (points[player].size()>0)
       return true;
-
-  if (feasiblePoint >= minIC - env->getParam(SG::ICTOL))
-    return true;
-
   return false;
 }

@@ -19,8 +19,8 @@
 # ben@benjaminbrooks.net
 # Chicago, IL
 
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.14
-QMAKE_MAC_SDK = macosx10.14
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.15
+QMAKE_MAC_SDK = macosx10.15
   
 QT += widgets printsupport
 
