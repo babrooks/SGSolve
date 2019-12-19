@@ -562,6 +562,9 @@ QString SGSolutionHandler::generatePlotTitle(int state, int action,
         titleString += QString("Iteration: ");
         titleString += QString::number(controller->getCurrentIterIndex());
         titleString += QString(", ");
+        titleString += QString("Direction: ");
+        titleString += QString::number(controller->getStepSliderPosition());
+        titleString += QString(", ");
     }
     if (controller->getCurrentIterIndex() >=0
             && detailedTitlesAction->isChecked())

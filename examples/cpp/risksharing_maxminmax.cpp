@@ -30,7 +30,7 @@
 
 int main()
 {
-  double delta = 0.4;
+  double delta = 0.7;
   int numEndowments = 2;
   int c2e = 200;
   RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
@@ -41,13 +41,13 @@ int main()
 			c2e,persistence,endowmentMode);
     SGEnv env;
     env.setParam(SG::STOREITERATIONS,2);
-    // env.setParam(SG::STOREACTIONS,true);
     env.setParam(SG::ERRORTOL,1e-5);
 
     env.setParam(SG::SUBGENFACTOR,0.0);
     if (env.getParam(SG::SUBGENFACTOR)>0)
       env.setParam(SG::ERRORTOL,
 		   env.getParam(SG::SUBGENFACTOR)/10);
+    // env.setParam(SG::MAXITERATIONS,20);
     SGGame game(rsg);
 
     clock_t start;
@@ -64,13 +64,20 @@ int main()
     start = clock();
 
     SGSolver_MaxMinMax solver4(env,game);
-    solver4.solve_fixed();
+    try
+      {
+    	solver4.solve_fixed();
+      }
+    catch(std::exception & e)
+      {
+    	cout << e.what() << endl;
+      }
 
     duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
     cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
 
     SGSolution_MaxMinMax soln2 = solver4.getSolution();
-    SGSolution_MaxMinMax::save(soln2,"./solutions/risksharing_maxminmax_fixed.sln2");
+    SGSolution_MaxMinMax::save(soln2,"./solutions/risksharing_maxminmax_fixed.sln");
 
     start = clock();
 

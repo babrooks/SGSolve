@@ -107,11 +107,10 @@ public:
       generates it until one of the stopping criteria have been
       met. Stores progress in the data member. 
 
-      Fixed directions, with some limited adjustment of dropping
-      redundant directions and adding new face directions. */
-  void solve_fixed(const int numDirsApprox = 200,
-		   const bool dropRedundant = true,
-		   const bool addEndogenous = true);
+      Drops redundant directions and adds new face directions. */
+  void solve(const int numDirsApprox = 200,
+	     const bool dropRedundant = true,
+	     const bool addEndogenous = true);
 
   //! Endogenous direction solve routine
   /*! Initializes a new SGApproximation object and iteratively
@@ -125,9 +124,9 @@ public:
   /*! Return the new error level. */
   double iterate_endogenous();
 
-  //! One iteration of the fixed algorithm.
+  //! One iteration of the algorithm.
   /*! Return the new error level. */
-  double iterate_fixed(const int maxDirections,
+  double iterate(const int maxDirections,
 		       const bool dropRedundant,
 		       const bool addEndogenous);
   
@@ -141,8 +140,7 @@ public:
 		      vector<SGActionIter> & actionTuple,
 		      vector<SG::Regime> & regimeTuple,
 		      const SGPoint & currDir,
-		      const vector<list<SGAction_MaxMinMax> > & actions,
-		      const SGTuple & feasibleTuple) const;
+		      const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Compute all policies that are at least as high as the given
   //! pivot. Returns false if there is a strict improvement, and true
@@ -159,10 +157,6 @@ public:
 		     const SGPoint & currDir,
 		     const SGPoint & newDir,
 		     const vector<list<SGAction_MaxMinMax> > & actions) const;
-
-  //! Find a payoff tuple that is feasible for APS
-  void findFeasibleTuple(SGTuple & feasibleTuple,
-			 const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Converts a policy function to a payoff function using bellman iteration
   void policyToPayoffs(SGTuple & pivot,

@@ -56,8 +56,9 @@ void SGSolver_MaxMinMax::solve_fixed()
 	*static_cast<double>(dir)/static_cast<double>(numDirections);
       directions.push_back(SGPoint(cos(theta),sin(theta)));
       levels.push_back(vector<double>(numStates,0));
-    } // for dir
 
+    } // for dir
+  
   {
     int dirCnt = 0;
     for (auto lit = levels.cbegin();
@@ -87,7 +88,13 @@ void SGSolver_MaxMinMax::solve_fixed()
         for (int state = 0; state < numStates; state++)
 	actionTuple[state] = actions[state].begin();
       
-        vector<SG::Regime> regimeTuple(numStates,SG::Binding);
+        vector<SG::Regime> regimeTuple(numStates,SG::NonBinding);
+	vector<bool> bestAPSNotBinding(numStates);
+	SGTuple bestBindingPayoffs(numStates);
+	updateBestBinding(actionTuple,regimeTuple,directions.front(),
+			  bestBindingPayoffs,bestAPSNotBinding);
+	minimizeRegimes(pivot,penalties,actionTuple,regimeTuple,directions.front(),
+			bestBindingPayoffs,bestAPSNotBinding);
 
         // Reset the trimmed points for the actions
         for (int state = 0; state < numStates; state++)
@@ -130,10 +137,18 @@ void SGSolver_MaxMinMax::solve_fixed()
 	      vector<double> newLevels(numStates,0);
 	      SGPoint currDir = *dir;
 
-	      optimizePolicy(pivot,penalties,
-	         	     actionTuple,regimeTuple,
-			     currDir,
-			     actions);
+	      // Make sure payoffs are min-max in new direction
+	      updateBestBinding(actionTuple,regimeTuple,currDir,
+				bestBindingPayoffs,bestAPSNotBinding);
+	      minimizeRegimes(pivot,penalties,actionTuple,regimeTuple,currDir,
+			      bestBindingPayoffs,bestAPSNotBinding);
+
+	      robustOptimizePolicy(pivot,penalties,
+				   actionTuple,regimeTuple,
+				   bestAPSNotBinding,
+				   bestBindingPayoffs,
+				   currDir,
+				   actions);
 
 	      for (int state = 0; state < numStates; state++)
 	        {
@@ -255,7 +270,7 @@ std::string SGSolver_MaxMinMax::progressString() const
 double SGSolver_MaxMinMax::iterate()
 {
   SGTuple pivot = threatTuple;
-  vector<double> penalties(numStates,0);
+  vector<double> penalties(numStates,0.0);
   
   SGIteration_MaxMinMax iter;
   
@@ -279,14 +294,21 @@ double SGSolver_MaxMinMax::iterate()
 
   // Construct initial pivot
 
-  // Start with all regimes binding
-  vector<SG::Regime> regimeTuple(numStates,SG::Binding);
+  // Start with all regimes non-binding (needed so that
+  // updateBestBinding will set the binding payoffs)
+  vector<SG::Regime> regimeTuple(numStates,SG::NonBinding);
   vector<bool> bestAPSNotBinding(numStates,false);
   SGTuple bestBindingPayoffs(numStates);
 
+  // Update the best binding payoffs
+  updateBestBinding(actionTuple,regimeTuple,currDir,
+		    bestBindingPayoffs,bestAPSNotBinding);
+  // minimize regimes
+  minimizeRegimes(pivot,penalties,actionTuple,regimeTuple,currDir,
+		  bestBindingPayoffs,bestAPSNotBinding);
+
   while (!passNorth)
     {
-      
       // Compute optimal level in this direction
       robustOptimizePolicy(pivot,penalties,
 			   actionTuple,
@@ -516,195 +538,6 @@ void SGSolver_MaxMinMax::initialize()
 
 } // initialize
 
-void SGSolver_MaxMinMax::optimizePolicy(SGTuple & pivot,
-					vector<double> & penalties,
-					vector<SGActionIter> & actionTuple,
-					vector<SG::Regime> & regimeTuple,
-					const SGPoint currDir,
-					const vector<list<SGAction_MaxMinMax> > & actions) const
-{
-  // Do policy iteration to find the optimal pivot.
-  
-  double pivotError = 1.0;
-  int numPolicyIters = 0;
-  // Iterate until convergence
-  SGTuple newPivot(numStates);
-
-  vector<SGActionIter> newActionTuple(actionTuple);
-  vector<SG::Regime> newRegimeTuple(regimeTuple);
-
-  vector<bool> bestAPSNotBinding(numStates,false);
-  SGTuple bestBindingPayoffs(numStates);
-
-  bool doInner = env.getParam(SG::SUBGENFACTOR)>0;
-  double bindingPenalty = 0;
-  if (doInner)
-    bindingPenalty = env.getParam(SG::SUBGENFACTOR);
-  
-  // policy iteration
-  do
-    {
-      pivotError = 0;
-
-      // Look in each state for improvements
-      for (int state = 0; state < numStates; state++)
-	{
-	  double bestLevel = -numeric_limits<double>::max();
-
-	  if (numPolicyIters > 0)
-	    bestLevel = pivot[state]*currDir-penalties[state];
-	  
-	  for (auto ait = actions[state].begin();
-	       ait != actions[state].end();
-	       ++ait)
-	    {
-	      // Procedure to find an improvement to the policy
-	      // function
-	      
-	      SGPoint nonBindingPayoff = (1-delta)*payoffs[state]
-		[ait->getAction()]
-		+ delta * pivot.expectation(probabilities[state][ait->getAction()]);
-	      double nonBindingPenalty = 0.0;
-	      if (doInner)
-		{
-		  nonBindingPenalty = env.getParam(SG::SUBGENFACTOR);
-		  for (int sp = 0; sp < numStates; sp++)
-		    nonBindingPenalty += delta*probabilities[state][ait->getAction()][sp]*penalties[sp];
-		}
-	      
-
-	      bool APSNotBinding = false;
-	      SGPoint bestAPSPayoff;
-
-	      // Find which payoff is highest in current normal and
-	      // break ties in favor of the clockwise 90 degree.
-	      int bestBindingPlayer = -1;
-	      int bestBindingPoint = -1;
-	      double bestBindLvl = -numeric_limits<double>::max();
-	      for (int p = 0; p < numPlayers; p++)
-		{
-		  for (int k = 0; k < ait->getPoints()[p].size(); k++)
-		    {
-		      double tmpLvl = ait->getPoints()[p][k]*currDir;
-		      if (tmpLvl > bestBindLvl)
-			{
-			  bestBindLvl = tmpLvl;
-			  bestBindingPlayer = p;
-			  bestBindingPoint = k;
-			}
-		    } // point
-		} // player
-
-	      if (bestBindingPlayer < 0 // didn't find a binding payoff
-		  || lexAbove(ait->getBndryDirs()[bestBindingPlayer][bestBindingPoint],
-			       currDir) ) // Can improve on the best
-				       // binding payoff by moving in
-				       // along the frontier
-		{
-		  APSNotBinding = true;
-		}
-	      else // Found a binding payoff
-		bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
-		  + delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
-
-	      if ( APSNotBinding // NB bestAPSPayoff has only been
-		   // set if APSNotBinding ==
-		   // false
-		   || ( bestAPSPayoff*currDir - bindingPenalty
-			>= nonBindingPayoff*currDir - nonBindingPenalty ) ) 
-		{
-		  // ok to use non-binding payoff
-		  if (nonBindingPayoff*currDir - nonBindingPenalty > bestLevel)
-		    {
-	      	      bestLevel = nonBindingPayoff*currDir - nonBindingPenalty;
-
-		      bestAPSNotBinding[state] = APSNotBinding;
-		      if (!APSNotBinding)
-			bestBindingPayoffs[state] = bestAPSPayoff;
-		      
-		      newActionTuple[state] = ait;
-	      	      newRegimeTuple[state] = SG::NonBinding;
-	      	      newPivot[state] = nonBindingPayoff;
-		    }
-		}
-	      else if (bestAPSPayoff*currDir - bindingPenalty
-		       < nonBindingPayoff*currDir - nonBindingPenalty)
-		{
-		  if (bestAPSPayoff*currDir - bindingPenalty > bestLevel)
-		    {
-	      	      bestLevel = bestAPSPayoff*currDir - bindingPenalty;
-		      newActionTuple[state] = ait;
-	      	      newRegimeTuple[state] = SG::Binding;
-	      	      newPivot[state] = bestAPSPayoff;
-		    }
-		}
-	    } // ait
-
-	  pivotError = max(pivotError,abs(bestLevel-pivot[state]*currDir+penalties[state]));
-	} // state
-
-      pivot = newPivot;
-      actionTuple = newActionTuple;
-      regimeTuple = newRegimeTuple;
-
-      // Inner loop to fix regimes
-      bool anyViolation = false;
-      do
-	{
-	  // Do Bellman iteration to find new fixed point
-	  policyToPayoffs(pivot,actionTuple,regimeTuple);
-	  if (doInner)
-	    {
-	      policyToPenalties(penalties,actionTuple,regimeTuple);
-	    }
-
-	  anyViolation = false;
-
-	  // Check if any reversals between best binding and non-binding
-
-	  // First determine the maximum gap
-	  for (int state = 0; state < numStates; state++)
-	    {
-	      double gap = pivot[state]*currDir-penalties[state]
-		- bestBindingPayoffs[state]*currDir+bindingPenalty;
-	      if (!bestAPSNotBinding[state]
-		  && regimeTuple[state] == SG::NonBinding
-		  && gap>0) 
-		{
-		  anyViolation = true;
-		  pivot[state] = bestBindingPayoffs[state];
-		  regimeTuple[state] = SG::Binding;
-		}
-	    }
-	} while (anyViolation);
-
-      if (numPolicyIters == env.getParam(SG::MAXPOLICYITERATIONS)/2)
-	cout << "Cycling detected at direction: " << currDir << endl;
-      if (numPolicyIters >= env.getParam(SG::MAXPOLICYITERATIONS)/2)
-	{
-	  cout << "Policy iter: " << numPolicyIters
-	       << ", action tuple: (";
-	  for (int state = 0; state < numStates; state++)
-	    cout << actionTuple[state]->getAction() << " ";
-	  cout << "), regime tuple: (";
-	  for (int state = 0; state < numStates; state++)
-	    cout << regimeTuple[state] << " ";
-	  cout << "), new regime tuple: (";
-	  for (int state = 0; state < numStates; state++)
-	    cout << newRegimeTuple[state] << " ";
-	  cout << "), pivot error: " << scientific << pivotError;
-	  cout << endl;
-	}
-
-
-    } while (pivotError > env.getParam(SG::POLICYITERTOL)
-	     && ++numPolicyIters < env.getParam(SG::MAXPOLICYITERATIONS));
-
-  if (numPolicyIters >= env.getParam(SG::MAXPOLICYITERATIONS))
-    cout << "WARNING: Maximum policy iterations reached." << endl;
-
-} // optimizePolicy
-
 void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 					      vector<double> & penalties,
 					      vector<SGActionIter> & actionTuple,
@@ -719,6 +552,7 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
   int numPolicyIters = 0;
   // Iterate until convergence
   SGTuple newPivot(pivot);
+  vector<double> newPenalties(penalties);
 
   vector<SGActionIter> newActionTuple(actionTuple);
   vector<SG::Regime> newRegimeTuple(regimeTuple);
@@ -727,20 +561,6 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
   double bindingPenalty = 0;
   if (doInner)
     bindingPenalty = env.getParam(SG::SUBGENFACTOR);
-
-  // Make sure current pivot is minimal for new direction.
-  for (int state = 0; state < numStates; state++)
-    {
-      int bestBindingPlayer, bestBindingPoint;
-      bestAPSNotBinding[state] = computeBestBindingPayoff(actionTuple[state],
-							  bestBindingPlayer,
-							  bestBindingPoint,currDir);
-      bestBindingPayoffs[state] = (1-delta)*payoffs[state][actionTuple[state]->getAction()]
-	+ delta * actionTuple[state]->getPoints()[bestBindingPlayer][bestBindingPoint];
-    }
-  // minimize regimes
-  minimizeRegimes(pivot,penalties,actionTuple,regimeTuple,currDir,
-		  bestBindingPayoffs,bestAPSNotBinding);
 
         
   // policy iteration
@@ -770,8 +590,6 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 		    nonBindingPenalty += delta*probabilities[state][ait->getAction()][sp]*penalties[sp];
 		}
 	      
-
-
 	      // Find which payoff is highest in current normal and
 	      // break ties in favor of the clockwise 90 degree.
 	      int bestBindingPlayer, bestBindingPoint;
@@ -781,8 +599,7 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 	      if (!APSNotBinding) 
 		bestAPSPayoff =  (1-delta)*payoffs[state][ait->getAction()]
 		  + delta * ait->getPoints()[bestBindingPlayer][bestBindingPoint];
-
-
+	      
 	      if ( APSNotBinding // NB bestAPSPayoff has only been
 		   // set if APSNotBinding ==
 		   // false
@@ -792,7 +609,7 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 		{
 		  // ok to use non-binding payoff
 		  if (lexComp(nonBindingPayoff,nonBindingPenalty,
-			      pivot[state],penalties[state],
+			      newPivot[state],newPenalties[state],
 			      currDir) )
 		    {
 		      bestAPSNotBinding[state] = APSNotBinding;
@@ -802,15 +619,15 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 		      newActionTuple[state] = ait;
 	      	      newRegimeTuple[state] = SG::NonBinding;
 	      	      newPivot[state] = nonBindingPayoff;
+	      	      newPenalties[state] = nonBindingPenalty;
 
 		      actionsChanged = true;
-		      break; // Break after found a better action
 		    }
 		}
 	      else
 		{
 		  if (lexComp(bestAPSPayoff,bindingPenalty,
-			      pivot[state],penalties[state],
+			      newPivot[state],newPenalties[state],
 			      currDir) )
 		    {
 		      bestAPSNotBinding[state] = APSNotBinding;
@@ -818,9 +635,9 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 		      newActionTuple[state] = ait;
 	      	      newRegimeTuple[state] = SG::Binding;
 	      	      newPivot[state] = bestAPSPayoff;
+		      newPenalties[state] = bindingPenalty;
 
 		      actionsChanged = true;
-		      break; // Break after found a better action
 		    }
 		}
 	    } // ait
@@ -845,16 +662,31 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 	    cout << newRegimeTuple[state] << " ";
 	  cout << "), actionsChanged: " << scientific << actionsChanged;
 	  cout << endl;
+	  cout << "\tpivot: "  << pivot
+	       << ", newPivot: " << newPivot;
+	  cout << endl;
 	}
       
       pivot = newPivot;
       actionTuple = newActionTuple;
       regimeTuple = newRegimeTuple;
 
+      updateBestBinding(actionTuple,regimeTuple,currDir,
+			bestBindingPayoffs,bestAPSNotBinding);
+      
+      // minimize regimes
       minimizeRegimes(pivot,penalties,actionTuple,regimeTuple,currDir,
 		      bestBindingPayoffs,bestAPSNotBinding);
 
-
+      if (numPolicyIters >= env.getParam(SG::MAXPOLICYITERATIONS)/2)
+	{
+	  cout << "\tpivot: " << pivot;
+	  cout << ", regime tuple: (";
+	  for (int state = 0; state < numStates; state++)
+	    cout << regimeTuple[state] << " ";
+	  cout << endl;
+	}
+      
     } while (actionsChanged
 	     && ++numPolicyIters < env.getParam(SG::MAXPOLICYITERATIONS));
 
@@ -863,6 +695,26 @@ void SGSolver_MaxMinMax::robustOptimizePolicy(SGTuple & pivot,
 
 } // robustOptimizePolicy
 
+void SGSolver_MaxMinMax::updateBestBinding(const vector<SGActionIter> & actionTuple,
+					   const vector<SG::Regime> & regimeTuple,
+					   const SGPoint & dir,
+					   SGTuple & bestBindingPayoffs,
+					   vector<bool> & bestAPSNotBinding) const
+{
+  // Make sure current pivot is minimal for new direction.
+  for (int state = 0; state < numStates; state++)
+    {
+      if (regimeTuple[state]==SG::Binding)
+	continue;
+      int bestBindingPlayer, bestBindingPoint;
+      bestAPSNotBinding[state] = computeBestBindingPayoff(actionTuple[state],
+							  bestBindingPlayer,
+							  bestBindingPoint,dir);
+      bestBindingPayoffs[state] = (1-delta)*payoffs[state][actionTuple[state]->getAction()]
+	+ delta * actionTuple[state]->getPoints()[bestBindingPlayer][bestBindingPoint];
+    }
+} // updateBestBinding
+
 bool SGSolver_MaxMinMax::lexComp(const SGPoint & a,
 				 const double aPenalty,
 				 const SGPoint & b,
@@ -870,12 +722,12 @@ bool SGSolver_MaxMinMax::lexComp(const SGPoint & a,
 				 const SGPoint & dir) const
 {
   double diff=a*dir-aPenalty-b*dir+bPenalty;
-  if (diff > env.getParam(SG::LEXCOMPTOL) )
+  if (diff > env.getParam(SG::LEXIMPROVETOL) )
     return true;
-  else if ( diff>-1.0*env.getParam(SG::LEXCOMPTOL) )
+  else if ( diff> -1.0*env.getParam(SG::LEXSUBOPTOL) )
     {
       const SGPoint dir2(dir[1],-dir[0]);
-      if (a*dir2-aPenalty-b*dir2+bPenalty > env.getParam(SG::LEXCOMPTOL) )
+      if (a*dir2-aPenalty-b*dir2+bPenalty > env.getParam(SG::LEXIMPROVETOL) )
 	return true;
     }
   return false;
@@ -883,12 +735,12 @@ bool SGSolver_MaxMinMax::lexComp(const SGPoint & a,
 
 bool SGSolver_MaxMinMax::lexAbove(const SGPoint & a, const SGPoint & b) const
 {
-  if ( a*b>env.getParam(SG::LEXCOMPTOL) )
+  if ( a*b>env.getParam(SG::LEXIMPROVETOL) )
     return true;
-  else if ( a*b>-env.getParam(SG::LEXCOMPTOL) )
+  else if ( a*b>-1.0*env.getParam(SG::LEXSUBOPTOL) )
     {
       const SGPoint c(b[1],-b[0]);
-      if (a*c > env.getParam(SG::LEXCOMPTOL) )
+      if (a*c > env.getParam(SG::LEXIMPROVETOL) )
 	return true;
     }
   return false;

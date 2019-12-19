@@ -65,15 +65,7 @@ int main ()
 
       SGEnv env;
 
-       env.setParam(SG::DIRECTIONTOL,1e-12); 
-      env.setParam(SG::NORMTOL,1e-12); 
-      env.setParam(SG::LEVELTOL,1e-12); 
-      env.setParam(SG::IMPROVETOL,1e-13); 
-      //env.setParam(SG::ERRORTOL,1e-10); 
-      env.setParam(SG::ICTOL,1e-13); // Seems to work well on the
-				     // delta=2/3 and delta=1/3
-				     // contribution games
-      env.setParam(SG::MAXITERATIONS,60);
+      env.setParam(SG::ERRORTOL,1e-6); 
       env.setParam(SG::STOREITERATIONS,2);
       
       clock_t start;
@@ -84,7 +76,7 @@ int main ()
       cout << "Starting solve routine" << endl;
       try
       	{
-	  solver.solve_fixed(numDirections,dropRedundant,addEndogenous);
+	  solver.solve(numDirections,dropRedundant,addEndogenous);
 	}
       catch(SGException e)
       	{

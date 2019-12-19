@@ -102,7 +102,9 @@ namespace SG
                        continuation values are considered equal . */
       SUBGENFACTOR, /*! Scaling of the hyperplanes to test for supergeneration. */
       TRANSITION_PROB_TOL, /*! Tolerance for difference bteween sum of transition prob and one */
-      LEXCOMPTOL, /*! Tolerance used for lexicographic comparison of payoffs */
+      LEXIMPROVETOL, /*! Tolerance used to measure an improvement for
+                         lexicographic comparison */
+      LEXSUBOPTOL, /*! Tolerance used to measure optimality for lexicographic comparison */
       NUMDOUBLEPARAMS /*!< Used internally to indicate the number of
 			enumerated double parameters. */
     };

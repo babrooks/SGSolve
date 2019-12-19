@@ -23,6 +23,7 @@
 //! @example
 
 #include "sg.hpp"
+#include <ctime>
 
 int main ()
 {
@@ -84,18 +85,27 @@ int main ()
 
       SGEnv env;
 
-      env.setParam(SG::DIRECTIONTOL,1e-12); 
-      env.setParam(SG::NORMTOL,1e-12); 
-      env.setParam(SG::LEVELTOL,1e-12); 
-      env.setParam(SG::IMPROVETOL,1e-13); 
+      // env.setParam(SG::DIRECTIONTOL,1e-12); 
+      // env.setParam(SG::NORMTOL,1e-12); 
+      // env.setParam(SG::LEVELTOL,1e-12); 
+      // env.setParam(SG::IMPROVETOL,1e-13); 
+      // env.setParam(SG::STOREITERATIONS,false);  // turn off storage of iterations for benchmarking purposes
 
       cout << "Building solver" << endl;
       SGSolver_MaxMinMax solver(env,game);
 
       cout << "Starting solve routine" << endl;
+
+      clock_t start;
+      double duration;
+      start = clock();
+
       solver.solve();
 
       SGSolution_MaxMinMax soln = solver.getSolution();
+
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << fixed << "Solver time elapsed: "<< duration << " seconds" << endl;
       
       cout << "Saving data... ";
       SGSolution_MaxMinMax::save(soln,"./solutions/pd_twostate.sln");

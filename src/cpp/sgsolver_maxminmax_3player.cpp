@@ -41,7 +41,7 @@ SGSolver_MaxMinMax_3Player::SGSolver_MaxMinMax_3Player(const SGEnv & _env,
   
 }
 
-void SGSolver_MaxMinMax_3Player::solve_fixed(const int numDirsApprox,
+void SGSolver_MaxMinMax_3Player::solve(const int numDirsApprox,
 					     const bool dropRedundant,
 					     const bool addEndogenous)
 {
@@ -89,24 +89,6 @@ void SGSolver_MaxMinMax_3Player::solve_fixed(const int numDirsApprox,
 
       threatDirections.push_back(newDir);
     }
-
-  // numDirections += 6;
-  // SGPoint faceDir(3,2.0/3.0);
-  // faceDir[0] = -1.0/3.0;
-  // directions.push_front(faceDir);
-  // directions.push_front(-1.0*faceDir);
-  // faceDir[0] = 2.0/3.0; faceDir[1] = -1.0/3.0;
-  // directions.push_front(faceDir);
-  // directions.push_front(-1.0*faceDir);
-  // faceDir[1] = 2.0/3.0; faceDir[2] = -1.0/3.0;
-  // directions.push_front(faceDir);
-  // directions.push_front(-1.0*faceDir);
-  // levels.push_front(vector<double>(numStates,0));
-  // levels.push_front(vector<double>(numStates,0));
-  // levels.push_front(vector<double>(numStates,0));
-  // levels.push_front(vector<double>(numStates,0));
-  // levels.push_front(vector<double>(numStates,0));
-  // levels.push_front(vector<double>(numStates,0));
   
 
   cout << "Starting main loop..." << endl;
@@ -120,15 +102,12 @@ void SGSolver_MaxMinMax_3Player::solve_fixed(const int numDirsApprox,
 	throw(SGException(SG::MAX_ITERATIONS_REACHED));
       else 
       {
-	iterate_fixed(numDirections,dropRedundant,addEndogenous);
+	iterate(numDirections,dropRedundant,addEndogenous);
         cout << progressString() << endl;
 
         numIter++;
       } 
     } // while
-
-  // Finish with one round of endogenous iteration.
-  // iterate_endogenous();
 
   cout << "Converged!" << endl;
 
@@ -136,9 +115,9 @@ void SGSolver_MaxMinMax_3Player::solve_fixed(const int numDirsApprox,
        << " endogenous directions and removed " << numRedundDirs
        << " redundant directions." << endl;
 
-} // solve_fixed
+} // solve
 
-double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
+double SGSolver_MaxMinMax_3Player::iterate(const int maxDirections,
 						 const bool dropRedundant,
 						 const bool addEndogenous)
 {
@@ -151,7 +130,6 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
   std::uniform_int_distribution<int> intDistr(0.0,directions.size());
 
   SGTuple pivot = threatTuple;
-  SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
   SGIteration_MaxMinMax iter;
 
@@ -171,9 +149,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	{
 	  ait->updateTrim();
 	      
-	  // WARNING: NO GUARANTEE THAT THIS POINT IS FEASIBLE
-	  if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
-							   [ait->getAction()]))))
+	  if (!(ait->supportable()))
 	    {
 	      actions[state].erase(ait++);
 	      continue;
@@ -205,8 +181,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	vector<double> newLevels(numStates,0);
 	SGPoint currDir = *dir;
 
-	optimizePolicy(pivot,actionTuple,regimeTuple,currDir,
-		       actions,feasibleTuple);
+	optimizePolicy(pivot,actionTuple,regimeTuple,currDir,actions);
 	for (int s = 0; s < numStates; s++)
 	  assert(pivot[s].size()==numPlayers);
 
@@ -256,8 +231,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	  // if (rotateDir.norm() > 1e-6)
 	  //   rotateDir /= rotateDir.norm();
 
-	  optimizePolicy(pivot,actionTuple,regimeTuple,startDir,
-			 actions,feasibleTuple);
+	  optimizePolicy(pivot,actionTuple,regimeTuple,startDir,actions);
 
 	  double bestLevel = 0.0;
   
@@ -312,8 +286,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
 	    continue;
 
 	  endogDirCnt++;
-	  optimizePolicy(pivot,actionTuple,regimeTuple,faceDir,
-			 actions,feasibleTuple);
+	  optimizePolicy(pivot,actionTuple,regimeTuple,faceDir,actions);
 	  directions.push_front(faceDir);
 	  levels.push_front( vector<double>(numStates,0.0));
 	  for (int s = 0; s < numStates; s++)
@@ -334,8 +307,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
     list<SGPoint>::const_iterator dit = threatDirections.cbegin();
     for (int player = 0; player < numPlayers; player++)
       {
-	optimizePolicy(pivot,actionTuple,regimeTuple,*dit,
-		       actions,feasibleTuple);
+	optimizePolicy(pivot,actionTuple,regimeTuple,*dit,actions);
       
 	vector<double> newLevels(numStates,0);
 	for (int state = 0; state < numStates; state++)
@@ -361,8 +333,6 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
     soln.push_back(iter); // Important to do this before updating
   // the threat point and minIC of the
   // actions
-
-  findFeasibleTuple(feasibleTuple,actions);
 
   // cout << "Computing new binding payoffs..." << endl;
 
@@ -501,7 +471,7 @@ double SGSolver_MaxMinMax_3Player::iterate_fixed(const int maxDirections,
   
 
   return errorLevel;
-} // iterate_fixed
+} // iterate
 
 void SGSolver_MaxMinMax_3Player::solve_endogenous()
 {
@@ -545,7 +515,6 @@ std::string SGSolver_MaxMinMax_3Player::progressString() const
 double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 {
   SGTuple pivot = threatTuple;
-  SGTuple feasibleTuple = threatTuple; // A payoff tuple that is feasible for APS
 
   SGIteration_MaxMinMax iter;
   
@@ -568,8 +537,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
   // Construct initial face
   SGPoint currDir = SGPoint(3,1.0); // Start pointing due east
 
-  optimizePolicy(pivot,actionTuple,regimeTuple,currDir,
-		 actions,feasibleTuple);
+  optimizePolicy(pivot,actionTuple,regimeTuple,currDir,actions);
 
   SGPoint rotateDir = SGPoint(3,0.0); // rotate towards minimizing player 1's payoff
   rotateDir[0]=currDir[1];
@@ -857,8 +825,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
       SGPoint threatDir (numPlayers,0.0);
       threatDir[p] = -1.0;
 
-      optimizePolicy(pivot,actionTuple,regimeTuple,threatDir,
-		     actions,feasibleTuple);
+      optimizePolicy(pivot,actionTuple,regimeTuple,threatDir,actions);
       for (int s = 0; s < numStates; s++)
 	newThreatTuple[s][p] = pivot[s][p];
 
@@ -938,8 +905,6 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	       || numIter+1 >= env.getParam(SG::MAXITERATIONS) ) ) )
     soln.push_back(iter); // Important to do this before updating the threat point and minIC of the actions
 
-  findFeasibleTuple(feasibleTuple,actions);
-      
   // Update the the threat tuple, directions, levels
   threatTuple = newThreatTuple;
   directions = newDirections;
@@ -975,8 +940,7 @@ double SGSolver_MaxMinMax_3Player::iterate_endogenous()
 	  // ait->mergeDuplicatePoints(1e-8);
 
 	  // Delete the action if not supportable
-	  if (!(ait->supportable(feasibleTuple.expectation(probabilities[state]
-							   [ait->getAction()]))))
+	  if (!(ait->supportable()))
 	    {
 	      actions[state].erase(ait++);
 	      continue;
@@ -1047,11 +1011,8 @@ void SGSolver_MaxMinMax_3Player::optimizePolicy(SGTuple & pivot,
 						vector<SGActionIter> & actionTuple,
 						vector<SG::Regime> & regimeTuple,
 						const SGPoint & currDir,
-						const vector<list<SGAction_MaxMinMax> > & actions,
-						const SGTuple & feasibleTuple) const
+						const vector<list<SGAction_MaxMinMax> > & actions) const
 {
-  // TODO Breaks if the initial pivot is outside the feasible set.
-
   // Do policy iteration to find the optimal pivot.
   
   double pivotError = 1.0;
@@ -1494,86 +1455,6 @@ double SGSolver_MaxMinMax_3Player::sensitivity(SGPoint & optSubDir,
 
 } // sensitivity
 
-
-void SGSolver_MaxMinMax_3Player::findFeasibleTuple(SGTuple & feasibleTuple,
-				    const vector<list<SGAction_MaxMinMax> > & actions) const
-{
-  // Update the APS-feasible tuple
-
-  // These are just in case we cannot find binding APS payofs. NB:
-  // This is not the same actionTuple and regimeTuple that determine
-  // the pivot.
-  vector<SGActionIter> actionTuple(numStates);
-  vector<SG::Regime> regimeTuple(numStates,SG::Binding);
-
-  bool anyNonBinding = false;
-  for (int state = 0; state < numStates; state++)
-    {
-      // Search for an action with feasible binding continuations
-      // and just pick one. If we don't find any action with
-      // feasible binding continuations, it either means (i) the
-      // game has no pure strategy SPNE, or (ii) any feasible
-      // payoff tuple (within the set of remaining actions) is an
-      // APS payoff.
-      bool foundFeasiblePlayer = false;
-
-      if (actions[state].size()==0)
-	throw(SGException(SG::NOACTIONS));
-	
-      for (auto ait = actions[state].begin();
-	   ait != actions[state].end();
-	   ait++)
-	{
-	  int feasiblePlayer = -1;
-	  for (int player = 0; player < numPlayers; player++)
-	    {
-	      if (ait->getPoints()[player].size()>0)
-		{
-		  feasiblePlayer = player;
-		  break;
-		}
-	    }
-	  if (feasiblePlayer >= 0)
-	    {
-	      feasibleTuple[state] = (1-delta)*payoffs[state][ait->getAction()]
-		+delta*ait->getPoints()[feasiblePlayer][0];
-	      foundFeasiblePlayer = true;
-	      break;
-	    }
-	} // for ait
-      if (!foundFeasiblePlayer)
-	{
-	  regimeTuple[state] = SG::NonBinding;
-	  actionTuple[state] = actions[state].begin();
-	  anyNonBinding = true;
-	}
-    } // for state
-
-  bool notAllIC = anyNonBinding;
-  while (notAllIC)
-    {
-      // Have to do Bellman iteration to find the new pivot.
-      policyToPayoffs(feasibleTuple,actionTuple,regimeTuple);
-      notAllIC = false;
-      
-      // Check if resulting tuple is IC.
-      for (int state = 0; state < numStates; state++)
-	{
-	  if (!(feasibleTuple.expectation(probabilities[state]
-					  [actionTuple[state]->getAction()])
-		>= actionTuple[state]->getMinICPayoffs()))
-	    {
-	      notAllIC = true;
-	      // Try advancing the action and recomputing
-	      if ((++actionTuple[state])==actions[state].end())
-		{
-		  throw(SGException(SG::NOFEASIBLETUPLE));
-		}
-	    }
-	} // for state
-    } // if anyNonBinding
-
-} // findFeasibleTuple
 
 void SGSolver_MaxMinMax_3Player::policyToPayoffs(SGTuple & pivot,
 						 const vector<SGActionIter> & actionTuple,

@@ -119,14 +119,6 @@ double pseudoHausdorff(const list<SGPoint> & newDirections,
   void initialize();
 
   std::string progressString() const;
-  
-  //! Optimizes the policy for the given direction
-  void optimizePolicy(SGTuple & pivot,
-		      vector<double> & penalties,
-		      vector<SGActionIter> & actionTuple,
-		      vector<SG::Regime> & regimeTuple,
-		      const SGPoint currDir,
-		      const vector<list<SGAction_MaxMinMax> > & actions) const;
 
   //! Optimizes the policy for the given direction
   void robustOptimizePolicy(SGTuple & pivot,
@@ -173,6 +165,13 @@ double pseudoHausdorff(const list<SGPoint> & newDirections,
 				int & bestBindingPlayer,
 				int & bestBindingPoint,
 				const SGPoint & dir) const;
+
+  //! Update best binding payoffs and check if best APS is binding
+  void updateBestBinding(const vector<SGActionIter> & actionTuple,
+			 const vector<SG::Regime> & regimeTuple,
+			 const SGPoint & dir,
+			 SGTuple & bestBindingPayoffs,
+			 vector<bool> & bestAPSNotBinding) const;
 
   //! Switches regimes from binding to non-binding to minimize levels
   void minimizeRegimes(SGTuple & pivot,
