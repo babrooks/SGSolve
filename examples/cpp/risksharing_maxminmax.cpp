@@ -79,8 +79,8 @@ void runModels(const int numEndowments,
   RiskSharingGame rsg(delta,numEndowments,
 		      c2e,persistence,endowmentMode);
   SGEnv env;
-  env.setParam(SG::STOREITERATIONS,2);
-  env.setParam(SG::ERRORTOL,1e-5);
+  env.setParam(SG::STOREITERATIONS,0);
+  env.setParam(SG::ERRORTOL,1e-8);
 
   env.setParam(SG::SUBGENFACTOR,0.0);
   if (env.getParam(SG::SUBGENFACTOR)>0)
@@ -92,6 +92,10 @@ void runModels(const int numEndowments,
   clock_t start;
   double duration;
 
+  cout << "numEndowments: " << numEndowments
+       << ", c2e: " << c2e 
+       << ", delta: " << delta
+       << endl;
   if (maxminmaxfixed)
     {
 
