@@ -30,7 +30,7 @@
 
 void runModels(const int numEndowments,
 	       const int c2e,
-	       const delta,
+	       const double delta,
 	       bool maxminmax,
 	       bool maxminmaxfixed,
 	       int jycnumdirs);
@@ -40,14 +40,14 @@ int main()
   double delta = 0.7;
 
   // Run the benchmarks reported in ABS (2019)
-  runModels(2,200,0.4,false,true,0);
-  runModels(2,200,0.7,false,true,0);
+  runModels(2,200,0.4,true,false,0);
+  runModels(2,200,0.7,true,false,0);
   
   // Max-min-max fixed and endogenous
-  runModels(2,20,0.7,false,true,0);
-  runModels(2,40,0.7,false,true,0);
-  runModels(5,20,0.7,false,true,0);
-  runModels(9,15,0.7,false,true,0);
+  runModels(2,20,0.7,true,false,0);
+  runModels(2,40,0.7,true,false,0);
+  runModels(5,20,0.7,true,false,0);
+  runModels(9,15,0.7,true,false,0);
 
   return 0;
   
@@ -68,7 +68,7 @@ int main()
 
 void runModels(const int numEndowments,
 	       const int c2e,
-	       const delta,
+	       const double delta,
 	       bool maxminmax,
 	       bool maxminmaxfixed,
 	       int jycnumdirs)
@@ -139,7 +139,7 @@ void runModels(const int numEndowments,
       SGSolver_JYC jycsolver(game,jycnumdirs);
       jycsolver.solve();
       duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-      cout << "JYC implementation time elapsed with " << numDirections
+      cout << "JYC implementation time elapsed with " << jycnumdirs
 	   << " directions: "<< duration << " seconds" << endl;
     }
 } // runModels
