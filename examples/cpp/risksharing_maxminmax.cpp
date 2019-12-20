@@ -28,91 +28,118 @@
 #include "sgsolver_maxminmax.hpp"
 #include <ctime>
 
+void runModels(const int numEndowments,
+	       const int c2e,
+	       const delta,
+	       bool maxminmax,
+	       bool maxminmaxfixed,
+	       int jycnumdirs);
+
 int main()
 {
   double delta = 0.7;
-  int numEndowments = 2;
-  int c2e = 200;
-  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
 
-  {
-    double persistence = 0;
-    RiskSharingGame rsg(delta,numEndowments,
-			c2e,persistence,endowmentMode);
-    SGEnv env;
-    env.setParam(SG::STOREITERATIONS,2);
-    env.setParam(SG::ERRORTOL,1e-5);
-
-    env.setParam(SG::SUBGENFACTOR,0.0);
-    if (env.getParam(SG::SUBGENFACTOR)>0)
-      env.setParam(SG::ERRORTOL,
-		   env.getParam(SG::SUBGENFACTOR)/10);
-    // env.setParam(SG::MAXITERATIONS,20);
-    SGGame game(rsg);
-
-    clock_t start;
-    double duration;
-
-    // start = clock();
-    // SGSolver solver1(env,game);
-    // solver1.solve();
-    // duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    // cout << "Twist time elapsed: "<< duration << " seconds" << endl;
-    // // SGSolution soln = solver1.getSolution();
-    // // SGSolution::save(soln,"risksharing_v1.sln");
-
-    start = clock();
-
-    SGSolver_MaxMinMax solver4(env,game);
-    try
-      {
-    	solver4.solve_fixed();
-      }
-    catch(std::exception & e)
-      {
-    	cout << e.what() << endl;
-      }
-
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
-
-    SGSolution_MaxMinMax soln2 = solver4.getSolution();
-    SGSolution_MaxMinMax::save(soln2,"./solutions/risksharing_maxminmax_fixed.sln");
-
-    start = clock();
-
-    SGSolver_MaxMinMax solver5(env,game);
-    solver5.solve();
-
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
-
-    SGSolution_MaxMinMax soln3 = solver5.getSolution();
-    stringstream ss;
-    ss << "./solutions/risksharing_nume=" << numEndowments
-       << "_c2e=" << c2e
-       << "_delta=" << delta;
-    if (env.getParam(SG::SUBGENFACTOR)>0)
-      ss << "_sgf=" << env.getParam(SG::SUBGENFACTOR);
-    ss << ".sln";
-    SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
-    
-    start = clock();
-    int numDirections = 100;
-    SGSolver_JYC jycsolver(game,numDirections);
-    jycsolver.solve();
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << "JYC implementation time elapsed with " << numDirections
-    	 << " directions: "<< duration << " seconds" << endl;
-
-    start = clock();
-    numDirections = 200;
-    SGSolver_JYC jycsolver2(game,numDirections);
-    jycsolver2.solve();
-    duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
-    cout << "JYC implementation time elapsed with " << numDirections
-    	 << " directions: "<< duration << " seconds" << endl;
-  }
+  // Run the benchmarks reported in ABS (2019)
+  runModels(2,200,0.4,false,true,0);
+  runModels(2,200,0.7,false,true,0);
+  
+  // Max-min-max fixed and endogenous
+  runModels(2,20,0.7,false,true,0);
+  runModels(2,40,0.7,false,true,0);
+  runModels(5,20,0.7,false,true,0);
+  runModels(9,15,0.7,false,true,0);
 
   return 0;
-}
+  
+  // JYC 100
+  runModels(2,20,0.7,false,false,100);
+  runModels(2,40,0.7,false,false,100);
+  runModels(5,20,0.7,false,false,100);
+  runModels(9,15,0.7,false,false,100);
+
+  // JYC 200
+  runModels(2,20,0.7,false,false,200);
+  runModels(2,40,0.7,false,false,200);
+  runModels(5,20,0.7,false,false,200);
+  runModels(9,15,0.7,false,false,200);
+  
+  return 0;
+} // main
+
+void runModels(const int numEndowments,
+	       const int c2e,
+	       const delta,
+	       bool maxminmax,
+	       bool maxminmaxfixed,
+	       int jycnumdirs)
+{
+  double persistence = 0;
+  RiskSharingGame::EndowmentMode endowmentMode = RiskSharingGame::Consumption;
+
+  RiskSharingGame rsg(delta,numEndowments,
+		      c2e,persistence,endowmentMode);
+  SGEnv env;
+  env.setParam(SG::STOREITERATIONS,2);
+  env.setParam(SG::ERRORTOL,1e-5);
+
+  env.setParam(SG::SUBGENFACTOR,0.0);
+  if (env.getParam(SG::SUBGENFACTOR)>0)
+    env.setParam(SG::ERRORTOL,
+		 env.getParam(SG::SUBGENFACTOR)/10);
+  // env.setParam(SG::MAXITERATIONS,20);
+  SGGame game(rsg);
+
+  clock_t start;
+  double duration;
+
+  if (maxminmaxfixed)
+    {
+
+      start = clock();
+
+      SGSolver_MaxMinMax solver4(env,game);
+      try
+	{
+	  solver4.solve_fixed();
+	}
+      catch(std::exception & e)
+	{
+	  cout << e.what() << endl;
+	}
+
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << fixed << "Fixed direction time elapsed: "<< duration << " seconds" << endl;
+
+      SGSolution_MaxMinMax soln2 = solver4.getSolution();
+      SGSolution_MaxMinMax::save(soln2,"./solutions/risksharing_maxminmax_fixed.sln");
+    }
+  if (maxminmax)
+    {
+      start = clock();
+
+      SGSolver_MaxMinMax solver5(env,game);
+      solver5.solve();
+
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << fixed << "Endogenous direction time elapsed: "<< duration << " seconds" << endl;
+
+      SGSolution_MaxMinMax soln3 = solver5.getSolution();
+      stringstream ss;
+      ss << "./solutions/risksharing_nume=" << numEndowments
+	 << "_c2e=" << c2e
+	 << "_delta=" << delta;
+      if (env.getParam(SG::SUBGENFACTOR)>0)
+	ss << "_sgf=" << env.getParam(SG::SUBGENFACTOR);
+      ss << ".sln";
+      SGSolution_MaxMinMax::save(soln3,ss.str().c_str());
+    }
+  if (jycnumdirs>0)
+    {
+      start = clock();
+      SGSolver_JYC jycsolver(game,jycnumdirs);
+      jycsolver.solve();
+      duration = ( clock() - start ) / (double) CLOCKS_PER_SEC;
+      cout << "JYC implementation time elapsed with " << numDirections
+	   << " directions: "<< duration << " seconds" << endl;
+    }
+} // runModels
