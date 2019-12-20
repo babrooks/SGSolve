@@ -37,8 +37,6 @@ void runModels(const int numEndowments,
 
 int main()
 {
-  double delta = 0.7;
-
   // Run the benchmarks reported in ABS (2019)
   runModels(2,200,0.4,true,false,0);
   runModels(2,200,0.7,true,false,0);
@@ -79,7 +77,7 @@ void runModels(const int numEndowments,
   RiskSharingGame rsg(delta,numEndowments,
 		      c2e,persistence,endowmentMode);
   SGEnv env;
-  env.setParam(SG::STOREITERATIONS,0);
+  env.setParam(SG::STOREITERATIONS,2);
   env.setParam(SG::ERRORTOL,1e-8);
 
   env.setParam(SG::SUBGENFACTOR,0.0);

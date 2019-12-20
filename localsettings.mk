@@ -38,8 +38,8 @@ CXX=clang++ -O0 -w
 
 RMCMD=rm -rf 
 
-DEBUG=-g
-# DEBUG=-DNDEBUG -O
+# DEBUG=-g
+DEBUG=-DNDEBUG -O
 
 CSYSFLAGS = -fPIC -std=gnu++11
 CMTFLAGS = 
